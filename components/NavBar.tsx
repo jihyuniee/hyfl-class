@@ -11,7 +11,7 @@ const links = [
   { href: "/schedule", label: "일정/수행" },
   { href: "/counseling", label: "상담" },
   { href: "/rules", label: "규칙" },
-  { href: "/students", label: "학생 소개" },
+  { href: "/wall", label: "학생 소개" },
 ];
 
 function isActive(pathname: string, href: string) {
