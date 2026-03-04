@@ -1,0 +1,2478 @@
+
+<!doctype html>
+<html lang="ko" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="AI 에이전트를 활용해 전문가처럼 문제를 해결하는 힘을 기르는 실습 중심 교육자료입니다. 이론은 최소화하고, 직접 써보며 배우는 경험을 통해 AI 리터러시와 컴퓨팅 사고력을 동시에 키웁니다.">
+      
+      
+        <meta name="author" content="Created with EduFlow">
+      
+      
+      
+        <link rel="prev" href="../chapter04/">
+      
+      
+        <link rel="next" href="../chapter06/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.4">
+    
+    
+      
+        <title>좋은 질문이 좋은 답을 만든다 – 프롬프트의 기본 - 인공지능 원리탐구</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Sans KR";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/custom.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#chapter-5" class="md-skip">
+          콘텐츠로 이동
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="상단/헤더">
+    <a href=".." title="인공지능 원리탐구" class="md-header__button md-logo" aria-label="인공지능 원리탐구" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            인공지능 원리탐구
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              좋은 질문이 좋은 답을 만든다 – 프롬프트의 기본
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="다크 모드로 전환"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="다크 모드로 전환" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="라이트 모드로 전환"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="라이트 모드로 전환" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="검색" placeholder="검색" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="검색">
+        
+        <button type="reset" class="md-search__icon md-icon" title="지우기" aria-label="지우기" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            검색 초기화
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="탭" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../chapter01/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Part 1 - [1권] Part 1. AI와의 첫 만남 – 인공지능, 넌 누구니?
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Part 2 - [1권] Part 2. AI와 대화하는 기술 – 프롬프트 엔지니어링
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../chapter09/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Part 3 - [1권] Part 3. AI 시대의 시민력 – 윤리와 비판적 사고
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../chapter12/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Part 4 - [2권] Part 4. 문제 발견과 알고리즘 설계 – 프로젝트의 뼈대 세우기
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../chapter15/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Part 5 - [2권] Part 5. 웹앱 만들기 – AI와 함께 구현하기
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../chapter18/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Part 6 - [2권] Part 6. 발표와 성찰 – 우리의 이야기를 세상에
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="네비게이션" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="인공지능 원리탐구" class="md-nav__button md-logo" aria-label="인공지능 원리탐구" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    인공지능 원리탐구
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part 1 - [1권] Part 1. AI와의 첫 만남 – 인공지능, 넌 누구니?
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part 1 - [1권] Part 1. AI와의 첫 만남 – 인공지능, 넌 누구니?
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI는 마법이 아니다 – 인공지능의 정체
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI는 어떻게 배울까? – 머신러닝의 원리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GPT의 비밀 – 언어를 다루는 AI의 원리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI도 틀린다 – 할루시네이션과 사실 판별
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part 2 - [1권] Part 2. AI와 대화하는 기술 – 프롬프트 엔지니어링
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part 2 - [1권] Part 2. AI와 대화하는 기술 – 프롬프트 엔지니어링
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    좋은 질문이 좋은 답을 만든다 – 프롬프트의 기본
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    좋은 질문이 좋은 답을 만든다 – 프롬프트의 기본
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="목차">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      목차
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 이 장에서 배우는 것
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        💡 왜 이걸 배우나요?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📚 핵심 개념
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📚 핵심 개념">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-prompt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 1: 프롬프트(Prompt)란 무엇인가?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-vs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 2: 좋은 프롬프트 vs 나쁜 프롬프트
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 3: 프롬프트의 3요소 — 역할 · 맥락 · 형식
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 4: 프롬프트 개선의 원리 — 반복과 구체화
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔨 따라하기: 프롬프트 업그레이드 챌린지
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔨 따라하기: 프롬프트 업그레이드 챌린지">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: AI 챗봇 준비하기
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-lv1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: Lv.1 프롬프트 입력하기 (모호한 질문)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-lv2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: Lv.2 프롬프트 입력하기 (맥락 추가)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-lv3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4: Lv.3 프롬프트 입력하기 (역할 + 맥락 + 형식)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5: 결과 비교 &amp; 분석하기
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 6: 나만의 프롬프트 만들기
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📝 전체 코드
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ⚠️ 자주 하는 실수
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="⚠️ 자주 하는 실수">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        실수 1: 한 번에 너무 많은 것을 요구하기 🤯
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        실수 2: 역할 없이 전문적인 답변을 기대하기 🎭
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        실수 3: AI 답변이 마음에 안 들면 바로 포기하기 😤
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ✅ 스스로 점검하기
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="✅ 스스로 점검하기">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        기본 문제
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        응용 문제
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        심화 문제 (도전!)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🚀 더 해보기
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter06/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    프롬프트 실전 테크닉 – 단계별 지시와 예시 활용
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter07/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI와 진짜 협업하기 – 에이전트 활용 입문
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter08/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI에이전트 실전 활용 – 나만의 에이전트 워크플로 만들기
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part 3 - [1권] Part 3. AI 시대의 시민력 – 윤리와 비판적 사고
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part 3 - [1권] Part 3. AI 시대의 시민력 – 윤리와 비판적 사고
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter09/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI가 편견을 가진다고? – 데이터 편향과 공정성
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter10/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI 시대, 나의 역할은? – AI 윤리와 책임
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter11/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    전반부 총정리 – 나의 AI 활용 포트폴리오
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part 4 - [2권] Part 4. 문제 발견과 알고리즘 설계 – 프로젝트의 뼈대 세우기
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part 4 - [2권] Part 4. 문제 발견과 알고리즘 설계 – 프로젝트의 뼈대 세우기
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter12/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    불편함을 문제로 바꾸는 힘 – 문제 정의와 사용자 분석
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter13/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    해결책을 그려보자 – 알고리즘과 순서도
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter14/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    화면을 설계하자 – 와이어프레임과 UI 기획
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part 5 - [2권] Part 5. 웹앱 만들기 – AI와 함께 구현하기
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part 5 - [2권] Part 5. 웹앱 만들기 – AI와 함께 구현하기
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter15/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    코딩을 몰라도 괜찮아 – AI 코딩 도구 시작하기
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter16/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    우리 팀 웹앱 만들기 ① – 핵심 기능 구현
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter17/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    우리 팀 웹앱 만들기 ② – 다듬기와 사용자 테스트
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part 6 - [2권] Part 6. 발표와 성찰 – 우리의 이야기를 세상에
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part 6 - [2권] Part 6. 발표와 성찰 – 우리의 이야기를 세상에
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter18/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    설득력 있는 발표 만들기 – AI와 함께하는 프레젠테이션
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter19/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    프로젝트 발표회 – 우리가 만든 솔루션
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter20/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI 시대, 나의 다음 챕터 – 성찰과 미래 설계
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="목차">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      목차
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 이 장에서 배우는 것
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        💡 왜 이걸 배우나요?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📚 핵심 개념
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📚 핵심 개념">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-prompt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 1: 프롬프트(Prompt)란 무엇인가?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-vs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 2: 좋은 프롬프트 vs 나쁜 프롬프트
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 3: 프롬프트의 3요소 — 역할 · 맥락 · 형식
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 4: 프롬프트 개선의 원리 — 반복과 구체화
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔨 따라하기: 프롬프트 업그레이드 챌린지
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔨 따라하기: 프롬프트 업그레이드 챌린지">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: AI 챗봇 준비하기
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-lv1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: Lv.1 프롬프트 입력하기 (모호한 질문)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-lv2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: Lv.2 프롬프트 입력하기 (맥락 추가)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-lv3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4: Lv.3 프롬프트 입력하기 (역할 + 맥락 + 형식)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5: 결과 비교 &amp; 분석하기
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 6: 나만의 프롬프트 만들기
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📝 전체 코드
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ⚠️ 자주 하는 실수
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="⚠️ 자주 하는 실수">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        실수 1: 한 번에 너무 많은 것을 요구하기 🤯
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        실수 2: 역할 없이 전문적인 답변을 기대하기 🎭
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        실수 3: AI 답변이 마음에 안 들면 바로 포기하기 😤
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ✅ 스스로 점검하기
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="✅ 스스로 점검하기">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        기본 문제
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        응용 문제
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        심화 문제 (도전!)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🚀 더 해보기
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="chapter-5">Chapter 5. 좋은 질문이 좋은 답을 만든다 – 프롬프트의 기본<a class="headerlink" href="#chapter-5" title="Permanent link">&para;</a></h1>
+<hr />
+<h2 id="_1">🎯 이 장에서 배우는 것<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> 프롬프트의 개념과 AI 대화에서의 중요성을 설명할 수 있다</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> 좋은 프롬프트와 나쁜 프롬프트의 차이를 구체적으로 분석할 수 있다</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> 역할(Role) / 맥락(Context) / 형식(Format) 세 요소를 활용한 프롬프트를 작성할 수 있다</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> 프롬프트를 단계적으로 개선하여 AI 답변의 품질을 높일 수 있다</li>
+</ul>
+<hr />
+<h2 id="_2">💡 왜 이걸 배우나요?<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p><strong>생각해보기 🤔</strong>: 아래 두 질문을 AI에게 던졌다고 상상해보세요.</p>
+</blockquote>
+<p><strong>질문 A</strong>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>에세이 써줘
+</span></code></pre></div></p>
+<p><strong>질문 B</strong>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>고등학생이 이해할 수 있는 수준으로, &#39;기후변화가 일상생활에 미치는 영향&#39;에 대해
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>서론-본론-결론 구조의 800자 에세이를 작성해줘. 
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>구체적인 사례를 2개 이상 포함하고, 마지막에 우리가 할 수 있는 실천 방안을 제시해줘.
+</span></code></pre></div></p>
+<p>질문 A에 대해 AI는 이렇게 답할 수 있습니다. <em>"어떤 주제의 에세이를 원하시나요?"</em> 혹은 아무 주제나 골라서 두리뭉실한 글을 내놓겠죠.</p>
+<p>질문 B는 어떨까요? <strong>주제, 독자 수준, 구조, 분량, 포함할 내용</strong>이 모두 명시되어 있으니, AI는 훨씬 정확하고 유용한 답변을 생성합니다.</p>
+<p>같은 AI인데 결과가 이렇게 다른 이유는 단 하나, <strong>질문의 품질</strong> 때문입니다. AI 시대에서 "무엇을 아는가"만큼 중요한 능력이 바로 <strong>"어떻게 질문하는가"</strong>입니다. 이번 장에서는 AI에게 좋은 질문을 하는 기술, 즉 <strong>프롬프트 엔지니어링의 기본</strong>을 배웁니다.</p>
+<hr />
+<h2 id="_3">📚 핵심 개념<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<h3 id="1-prompt">개념 1: 프롬프트(Prompt)란 무엇인가?<a class="headerlink" href="#1-prompt" title="Permanent link">&para;</a></h3>
+<p><strong>🍳 비유로 시작</strong></p>
+<p>식당에 가서 주문하는 상황을 떠올려보세요.</p>
+<ul>
+<li>😵 "맛있는 거 주세요" → 점원은 난감합니다. 한식? 양식? 매운 것? 안 매운 것?</li>
+<li>😊 "매운 것 잘 먹어요. 밥 종류로, 1만 원 이하 메뉴 추천해주세요" → 딱 맞는 메뉴가 나옵니다.</li>
+</ul>
+<p>AI에게 질문하는 것도 <strong>정확히 같은 원리</strong>입니다.</p>
+<p><strong>📖 정확한 정의</strong></p>
+<blockquote>
+<p><strong>프롬프트(Prompt)</strong>: 사용자가 AI에게 입력하는 텍스트 명령어. AI가 어떤 답변을 생성할지 결정하는 '지시문'이다.</p>
+</blockquote>
+<p>프롬프트는 단순한 "질문"이 아닙니다. AI의 행동 방향을 설정하는 <strong>내비게이션 목적지</strong>와 같습니다. 목적지를 "어딘가 좋은 곳"이라고 입력하면 엉뚱한 곳에 도착하겠지만, "서울시 종로구 세종대로 175"라고 입력하면 정확히 광화문에 도착하죠.</p>
+<p><strong>✏️ 예시로 확인</strong></p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>[모호한 프롬프트]
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>&quot;파이썬 알려줘&quot;
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>→ AI: 파이썬의 역사부터 시작하여 수십 페이지 분량의 정보를 쏟아낼 수 있음
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>[구체적인 프롬프트]
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>&quot;파이썬의 for문을 처음 배우는 중학생에게 설명해줘. 
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>1부터 10까지 더하는 예제 코드를 포함해줘.&quot;
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>→ AI: 딱 필요한 수준의 설명과 예제를 제공
+</span></code></pre></div>
+<hr />
+<h3 id="2-vs">개념 2: 좋은 프롬프트 vs 나쁜 프롬프트<a class="headerlink" href="#2-vs" title="Permanent link">&para;</a></h3>
+<p>좋은 프롬프트와 나쁜 프롬프트에는 명확한 차이가 있습니다. 핵심은 <strong>구체성(Specificity)</strong>입니다.</p>
+<p><strong>나쁜 프롬프트의 특징 😵</strong>
+- 너무 짧고 모호하다 → "번역해줘"
+- 맥락이 없다 → AI가 추측해야 할 것이 많다
+- 원하는 결과물의 형태가 불분명하다</p>
+<p><strong>좋은 프롬프트의 특징 😊</strong>
+- <strong>구체적</strong>이다 → 무엇을, 어떻게, 어느 수준으로 원하는지 명시
+- <strong>맥락</strong>이 있다 → 배경 상황이나 목적을 알려준다
+- <strong>형식</strong>이 지정되어 있다 → 결과물의 모양을 안내한다</p>
+<blockquote>
+<p><strong>알아보기 📌</strong>: "좋은 프롬프트 = 긴 프롬프트"일까요? 아닙니다! 길이가 아니라 <strong>필요한 정보가 빠짐없이 들어있는지</strong>가 핵심입니다. 짧더라도 핵심 정보가 담겨 있으면 좋은 프롬프트입니다.</p>
+</blockquote>
+<div class="mermaid">graph LR
+    A["🤔 나쁜 프롬프트"] --&gt;|"모호한 지시"| B["😕 AI가 추측"]
+    B --&gt; C["❌ 원하지 않는 답변"]
+
+    D["💡 좋은 프롬프트"] --&gt;|"구체적 지시"| E["🎯 AI가 정확히 이해"]
+    E --&gt; F["✅ 원하는 답변"]</div>
+<p><strong>비교 예시</strong></p>
+<ul>
+<li><strong>나쁜 예</strong>: "일본어 공부법 알려줘"</li>
+<li><strong>좋은 예</strong>: "JLPT N3를 목표로 하는 고등학생이 하루 30분씩 3개월간 실천할 수 있는 일본어 공부 계획을 주차별로 정리해줘"</li>
+</ul>
+<p>후자가 훨씬 유용한 답변을 이끌어내겠죠?</p>
+<hr />
+<h3 id="3-3">개념 3: 프롬프트의 3요소 — 역할 · 맥락 · 형식<a class="headerlink" href="#3-3" title="Permanent link">&para;</a></h3>
+<p>이제 좋은 프롬프트를 만드는 <strong>공식</strong>을 배울 차례입니다. 프롬프트를 구성하는 핵심 3요소를 기억하세요.</p>
+<p><strong>🍳 비유로 시작</strong></p>
+<p>영화 촬영 현장을 상상해보세요.</p>
+<ul>
+<li><strong>역할(Role)</strong> = 배우에게 "너는 조선시대 왕이야"라고 알려주는 것</li>
+<li><strong>맥락(Context)</strong> = "지금 전쟁 직전 상황이야, 신하들이 반대하고 있어"라는 장면 설명</li>
+<li><strong>형식(Format)</strong> = "대사는 3문장으로, 비장한 톤으로 말해줘"라는 연출 지시</li>
+</ul>
+<p>이 세 가지가 갖춰져야 배우(AI)가 제대로 된 연기(답변)를 할 수 있습니다.</p>
+<p><strong>📖 정확한 정의</strong></p>
+<blockquote>
+<ul>
+<li><strong>역할(Role)</strong>: AI에게 부여하는 전문가 정체성. "너는 ~이야"</li>
+<li><strong>맥락(Context)</strong>: 질문의 배경, 상황, 조건. "~인 상황에서"</li>
+<li><strong>형식(Format)</strong>: 원하는 답변의 구조와 스타일. "~형태로 답해줘"</li>
+</ul>
+</blockquote>
+<div class="mermaid">graph TD
+    P["🎯 좋은 프롬프트"] --&gt; R["🎭 역할 Role"]
+    P --&gt; C["📋 맥락 Context"]
+    P --&gt; F["📐 형식 Format"]
+
+    R --&gt; R1["'너는 영어 교사야'"]
+    C --&gt; C1["'중학생이 처음 배우는 상황'"]
+    F --&gt; F1["'표로 정리해줘'"]</div>
+<p><strong>✏️ 예시로 확인 — 3요소 적용 전후</strong></p>
+<p><strong>적용 전</strong> ❌
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>영어 단어 알려줘
+</span></code></pre></div></p>
+<p><strong>적용 후</strong> ✅
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>[역할] 너는 10년 경력의 중학교 영어 교사야.
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>[맥락] 중학교 1학년 학생이 일상생활 관련 영어 단어를 처음 배우려고 해.
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>[형식] 필수 단어 10개를 &#39;단어 - 뜻 - 예문&#39; 순서로 정리해줘. 
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>       예문은 쉬운 문장으로 작성해줘.
+</span></code></pre></div></p>
+<blockquote>
+<p><strong>정리하기 📝</strong>: 프롬프트의 3요소를 한 줄로 요약하면, <strong>"누구로서(역할) / 이런 상황에서(맥락) / 이런 모양으로(형식) 답해줘"</strong>입니다.</p>
+</blockquote>
+<hr />
+<h3 id="4">개념 4: 프롬프트 개선의 원리 — 반복과 구체화<a class="headerlink" href="#4" title="Permanent link">&para;</a></h3>
+<p>완벽한 프롬프트를 한 번에 쓰는 사람은 없습니다. <strong>점진적으로 개선하는 과정</strong>이 핵심입니다. 이것을 <strong>반복적 개선(Iterative Refinement)</strong>이라고 합니다.</p>
+<p><strong>🍳 비유로 시작</strong></p>
+<p>사진을 찍을 때 처음부터 완벽한 사진이 나오나요? 보통 이런 과정을 거칩니다.</p>
+<ol>
+<li>📸 일단 찍는다 (1차 프롬프트)</li>
+<li>🔍 결과를 확인한다 (AI 답변 검토)</li>
+<li>📐 구도를 조정한다 (프롬프트 수정)</li>
+<li>📸 다시 찍는다 (개선된 프롬프트로 재시도)</li>
+</ol>
+<p>프롬프트도 이와 같습니다. <strong>"쓰고 → 보고 → 고치고 → 다시 쓰기"</strong>를 반복하세요.</p>
+<div class="mermaid">graph LR
+    A["✍️ 프롬프트 작성"] --&gt; B["👀 AI 답변 확인"]
+    B --&gt; C["🔍 부족한 점 분석"]
+    C --&gt; D["✏️ 프롬프트 수정"]
+    D --&gt; A</div>
+<p><strong>레벨별 개선 예시</strong></p>
+<ul>
+<li><strong>Lv.1</strong> 🌱: "한국 역사 알려줘"</li>
+<li><strong>Lv.2</strong> 🌿: "조선시대 역사를 간단히 요약해줘"</li>
+<li><strong>Lv.3</strong> 🌳: "고등학생 한국사 시험을 준비 중이야. 조선 전기(태조~성종)의 주요 사건을 시간순으로 정리하고, 각 사건의 의미를 한 줄로 설명해줘"</li>
+<li><strong>Lv.4</strong> 🌲: "너는 한국사 전문 강사야. 고등학생이 수능 한국사를 준비하고 있어. 조선 전기(태조~성종)의 주요 사건 5가지를 시간순으로 정리하고, 각 사건이 시험에 자주 나오는 이유를 포함해서 설명해줘. 마지막에 OX 퀴즈 3문제를 만들어줘."</li>
+</ul>
+<p>레벨이 올라갈수록 <strong>역할, 맥락, 형식</strong>이 하나씩 추가되고 있는 것이 보이시죠?</p>
+<hr />
+<h2 id="_4">🔨 따라하기: 프롬프트 업그레이드 챌린지<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<p>지금부터 하나의 주제를 정해서 프롬프트를 <strong>단계적으로 개선</strong>해봅니다. ChatGPT, Claude, Gemini 등 어떤 AI 챗봇이든 사용할 수 있습니다.</p>
+<h3 id="step-1-ai">Step 1: AI 챗봇 준비하기<a class="headerlink" href="#step-1-ai" title="Permanent link">&para;</a></h3>
+<p>사용할 AI 챗봇을 열어주세요.
+- ChatGPT: https://chat.openai.com
+- Claude: https://claude.ai
+- Gemini: https://gemini.google.com</p>
+<blockquote>
+<p>어떤 것을 사용해도 괜찮습니다. 결과를 비교하고 싶다면 두 가지 이상을 동시에 열어두는 것도 좋은 방법이에요!</p>
+</blockquote>
+<h3 id="step-2-lv1">Step 2: Lv.1 프롬프트 입력하기 (모호한 질문)<a class="headerlink" href="#step-2-lv1" title="Permanent link">&para;</a></h3>
+<p>아래 프롬프트를 그대로 복사해서 AI에게 입력하세요.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>스페인어 공부법 알려줘
+</span></code></pre></div>
+<p>AI의 답변을 읽어보세요. 그리고 스스로에게 물어봅니다.</p>
+<blockquote>
+<p>🤔 "이 답변이 <strong>나</strong>에게 실제로 도움이 될까?"</p>
+</blockquote>
+<p>아마 너무 일반적이고 광범위한 답변이 나왔을 겁니다. 메모해두세요.</p>
+<h3 id="step-3-lv2">Step 3: Lv.2 프롬프트 입력하기 (맥락 추가)<a class="headerlink" href="#step-3-lv2" title="Permanent link">&para;</a></h3>
+<p>이번에는 <strong>맥락(Context)</strong>을 추가합니다.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>나는 스페인어를 처음 배우는 고등학생이야. 
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>하루에 30분만 투자할 수 있어.
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>6개월 후에 기초 회화가 가능한 수준이 목표야.
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>스페인어 공부법을 알려줘.
+</span></code></pre></div>
+<p>Lv.1과 비교했을 때 답변이 어떻게 달라졌나요? <strong>구체적인 상황</strong>을 알려주니, AI가 "고등학생 수준", "하루 30분", "6개월 목표"에 맞춘 답변을 생성할 겁니다.</p>
+<h3 id="step-4-lv3">Step 4: Lv.3 프롬프트 입력하기 (역할 + 맥락 + 형식)<a class="headerlink" href="#step-4-lv3" title="Permanent link">&para;</a></h3>
+<p>이제 3요소를 모두 넣어봅니다.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>너는 10년 경력의 스페인어 강사야.
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>나는 스페인어를 처음 배우는 고등학생이야. 
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>하루에 30분만 투자할 수 있고, 6개월 후에 여행에서 
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>기초 회화가 가능한 수준이 목표야.
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>아래 형식으로 월별 학습 계획을 작성해줘:
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>- 1~6개월을 각 단계로 나눠서
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>- 각 단계마다 [목표 / 학습 내용 / 추천 자료]를 포함
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>- 마지막에 매일 30분을 어떻게 쪼개서 쓸지 시간 배분 예시도 알려줘
+</span></code></pre></div>
+<blockquote>
+<p><strong>생각해보기 💡</strong>: Lv.2와 Lv.3 답변을 비교해보세요. <strong>역할</strong>을 부여하고 <strong>형식</strong>을 지정했더니 답변의 전문성과 구조가 어떻게 변했나요?</p>
+</blockquote>
+<h3 id="step-5">Step 5: 결과 비교 &amp; 분석하기<a class="headerlink" href="#step-5" title="Permanent link">&para;</a></h3>
+<p>세 단계의 답변을 나란히 놓고 다음을 분석해보세요.</p>
+<p><strong>분석 포인트</strong>
+- <strong>구체성</strong>: 어느 레벨에서 실행 가능한 답변이 나왔는가?
+- <strong>구조</strong>: 답변이 정리되어 읽기 쉬운가?
+- <strong>맞춤도</strong>: 나의 상황(고등학생, 30분, 6개월)에 얼마나 맞춰져 있는가?</p>
+<div class="mermaid">graph TD
+    L1["Lv.1: 모호한 질문"] --&gt;|"일반적 답변"| R1["😐 도움 적음"]
+    L2["Lv.2: 맥락 추가"] --&gt;|"상황 맞춤 답변"| R2["🙂 어느 정도 도움"]
+    L3["Lv.3: 3요소 완비"] --&gt;|"전문적·구조적 답변"| R3["😄 바로 실행 가능"]</div>
+<h3 id="step-6">Step 6: 나만의 프롬프트 만들기<a class="headerlink" href="#step-6" title="Permanent link">&para;</a></h3>
+<p>이제 연습한 것을 바탕으로, <strong>자신이 실제로 궁금한 주제</strong>에 대해 Lv.3 수준의 프롬프트를 직접 작성해보세요.</p>
+<p>아래 템플릿을 활용하세요.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>[역할] 너는 ________________ 전문가야.
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>[맥락] 나는 ________________ 학생이야.
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>       나의 현재 상황은 ________________이고,
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>       목표는 ________________야.
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>[형식] 아래 형식으로 답변해줘:
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>       - ________________
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>       - ________________
+</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>       - ________________
+</span></code></pre></div>
+<blockquote>
+<p>💪 직접 AI에 입력하고 결과를 확인해보세요!</p>
+</blockquote>
+<hr />
+<h2 id="_5">📝 전체 코드<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
+<p>이번 장에서 사용한 프롬프트를 정리합니다. 아래 프롬프트들은 복사해서 바로 AI 챗봇에 붙여넣기 할 수 있습니다.</p>
+<p><strong>기본 템플릿 — 프롬프트 3요소</strong></p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>[역할 부여]
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>너는 [분야]에 전문 지식을 가진 [직업/역할]이야.
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>[맥락 설명]  
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>나는 [나의 상황]이고, [배경 정보]를 가지고 있어.
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>나의 목표는 [달성하고 싶은 것]이야.
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>[형식 지정]
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>답변은 아래 조건을 지켜서 작성해줘:
+</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>1. [구조 조건 - 예: 번호 매기기, 단계별 등]
+</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>2. [분량 조건 - 예: 500자 이내, 항목 5개 등]  
+</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a>3. [스타일 조건 - 예: 쉬운 말로, 예시 포함 등]
+</span></code></pre></div>
+<p><strong>실전 예시 — 제2외국어 학습용 프롬프트</strong></p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>너는 대학에서 제2외국어를 가르치는 교수야.
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>나는 프랑스어를 배운 지 3개월 된 고등학생이야. 
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>기초 문법(현재시제, 관사)은 배웠고, 
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>다음 달 프랑스어 말하기 대회에 나가려고 해.
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>아래 조건으로 2주 집중 학습 계획을 만들어줘:
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>1. 일별로 나눠서 구성
+</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>2. 매일 학습할 핵심 표현 3개씩 포함
+</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>3. 대회에서 쓸 수 있는 자기소개 스크립트도 작성해줘
+</span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a>4. 발음 연습 팁도 포함해줘
+</span></code></pre></div>
+<hr />
+<h2 id="_6">⚠️ 자주 하는 실수<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
+<h3 id="1">실수 1: 한 번에 너무 많은 것을 요구하기 🤯<a class="headerlink" href="#1" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>❌ 나쁜 예:
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>&quot;영어 문법 전부 설명하고, 단어장도 만들고, 
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a> 시험 문제도 내고, 에세이도 써줘&quot;
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>✅ 좋은 예:
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>&quot;영어 현재완료 시제를 예문 5개와 함께 설명해줘&quot;
+</span></code></pre></div>
+<blockquote>
+<p>식당에서 한꺼번에 10가지를 주문하면 음식이 엉망이 되듯, AI에게도 <strong>한 번에 하나씩</strong> 요청하는 것이 좋습니다. 여러 작업이 필요하면 나눠서 대화하세요.</p>
+</blockquote>
+<h3 id="2">실수 2: 역할 없이 전문적인 답변을 기대하기 🎭<a class="headerlink" href="#2" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>❌ 나쁜 예:
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>&quot;이 코드의 보안 취약점을 분석해줘&quot;
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>✅ 좋은 예:
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>&quot;너는 5년 경력의 보안 엔지니어야. 
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a> 이 코드의 보안 취약점을 분석해줘&quot;
+</span></code></pre></div>
+<blockquote>
+<p>역할을 부여하면 AI의 <strong>어투, 전문성 수준, 관점</strong>이 달라집니다. 같은 질문이라도 "선생님"으로서의 답변과 "연구자"로서의 답변은 다릅니다.</p>
+</blockquote>
+<h3 id="3-ai">실수 3: AI 답변이 마음에 안 들면 바로 포기하기 😤<a class="headerlink" href="#3-ai" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>❌ 나쁜 행동:
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>&quot;AI는 역시 쓸모없네...&quot; (창 닫기)
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>✅ 좋은 행동:
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>&quot;방금 답변에서 &#39;학습 계획&#39; 부분을 더 구체적으로 작성해줘.
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a> 주 단위가 아니라 일 단위로 나눠줘.&quot;
+</span></code></pre></div>
+<blockquote>
+<p>AI와의 대화는 <strong>핑퐁</strong>과 같습니다. 한 번의 질문으로 완벽한 답을 얻으려 하지 말고, <strong>추가 질문과 수정 요청</strong>으로 답변을 다듬어가세요. 이것이 바로 Step에서 배운 <strong>반복적 개선</strong>입니다.</p>
+</blockquote>
+<hr />
+<h2 id="_7">✅ 스스로 점검하기<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h2>
+<h3 id="_8">기본 문제<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h3>
+<p><strong>문제 1.</strong> 다음 중 프롬프트의 정의로 가장 적절한 것은?</p>
+<ul>
+<li>(a) AI가 자동으로 생성하는 질문</li>
+<li>(b) 사용자가 AI에게 입력하는 텍스트 명령어</li>
+<li>(c) AI의 학습 데이터</li>
+<li>(d) 프로그래밍 언어의 한 종류</li>
+</ul>
+<details>
+<summary>정답 확인</summary>
+
+**(b)** 프롬프트는 사용자가 AI에게 입력하는 텍스트 명령어로, AI의 답변 방향을 결정하는 지시문입니다.
+
+</details>
+
+<hr />
+<p><strong>문제 2.</strong> 아래 프롬프트에서 역할(Role), 맥락(Context), 형식(Format)을 각각 찾아보세요.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>너는 경험 많은 요리 선생님이야. 
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>요리를 처음 해보는 대학생이 자취방에서 간단히 만들 수 있는 
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>한 끼 식사 레시피를 알려줘.
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>재료 목록, 조리 순서, 예상 시간을 포함해줘.
+</span></code></pre></div>
+<details>
+<summary>정답 확인</summary>
+
+- **역할**: "경험 많은 요리 선생님"
+- **맥락**: "요리를 처음 해보는 대학생, 자취방에서 간단히 만들 수 있는 한 끼 식사"
+- **형식**: "재료 목록, 조리 순서, 예상 시간을 포함"
+
+</details>
+
+<hr />
+<h3 id="_9">응용 문제<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h3>
+<p><strong>문제 3.</strong> 아래의 모호한 프롬프트를 3요소(역할·맥락·형식)를 모두 포함하여 개선해보세요.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>수학 알려줘
+</span></code></pre></div>
+<details>
+<summary>예시 답안</summary>
+
+<div class="language-text highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>너는 친절한 수학 과외 선생님이야.
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>나는 고등학교 1학년이고, 이차방정식을 처음 배우고 있어.
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>근의 공식을 모르는 상태에서 인수분해로 이차방정식을 푸는 방법을 
+</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>단계별로 설명해줘. 쉬운 예제 2개와 연습 문제 1개를 포함해줘.
+</span></code></pre></div>
+
+핵심은 특정 답안이 아니라, **세 요소가 모두 들어가 있고 구체적인가**입니다!
+
+</details>
+
+<hr />
+<h3 id="_10">심화 문제 (도전!)<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h3>
+<p><strong>문제 4.</strong> 자신이 배우고 있는 제2외국어(또는 관심 있는 과목)에 대해, Lv.4 수준의 프롬프트를 작성하세요. 아래 조건을 모두 충족해야 합니다.</p>
+<ul>
+<li>✅ 역할(Role) 포함</li>
+<li>✅ 구체적인 맥락(Context) 포함 — 나의 수준, 상황, 목표</li>
+<li>✅ 형식(Format) 지정 — 답변의 구조, 분량, 포함할 요소</li>
+<li>✅ 실제로 AI에 입력하고 답변 결과를 확인</li>
+</ul>
+<blockquote>
+<p>💡 이 문제에는 정해진 정답이 없습니다. 실제로 AI에게 입력했을 때 <strong>"바로 활용할 수 있는 답변"</strong>이 나온다면 성공입니다!</p>
+</blockquote>
+<hr />
+<h2 id="_11">🚀 더 해보기<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h2>
+<p><strong>도전 과제 1: 프롬프트 A/B 테스트</strong></p>
+<p>같은 주제에 대해 두 가지 버전의 프롬프트를 작성하고, 각각 AI에 입력해보세요. 어느 프롬프트가 더 좋은 결과를 내는지 비교하고 <strong>왜 그런지</strong> 분석해보세요.</p>
+<p><strong>도전 과제 2: 친구와 프롬프트 배틀</strong></p>
+<p>친구와 같은 주제를 정하고, 각자 최선의 프롬프트를 작성합니다. AI 답변의 질을 비교하며 누구의 프롬프트가 더 효과적이었는지 토론해보세요. 승패보다 중요한 것은 <strong>"왜 그 프롬프트가 더 효과적이었는가"</strong>를 분석하는 과정입니다.</p>
+<p><strong>도전 과제 3: 프롬프트 실패 일기</strong></p>
+<p>일주일간 AI를 사용하면</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  맨위로
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "navigation.indexes", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "toc.follow"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\ud074\ub9bd\ubcf4\ub4dc\uc5d0 \ubcf5\uc0ac\ub428", "clipboard.copy": "\ud074\ub9bd\ubcf4\ub4dc\ub85c \ubcf5\uc0ac", "search.result.more.one": "\uc774 \ubb38\uc11c\uc5d0\uc11c 1\uac1c\uc758 \uac80\uc0c9 \uacb0\uacfc \ub354 \ubcf4\uae30", "search.result.more.other": "\uc774 \ubb38\uc11c\uc5d0\uc11c #\uac1c\uc758 \uac80\uc0c9 \uacb0\uacfc \ub354 \ubcf4\uae30", "search.result.none": "\uac80\uc0c9\uc5b4\uc640 \uc77c\uce58\ud558\ub294 \ubb38\uc11c\uac00 \uc5c6\uc2b5\ub2c8\ub2e4", "search.result.one": "1\uac1c\uc758 \uc77c\uce58\ud558\ub294 \ubb38\uc11c", "search.result.other": "#\uac1c\uc758 \uc77c\uce58\ud558\ub294 \ubb38\uc11c", "search.result.placeholder": "\uac80\uc0c9\uc5b4\ub97c \uc785\ub825\ud558\uc138\uc694", "search.result.term.missing": "\ud3ec\ud568\ub418\uc9c0 \uc54a\uc740 \uac80\uc0c9\uc5b4", "select.version": "\ubc84\uc804 \uc120\ud0dd"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
+      
+        <script src="../javascripts/title-link.js"></script>
+      
+    
+  </body>
+</html>

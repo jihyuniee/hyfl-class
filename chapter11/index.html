@@ -1,0 +1,2310 @@
+
+<!doctype html>
+<html lang="ko" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="AI 에이전트를 활용해 전문가처럼 문제를 해결하는 힘을 기르는 실습 중심 교육자료입니다. 이론은 최소화하고, 직접 써보며 배우는 경험을 통해 AI 리터러시와 컴퓨팅 사고력을 동시에 키웁니다.">
+      
+      
+        <meta name="author" content="Created with EduFlow">
+      
+      
+      
+        <link rel="prev" href="../chapter10/">
+      
+      
+        <link rel="next" href="../chapter12/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.4">
+    
+    
+      
+        <title>전반부 총정리 – 나의 AI 활용 포트폴리오 - 인공지능 원리탐구</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Sans KR";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/custom.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#chapter-11-ai" class="md-skip">
+          콘텐츠로 이동
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="상단/헤더">
+    <a href=".." title="인공지능 원리탐구" class="md-header__button md-logo" aria-label="인공지능 원리탐구" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            인공지능 원리탐구
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              전반부 총정리 – 나의 AI 활용 포트폴리오
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="다크 모드로 전환"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="다크 모드로 전환" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="라이트 모드로 전환"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="라이트 모드로 전환" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="검색" placeholder="검색" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="검색">
+        
+        <button type="reset" class="md-search__icon md-icon" title="지우기" aria-label="지우기" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            검색 초기화
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="탭" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../chapter01/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Part 1 - [1권] Part 1. AI와의 첫 만남 – 인공지능, 넌 누구니?
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../chapter05/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Part 2 - [1권] Part 2. AI와 대화하는 기술 – 프롬프트 엔지니어링
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../chapter09/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Part 3 - [1권] Part 3. AI 시대의 시민력 – 윤리와 비판적 사고
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../chapter12/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Part 4 - [2권] Part 4. 문제 발견과 알고리즘 설계 – 프로젝트의 뼈대 세우기
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../chapter15/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Part 5 - [2권] Part 5. 웹앱 만들기 – AI와 함께 구현하기
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../chapter18/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Part 6 - [2권] Part 6. 발표와 성찰 – 우리의 이야기를 세상에
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="네비게이션" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="인공지능 원리탐구" class="md-nav__button md-logo" aria-label="인공지능 원리탐구" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    인공지능 원리탐구
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part 1 - [1권] Part 1. AI와의 첫 만남 – 인공지능, 넌 누구니?
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part 1 - [1권] Part 1. AI와의 첫 만남 – 인공지능, 넌 누구니?
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI는 마법이 아니다 – 인공지능의 정체
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI는 어떻게 배울까? – 머신러닝의 원리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GPT의 비밀 – 언어를 다루는 AI의 원리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI도 틀린다 – 할루시네이션과 사실 판별
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part 2 - [1권] Part 2. AI와 대화하는 기술 – 프롬프트 엔지니어링
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part 2 - [1권] Part 2. AI와 대화하는 기술 – 프롬프트 엔지니어링
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter05/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    좋은 질문이 좋은 답을 만든다 – 프롬프트의 기본
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter06/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    프롬프트 실전 테크닉 – 단계별 지시와 예시 활용
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter07/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI와 진짜 협업하기 – 에이전트 활용 입문
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter08/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI에이전트 실전 활용 – 나만의 에이전트 워크플로 만들기
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part 3 - [1권] Part 3. AI 시대의 시민력 – 윤리와 비판적 사고
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part 3 - [1권] Part 3. AI 시대의 시민력 – 윤리와 비판적 사고
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter09/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI가 편견을 가진다고? – 데이터 편향과 공정성
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter10/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI 시대, 나의 역할은? – AI 윤리와 책임
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    전반부 총정리 – 나의 AI 활용 포트폴리오
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    전반부 총정리 – 나의 AI 활용 포트폴리오
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="목차">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      목차
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 이 장에서 배우는 것
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        💡 왜 이걸 배우나요?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📚 핵심 개념
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📚 핵심 개념">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 1: 전반부 지식 지도 – 큰 그림 그리기
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 2: 핵심 키워드 연결 – 개념 사이의 다리 놓기
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 3: 포트폴리오 – 배움의 증거를 모으기
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 4: 문제 발견 감각 – 후반부의 씨앗 심기
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔨 따라하기: 나의 AI 활용 포트폴리오 만들기
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔨 따라하기: 나의 AI 활용 포트폴리오 만들기">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: 전반부 핵심 키워드 10개 뽑기
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: 마인드맵으로 연결하기
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: 파트별 성찰 작성하기
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4: 나의 AI 활용 원칙 정하기
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-30" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5: 학교생활 불편함 30가지 브레인스토밍
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-6-top-3-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 6: 불편함 Top 3 선정 &amp; AI에게 물어보기
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📝 전체 코드: 포트폴리오 자동 템플릿 생성기
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ⚠️ 자주 하는 실수
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ✅ 스스로 점검하기
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="✅ 스스로 점검하기">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        기본 문제
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part 4 - [2권] Part 4. 문제 발견과 알고리즘 설계 – 프로젝트의 뼈대 세우기
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part 4 - [2권] Part 4. 문제 발견과 알고리즘 설계 – 프로젝트의 뼈대 세우기
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter12/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    불편함을 문제로 바꾸는 힘 – 문제 정의와 사용자 분석
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter13/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    해결책을 그려보자 – 알고리즘과 순서도
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter14/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    화면을 설계하자 – 와이어프레임과 UI 기획
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part 5 - [2권] Part 5. 웹앱 만들기 – AI와 함께 구현하기
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part 5 - [2권] Part 5. 웹앱 만들기 – AI와 함께 구현하기
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter15/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    코딩을 몰라도 괜찮아 – AI 코딩 도구 시작하기
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter16/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    우리 팀 웹앱 만들기 ① – 핵심 기능 구현
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter17/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    우리 팀 웹앱 만들기 ② – 다듬기와 사용자 테스트
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part 6 - [2권] Part 6. 발표와 성찰 – 우리의 이야기를 세상에
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part 6 - [2권] Part 6. 발표와 성찰 – 우리의 이야기를 세상에
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter18/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    설득력 있는 발표 만들기 – AI와 함께하는 프레젠테이션
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter19/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    프로젝트 발표회 – 우리가 만든 솔루션
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter20/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI 시대, 나의 다음 챕터 – 성찰과 미래 설계
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="목차">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      목차
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 이 장에서 배우는 것
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        💡 왜 이걸 배우나요?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📚 핵심 개념
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📚 핵심 개념">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 1: 전반부 지식 지도 – 큰 그림 그리기
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 2: 핵심 키워드 연결 – 개념 사이의 다리 놓기
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 3: 포트폴리오 – 배움의 증거를 모으기
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 4: 문제 발견 감각 – 후반부의 씨앗 심기
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔨 따라하기: 나의 AI 활용 포트폴리오 만들기
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔨 따라하기: 나의 AI 활용 포트폴리오 만들기">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: 전반부 핵심 키워드 10개 뽑기
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: 마인드맵으로 연결하기
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: 파트별 성찰 작성하기
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4: 나의 AI 활용 원칙 정하기
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-30" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5: 학교생활 불편함 30가지 브레인스토밍
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-6-top-3-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 6: 불편함 Top 3 선정 &amp; AI에게 물어보기
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📝 전체 코드: 포트폴리오 자동 템플릿 생성기
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ⚠️ 자주 하는 실수
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ✅ 스스로 점검하기
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="✅ 스스로 점검하기">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        기본 문제
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="chapter-11-ai">Chapter 11. 전반부 총정리 – 나의 AI 활용 포트폴리오<a class="headerlink" href="#chapter-11-ai" title="Permanent link">&para;</a></h1>
+<hr />
+<h2 id="_1">🎯 이 장에서 배우는 것<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> 1~10장에서 배운 핵심 개념(머신러닝, 프롬프트, 에이전트, 윤리)을 통합적으로 정리할 수 있다</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> 각 파트의 핵심 키워드를 마인드맵으로 연결하여 전체 흐름을 파악할 수 있다</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> 자신만의 AI 활용 원칙과 전략을 포트폴리오 형태로 구성할 수 있다</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> 후반부 프로젝트를 위한 문제 발견 감각을 워밍업할 수 있다</li>
+</ul>
+<hr />
+<h2 id="_2">💡 왜 이걸 배우나요?<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p><strong>생각해보기:</strong> 지금까지 AI와 함께한 경험 중 가장 인상 깊었던 순간은 언제인가요? 🤔</p>
+</blockquote>
+<p>여러분은 지난 10개 장에 걸쳐 정말 많은 것을 배웠습니다. AI가 무엇인지, 어떻게 대화하는지, 어떤 윤리적 문제가 있는지까지. 하지만 한 가지 질문을 던져볼게요.</p>
+<p><em>"배운 것들을 하나의 그림으로 그릴 수 있나요?"</em></p>
+<p>퍼즐 조각을 떠올려 보세요. 🧩 각 장에서 배운 내용은 하나하나의 퍼즐 조각입니다. 개별 조각만 봐서는 전체 그림이 보이지 않죠. 이 장에서는 흩어진 조각들을 하나로 맞추는 시간을 갖습니다.</p>
+<p>또한, 지금까지의 학습 결과를 <strong>포트폴리오</strong>로 정리하면 두 가지 좋은 일이 생깁니다.</p>
+<ul>
+<li><strong>나 자신을 위해</strong>: "나는 AI를 이 정도 이해하고 활용할 수 있어"라는 자신감</li>
+<li><strong>앞으로를 위해</strong>: 후반부(12~20장)에서 실전 프로젝트를 할 때 든든한 기반</li>
+</ul>
+<p>공부한 것을 정리하지 않으면, 모래 위에 성을 쌓는 것과 같습니다. 오늘 그 성에 튼튼한 기초를 놓아봅시다! 🏗️</p>
+<hr />
+<h2 id="_3">📚 핵심 개념<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<h3 id="1">개념 1: 전반부 지식 지도 – 큰 그림 그리기<a class="headerlink" href="#1" title="Permanent link">&para;</a></h3>
+<p><strong>1. 비유로 시작</strong></p>
+<p>여행을 다녀온 후 사진을 정리하는 것을 떠올려 보세요. 📸 수백 장의 사진을 날짜별, 장소별로 분류하고 앨범을 만들면, 여행의 전체 흐름이 한눈에 보이죠. 지금 우리가 하는 것이 바로 이것입니다. 10개 장의 "학습 사진"을 분류하고 앨범으로 만드는 작업입니다.</p>
+<p><strong>2. 정확한 정의</strong></p>
+<p><strong>지식 지도(Knowledge Map)</strong> 란 학습한 개념들 사이의 관계를 시각적으로 표현한 것입니다. 어떤 개념이 다른 개념의 토대가 되는지, 서로 어떻게 연결되는지를 보여줍니다.</p>
+<p><strong>3. 예시로 확인 – 전반부 3개 파트 정리</strong></p>
+<div class="mermaid">mindmap
+  root((AI 리터러시&lt;br/&gt;전반부))
+    Part 1&lt;br/&gt;AI 이해하기
+      1장: AI란 무엇인가
+      2장: 머신러닝 기초
+      3장: 데이터의 힘
+      4장: 신경망과 딥러닝
+    Part 2&lt;br/&gt;AI 활용하기
+      5장: 프롬프트 엔지니어링
+      6장: 텍스트 생성 AI
+      7장: 이미지 생성 AI
+      8장: AI 에이전트
+    Part 3&lt;br/&gt;AI 시민력
+      9장: AI 편향과 공정성
+      10장: 저작권과 책임
+      11장: 전반부 총정리</div>
+<blockquote>
+<p><strong>정리하기:</strong> 전반부는 크게 세 줄기입니다. <strong>이해</strong>(AI의 원리) → <strong>활용</strong>(AI를 쓰는 기술) → <strong>시민력</strong>(AI를 바르게 쓰는 태도). 이 세 줄기가 균형을 이루어야 진정한 AI 리터러시가 완성됩니다.</p>
+</blockquote>
+<hr />
+<h3 id="2">개념 2: 핵심 키워드 연결 – 개념 사이의 다리 놓기<a class="headerlink" href="#2" title="Permanent link">&para;</a></h3>
+<p><strong>1. 비유로 시작</strong></p>
+<p>도시의 지하철 노선도를 생각해 보세요. 🚇 각 역(개념)은 독립적이지만, 노선(관계)으로 연결되어 있어야 이동할 수 있습니다. 개념을 외우는 것은 역 이름을 아는 것이고, 개념을 연결하는 것은 노선도를 이해하는 것입니다.</p>
+<p><strong>2. 정확한 정의</strong></p>
+<p><strong>개념 연결(Concept Linking)</strong> 이란 서로 다른 개념 사이에 "왜", "어떻게"라는 관계를 부여하는 사고 과정입니다. 단순 암기를 넘어 깊은 이해로 가는 열쇠입니다.</p>
+<p><strong>3. 예시로 확인</strong></p>
+<p>아래 다이어그램에서 개념들이 어떻게 연결되는지 살펴보세요.</p>
+<div class="mermaid">flowchart LR
+    A[데이터] --&gt;|학습 재료| B[머신러닝]
+    B --&gt;|발전 형태| C[딥러닝/신경망]
+    C --&gt;|구동 원리| D[생성 AI]
+    D --&gt;|사용 기술| E[프롬프트 엔지니어링]
+    E --&gt;|자동화 확장| F[AI 에이전트]
+
+    A --&gt;|편향 포함 가능| G[AI 편향]
+    D --&gt;|결과물 관련| H[저작권 문제]
+    G &amp; H --&gt;|해결 필요| I[AI 윤리]
+
+    style I fill:#ff9999,stroke:#cc0000,color:#000
+    style E fill:#99ccff,stroke:#0066cc,color:#000</div>
+<blockquote>
+<p><strong>알아보기:</strong> 이 그림에서 주목할 점은 <strong>데이터</strong>가 출발점이라는 것입니다. 데이터의 질이 머신러닝의 성능을 결정하고, 데이터에 포함된 편향이 AI 윤리 문제로 이어집니다. 모든 것이 연결되어 있죠!</p>
+</blockquote>
+<hr />
+<h3 id="3">개념 3: 포트폴리오 – 배움의 증거를 모으기<a class="headerlink" href="#3" title="Permanent link">&para;</a></h3>
+<p><strong>1. 비유로 시작</strong></p>
+<p>화가가 자신의 그림을 모아 작품집을 만드는 것처럼, 학습자도 자신의 학습 결과를 모아 <strong>포트폴리오</strong>를 만듭니다. 🎨 "이건 내가 이렇게 생각하고, 이렇게 실습했어"라는 것을 보여주는 나만의 작품집입니다.</p>
+<p><strong>2. 정확한 정의</strong></p>
+<p><strong>학습 포트폴리오(Learning Portfolio)</strong> 란 학습 과정에서 만든 산출물, 성찰(되돌아보기), 핵심 정리를 체계적으로 모은 문서입니다. 단순한 노트 필기와 다른 점은 <strong>"왜 이것이 중요한지"에 대한 나의 생각</strong>이 담겨 있다는 것입니다.</p>
+<p><strong>3. 예시로 확인 – 포트폴리오에 들어갈 내용</strong></p>
+<ul>
+<li><strong>파트별 핵심 요약</strong>: 각 파트에서 가장 중요한 개념 3가지</li>
+<li><strong>실습 결과물 모음</strong>: 프롬프트 작성 결과, 코드 실행 화면 등</li>
+<li><strong>성찰 기록</strong>: "이 개념을 배우면서 생각이 어떻게 바뀌었나?"</li>
+<li><strong>나의 AI 활용 원칙</strong>: 앞으로 AI를 쓸 때 지킬 나만의 규칙</li>
+</ul>
+<hr />
+<h3 id="4">개념 4: 문제 발견 감각 – 후반부의 씨앗 심기<a class="headerlink" href="#4" title="Permanent link">&para;</a></h3>
+<p><strong>1. 비유로 시작</strong></p>
+<p>농부가 봄에 씨앗을 뿌려야 가을에 수확할 수 있듯이, 좋은 프로젝트는 좋은 <strong>문제 발견</strong>에서 시작합니다. 🌱 "이게 불편한데?"라고 느끼는 순간이 바로 씨앗입니다.</p>
+<p><strong>2. 정확한 정의</strong></p>
+<p><strong>문제 발견(Problem Finding)</strong> 이란 일상에서 개선이 필요한 상황을 인식하고, 이를 해결 가능한 형태로 구체화하는 능력입니다. 문제 "해결"보다 문제 "발견"이 더 어렵고, 더 창의적인 활동입니다.</p>
+<p><strong>3. 예시로 확인</strong></p>
+<div class="mermaid">flowchart TD
+    A[일상의 불편함 발견] --&gt; B[구체적으로 정의하기]
+    B --&gt; C[AI로 해결 가능한지 판단]
+    C --&gt;|가능| D[해결 아이디어 구상]
+    C --&gt;|어려움| E[다른 접근 탐색]
+    D --&gt; F[후반부 프로젝트 주제!]
+    E --&gt; F
+
+    style F fill:#99ff99,stroke:#009900,color:#000</div>
+<blockquote>
+<p><strong>생각해보기:</strong> "급식 메뉴가 뭔지 매번 확인하기 귀찮다" → 이것도 훌륭한 문제 발견입니다! AI 챗봇에게 매일 급식 정보를 알려달라고 할 수 있을까요?</p>
+</blockquote>
+<hr />
+<h2 id="ai">🔨 따라하기: 나의 AI 활용 포트폴리오 만들기<a class="headerlink" href="#ai" title="Permanent link">&para;</a></h2>
+<p>이제 실제로 포트폴리오를 만들어 봅시다! Google 문서(Docs)나 노션(Notion), 또는 어떤 문서 도구든 좋습니다. 핵심은 <strong>체계적으로 정리하는 것</strong>입니다.</p>
+<h3 id="step-1-10">Step 1: 전반부 핵심 키워드 10개 뽑기<a class="headerlink" href="#step-1-10" title="Permanent link">&para;</a></h3>
+<p>각 장에서 가장 중요했던 키워드를 하나씩 뽑아보세요.</p>
+<blockquote>
+<p><strong>💡 팁</strong>: 기억이 나지 않는 장이 있다면, 그것 자체가 중요한 신호입니다. 해당 장을 다시 가볍게 훑어보세요!</p>
+</blockquote>
+<p><strong>실습</strong>: 아래 형식을 문서에 작성하세요.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>## 나의 전반부 핵심 키워드 10
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>1장 - AI란 무엇인가: [키워드]  → 한 줄 설명
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>2장 - 머신러닝 기초: [키워드]  → 한 줄 설명
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>3장 - 데이터의 힘: [키워드]  → 한 줄 설명
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>4장 - 신경망과 딥러닝: [키워드]  → 한 줄 설명
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>5장 - 프롬프트 엔지니어링: [키워드]  → 한 줄 설명
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>6장 - 텍스트 생성 AI: [키워드]  → 한 줄 설명
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>7장 - 이미지 생성 AI: [키워드]  → 한 줄 설명
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>8장 - AI 에이전트: [키워드]  → 한 줄 설명
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>9장 - AI 편향과 공정성: [키워드]  → 한 줄 설명
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>10장 - 저작권과 책임: [키워드]  → 한 줄 설명
+</span></code></pre></div>
+<p><strong>예시 (2장)</strong>:
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>2장 - 머신러닝 기초: 학습 데이터 → 컴퓨터가 데이터에서 패턴을 스스로 찾아내는 것이 머신러닝의 핵심
+</span></code></pre></div></p>
+<hr />
+<h3 id="step-2">Step 2: 마인드맵으로 연결하기<a class="headerlink" href="#step-2" title="Permanent link">&para;</a></h3>
+<p>Step 1에서 뽑은 키워드 10개를 마인드맵으로 연결합니다. 종이에 그려도 좋고, 디지털 도구를 사용해도 좋습니다.</p>
+<p><strong>연결 방법</strong>:</p>
+<ul>
+<li><strong>원인-결과 관계</strong>: "데이터 편향" → "AI 편향"</li>
+<li><strong>도구-활용 관계</strong>: "프롬프트 엔지니어링" → "텍스트 생성 AI 활용"</li>
+<li><strong>기반-발전 관계</strong>: "머신러닝" → "딥러닝" → "생성 AI"</li>
+</ul>
+<blockquote>
+<p><strong>알아보기:</strong> 무료 마인드맵 도구로는 <strong>Miro</strong>, <strong>MindMeister</strong>, <strong>Coggle</strong> 등이 있습니다. 가장 간단한 방법은 종이 한 장에 중심부터 바깥으로 뻗어나가며 그리는 것입니다! ✏️</p>
+</blockquote>
+<hr />
+<h3 id="step-3">Step 3: 파트별 성찰 작성하기<a class="headerlink" href="#step-3" title="Permanent link">&para;</a></h3>
+<p>각 파트에 대해 아래 질문에 답해 보세요. 이것이 포트폴리오의 핵심입니다.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>## 파트별 성찰
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>### Part 1: AI 이해하기
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>- 가장 놀라웠던 개념: 
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>- 아직 헷갈리는 부분: 
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>- 일상에서 발견한 연결점: 
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>### Part 2: AI 활용하기
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>- 가장 재미있었던 실습: 
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>- 내가 잘한 점: 
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>- 더 연습하고 싶은 기술: 
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>### Part 3: AI 시민력
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>- 생각이 가장 많이 바뀐 주제: 
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>- 친구에게 꼭 알려주고 싶은 것: 
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>- 나만의 AI 사용 원칙 한 문장: 
+</span></code></pre></div>
+<hr />
+<h3 id="step-4-ai">Step 4: 나의 AI 활용 원칙 정하기<a class="headerlink" href="#step-4-ai" title="Permanent link">&para;</a></h3>
+<p>지금까지의 학습을 바탕으로, 앞으로 AI를 사용할 때 지킬 <strong>나만의 원칙 3~5가지</strong>를 정해 봅시다.</p>
+<p><strong>원칙 작성 가이드:</strong></p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>## 나의 AI 활용 원칙
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>원칙 1: [제목]
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>  → 구체적 행동: 
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>  → 이 원칙을 정한 이유: 
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>원칙 2: [제목]
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>  → 구체적 행동: 
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>  → 이 원칙을 정한 이유: 
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>원칙 3: [제목]
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>  → 구체적 행동: 
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>  → 이 원칙을 정한 이유: 
+</span></code></pre></div>
+<p><strong>예시:</strong></p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>원칙 1: AI의 답변을 무조건 믿지 않는다
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>  → 구체적 행동: AI가 알려준 정보는 반드시 1개 이상의 다른 출처로 확인한다
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>  → 이 원칙을 정한 이유: 6장에서 AI가 그럴듯하지만 틀린 정보를 
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    생성할 수 있다는 것(환각 현상)을 배웠기 때문
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>원칙 2: 프롬프트에 시간을 투자한다
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>  → 구체적 행동: 처음 결과가 마음에 안 들면, 최소 3번은 
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>    프롬프트를 수정해본다
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>  → 이 원칙을 정한 이유: 5장에서 좋은 프롬프트가 좋은 결과를 
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>    만든다는 것을 직접 경험했기 때문
+</span></code></pre></div>
+<hr />
+<h3 id="step-5-30">Step 5: 학교생활 불편함 30가지 브레인스토밍<a class="headerlink" href="#step-5-30" title="Permanent link">&para;</a></h3>
+<p>후반부 프로젝트의 씨앗을 심는 시간입니다! 🌱</p>
+<p><strong>규칙:</strong>
+- <strong>5분 타이머</strong>를 맞추고, 학교생활에서 불편한 점을 최대한 많이 적습니다
+- 판단하지 말고 일단 적습니다 (어이없는 것도 OK!)
+- 목표는 30개이지만, 20개만 적어도 훌륭합니다</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>## 학교생활 불편함 브레인스토밍
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>1. 급식 메뉴를 매번 확인하기 귀찮다
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>2. 시험 범위 정리가 어렵다
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>3. 조별 과제 역할 나누기가 갈등이다
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>4. 분실물 찾기가 어렵다
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>5. 동아리 선택할 때 정보가 부족하다
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>...
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>(계속 적어보세요!)
+</span></code></pre></div>
+<hr />
+<h3 id="step-6-top-3-ai">Step 6: 불편함 Top 3 선정 &amp; AI에게 물어보기<a class="headerlink" href="#step-6-top-3-ai" title="Permanent link">&para;</a></h3>
+<p>30가지 중에서 가장 해결하고 싶은 것 3개를 골라, AI에게 해결 아이디어를 물어봅시다.</p>
+<p><strong>프롬프트 예시:</strong></p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>나는 고등학생이야. 학교생활에서 [불편한 점]이 문제야.
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>이 문제를 AI 기술을 활용해서 해결할 수 있는 아이디어를 
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>3가지 제안해줘. 각 아이디어에 대해 다음을 알려줘:
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>- 어떤 AI 기술이 필요한지
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>- 학생 수준에서 만들 수 있는지
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>- 예상되는 어려움은 무엇인지
+</span></code></pre></div>
+<blockquote>
+<p><strong>💡 팁</strong>: AI의 답변을 그대로 쓰는 것이 아니라, "이 중에서 내가 정말 해볼 수 있는 것"을 골라내는 것이 핵심입니다. 이것이 바로 <strong>비판적 사고</strong>입니다!</p>
+</blockquote>
+<hr />
+<h2 id="_4">📝 전체 코드: 포트폴리오 자동 템플릿 생성기<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<p>아래 Python 코드를 실행하면, 포트폴리오 템플릿이 자동으로 생성됩니다. 복사해서 바로 실행해 보세요!</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># 나의 AI 활용 포트폴리오 템플릿 생성기</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">create_portfolio_template</span><span class="p">(</span><span class="n">student_name</span><span class="p">):</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;포트폴리오 템플릿을 텍스트로 생성합니다.&quot;&quot;&quot;</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>    <span class="n">chapters</span> <span class="o">=</span> <span class="p">[</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>        <span class="p">(</span><span class="s2">&quot;1장&quot;</span><span class="p">,</span> <span class="s2">&quot;AI란 무엇인가&quot;</span><span class="p">),</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>        <span class="p">(</span><span class="s2">&quot;2장&quot;</span><span class="p">,</span> <span class="s2">&quot;머신러닝 기초&quot;</span><span class="p">),</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>        <span class="p">(</span><span class="s2">&quot;3장&quot;</span><span class="p">,</span> <span class="s2">&quot;데이터의 힘&quot;</span><span class="p">),</span>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>        <span class="p">(</span><span class="s2">&quot;4장&quot;</span><span class="p">,</span> <span class="s2">&quot;신경망과 딥러닝&quot;</span><span class="p">),</span>
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>        <span class="p">(</span><span class="s2">&quot;5장&quot;</span><span class="p">,</span> <span class="s2">&quot;프롬프트 엔지니어링&quot;</span><span class="p">),</span>
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>        <span class="p">(</span><span class="s2">&quot;6장&quot;</span><span class="p">,</span> <span class="s2">&quot;텍스트 생성 AI&quot;</span><span class="p">),</span>
+</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>        <span class="p">(</span><span class="s2">&quot;7장&quot;</span><span class="p">,</span> <span class="s2">&quot;이미지 생성 AI&quot;</span><span class="p">),</span>
+</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>        <span class="p">(</span><span class="s2">&quot;8장&quot;</span><span class="p">,</span> <span class="s2">&quot;AI 에이전트&quot;</span><span class="p">),</span>
+</span><span id="__span-7-14"><a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a>        <span class="p">(</span><span class="s2">&quot;9장&quot;</span><span class="p">,</span> <span class="s2">&quot;AI 편향과 공정성&quot;</span><span class="p">),</span>
+</span><span id="__span-7-15"><a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a>        <span class="p">(</span><span class="s2">&quot;10장&quot;</span><span class="p">,</span> <span class="s2">&quot;저작권과 책임&quot;</span><span class="p">),</span>
+</span><span id="__span-7-16"><a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a>    <span class="p">]</span>
+</span><span id="__span-7-17"><a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a>
+</span><span id="__span-7-18"><a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a>    <span class="n">parts</span> <span class="o">=</span> <span class="p">[</span>
+</span><span id="__span-7-19"><a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a>        <span class="p">(</span><span class="s2">&quot;Part 1: AI 이해하기&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;가장 놀라웠던 개념&quot;</span><span class="p">,</span> <span class="s2">&quot;아직 헷갈리는 부분&quot;</span><span class="p">,</span> <span class="s2">&quot;일상에서 발견한 연결점&quot;</span><span class="p">]),</span>
+</span><span id="__span-7-20"><a id="__codelineno-7-20" name="__codelineno-7-20" href="#__codelineno-7-20"></a>        <span class="p">(</span><span class="s2">&quot;Part 2: AI 활용하기&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;가장 재미있었던 실습&quot;</span><span class="p">,</span> <span class="s2">&quot;내가 잘한 점&quot;</span><span class="p">,</span> <span class="s2">&quot;더 연습하고 싶은 기술&quot;</span><span class="p">]),</span>
+</span><span id="__span-7-21"><a id="__codelineno-7-21" name="__codelineno-7-21" href="#__codelineno-7-21"></a>        <span class="p">(</span><span class="s2">&quot;Part 3: AI 시민력&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;생각이 가장 많이 바뀐 주제&quot;</span><span class="p">,</span> <span class="s2">&quot;친구에게 알려주고 싶은 것&quot;</span><span class="p">,</span> <span class="s2">&quot;나만의 AI 사용 원칙&quot;</span><span class="p">]),</span>
+</span><span id="__span-7-22"><a id="__codelineno-7-22" name="__codelineno-7-22" href="#__codelineno-7-22"></a>    <span class="p">]</span>
+</span><span id="__span-7-23"><a id="__codelineno-7-23" name="__codelineno-7-23" href="#__codelineno-7-23"></a>
+</span><span id="__span-7-24"><a id="__codelineno-7-24" name="__codelineno-7-24" href="#__codelineno-7-24"></a>    <span class="c1"># 포트폴리오 생성</span>
+</span><span id="__span-7-25"><a id="__codelineno-7-25" name="__codelineno-7-25" href="#__codelineno-7-25"></a>    <span class="n">portfolio</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="__span-7-26"><a id="__codelineno-7-26" name="__codelineno-7-26" href="#__codelineno-7-26"></a>    <span class="n">portfolio</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;=&#39;</span><span class="o">*</span><span class="mi">50</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="__span-7-27"><a id="__codelineno-7-27" name="__codelineno-7-27" href="#__codelineno-7-27"></a>    <span class="n">portfolio</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">student_name</span><span class="si">}</span><span class="s2">의 AI 활용 포트폴리오&quot;</span><span class="p">)</span>
+</span><span id="__span-7-28"><a id="__codelineno-7-28" name="__codelineno-7-28" href="#__codelineno-7-28"></a>    <span class="n">portfolio</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;=&#39;</span><span class="o">*</span><span class="mi">50</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="__span-7-29"><a id="__codelineno-7-29" name="__codelineno-7-29" href="#__codelineno-7-29"></a>
+</span><span id="__span-7-30"><a id="__codelineno-7-30" name="__codelineno-7-30" href="#__codelineno-7-30"></a>    <span class="c1"># 섹션 1: 핵심 키워드</span>
+</span><span id="__span-7-31"><a id="__codelineno-7-31" name="__codelineno-7-31" href="#__codelineno-7-31"></a>    <span class="n">portfolio</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;[섹션 1] 전반부 핵심 키워드 10</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="__span-7-32"><a id="__codelineno-7-32" name="__codelineno-7-32" href="#__codelineno-7-32"></a>    <span class="k">for</span> <span class="n">ch_num</span><span class="p">,</span> <span class="n">ch_title</span> <span class="ow">in</span> <span class="n">chapters</span><span class="p">:</span>
+</span><span id="__span-7-33"><a id="__codelineno-7-33" name="__codelineno-7-33" href="#__codelineno-7-33"></a>        <span class="n">portfolio</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">ch_num</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="n">ch_title</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="__span-7-34"><a id="__codelineno-7-34" name="__codelineno-7-34" href="#__codelineno-7-34"></a>        <span class="n">portfolio</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    키워드: (여기에 작성)&quot;</span><span class="p">)</span>
+</span><span id="__span-7-35"><a id="__codelineno-7-35" name="__codelineno-7-35" href="#__codelineno-7-35"></a>        <span class="n">portfolio</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    한 줄 설명: (여기에 작성)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="__span-7-36"><a id="__codelineno-7-36" name="__codelineno-7-36" href="#__codelineno-7-36"></a>
+</span><span id="__span-7-37"><a id="__codelineno-7-37" name="__codelineno-7-37" href="#__codelineno-7-37"></a>    <span class="c1"># 섹션 2: 파트별 성찰</span>
+</span><span id="__span-7-38"><a id="__codelineno-7-38" name="__codelineno-7-38" href="#__codelineno-7-38"></a>    <span class="n">portfolio</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[섹션 2] 파트별 성찰</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="__span-7-39"><a id="__codelineno-7-39" name="__codelineno-7-39" href="#__codelineno-7-39"></a>    <span class="k">for</span> <span class="n">part_name</span><span class="p">,</span> <span class="n">questions</span> <span class="ow">in</span> <span class="n">parts</span><span class="p">:</span>
+</span><span id="__span-7-40"><a id="__codelineno-7-40" name="__codelineno-7-40" href="#__codelineno-7-40"></a>        <span class="n">portfolio</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  --- </span><span class="si">{</span><span class="n">part_name</span><span class="si">}</span><span class="s2"> ---&quot;</span><span class="p">)</span>
+</span><span id="__span-7-41"><a id="__codelineno-7-41" name="__codelineno-7-41" href="#__codelineno-7-41"></a>        <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">questions</span><span class="p">:</span>
+</span><span id="__span-7-42"><a id="__codelineno-7-42" name="__codelineno-7-42" href="#__codelineno-7-42"></a>            <span class="n">portfolio</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    </span><span class="si">{</span><span class="n">q</span><span class="si">}</span><span class="s2">: (여기에 작성)&quot;</span><span class="p">)</span>
+</span><span id="__span-7-43"><a id="__codelineno-7-43" name="__codelineno-7-43" href="#__codelineno-7-43"></a>        <span class="n">portfolio</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+</span><span id="__span-7-44"><a id="__codelineno-7-44" name="__codelineno-7-44" href="#__codelineno-7-44"></a>
+</span><span id="__span-7-45"><a id="__codelineno-7-45" name="__codelineno-7-45" href="#__codelineno-7-45"></a>    <span class="c1"># 섹션 3: AI 활용 원칙</span>
+</span><span id="__span-7-46"><a id="__codelineno-7-46" name="__codelineno-7-46" href="#__codelineno-7-46"></a>    <span class="n">portfolio</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;[섹션 3] 나의 AI 활용 원칙</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="__span-7-47"><a id="__codelineno-7-47" name="__codelineno-7-47" href="#__codelineno-7-47"></a>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">):</span>
+</span><span id="__span-7-48"><a id="__codelineno-7-48" name="__codelineno-7-48" href="#__codelineno-7-48"></a>        <span class="n">portfolio</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  원칙 </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">: (여기에 작성)&quot;</span><span class="p">)</span>
+</span><span id="__span-7-49"><a id="__codelineno-7-49" name="__codelineno-7-49" href="#__codelineno-7-49"></a>        <span class="n">portfolio</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    구체적 행동: (여기에 작성)&quot;</span><span class="p">)</span>
+</span><span id="__span-7-50"><a id="__codelineno-7-50" name="__codelineno-7-50" href="#__codelineno-7-50"></a>        <span class="n">portfolio</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    이유: (여기에 작성)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="__span-7-51"><a id="__codelineno-7-51" name="__codelineno-7-51" href="#__codelineno-7-51"></a>
+</span><span id="__span-7-52"><a id="__codelineno-7-52" name="__codelineno-7-52" href="#__codelineno-7-52"></a>    <span class="c1"># 섹션 4: 자기 평가</span>
+</span><span id="__span-7-53"><a id="__codelineno-7-53" name="__codelineno-7-53" href="#__codelineno-7-53"></a>    <span class="n">portfolio</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;[섹션 4] 자기 평가</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="__span-7-54"><a id="__codelineno-7-54" name="__codelineno-7-54" href="#__codelineno-7-54"></a>    <span class="n">skills</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;AI 개념 이해&quot;</span><span class="p">,</span> <span class="s2">&quot;프롬프트 작성&quot;</span><span class="p">,</span> <span class="s2">&quot;AI 도구 활용&quot;</span><span class="p">,</span> <span class="s2">&quot;윤리적 판단&quot;</span><span class="p">,</span> <span class="s2">&quot;비판적 사고&quot;</span><span class="p">]</span>
+</span><span id="__span-7-55"><a id="__codelineno-7-55" name="__codelineno-7-55" href="#__codelineno-7-55"></a>    <span class="k">for</span> <span class="n">skill</span> <span class="ow">in</span> <span class="n">skills</span><span class="p">:</span>
+</span><span id="__span-7-56"><a id="__codelineno-7-56" name="__codelineno-7-56" href="#__codelineno-7-56"></a>        <span class="n">portfolio</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">skill</span><span class="si">}</span><span class="s2">: ★☆☆☆☆ (1~5점 표시)&quot;</span><span class="p">)</span>
+</span><span id="__span-7-57"><a id="__codelineno-7-57" name="__codelineno-7-57" href="#__codelineno-7-57"></a>
+</span><span id="__span-7-58"><a id="__codelineno-7-58" name="__codelineno-7-58" href="#__codelineno-7-58"></a>    <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">portfolio</span><span class="p">)</span>
+</span><span id="__span-7-59"><a id="__codelineno-7-59" name="__codelineno-7-59" href="#__codelineno-7-59"></a>
+</span><span id="__span-7-60"><a id="__codelineno-7-60" name="__codelineno-7-60" href="#__codelineno-7-60"></a>
+</span><span id="__span-7-61"><a id="__codelineno-7-61" name="__codelineno-7-61" href="#__codelineno-7-61"></a><span class="c1"># 실행</span>
+</span><span id="__span-7-62"><a id="__codelineno-7-62" name="__codelineno-7-62" href="#__codelineno-7-62"></a><span class="n">my_name</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;이름을 입력하세요: &quot;</span><span class="p">)</span>
+</span><span id="__span-7-63"><a id="__codelineno-7-63" name="__codelineno-7-63" href="#__codelineno-7-63"></a><span class="n">result</span> <span class="o">=</span> <span class="n">create_portfolio_template</span><span class="p">(</span><span class="n">my_name</span><span class="p">)</span>
+</span><span id="__span-7-64"><a id="__codelineno-7-64" name="__codelineno-7-64" href="#__codelineno-7-64"></a><span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</span><span id="__span-7-65"><a id="__codelineno-7-65" name="__codelineno-7-65" href="#__codelineno-7-65"></a>
+</span><span id="__span-7-66"><a id="__codelineno-7-66" name="__codelineno-7-66" href="#__codelineno-7-66"></a><span class="c1"># 파일로 저장하고 싶다면:</span>
+</span><span id="__span-7-67"><a id="__codelineno-7-67" name="__codelineno-7-67" href="#__codelineno-7-67"></a><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">my_name</span><span class="si">}</span><span class="s2">_AI_포트폴리오.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+</span><span id="__span-7-68"><a id="__codelineno-7-68" name="__codelineno-7-68" href="#__codelineno-7-68"></a>    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</span><span id="__span-7-69"><a id="__codelineno-7-69" name="__codelineno-7-69" href="#__codelineno-7-69"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&#39;</span><span class="si">{</span><span class="n">my_name</span><span class="si">}</span><span class="s2">_AI_포트폴리오.txt&#39; 파일이 저장되었습니다!&quot;</span><span class="p">)</span>
+</span></code></pre></div>
+<blockquote>
+<p><strong>알아보기:</strong> 이 코드는 단순한 텍스트 생성이지만, 구조화된 문서를 프로그래밍으로 만든다는 점에서 의미가 있습니다. 앞으로 후반부에서는 이런 자동화를 더 발전시킬 거예요!</p>
+</blockquote>
+<hr />
+<h2 id="_5">⚠️ 자주 하는 실수<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
+<p><strong>실수 1: 키워드만 나열하고 연결하지 않는다</strong> 🔴</p>
+<p>"머신러닝, 딥러닝, 프롬프트…"처럼 단어만 쭉 나열하는 것은 정리가 아닙니다. <strong>"머신러닝이 발전한 형태가 딥러닝이고, 딥러닝 덕분에 생성 AI가 가능해졌다"</strong> 처럼 관계를 설명해야 진짜 정리입니다.</p>
+<p><strong>실수 2: 포트폴리오에 "잘한 것"만 담는다</strong> 🔴</p>
+<p>실패한 프롬프트, 이해하지 못한 개념도 소중한 학습 기록입니다. "이 부분은 아직 헷갈린다"고 솔직하게 적는 것이 오히려 더 가치 있는 포트폴리오를 만듭니다. 성찰 없는 포트폴리오는 빈 껍데기입니다.</p>
+<p><strong>실수 3: 브레인스토밍 중에 "이건 안 될 거야"라고 판단한다</strong> 🔴</p>
+<p>브레인스토밍의 핵심 규칙은 <strong>판단 유보</strong>입니다. "AI로 숙제를 대신해줬으면 좋겠다"도 일단 적으세요! 그 아이디어에서 "숙제 계획을 세워주는 AI 도우미"라는 현실적 아이디어가 나올 수 있습니다.</p>
+<p><strong>실수 4: AI의 답변을 그대로 복사하여 포트폴리오에 붙인다</strong> 🔴</p>
+<p>AI에게 질문해서 받은 답변을 그대로 쓰면 그것은 AI의 포트폴리오이지, 나의 포트폴리오가 아닙니다. AI의 답변을 참고하되, <strong>자신의 언어로 다시 쓰는 것</strong>이 핵심입니다. 이것은 10장에서 배운 저작권과 책임 의식과도 직결됩니다.</p>
+<hr />
+<h2 id="_6">✅ 스스로 점검하기<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
+<h3 id="_7">기본 문제<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h3>
+<p><strong>Q1.</strong> 전반부 3개 파트의 이름과 각 파트의 핵심 주제를 한 문장으로 설명하세요.</p>
+<blockquote>
+<p><strong>모범 답안</strong>: Part 1 "AI 이해하기"는 AI와 머신러닝의 작동 원리를 배우는 파트, Part 2 "AI 활용하기"는 프롬프트와 다양한 AI 도구를 실제로 사용하는 파트, Part 3 "AI 시민력"은 AI를 윤리적이고 책임감 있게 사용하는 태도를 기르는 파트입니다.</p>
+</blockquote>
+<p><strong>Q2.</strong> 다음 개념을 올바르게 연결하세요.</p>
+<ul>
+<li>(가) 데이터 편향 → ( ) AI가 그럴듯하지만 틀린 정보를 만들어내는 현상</li>
+<li>(나) 환각(Hallucination) → ( ) 학습 데이터가 특정 집단에 치우쳐 있는 문제</li>
+<li>(다) 프롬프트 엔지니어링 → ( ) AI에게 원하는 결과를 얻기 위해 질문을 설계하는 기술</li>
+</ul>
+<blockquote>
+<p><strong>정답</strong>: (가)-학습 데이터가 특정 집단에 치우쳐 있는 문제, (나)-AI가 그럴듯하지만 틀린 정보를 만들어내는</p>
+</blockquote>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  맨위로
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "navigation.indexes", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "toc.follow"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\ud074\ub9bd\ubcf4\ub4dc\uc5d0 \ubcf5\uc0ac\ub428", "clipboard.copy": "\ud074\ub9bd\ubcf4\ub4dc\ub85c \ubcf5\uc0ac", "search.result.more.one": "\uc774 \ubb38\uc11c\uc5d0\uc11c 1\uac1c\uc758 \uac80\uc0c9 \uacb0\uacfc \ub354 \ubcf4\uae30", "search.result.more.other": "\uc774 \ubb38\uc11c\uc5d0\uc11c #\uac1c\uc758 \uac80\uc0c9 \uacb0\uacfc \ub354 \ubcf4\uae30", "search.result.none": "\uac80\uc0c9\uc5b4\uc640 \uc77c\uce58\ud558\ub294 \ubb38\uc11c\uac00 \uc5c6\uc2b5\ub2c8\ub2e4", "search.result.one": "1\uac1c\uc758 \uc77c\uce58\ud558\ub294 \ubb38\uc11c", "search.result.other": "#\uac1c\uc758 \uc77c\uce58\ud558\ub294 \ubb38\uc11c", "search.result.placeholder": "\uac80\uc0c9\uc5b4\ub97c \uc785\ub825\ud558\uc138\uc694", "search.result.term.missing": "\ud3ec\ud568\ub418\uc9c0 \uc54a\uc740 \uac80\uc0c9\uc5b4", "select.version": "\ubc84\uc804 \uc120\ud0dd"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
+      
+        <script src="../javascripts/title-link.js"></script>
+      
+    
+  </body>
+</html>

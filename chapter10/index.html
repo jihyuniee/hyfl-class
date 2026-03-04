@@ -1,0 +1,2322 @@
+
+<!doctype html>
+<html lang="ko" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="AI 에이전트를 활용해 전문가처럼 문제를 해결하는 힘을 기르는 실습 중심 교육자료입니다. 이론은 최소화하고, 직접 써보며 배우는 경험을 통해 AI 리터러시와 컴퓨팅 사고력을 동시에 키웁니다.">
+      
+      
+        <meta name="author" content="Created with EduFlow">
+      
+      
+      
+        <link rel="prev" href="../chapter09/">
+      
+      
+        <link rel="next" href="../chapter11/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.4">
+    
+    
+      
+        <title>AI 시대, 나의 역할은? – AI 윤리와 책임 - 인공지능 원리탐구</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Sans KR";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/custom.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#chapter-10-ai-ai" class="md-skip">
+          콘텐츠로 이동
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="상단/헤더">
+    <a href=".." title="인공지능 원리탐구" class="md-header__button md-logo" aria-label="인공지능 원리탐구" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            인공지능 원리탐구
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              AI 시대, 나의 역할은? – AI 윤리와 책임
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="다크 모드로 전환"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="다크 모드로 전환" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="라이트 모드로 전환"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="라이트 모드로 전환" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="검색" placeholder="검색" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="검색">
+        
+        <button type="reset" class="md-search__icon md-icon" title="지우기" aria-label="지우기" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            검색 초기화
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="탭" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../chapter01/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Part 1 - [1권] Part 1. AI와의 첫 만남 – 인공지능, 넌 누구니?
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../chapter05/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Part 2 - [1권] Part 2. AI와 대화하는 기술 – 프롬프트 엔지니어링
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../chapter09/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Part 3 - [1권] Part 3. AI 시대의 시민력 – 윤리와 비판적 사고
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../chapter12/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Part 4 - [2권] Part 4. 문제 발견과 알고리즘 설계 – 프로젝트의 뼈대 세우기
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../chapter15/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Part 5 - [2권] Part 5. 웹앱 만들기 – AI와 함께 구현하기
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../chapter18/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Part 6 - [2권] Part 6. 발표와 성찰 – 우리의 이야기를 세상에
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="네비게이션" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="인공지능 원리탐구" class="md-nav__button md-logo" aria-label="인공지능 원리탐구" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    인공지능 원리탐구
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part 1 - [1권] Part 1. AI와의 첫 만남 – 인공지능, 넌 누구니?
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part 1 - [1권] Part 1. AI와의 첫 만남 – 인공지능, 넌 누구니?
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI는 마법이 아니다 – 인공지능의 정체
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI는 어떻게 배울까? – 머신러닝의 원리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GPT의 비밀 – 언어를 다루는 AI의 원리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI도 틀린다 – 할루시네이션과 사실 판별
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part 2 - [1권] Part 2. AI와 대화하는 기술 – 프롬프트 엔지니어링
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part 2 - [1권] Part 2. AI와 대화하는 기술 – 프롬프트 엔지니어링
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter05/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    좋은 질문이 좋은 답을 만든다 – 프롬프트의 기본
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter06/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    프롬프트 실전 테크닉 – 단계별 지시와 예시 활용
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter07/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI와 진짜 협업하기 – 에이전트 활용 입문
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter08/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI에이전트 실전 활용 – 나만의 에이전트 워크플로 만들기
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part 3 - [1권] Part 3. AI 시대의 시민력 – 윤리와 비판적 사고
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part 3 - [1권] Part 3. AI 시대의 시민력 – 윤리와 비판적 사고
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter09/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI가 편견을 가진다고? – 데이터 편향과 공정성
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI 시대, 나의 역할은? – AI 윤리와 책임
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI 시대, 나의 역할은? – AI 윤리와 책임
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="목차">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      목차
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 이 장에서 배우는 것
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        💡 왜 이걸 배우나요?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📚 핵심 개념
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📚 핵심 개념">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 1: AI와 저작권 – "이건 누구의 작품인가요?" 🎨
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 2: AI와 개인정보 – "내 정보는 어디로 가나요?" 🔒
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 3: 딥페이크 – "보이는 것이 진짜인가요?" 👤
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 4: 학문적 정직성 – "AI 시대의 정직함이란?" 📖
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔨 따라하기: '윤리 법정' 디베이트 &amp; AI 활용 윤리 헌장 만들기
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔨 따라하기: &#39;윤리 법정&#39; 디베이트 &amp; AI 활용 윤리 헌장 만들기">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: 사건 카드 읽기 (5분) 📋
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: 역할 나누기 (3분) 🎭
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: 논거 준비 (10분) ✍️
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4: 윤리 법정 토론 (15분) ⚖️
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-ai-15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5: 'AI 활용 윤리 헌장' 작성 (15분) 📜
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-6-10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 6: 발표 및 공유 (10분) 🎤
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#python" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📝 전체 정리 코드 (Python으로 보는 윤리 판단 시뮬레이터)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ⚠️ 자주 하는 실수
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ✅ 스스로 점검하기
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="✅ 스스로 점검하기">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        기본 문제 ⭐
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        응용 문제 ⭐⭐
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        심화 문제 ⭐⭐⭐
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter11/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    전반부 총정리 – 나의 AI 활용 포트폴리오
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part 4 - [2권] Part 4. 문제 발견과 알고리즘 설계 – 프로젝트의 뼈대 세우기
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part 4 - [2권] Part 4. 문제 발견과 알고리즘 설계 – 프로젝트의 뼈대 세우기
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter12/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    불편함을 문제로 바꾸는 힘 – 문제 정의와 사용자 분석
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter13/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    해결책을 그려보자 – 알고리즘과 순서도
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter14/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    화면을 설계하자 – 와이어프레임과 UI 기획
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part 5 - [2권] Part 5. 웹앱 만들기 – AI와 함께 구현하기
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part 5 - [2권] Part 5. 웹앱 만들기 – AI와 함께 구현하기
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter15/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    코딩을 몰라도 괜찮아 – AI 코딩 도구 시작하기
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter16/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    우리 팀 웹앱 만들기 ① – 핵심 기능 구현
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter17/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    우리 팀 웹앱 만들기 ② – 다듬기와 사용자 테스트
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part 6 - [2권] Part 6. 발표와 성찰 – 우리의 이야기를 세상에
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part 6 - [2권] Part 6. 발표와 성찰 – 우리의 이야기를 세상에
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter18/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    설득력 있는 발표 만들기 – AI와 함께하는 프레젠테이션
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter19/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    프로젝트 발표회 – 우리가 만든 솔루션
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter20/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI 시대, 나의 다음 챕터 – 성찰과 미래 설계
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="목차">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      목차
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 이 장에서 배우는 것
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        💡 왜 이걸 배우나요?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📚 핵심 개념
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📚 핵심 개념">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 1: AI와 저작권 – "이건 누구의 작품인가요?" 🎨
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 2: AI와 개인정보 – "내 정보는 어디로 가나요?" 🔒
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 3: 딥페이크 – "보이는 것이 진짜인가요?" 👤
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 4: 학문적 정직성 – "AI 시대의 정직함이란?" 📖
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔨 따라하기: '윤리 법정' 디베이트 &amp; AI 활용 윤리 헌장 만들기
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔨 따라하기: &#39;윤리 법정&#39; 디베이트 &amp; AI 활용 윤리 헌장 만들기">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: 사건 카드 읽기 (5분) 📋
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: 역할 나누기 (3분) 🎭
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: 논거 준비 (10분) ✍️
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4: 윤리 법정 토론 (15분) ⚖️
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-ai-15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5: 'AI 활용 윤리 헌장' 작성 (15분) 📜
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-6-10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 6: 발표 및 공유 (10분) 🎤
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#python" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📝 전체 정리 코드 (Python으로 보는 윤리 판단 시뮬레이터)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ⚠️ 자주 하는 실수
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ✅ 스스로 점검하기
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="✅ 스스로 점검하기">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        기본 문제 ⭐
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        응용 문제 ⭐⭐
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        심화 문제 ⭐⭐⭐
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="chapter-10-ai-ai">Chapter 10. AI 시대, 나의 역할은? – AI 윤리와 책임<a class="headerlink" href="#chapter-10-ai-ai" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p><strong>Part 3. AI 시대의 시민력 – 윤리와 비판적 사고</strong></p>
+</blockquote>
+<hr />
+<h2 id="_1">🎯 이 장에서 배우는 것<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> 저작권, 개인정보, 딥페이크, 학문적 정직성 등 AI 관련 핵심 윤리 쟁점 4가지를 설명할 수 있다</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> AI를 활용할 때 지켜야 할 윤리적 기준을 자신의 언어로 정리할 수 있다</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> AI가 대체할 수 없는 '사람의 역할'이 무엇인지 근거를 들어 주장할 수 있다</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> 구체적인 상황에서 윤리적 판단을 내리고 그 이유를 논리적으로 설명할 수 있다</li>
+</ul>
+<hr />
+<h2 id="_2">💡 왜 이걸 배우나요?<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p><strong>생각해보기</strong> 🤔</p>
+<p>다음 두 상황을 읽고, 여러분이라면 어떻게 할지 잠깐 생각해 보세요.</p>
+<p><strong>상황 A</strong>: 민수는 글쓰기 대회에 나가고 싶습니다. ChatGPT에게 "환경 보호에 대한 감동적인 에세이를 써 줘"라고 요청해 받은 글을 그대로 제출했습니다. 이것은 괜찮은 걸까요?</p>
+<p><strong>상황 B</strong>: 지은이는 친구 생일 선물로 재미있는 영상을 만들려고 합니다. AI 앱으로 친구 얼굴을 유명 가수 뮤직비디오에 합성했습니다. 친구에게 허락은 받지 않았습니다. 이것은 괜찮은 걸까요?</p>
+</blockquote>
+<p>아마 "음… 괜찮은 것 같기도 하고, 아닌 것 같기도 하고"라는 느낌이 들었을 겁니다. 이처럼 AI 기술은 강력하지만, <strong>사용하는 순간마다 윤리적 판단이 필요한 도구</strong>입니다.</p>
+<p>자동차는 매우 편리하지만, 운전면허와 교통법규가 있어야 안전하게 쓸 수 있습니다. AI도 마찬가지입니다. <strong>강력한 도구에는 반드시 사용 설명서가 필요합니다.</strong> 이번 장에서는 AI라는 강력한 도구의 '사용 설명서'를 함께 만들어 봅니다.</p>
+<hr />
+<h2 id="_3">📚 핵심 개념<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<h3 id="1-ai">개념 1: AI와 저작권 – "이건 누구의 작품인가요?" 🎨<a class="headerlink" href="#1-ai" title="Permanent link">&para;</a></h3>
+<p><strong>1. 비유로 시작하기</strong></p>
+<p>여러분이 요리 대회에 나갔다고 상상해 보세요. 그런데 직접 요리한 것이 아니라, 로봇 셰프에게 "맛있는 파스타 만들어 줘"라고 시키고 나온 결과물을 자기 접시에 담아 냈습니다. 심사위원이 "이 요리 정말 맛있네요, 어떻게 만드셨어요?"라고 묻는다면, 뭐라고 대답해야 할까요?</p>
+<p><strong>2. 정확한 정의</strong></p>
+<p><strong>저작권(Copyright)</strong> 이란 창작물을 만든 사람이 그 작품에 대해 갖는 권리입니다. 글, 그림, 음악, 사진 등 사람이 창의적으로 만든 모든 것에 적용됩니다.</p>
+<p>AI가 만든 결과물에는 두 가지 저작권 문제가 얽혀 있습니다.</p>
+<ul>
+<li><strong>입력 측면</strong>: AI가 학습할 때 사용한 데이터(다른 사람의 글, 그림, 사진 등)의 저작권을 침해한 것은 아닌가?</li>
+<li><strong>출력 측면</strong>: AI가 생성한 결과물의 저작권은 누구에게 있는가? AI에게? 사용자에게? 아니면 아무에게도 없는가?</li>
+</ul>
+<p><strong>3. 예시로 확인</strong></p>
+<blockquote>
+<p><strong>실제 사례</strong> 📰</p>
+<p>2023년, 미국 저작권청은 AI가 그린 그림에 대해 <strong>"AI가 독자적으로 생성한 부분에는 저작권을 인정할 수 없다"</strong> 고 판결했습니다. 다만 사람이 AI 결과물을 선별하고, 배치하고, 편집한 부분에는 저작권이 인정될 수 있다고 했습니다.</p>
+</blockquote>
+<div class="mermaid">flowchart LR
+    A["사람이 직접 창작"] --&gt;|"저작권 ✅"| B["나의 작품"]
+    C["AI에게 명령만 내림"] --&gt;|"저작권 ❓"| D["누구의 작품?"]
+    E["AI 결과물 + 사람이 편집·재구성"] --&gt;|"편집 부분 저작권 ✅"| F["협업 작품"]</div>
+<blockquote>
+<p><strong>정리하기</strong> 📌</p>
+<p>AI가 만든 결과물을 '내 작품'이라고 말하려면, <strong>단순히 명령을 내린 것 이상의 창작적 기여</strong>가 있어야 합니다. AI의 결과물을 바탕으로 수정하고, 판단하고, 나만의 관점을 더하는 과정이 필요합니다.</p>
+</blockquote>
+<hr />
+<h3 id="2-ai">개념 2: AI와 개인정보 – "내 정보는 어디로 가나요?" 🔒<a class="headerlink" href="#2-ai" title="Permanent link">&para;</a></h3>
+<p><strong>1. 비유로 시작하기</strong></p>
+<p>여러분의 일기장을 친구에게 보여준다고 생각해 보세요. 그 친구가 일기 내용을 전부 외워서 다른 사람에게 이야기한다면 어떤 기분이 들까요? AI에게 개인정보를 입력하는 것은, 그 정보를 <strong>기억력이 완벽한 누군가에게 건네는 것</strong>과 같습니다.</p>
+<p><strong>2. 정확한 정의</strong></p>
+<p><strong>개인정보(Personal Information)</strong> 란 특정 개인을 식별할 수 있는 모든 정보를 말합니다. 이름, 전화번호, 주소뿐 아니라 얼굴 사진, 목소리, 습관, 위치 정보까지 포함됩니다.</p>
+<p>AI와 관련된 개인정보 문제는 크게 세 가지입니다.</p>
+<ul>
+<li><strong>수집</strong>: AI 서비스가 우리 데이터를 어디까지 수집하는가?</li>
+<li><strong>학습</strong>: 내가 입력한 정보가 AI 학습에 사용되는가?</li>
+<li><strong>유출</strong>: AI가 다른 사람의 질문에 답할 때 내 정보를 노출하지는 않는가?</li>
+</ul>
+<p><strong>3. 예시로 확인</strong></p>
+<blockquote>
+<p><strong>실제 사례</strong> 📰</p>
+<p>2023년, 한 대기업 직원들이 회사 기밀 코드를 ChatGPT에 붙여넣어 디버깅을 요청했습니다. 이 데이터가 AI 학습에 사용될 수 있다는 사실이 알려지면서, 해당 기업은 사내 ChatGPT 사용을 전면 금지했습니다.</p>
+<p><strong>알아보기</strong> 💡</p>
+<p>AI 서비스에 절대 입력하면 안 되는 정보:
+- 🚫 본인이나 타인의 실명 + 전화번호 + 주소 조합
+- 🚫 주민등록번호, 비밀번호, 계좌번호
+- 🚫 다른 사람의 사적인 이야기나 비밀
+- 🚫 학교·회사의 비공개 자료</p>
+</blockquote>
+<hr />
+<h3 id="3">개념 3: 딥페이크 – "보이는 것이 진짜인가요?" 👤<a class="headerlink" href="#3" title="Permanent link">&para;</a></h3>
+<p><strong>1. 비유로 시작하기</strong></p>
+<p>옛날에는 "사진은 거짓말을 하지 않는다"라는 말이 있었습니다. 하지만 이제 AI 기술로 <strong>존재하지 않는 장면을 진짜처럼</strong> 만들 수 있게 되었습니다. 마치 완벽한 변장 도구가 누구에게나 주어진 것과 같습니다.</p>
+<p><strong>2. 정확한 정의</strong></p>
+<p><strong>딥페이크(Deepfake)</strong> 란 딥러닝(Deep Learning) 기술을 이용해 사람의 얼굴, 목소리, 행동을 <strong>다른 사람의 것으로 바꾸거나 아예 없는 장면을 생성하는 기술</strong>입니다. 'Deep(깊은)' + 'Fake(가짜)'의 합성어입니다.</p>
+<div class="mermaid">flowchart TD
+    A["딥페이크 기술"] --&gt; B["긍정적 활용"]
+    A --&gt; C["부정적 악용"]
+    B --&gt; B1["🎬 영화 특수효과"]
+    B --&gt; B2["🎓 역사 인물 복원 교육"]
+    B --&gt; B3["♿ 장애인 의사소통 지원"]
+    C --&gt; C1["😱 가짜 뉴스 생성"]
+    C --&gt; C2["😡 타인 명예훼손"]
+    C --&gt; C3["💰 사기·범죄에 이용"]</div>
+<p><strong>3. 예시로 확인</strong></p>
+<blockquote>
+<p><strong>실제 사례</strong> 📰</p>
+<p>2024년, 한국에서 학생들이 AI 앱을 이용해 같은 반 친구의 얼굴을 합성한 가짜 사진을 만들어 유포한 사건이 발생했습니다. 가해 학생들은 "장난이었다"고 했지만, 이는 <strong>초상권 침해이자 명예훼손</strong>에 해당하며, 미성년자라도 법적 처벌을 받을 수 있습니다.</p>
+<p><strong>생각해보기</strong> 🤔</p>
+<p>"기술적으로 가능하다"와 "해도 된다"는 완전히 다른 말입니다. 칼은 요리에도 쓰이지만 사람을 해치는 데도 쓸 수 있습니다. <strong>기술 자체는 중립적이지만, 사용하는 사람의 의도와 판단이 결과를 결정합니다.</strong></p>
+</blockquote>
+<hr />
+<h3 id="4-ai">개념 4: 학문적 정직성 – "AI 시대의 정직함이란?" 📖<a class="headerlink" href="#4-ai" title="Permanent link">&para;</a></h3>
+<p><strong>1. 비유로 시작하기</strong></p>
+<p>체육 시간에 1km 달리기 시험이 있습니다. 친구가 몰래 자전거를 타고 먼저 도착해서 1등을 했다면, 그것은 진짜 1등일까요? AI를 이용해 과제를 했다면, 그것은 진짜 '내가 한 과제'일까요?</p>
+<p><strong>2. 정확한 정의</strong></p>
+<p><strong>학문적 정직성(Academic Integrity)</strong> 이란 학습 과정에서 정직하게 행동하는 것을 말합니다. 다른 사람의 작업을 자기 것처럼 제출하지 않고, 도움을 받은 부분은 솔직하게 밝히는 것이 핵심입니다.</p>
+<p>AI 시대의 학문적 정직성은 다음과 같이 정리할 수 있습니다.</p>
+<ul>
+<li><strong>✅ 정직한 활용</strong>: AI를 아이디어 탐색이나 자료 조사에 활용하되, 최종 결과물은 자신이 이해하고 정리하며, AI 활용 사실을 밝힘</li>
+<li><strong>❌ 부정직한 활용</strong>: AI가 생성한 글을 그대로 복사해서 자기 이름으로 제출, AI 사용 사실을 숨김</li>
+</ul>
+<p><strong>3. 예시로 확인</strong></p>
+<blockquote>
+<p><strong>알아보기</strong> 💡</p>
+<p><strong>AI 활용의 3단계 기준</strong></p>
+<p>🟢 <strong>1단계 – 자유 활용</strong>: 브레인스토밍, 개념 이해 돕기, 맞춤법 검사 → 대부분 허용</p>
+<p>🟡 <strong>2단계 – 조건부 활용</strong>: AI가 초안을 만들고 본인이 대폭 수정·보완 → 선생님/기관의 허용 여부 확인 필요, AI 활용 사실 반드시 명시</p>
+<p>🔴 <strong>3단계 – 금지</strong>: AI 결과물을 그대로 제출, AI 사용 사실 숨김 → 대부분의 학교에서 부정행위로 간주</p>
+</blockquote>
+<hr />
+<h2 id="ai">🔨 따라하기: '윤리 법정' 디베이트 &amp; AI 활용 윤리 헌장 만들기<a class="headerlink" href="#ai" title="Permanent link">&para;</a></h2>
+<p>이 실습은 코딩이 아닌 <strong>토론과 글쓰기</strong> 활동입니다. 모둠(4~5명) 또는 혼자서도 할 수 있습니다.</p>
+<hr />
+<h3 id="step-1-5">Step 1: 사건 카드 읽기 (5분) 📋<a class="headerlink" href="#step-1-5" title="Permanent link">&para;</a></h3>
+<p>아래 세 가지 사건 중 하나를 골라 '윤리 법정'에 올립니다.</p>
+<p><strong>사건 1 – 그림 대회 사건</strong></p>
+<blockquote>
+<p>수아는 미술 대회에 AI 이미지 생성 도구로 그림을 만들어 출품했습니다. "바다 위 고래가 별을 삼키는 장면"이라는 프롬프트를 작성하고, 나온 결과물 중 하나를 골라 색감만 살짝 보정했습니다. 대회 규정에는 'AI 사용 금지'라는 조항이 없었습니다.</p>
+</blockquote>
+<p><strong>사건 2 – 딥페이크 뉴스 사건</strong></p>
+<blockquote>
+<p>동현이는 학교 뉴스 동아리에서 재미있는 뉴스를 만들려고 교장 선생님 얼굴을 아이돌 댄스 영상에 합성했습니다. 학교 축제에서 상영할 예정이며, "교장 선생님도 웃으실 거예요"라고 합니다.</p>
+</blockquote>
+<p><strong>사건 3 – 과학 보고서 사건</strong></p>
+<blockquote>
+<p>지원이는 과학 실험 보고서의 '결론 및 고찰' 부분을 AI에게 쓰게 했습니다. 실험 데이터는 직접 수집했지만, 결론 해석과 문장 작성은 전부 AI가 했습니다. 지원이는 "데이터는 내가 했으니까 괜찮다"고 주장합니다.</p>
+</blockquote>
+<hr />
+<h3 id="step-2-3">Step 2: 역할 나누기 (3분) 🎭<a class="headerlink" href="#step-2-3" title="Permanent link">&para;</a></h3>
+<p>모둠원이 다음 역할을 나눠 맡습니다.</p>
+<ul>
+<li><strong>검사</strong> 🔴: 이 행동이 잘못이라고 주장하는 사람 (근거 2개 이상 준비)</li>
+<li><strong>변호인</strong> 🔵: 이 행동은 괜찮다고 주장하는 사람 (근거 2개 이상 준비)</li>
+<li><strong>판사</strong> ⚖️: 양쪽 의견을 듣고 최종 판결을 내리는 사람</li>
+<li><strong>배심원</strong> 👥: 토론을 관찰하고 질문하는 사람 (나머지 모둠원)</li>
+</ul>
+<blockquote>
+<p>혼자 학습하는 경우, 노트에 🔴 입장과 🔵 입장을 번갈아 적어보세요.</p>
+</blockquote>
+<hr />
+<h3 id="step-3-10">Step 3: 논거 준비 (10분) ✍️<a class="headerlink" href="#step-3-10" title="Permanent link">&para;</a></h3>
+<p>각자 맡은 역할에 따라 주장과 근거를 준비합니다. 이때 앞에서 배운 4가지 핵심 개념(저작권, 개인정보, 딥페이크, 학문적 정직성)을 반드시 활용하세요.</p>
+<p><strong>논거를 정리하는 틀:</strong></p>
+<blockquote>
+<p><strong>나의 주장</strong>: <strong><em>_</em></strong><strong><em>_</em></strong>__</p>
+<p><strong>근거 1</strong>: (어떤 윤리 쟁점과 관련되는가?)</p>
+<p><strong>근거 2</strong>: (만약 모든 사람이 이렇게 한다면 어떤 일이 벌어지는가?)</p>
+<p><strong>예상 반론</strong>: 상대방은 이렇게 반박할 수 있다 → 이에 대한 재반박:</p>
+</blockquote>
+<hr />
+<h3 id="step-4-15">Step 4: 윤리 법정 토론 (15분) ⚖️<a class="headerlink" href="#step-4-15" title="Permanent link">&para;</a></h3>
+<p>다음 순서로 진행합니다.</p>
+<ol>
+<li>🔴 <strong>검사 주장</strong> (2분)</li>
+<li>🔵 <strong>변호인 주장</strong> (2분)</li>
+<li>👥 <strong>배심원 질문</strong> (3분)</li>
+<li>🔴🔵 <strong>자유 토론</strong> (5분)</li>
+<li>⚖️ <strong>판사 판결 및 이유 설명</strong> (3분)</li>
+</ol>
+<hr />
+<h3 id="step-5-ai-15">Step 5: 'AI 활용 윤리 헌장' 작성 (15분) 📜<a class="headerlink" href="#step-5-ai-15" title="Permanent link">&para;</a></h3>
+<p>토론 결과를 바탕으로, 모둠 또는 개인이 <strong>우리 반(또는 나만의) AI 활용 윤리 헌장</strong>을 만듭니다.</p>
+<p>아래 양식을 참고하세요.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>═══════════════════════════════════
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>     🤝 AI 활용 윤리 헌장 🤝
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>═══════════════════════════════════
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>작성자(모둠): _______________
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>작성일: _______________
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>[제1조 – 정직]
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>우리는 AI를 활용한 사실을 _______________.
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>[제2조 – 저작권 존중]
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>우리는 AI 결과물을 사용할 때 _______________.
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>[제3조 – 개인정보 보호]
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>우리는 AI에 _______________ 정보를 입력하지 않는다.
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>[제4조 – 타인 존중]
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>우리는 AI 기술로 타인의 _______________을/를 침해하지 않는다.
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>[제5조 – 비판적 확인]
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>우리는 AI가 생성한 정보를 _______________.
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>
+</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>[우리만의 조항]
+</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>_____________________________________________
+</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>
+</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>서명: _______________
+</span></code></pre></div>
+<hr />
+<h3 id="step-6-10">Step 6: 발표 및 공유 (10분) 🎤<a class="headerlink" href="#step-6-10" title="Permanent link">&para;</a></h3>
+<p>각 모둠의 헌장을 발표하고, 가장 공감가는 조항에 투표합니다. 최종적으로 <strong>학급 전체의 AI 활용 윤리 헌장</strong>을 완성합니다.</p>
+<blockquote>
+<p><strong>정리하기</strong> 📌</p>
+<p>윤리는 정답이 하나로 정해진 문제가 아닙니다. 중요한 것은 <strong>"왜 이것이 옳은가/그른가"를 논리적으로 설명할 수 있는 능력</strong>입니다. 이 능력이야말로 AI에게는 없고 사람에게만 있는 힘입니다.</p>
+</blockquote>
+<hr />
+<h2 id="python">📝 전체 정리 코드 (Python으로 보는 윤리 판단 시뮬레이터)<a class="headerlink" href="#python" title="Permanent link">&para;</a></h2>
+<p>이번 장은 토론 중심이지만, AI 윤리 판단을 코드로 체험해 볼 수 있습니다.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># AI 윤리 체크리스트 시뮬레이터</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="c1"># 복사해서 바로 실행해 보세요!</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="k">def</span><span class="w"> </span><span class="nf">ai_ethics_check</span><span class="p">():</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;🤖 AI 활용 윤리 체크리스트&quot;</span><span class="p">)</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    <span class="n">questions</span> <span class="o">=</span> <span class="p">[</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>        <span class="s2">&quot;1. AI 활용 사실을 밝힐 예정인가요? (정직성)&quot;</span><span class="p">,</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>        <span class="s2">&quot;2. 다른 사람의 저작권을 침해하지 않나요? (저작권)&quot;</span><span class="p">,</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>        <span class="s2">&quot;3. 개인정보나 민감 정보를 입력하지 않았나요? (개인정보)&quot;</span><span class="p">,</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>        <span class="s2">&quot;4. 타인의 얼굴/목소리를 무단으로 사용하지 않았나요? (초상권)&quot;</span><span class="p">,</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>        <span class="s2">&quot;5. AI 결과물을 직접 검증했나요? (비판적 사고)&quot;</span><span class="p">,</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>        <span class="s2">&quot;6. 최종 결과물에 나만의 생각이 담겨 있나요? (창의성)&quot;</span><span class="p">,</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>    <span class="p">]</span>
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>    <span class="n">score</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>    <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">questions</span><span class="p">:</span>
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">q</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>        <span class="n">answer</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;예(y) / 아니오(n): &quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>        <span class="k">if</span> <span class="n">answer</span> <span class="o">==</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span>
+</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a>            <span class="n">score</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a>            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  ✅ 좋습니다!&quot;</span><span class="p">)</span>
+</span><span id="__span-1-25"><a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="__span-1-26"><a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a>            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  ⚠️ 다시 생각해 볼 필요가 있어요.&quot;</span><span class="p">)</span>
+</span><span id="__span-1-27"><a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a>
+</span><span id="__span-1-28"><a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)</span>
+</span><span id="__span-1-29"><a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;📊 결과: </span><span class="si">{</span><span class="n">score</span><span class="si">}</span><span class="s2">/6 항목 통과&quot;</span><span class="p">)</span>
+</span><span id="__span-1-30"><a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a>
+</span><span id="__span-1-31"><a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a>    <span class="k">if</span> <span class="n">score</span> <span class="o">==</span> <span class="mi">6</span><span class="p">:</span>
+</span><span id="__span-1-32"><a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;🟢 훌륭합니다! 윤리적으로 AI를 활용하고 있어요.&quot;</span><span class="p">)</span>
+</span><span id="__span-1-33"><a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a>    <span class="k">elif</span> <span class="n">score</span> <span class="o">&gt;=</span> <span class="mi">4</span><span class="p">:</span>
+</span><span id="__span-1-34"><a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;🟡 대체로 좋지만, 통과하지 못한 항목을 다시 확인하세요.&quot;</span><span class="p">)</span>
+</span><span id="__span-1-35"><a id="__codelineno-1-35" name="__codelineno-1-35" href="#__codelineno-1-35"></a>    <span class="k">else</span><span class="p">:</span>
+</span><span id="__span-1-36"><a id="__codelineno-1-36" name="__codelineno-1-36" href="#__codelineno-1-36"></a>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;🔴 AI 활용 방식을 전반적으로 재검토할 필요가 있습니다.&quot;</span><span class="p">)</span>
+</span><span id="__span-1-37"><a id="__codelineno-1-37" name="__codelineno-1-37" href="#__codelineno-1-37"></a>
+</span><span id="__span-1-38"><a id="__codelineno-1-38" name="__codelineno-1-38" href="#__codelineno-1-38"></a><span class="c1"># 실행</span>
+</span><span id="__span-1-39"><a id="__codelineno-1-39" name="__codelineno-1-39" href="#__codelineno-1-39"></a><span class="n">ai_ethics_check</span><span class="p">()</span>
+</span></code></pre></div>
+<blockquote>
+<p>이 코드를 실행하면 6개 질문에 답하면서 자신의 AI 활용이 윤리적인지 스스로 점검할 수 있습니다.</p>
+</blockquote>
+<hr />
+<h2 id="_4">⚠️ 자주 하는 실수<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<p><strong>실수 1: "AI가 한 것이니 내 책임이 아니다"</strong> 🚫</p>
+<p>AI는 도구입니다. 망치로 못을 박든, 유리창을 깨든 <strong>결과에 대한 책임은 망치가 아니라 사용자</strong>에게 있습니다. AI의 결과물을 사용한 순간, 그것은 여러분의 책임입니다.</p>
+<p><strong>실수 2: "출처만 밝히면 뭐든 괜찮다"</strong> 🚫</p>
+<p>출처를 밝히는 것은 정직성의 첫 단계이지만, 그것만으로 모든 문제가 해결되지는 않습니다. 예를 들어, AI에게 과제를 전부 맡기고 "AI가 했다"고 밝혀도 <strong>학습의 목적 자체를 달성하지 못한 것</strong>입니다. 마치 "이 답은 친구가 알려줬어요"라고 밝히면서 시험에서 커닝하는 것과 같습니다.</p>
+<p><strong>실수 3: "재미/장난이면 괜찮다"</strong> 🚫</p>
+<p>딥페이크로 친구 얼굴을 합성하거나, 허위 정보를 만드는 것을 "장난"이라고 가볍게 생각하는 경우가 많습니다. 하지만 <strong>장난이든 악의든, 피해를 입은 사람의 고통은 동일</strong>합니다. 또한 디지털 콘텐츠는 한번 퍼지면 완전히 삭제하는 것이 거의 불가능합니다.</p>
+<p><strong>실수 4: "다들 하니까 나도 괜찮다"</strong> 🚫</p>
+<p>많은 사람이 한다고 해서 윤리적으로 올바른 것은 아닙니다. AI를 무분별하게 사용하는 것이 '보통'이 되더라도, <strong>"이것이 옳은가?"라는 질문을 멈추지 않는 사람</strong>이 AI 시대에 진짜 필요한 인재입니다.</p>
+<hr />
+<h2 id="_5">✅ 스스로 점검하기<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
+<h3 id="_6">기본 문제 ⭐<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
+<p><strong>문제 1.</strong> 다음 상황이 어떤 윤리 쟁점에 해당하는지 연결하세요.</p>
+<ul>
+<li>(가) 수업 보고서를 AI에게 전부 쓰게 하고 자기 이름으로 제출 → <strong><em>_</em></strong><strong><em>_</em></strong>_</li>
+<li>(나) AI 챗봇에 친구의 이름과 전화번호를 입력 → <strong><em>_</em></strong><strong><em>_</em></strong>_</li>
+<li>(다) AI로 만든 이미지를 자신이 직접 그린 것처럼 공모전에 출품 → <strong><em>_</em></strong><strong><em>_</em></strong>_</li>
+<li>(라) AI 앱으로 선생님 얼굴을 코미디 영상에 합성 → <strong><em>_</em></strong><strong><em>_</em></strong>_</li>
+</ul>
+<details>
+<summary>정답 확인</summary>
+
+- (가) 학문적 정직성
+- (나) 개인정보 보호
+- (다) 저작권
+- (라) 딥페이크 / 초상권
+
+</details>
+
+<hr />
+<h3 id="_7">응용 문제 ⭐⭐<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h3>
+<p><strong>문제 2.</strong> 다음 시나리오를 읽고, 🟢허용 / 🟡주의 필요 / 🔴금지 중 하나를 고르고, <strong>그 이유를 2문장 이상</strong>으로 쓰세요.</p>
+<blockquote>
+<p>현우는 영어 에세이 숙제를 했습니다. 먼저 자기 생각을 한국어로 정리한 뒤, AI 번역 도구로 영어로 바꾸고, 어색한 표현을 직접 수정했습니다. 선생님께 "AI 번역을 참고했다"고 말했습니다.</p>
+</blockquote>
+<details>
+<summary>예시 답안</summary>
+
+🟢 **허용** (조건 충족 시)
+
+이유: 현우는 자기 생각을 먼저 정리한 뒤 AI를 보조 도구로 활용했으며, 직접 수정까지 했습니다. 또한 AI 활용 사실을 선생님께 솔직하게 밝혔으므로 학문적 정직성을 지켰습니다. 다만, 선생님이 "AI 번역 도구 사용 불가"라는 규칙을 정했다면 그 규칙을 따라야 합니다.
+
+</details>
+
+<hr />
+<h3 id="_8">심화 문제 ⭐⭐⭐<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h3>
+<p><strong>문제 3. (도전 에세이)</strong></p>
+<p>다음 주제로 300자 이상의 짧은 에세이를 </p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  맨위로
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "navigation.indexes", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "toc.follow"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\ud074\ub9bd\ubcf4\ub4dc\uc5d0 \ubcf5\uc0ac\ub428", "clipboard.copy": "\ud074\ub9bd\ubcf4\ub4dc\ub85c \ubcf5\uc0ac", "search.result.more.one": "\uc774 \ubb38\uc11c\uc5d0\uc11c 1\uac1c\uc758 \uac80\uc0c9 \uacb0\uacfc \ub354 \ubcf4\uae30", "search.result.more.other": "\uc774 \ubb38\uc11c\uc5d0\uc11c #\uac1c\uc758 \uac80\uc0c9 \uacb0\uacfc \ub354 \ubcf4\uae30", "search.result.none": "\uac80\uc0c9\uc5b4\uc640 \uc77c\uce58\ud558\ub294 \ubb38\uc11c\uac00 \uc5c6\uc2b5\ub2c8\ub2e4", "search.result.one": "1\uac1c\uc758 \uc77c\uce58\ud558\ub294 \ubb38\uc11c", "search.result.other": "#\uac1c\uc758 \uc77c\uce58\ud558\ub294 \ubb38\uc11c", "search.result.placeholder": "\uac80\uc0c9\uc5b4\ub97c \uc785\ub825\ud558\uc138\uc694", "search.result.term.missing": "\ud3ec\ud568\ub418\uc9c0 \uc54a\uc740 \uac80\uc0c9\uc5b4", "select.version": "\ubc84\uc804 \uc120\ud0dd"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
+      
+        <script src="../javascripts/title-link.js"></script>
+      
+    
+  </body>
+</html>

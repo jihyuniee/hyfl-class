@@ -1,0 +1,2660 @@
+
+<!doctype html>
+<html lang="ko" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="AI 에이전트를 활용해 전문가처럼 문제를 해결하는 힘을 기르는 실습 중심 교육자료입니다. 이론은 최소화하고, 직접 써보며 배우는 경험을 통해 AI 리터러시와 컴퓨팅 사고력을 동시에 키웁니다.">
+      
+      
+        <meta name="author" content="Created with EduFlow">
+      
+      
+      
+        <link rel="prev" href="../chapter02/">
+      
+      
+        <link rel="next" href="../chapter04/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.4">
+    
+    
+      
+        <title>GPT의 비밀 – 언어를 다루는 AI의 원리 - 인공지능 원리탐구</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Sans KR";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/custom.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#chapter-3-gpt-ai" class="md-skip">
+          콘텐츠로 이동
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="상단/헤더">
+    <a href=".." title="인공지능 원리탐구" class="md-header__button md-logo" aria-label="인공지능 원리탐구" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            인공지능 원리탐구
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              GPT의 비밀 – 언어를 다루는 AI의 원리
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="다크 모드로 전환"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="다크 모드로 전환" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="라이트 모드로 전환"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="라이트 모드로 전환" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="검색" placeholder="검색" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="검색">
+        
+        <button type="reset" class="md-search__icon md-icon" title="지우기" aria-label="지우기" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            검색 초기화
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="탭" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../chapter01/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Part 1 - [1권] Part 1. AI와의 첫 만남 – 인공지능, 넌 누구니?
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../chapter05/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Part 2 - [1권] Part 2. AI와 대화하는 기술 – 프롬프트 엔지니어링
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../chapter09/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Part 3 - [1권] Part 3. AI 시대의 시민력 – 윤리와 비판적 사고
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../chapter12/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Part 4 - [2권] Part 4. 문제 발견과 알고리즘 설계 – 프로젝트의 뼈대 세우기
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../chapter15/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Part 5 - [2권] Part 5. 웹앱 만들기 – AI와 함께 구현하기
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../chapter18/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Part 6 - [2권] Part 6. 발표와 성찰 – 우리의 이야기를 세상에
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="네비게이션" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="인공지능 원리탐구" class="md-nav__button md-logo" aria-label="인공지능 원리탐구" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    인공지능 원리탐구
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part 1 - [1권] Part 1. AI와의 첫 만남 – 인공지능, 넌 누구니?
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part 1 - [1권] Part 1. AI와의 첫 만남 – 인공지능, 넌 누구니?
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI는 마법이 아니다 – 인공지능의 정체
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI는 어떻게 배울까? – 머신러닝의 원리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GPT의 비밀 – 언어를 다루는 AI의 원리
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GPT의 비밀 – 언어를 다루는 AI의 원리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="목차">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      목차
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 이 장에서 배우는 것
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        💡 왜 이걸 배우나요?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📚 핵심 개념
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📚 핵심 개념">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-gpt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 1: 다음 단어 예측 – GPT의 유일한 재주 🎯
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="개념 1: 다음 단어 예측 – GPT의 유일한 재주 🎯">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 비유로 시작
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 정확한 정의
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 예시로 확인
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 2: 패턴 매칭 – 이해가 아니라 흉내 🎭
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="개념 2: 패턴 매칭 – 이해가 아니라 흉내 🎭">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 비유로 시작
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 정확한 정의
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 예시로 확인
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 3: 확률적 응답 – 같은 질문, 다른 대답 🎲
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="개념 3: 확률적 응답 – 같은 질문, 다른 대답 🎲">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 비유로 시작
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 정확한 정의
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 예시로 확인
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-gpt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 4: GPT의 한계 – 못하는 것도 있다! 🚧
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="개념 4: GPT의 한계 – 못하는 것도 있다! 🚧">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 비유로 시작
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 정확한 정의
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 예시로 확인
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gpt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔨 따라하기: GPT의 한계를 직접 실험해 보자!
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔨 따라하기: GPT의 한계를 직접 실험해 보자!">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-chatgpt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: ChatGPT 준비하기
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: 다음 단어 예측 원리 확인하기
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: 논리 함정 질문 던지기
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-hallucination" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4: 환각(Hallucination) 확인하기
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5: 확률적 응답 확인하기
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 6: 실험 결과 정리하기
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📝 전체 코드
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ⚠️ 자주 하는 실수
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ✅ 스스로 점검하기
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="✅ 스스로 점검하기">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ox" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        기본 문제: OX 퀴즈
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        응용 문제: 빈칸 채우기
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gpt_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        심화 문제: GPT를
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI도 틀린다 – 할루시네이션과 사실 판별
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part 2 - [1권] Part 2. AI와 대화하는 기술 – 프롬프트 엔지니어링
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part 2 - [1권] Part 2. AI와 대화하는 기술 – 프롬프트 엔지니어링
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter05/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    좋은 질문이 좋은 답을 만든다 – 프롬프트의 기본
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter06/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    프롬프트 실전 테크닉 – 단계별 지시와 예시 활용
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter07/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI와 진짜 협업하기 – 에이전트 활용 입문
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter08/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI에이전트 실전 활용 – 나만의 에이전트 워크플로 만들기
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part 3 - [1권] Part 3. AI 시대의 시민력 – 윤리와 비판적 사고
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part 3 - [1권] Part 3. AI 시대의 시민력 – 윤리와 비판적 사고
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter09/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI가 편견을 가진다고? – 데이터 편향과 공정성
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter10/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI 시대, 나의 역할은? – AI 윤리와 책임
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter11/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    전반부 총정리 – 나의 AI 활용 포트폴리오
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part 4 - [2권] Part 4. 문제 발견과 알고리즘 설계 – 프로젝트의 뼈대 세우기
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part 4 - [2권] Part 4. 문제 발견과 알고리즘 설계 – 프로젝트의 뼈대 세우기
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter12/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    불편함을 문제로 바꾸는 힘 – 문제 정의와 사용자 분석
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter13/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    해결책을 그려보자 – 알고리즘과 순서도
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter14/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    화면을 설계하자 – 와이어프레임과 UI 기획
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part 5 - [2권] Part 5. 웹앱 만들기 – AI와 함께 구현하기
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part 5 - [2권] Part 5. 웹앱 만들기 – AI와 함께 구현하기
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter15/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    코딩을 몰라도 괜찮아 – AI 코딩 도구 시작하기
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter16/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    우리 팀 웹앱 만들기 ① – 핵심 기능 구현
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter17/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    우리 팀 웹앱 만들기 ② – 다듬기와 사용자 테스트
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part 6 - [2권] Part 6. 발표와 성찰 – 우리의 이야기를 세상에
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part 6 - [2권] Part 6. 발표와 성찰 – 우리의 이야기를 세상에
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter18/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    설득력 있는 발표 만들기 – AI와 함께하는 프레젠테이션
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter19/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    프로젝트 발표회 – 우리가 만든 솔루션
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter20/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI 시대, 나의 다음 챕터 – 성찰과 미래 설계
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="목차">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      목차
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 이 장에서 배우는 것
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        💡 왜 이걸 배우나요?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📚 핵심 개념
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📚 핵심 개념">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-gpt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 1: 다음 단어 예측 – GPT의 유일한 재주 🎯
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="개념 1: 다음 단어 예측 – GPT의 유일한 재주 🎯">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 비유로 시작
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 정확한 정의
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 예시로 확인
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 2: 패턴 매칭 – 이해가 아니라 흉내 🎭
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="개념 2: 패턴 매칭 – 이해가 아니라 흉내 🎭">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 비유로 시작
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 정확한 정의
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 예시로 확인
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 3: 확률적 응답 – 같은 질문, 다른 대답 🎲
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="개념 3: 확률적 응답 – 같은 질문, 다른 대답 🎲">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 비유로 시작
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 정확한 정의
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 예시로 확인
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-gpt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        개념 4: GPT의 한계 – 못하는 것도 있다! 🚧
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="개념 4: GPT의 한계 – 못하는 것도 있다! 🚧">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 비유로 시작
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 정확한 정의
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 예시로 확인
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gpt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔨 따라하기: GPT의 한계를 직접 실험해 보자!
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔨 따라하기: GPT의 한계를 직접 실험해 보자!">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-chatgpt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: ChatGPT 준비하기
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: 다음 단어 예측 원리 확인하기
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: 논리 함정 질문 던지기
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-hallucination" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4: 환각(Hallucination) 확인하기
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5: 확률적 응답 확인하기
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 6: 실험 결과 정리하기
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📝 전체 코드
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ⚠️ 자주 하는 실수
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ✅ 스스로 점검하기
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="✅ 스스로 점검하기">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ox" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        기본 문제: OX 퀴즈
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        응용 문제: 빈칸 채우기
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gpt_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        심화 문제: GPT를
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="chapter-3-gpt-ai">Chapter 3. GPT의 비밀 – 언어를 다루는 AI의 원리<a class="headerlink" href="#chapter-3-gpt-ai" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p><strong>Part 1. AI와의 첫 만남 – 인공지능, 넌 누구니?</strong> | 3차시 (2시간)</p>
+</blockquote>
+<hr />
+<h2 id="_1">🎯 이 장에서 배우는 것<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> 대규모 언어모델(LLM)이 <strong>'다음 단어 예측'</strong>으로 작동한다는 핵심 원리를 설명할 수 있다</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> GPT가 '이해'하는 것이 아니라 <strong>'패턴 매칭'</strong>임을 사례로 증명할 수 있다</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> AI의 <strong>확률적 응답 방식</strong>이 만들어내는 장점과 한계를 구분할 수 있다</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> ChatGPT에게 함정 질문을 던져 <strong>한계를 직접 확인</strong>할 수 있다</li>
+</ul>
+<hr />
+<h2 id="_2">💡 왜 이걸 배우나요?<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>여러분은 이미 ChatGPT와 대화해 본 적이 있을 거예요. 숙제 도움을 받거나, 재미있는 이야기를 만들어 달라고 하거나, 궁금한 것을 물어보기도 했죠.</p>
+<p>그런데 <strong>이런 질문</strong>을 해 본 적 있나요?</p>
+<blockquote>
+<p>"GPT는 진짜 내 말을 <strong>이해</strong>하는 걸까? 아니면 그냥 <strong>흉내</strong>를 내는 걸까?"</p>
+</blockquote>
+<p>이 질문에 답하려면 GPT가 <strong>어떻게 작동하는지</strong> 원리를 알아야 합니다. 원리를 모르면 AI가 마치 모든 걸 아는 천재처럼 보이지만, 원리를 알면 <strong>언제 믿어야 하고 언제 의심해야 하는지</strong> 스스로 판단할 수 있게 됩니다.</p>
+<p>이번 장을 마치면 여러분은 GPT를 더 <strong>똑똑하게</strong> 사용하는 사람이 될 거예요! 🧠</p>
+<hr />
+<h2 id="_3">📚 핵심 개념<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<h3 id="1-gpt">개념 1: 다음 단어 예측 – GPT의 유일한 재주 🎯<a class="headerlink" href="#1-gpt" title="Permanent link">&para;</a></h3>
+<h4 id="1">1. 비유로 시작<a class="headerlink" href="#1" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p><strong>🧩 생각해보기:</strong> 빈칸을 채워 보세요!</p>
+<ul>
+<li>"나는 오늘 학교에 ___"</li>
+<li>"배가 고파서 밥을 ___"</li>
+<li>"하늘에 구름이 잔뜩 끼더니 비가 ___"</li>
+</ul>
+<p>아마 '갔다', '먹었다', '왔다' 같은 단어가 떠올랐을 거예요. 여러분의 뇌가 <strong>지금까지 읽고 들었던 수많은 문장의 패턴</strong>을 바탕으로 자연스럽게 다음 단어를 예측한 겁니다.</p>
+</blockquote>
+<p>GPT도 <strong>정확히 이 일</strong>을 합니다. 단, 규모가 다릅니다.</p>
+<p>여러분이 태어나서 지금까지 읽은 글이 수백 권의 책 분량이라면, GPT는 <strong>인터넷에 있는 수천억 개의 문장</strong>을 읽고 훈련되었습니다. 마치 도서관 전체를 통째로 읽은 뒤 "다음 단어 맞추기 게임"의 달인이 된 것이죠.</p>
+<h4 id="2">2. 정확한 정의<a class="headerlink" href="#2" title="Permanent link">&para;</a></h4>
+<p><strong>대규모 언어모델(LLM, Large Language Model)</strong> 이란 방대한 텍스트 데이터를 학습하여, 주어진 문맥 뒤에 올 <strong>가장 그럴듯한 다음 단어(토큰)</strong>를 확률적으로 예측하는 AI 시스템입니다.</p>
+<ul>
+<li><strong>대규모(Large)</strong>: 수천억 개의 텍스트로 훈련</li>
+<li><strong>언어(Language)</strong>: 사람의 자연어를 다룸</li>
+<li><strong>모델(Model)</strong>: 패턴을 수학적으로 표현한 것</li>
+</ul>
+<h4 id="3">3. 예시로 확인<a class="headerlink" href="#3" title="Permanent link">&para;</a></h4>
+<p>GPT에게 "오늘 날씨가 좋아서"라고 입력하면, 내부에서는 이런 일이 벌어집니다.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>입력: &quot;오늘 날씨가 좋아서&quot;
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>GPT의 머릿속 확률 계산:
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>  &quot;산책을&quot;  → 35%
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>  &quot;기분이&quot;  → 25%
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>  &quot;공원에&quot;  → 20%
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>  &quot;빨래를&quot;  → 10%
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>  &quot;운동을&quot;  →  7%
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>  기타      →  3%
+</span></code></pre></div>
+<p>GPT는 이 중 확률이 높은 단어를 하나 고르고, 그 단어를 붙인 문장에서 <strong>또</strong> 다음 단어를 예측하고, 또 그다음 단어를… 이 과정을 <strong>수백 번 반복</strong>하면 하나의 긴 문장이 완성됩니다.</p>
+<div class="mermaid">flowchart LR
+    A["오늘 날씨가 좋아서"] --&gt; B["산책을"]
+    B --&gt; C["하러"]
+    C --&gt; D["공원에"]
+    D --&gt; E["갔다."]
+
+    style A fill:#E3F2FD,stroke:#1565C0,color:#000
+    style B fill:#FFF9C4,stroke:#F9A825,color:#000
+    style C fill:#FFF9C4,stroke:#F9A825,color:#000
+    style D fill:#FFF9C4,stroke:#F9A825,color:#000
+    style E fill:#C8E6C9,stroke:#2E7D32,color:#000</div>
+<blockquote>
+<p><strong>📌 핵심 정리:</strong> GPT의 유일한 재주는 <strong>"다음에 올 단어 중 가장 그럴듯한 것을 고르기"</strong>입니다. 이것이 수백~수천 번 반복되면서 마치 "생각하는 것처럼" 보이는 긴 글이 만들어지는 거예요.</p>
+</blockquote>
+<hr />
+<h3 id="2_1">개념 2: 패턴 매칭 – 이해가 아니라 흉내 🎭<a class="headerlink" href="#2_1" title="Permanent link">&para;</a></h3>
+<h4 id="1_1">1. 비유로 시작<a class="headerlink" href="#1_1" title="Permanent link">&para;</a></h4>
+<p>중국어를 전혀 모르는 사람이 방 안에 있습니다. 밖에서 중국어 쪽지가 들어오면, 이 사람은 <strong>거대한 규칙 책</strong>을 보고 "이 글자 조합이 들어오면 이 글자 조합을 내보내라"는 지시를 따릅니다. 밖에 있는 사람은 "와, 중국어를 잘 하네!"라고 생각하지만, 방 안의 사람은 <strong>중국어를 한 마디도 이해하지 못합니다.</strong></p>
+<p>이것이 유명한 <strong>'중국어 방(Chinese Room)'</strong> 사고실험이에요. GPT가 하는 일도 이와 비슷합니다.</p>
+<h4 id="2_2">2. 정확한 정의<a class="headerlink" href="#2_2" title="Permanent link">&para;</a></h4>
+<p><strong>패턴 매칭(Pattern Matching)</strong> 이란 데이터에서 반복적으로 나타나는 규칙성(패턴)을 찾아내어, 새로운 입력에 대해 그 규칙에 맞는 출력을 생성하는 것입니다.</p>
+<p>GPT는 문장의 <strong>의미를 이해</strong>하는 것이 아니라, 훈련 데이터에서 발견한 <strong>단어들 사이의 통계적 관계(패턴)</strong>를 활용해 답변을 생성합니다.</p>
+<h4 id="3_1">3. 예시로 확인<a class="headerlink" href="#3_1" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p><strong>🧪 실험해 보기:</strong> ChatGPT에게 이런 질문을 던져 보세요.</p>
+<p><strong>질문:</strong> "철수의 아버지는 아들이 3명입니다. 첫째는 '하나', 둘째는 '둘이'입니다. 셋째의 이름은?"</p>
+<p>많은 경우 GPT는 "셋이"라고 대답합니다. 하지만 정답은 <strong>'철수'</strong>예요! 문제를 잘 읽으면 "철수의 아버지"라고 했으니, 셋째는 바로 철수입니다.</p>
+</blockquote>
+<p>GPT가 틀리는 이유가 뭘까요? 훈련 데이터에서 "하나, 둘이, ___"라는 패턴이 나오면 "셋이"가 올 확률이 높기 때문입니다. GPT는 문제의 <strong>논리적 구조를 이해</strong>한 것이 아니라, <strong>단어 패턴을 따라간</strong> 거예요.</p>
+<div class="mermaid">flowchart TB
+    subgraph 사람의_이해["🧠 사람의 이해 방식"]
+        H1["문제 읽기"] --&gt; H2["논리적으로 분석"]
+        H2 --&gt; H3["'철수의 아버지'에 주목"]
+        H3 --&gt; H4["셋째 = 철수!"]
+    end
+
+    subgraph GPT의_패턴매칭["🤖 GPT의 패턴 매칭"]
+        G1["문제 읽기"] --&gt; G2["비슷한 패턴 검색"]
+        G2 --&gt; G3["하나, 둘이, → 셋이?"]
+        G3 --&gt; G4["셋이! ❌"]
+    end
+
+    style H4 fill:#C8E6C9,stroke:#2E7D32,color:#000
+    style G4 fill:#FFCDD2,stroke:#C62828,color:#000</div>
+<blockquote>
+<p><strong>📌 핵심 정리:</strong> GPT는 문장을 <strong>이해하는 척</strong> 하지만, 실제로는 <strong>가장 그럴듯한 패턴을 따라가는</strong> 것입니다. 그래서 논리적 함정이나 새로운 상황에서 틀릴 수 있어요.</p>
+</blockquote>
+<hr />
+<h3 id="3_2">개념 3: 확률적 응답 – 같은 질문, 다른 대답 🎲<a class="headerlink" href="#3_2" title="Permanent link">&para;</a></h3>
+<h4 id="1_2">1. 비유로 시작<a class="headerlink" href="#1_2" title="Permanent link">&para;</a></h4>
+<p>주사위를 던진다고 상상해 보세요. 하지만 이 주사위는 보통 주사위가 아닙니다. 각 면이 나올 확률이 <strong>다릅니다</strong>. '산책'이 적힌 면은 35%, '운동'이 적힌 면은 7%… 이런 식이죠. 던질 때마다 결과가 조금씩 달라질 수 있습니다.</p>
+<p>GPT의 응답도 마찬가지입니다. 같은 질문을 해도 <strong>매번 살짝 다른 답</strong>이 나올 수 있어요.</p>
+<h4 id="2_3">2. 정확한 정의<a class="headerlink" href="#2_3" title="Permanent link">&para;</a></h4>
+<p><strong>확률적 응답(Probabilistic Response)</strong> 이란 여러 후보 단어 중 확률 분포에 따라 <strong>무작위성을 포함하여</strong> 단어를 선택하는 방식입니다.</p>
+<p>이때 <strong>온도(Temperature)</strong>라는 설정이 중요합니다.</p>
+<ul>
+<li><strong>온도가 낮으면 (0에 가까우면)</strong>: 가장 확률 높은 단어만 고름 → 답변이 일관적이지만 딱딱함</li>
+<li><strong>온도가 높으면 (1~2)</strong>: 확률이 낮은 단어도 선택될 수 있음 → 답변이 창의적이지만 엉뚱해질 수 있음</li>
+</ul>
+<h4 id="3_3">3. 예시로 확인<a class="headerlink" href="#3_3" title="Permanent link">&para;</a></h4>
+<p>ChatGPT에게 "짧은 동시를 써 줘"라고 3번 연속 물어보세요. 매번 <strong>다른 동시</strong>가 나올 거예요! 이것이 바로 확률적 응답의 결과입니다.</p>
+<div class="mermaid">flowchart TB
+    Q["🙋 '짧은 동시를 써 줘'"] --&gt; R1["1번째 응답:\n'하늘 위 구름이\n솜사탕 같아요'"]
+    Q --&gt; R2["2번째 응답:\n'봄바람 살랑살랑\n꽃잎이 춤춰요'"]
+    Q --&gt; R3["3번째 응답:\n'작은 개미가\n열심히 걸어가요'"]
+
+    style Q fill:#E3F2FD,stroke:#1565C0,color:#000
+    style R1 fill:#FFF9C4,stroke:#F9A825,color:#000
+    style R2 fill:#FFF9C4,stroke:#F9A825,color:#000
+    style R3 fill:#FFF9C4,stroke:#F9A825,color:#000</div>
+<p>이 특성이 만들어내는 <strong>장점과 한계</strong>를 정리해 볼까요?</p>
+<p><strong>✨ 장점</strong>
+- 같은 주제로도 다양한 글을 생성할 수 있다
+- 창의적인 아이디어를 여러 개 받을 수 있다
+- 브레인스토밍 파트너로 훌륭하다</p>
+<p><strong>⚠️ 한계</strong>
+- 같은 질문에도 틀린 답이 섞여 나올 수 있다
+- 정확한 사실 확인이 필요한 상황에서 위험하다
+- "확신에 찬 어조로 틀린 말"을 할 수 있다 (이것을 <strong>환각(Hallucination)</strong>이라 부릅니다)</p>
+<hr />
+<h3 id="4-gpt">개념 4: GPT의 한계 – 못하는 것도 있다! 🚧<a class="headerlink" href="#4-gpt" title="Permanent link">&para;</a></h3>
+<h4 id="1_3">1. 비유로 시작<a class="headerlink" href="#1_3" title="Permanent link">&para;</a></h4>
+<p>GPT를 <strong>엄청나게 많은 책을 읽은 앵무새</strong>라고 생각해 보세요. 이 앵무새는 문장을 놀라울 만큼 자연스럽게 만들어내지만, 다음과 같은 일은 못 합니다.</p>
+<ul>
+<li>📅 어제 무슨 일이 있었는지 <strong>직접 경험하지 못함</strong> (실시간 정보 없음)</li>
+<li>🧮 복잡한 수학 문제를 <strong>진짜로 계산하지 못함</strong> (숫자도 패턴으로 처리)</li>
+<li>🔍 자기가 한 말이 맞는지 <strong>스스로 검증하지 못함</strong></li>
+</ul>
+<h4 id="2_4">2. 정확한 정의<a class="headerlink" href="#2_4" title="Permanent link">&para;</a></h4>
+<p>GPT의 주요 한계는 크게 세 가지입니다.</p>
+<ul>
+<li><strong>지식 단절(Knowledge Cutoff)</strong>: 훈련 데이터가 특정 시점까지만 포함되어 있어 그 이후의 정보를 모릅니다</li>
+<li><strong>환각(Hallucination)</strong>: 사실이 아닌 내용을 마치 사실인 것처럼 자신 있게 생성하는 현상입니다</li>
+<li><strong>추론 한계</strong>: 여러 단계의 논리적 사고가 필요한 문제에서 실수할 수 있습니다</li>
+</ul>
+<h4 id="3_4">3. 예시로 확인<a class="headerlink" href="#3_4" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p><strong>🧪 직접 확인해 보기</strong></p>
+<p>ChatGPT에게 다음 질문을 해 보세요.</p>
+<ul>
+<li>"오늘 우리나라 날씨 어때?" → 실시간 정보이므로 <strong>정확히 답할 수 없음</strong></li>
+<li>"123456789 × 987654321은?" → 계산기처럼 정확하지 않을 수 있음</li>
+<li>"존재하지 않는 책 '하늘을 나는 거북이'의 줄거리를 알려줘" → 그럴듯하게 <strong>지어낼 수 있음</strong> 😱</li>
+</ul>
+<p><strong>📌 핵심 정리:</strong> GPT는 <strong>만능이 아닙니다</strong>. 실시간 정보, 정확한 계산, 사실 검증이 필요한 일에서는 반드시 <strong>사람이 확인</strong>해야 합니다. AI를 잘 쓰는 사람은 "AI가 틀릴 수 있다"는 것을 아는 사람이에요.</p>
+</blockquote>
+<hr />
+<h2 id="gpt">🔨 따라하기: GPT의 한계를 직접 실험해 보자!<a class="headerlink" href="#gpt" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>이 실습에서는 ChatGPT(또는 다른 AI 챗봇)에게 <strong>일부러 어려운 질문</strong>을 던져서, 앞에서 배운 원리가 실제로 맞는지 확인합니다.</p>
+</blockquote>
+<h3 id="step-1-chatgpt">Step 1: ChatGPT 준비하기<a class="headerlink" href="#step-1-chatgpt" title="Permanent link">&para;</a></h3>
+<p>ChatGPT(chat.openai.com)에 접속하여 새 대화를 시작하세요. 다른 AI 챗봇(Gemini, Claude 등)을 사용해도 좋습니다.</p>
+<h3 id="step-2">Step 2: 다음 단어 예측 원리 확인하기<a class="headerlink" href="#step-2" title="Permanent link">&para;</a></h3>
+<p>아래 문장을 입력하고, GPT가 어떻게 이어 쓰는지 관찰하세요.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>다음 문장을 완성해 줘. 한 단어씩만 추가해서 5번 반복해 줘.
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>&quot;오늘 학교에서&quot;
+</span></code></pre></div>
+<p>GPT가 한 단어씩 추가하는 과정을 보면, <strong>다음 단어 예측</strong>이 어떻게 작동하는지 눈으로 확인할 수 있습니다.</p>
+<h3 id="step-3">Step 3: 논리 함정 질문 던지기<a class="headerlink" href="#step-3" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>철수의 아버지는 아들이 3명입니다. 
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>첫째 이름은 &#39;하나&#39;, 둘째 이름은 &#39;둘이&#39;입니다. 
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>셋째 이름은 무엇일까요? 
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>이유도 설명해 주세요.
+</span></code></pre></div>
+<p>GPT가 "셋이"라고 답하는지, "철수"라고 답하는지 확인해 보세요. 만약 맞힌다면, 이렇게 바꿔서 다시 시도해 보세요.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>민수의 어머니에게는 자녀가 4명 있습니다.
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>첫째는 &#39;봄이&#39;, 둘째는 &#39;여름이&#39;, 셋째는 &#39;가을이&#39;입니다.
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>넷째 이름은?
+</span></code></pre></div>
+<p>(정답: 민수!)</p>
+<h3 id="step-4-hallucination">Step 4: 환각(Hallucination) 확인하기<a class="headerlink" href="#step-4-hallucination" title="Permanent link">&para;</a></h3>
+<p>존재하지 않는 정보를 물어봅시다.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>김철수 교수가 2024년에 발표한 논문 
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>&quot;인공지능과 김치 발효의 상관관계&quot;의 
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>주요 내용을 요약해 줘.
+</span></code></pre></div>
+<blockquote>
+<p>⚡ 이 논문은 <strong>존재하지 않습니다!</strong> GPT가 어떻게 답하는지 관찰하세요. 그럴듯하게 지어내면 그것이 바로 <strong>환각</strong>입니다.</p>
+</blockquote>
+<h3 id="step-5">Step 5: 확률적 응답 확인하기<a class="headerlink" href="#step-5" title="Permanent link">&para;</a></h3>
+<p><strong>같은 질문을 3번</strong> 연속으로 해 보세요.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>&quot;별&quot;을 주제로 2줄짜리 동시를 써 줘.
+</span></code></pre></div>
+<p>세 번의 답변을 비교해 보세요. 매번 다른 동시가 나오나요? 이것이 <strong>확률적 응답</strong>입니다.</p>
+<h3 id="step-6">Step 6: 실험 결과 정리하기<a class="headerlink" href="#step-6" title="Permanent link">&para;</a></h3>
+<p>여러분의 실험 결과를 아래 형식으로 노트에 정리해 보세요.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>[나의 GPT 실험 노트]
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>실험 1 - 다음 단어 예측
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>  질문: ___
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>  GPT 응답: ___
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>  발견한 점: ___
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>실험 2 - 논리 함정
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>  질문: ___
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>  GPT 응답: ___  
+</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>  정답 여부: ⭕ / ❌
+</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>  틀린 이유 분석: ___
+</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>
+</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>실험 3 - 환각 확인
+</span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a>  질문: ___
+</span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>  GPT 응답: ___
+</span><span id="__span-6-17"><a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a>  환각이 발생했나?: 예 / 아니오
+</span><span id="__span-6-18"><a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a>
+</span><span id="__span-6-19"><a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a>실험 4 - 확률적 응답
+</span><span id="__span-6-20"><a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a>  1번째 답변: ___
+</span><span id="__span-6-21"><a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a>  2번째 답변: ___
+</span><span id="__span-6-22"><a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a>  3번째 답변: ___
+</span><span id="__span-6-23"><a id="__codelineno-6-23" name="__codelineno-6-23" href="#__codelineno-6-23"></a>  같은 답이 나왔나?: ___
+</span></code></pre></div>
+<hr />
+<h2 id="_4">📝 전체 코드<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<p>이번 장은 프로그래밍 코드 대신 <strong>ChatGPT 실험</strong>이 핵심 실습입니다. 아래는 실험에 사용할 프롬프트(질문) 모음입니다. 복사해서 바로 사용하세요!</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>[프롬프트 1: 다음 단어 예측 확인]
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>다음 문장을 완성해 줘. 한 단어씩만 추가해서 5번 반복해 줘.
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>&quot;오늘 학교에서&quot;
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>[프롬프트 2: 논리 함정]
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>철수의 아버지는 아들이 3명입니다. 첫째 이름은 &#39;하나&#39;, 둘째 이름은 &#39;둘이&#39;입니다. 셋째 이름은 무엇일까요? 이유도 설명해 주세요.
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>[프롬프트 3: 환각 테스트]
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>김철수 교수가 2024년에 발표한 논문 &quot;인공지능과 김치 발효의 상관관계&quot;의 주요 내용을 요약해 줘.
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>[프롬프트 4: 확률적 응답 확인]
+</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>&quot;별&quot;을 주제로 2줄짜리 동시를 써 줘.
+</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>
+</span><span id="__span-7-14"><a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a>[프롬프트 5: 추가 함정 질문]
+</span><span id="__span-7-15"><a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a>한 농부가 17마리의 양을 가지고 있었습니다. 9마리를 제외하고 모두 죽었습니다. 남은 양은 몇 마리일까요?
+</span></code></pre></div>
+<hr />
+<h2 id="_5">⚠️ 자주 하는 실수<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
+<p><strong>실수 1: "GPT가 말했으니까 맞겠지"라고 믿기</strong> 🚫</p>
+<p>GPT는 확신에 찬 어조로 <strong>틀린 정보</strong>를 말할 수 있습니다. 이것을 환각(Hallucination)이라고 했죠? 특히 역사적 사실, 과학 데이터, 인물 정보 등에서 자주 발생합니다. <strong>항상 중요한 정보는 다른 출처로 확인</strong>하세요.</p>
+<blockquote>
+<p>💡 <strong>이렇게 하세요:</strong> "이 정보의 출처를 알려줘"라고 추가로 물어보세요. GPT가 출처를 정확히 대지 못하면 의심해 봐야 합니다.</p>
+</blockquote>
+<p><strong>실수 2: "GPT가 이해하고 있다"고 착각하기</strong> 🚫</p>
+<p>GPT가 감정적인 답변을 하거나 공감하는 것처럼 보여도, 그것은 <strong>훈련 데이터에서 본 공감 패턴을 재현</strong>하는 것입니다. GPT에게 감정이나 의식은 없습니다.</p>
+<blockquote>
+<p>💡 <strong>이렇게 생각하세요:</strong> GPT는 "슬프다"라는 단어 뒤에 어떤 단어가 올 확률이 높은지 아는 것이지, 실제로 슬픔을 느끼는 것이 아닙니다.</p>
+</blockquote>
+<p><strong>실수 3: 한 번 물어보고 포기하기</strong> 🚫</p>
+<p>GPT의 첫 번째 답변이 마음에 들지 않으면 <strong>다시 물어보거나 질문을 바꿔 보세요</strong>. 확률적 응답이기 때문에 다른 표현으로 질문하면 더 좋은 답을 얻을 수 있습니다.</p>
+<blockquote>
+<p>💡 <strong>이렇게 하세요:</strong> "좀 더 쉽게 설명해 줘", "다른 예시를 들어 줘", "초등학생이 이해할 수 있게 다시 써 줘"처럼 구체적으로 요청하세요.</p>
+</blockquote>
+<hr />
+<h2 id="_6">✅ 스스로 점검하기<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
+<h3 id="ox">기본 문제: OX 퀴즈<a class="headerlink" href="#ox" title="Permanent link">&para;</a></h3>
+<p>다음 문장이 맞으면 ⭕, 틀리면 ❌를 표시하세요.</p>
+<p><strong>문제 1.</strong> GPT는 질문의 의미를 깊이 이해하고 답변한다.</p>
+<details>
+<summary>정답 확인</summary>
+
+❌ **틀림!** GPT는 의미를 '이해'하는 것이 아니라, 훈련 데이터의 **패턴을 매칭**하여 가장 그럴듯한 다음 단어를 예측하는 것입니다.
+
+</details>
+
+<p><strong>문제 2.</strong> GPT에게 같은 질문을 여러 번 하면 항상 같은 답이 나온다.</p>
+<details>
+<summary>정답 확인</summary>
+
+❌ **틀림!** GPT는 **확률적으로** 단어를 선택하기 때문에 같은 질문에도 다른 답변이 나올 수 있습니다.
+
+</details>
+
+<p><strong>문제 3.</strong> GPT가 자신 있게 대답했다면, 그 정보는 반드시 사실이다.</p>
+<details>
+<summary>정답 확인</summary>
+
+❌ **틀림!** GPT는 **환각(Hallucination)** 현상으로 사실이 아닌 내용을 자신 있게 말할 수 있습니다. 항상 확인이 필요합니다.
+
+</details>
+
+<p><strong>문제 4.</strong> LLM은 "다음 단어 예측"을 반복하여 긴 문장을 만들어 낸다.</p>
+<details>
+<summary>정답 확인</summary>
+
+⭕ **맞음!** 대규모 언어모델(LLM)의 핵심 원리는 **다음에 올 가장 그럴듯한 단어를 예측**하는 것이며, 이것을 수백~수천 번 반복하여 긴 텍스트를 생성합니다.
+
+</details>
+
+<hr />
+<h3 id="_7">응용 문제: 빈칸 채우기<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h3>
+<p><strong>문제 5.</strong> GPT가 존재하지 않는 정보를 마치 사실인 것처럼 생성하는 현상을 (<strong><em>_</em></strong>___)이라고 한다.</p>
+<details>
+<summary>정답 확인</summary>
+
+**환각(Hallucination)**
+
+</details>
+
+<p><strong>문제 6.</strong> GPT의 응답에서 "온도(Temperature)"를 높이면 답변이 더 (<strong><em>_</em></strong><strong><em>)해지고, 낮추면 더 (</em></strong><strong><em>_</em></strong>)해진다.</p>
+<details>
+<summary>정답 확인</summary>
+
+높이면 더 **창의적(다양)**해지고, 낮추면 더 **일관적(안정적)**해진다.
+
+</details>
+
+<hr />
+<h3 id="gpt_1">심화 문제: GPT를<a class="headerlink" href="#gpt_1" title="Permanent link">&para;</a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  맨위로
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "navigation.indexes", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "toc.follow"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\ud074\ub9bd\ubcf4\ub4dc\uc5d0 \ubcf5\uc0ac\ub428", "clipboard.copy": "\ud074\ub9bd\ubcf4\ub4dc\ub85c \ubcf5\uc0ac", "search.result.more.one": "\uc774 \ubb38\uc11c\uc5d0\uc11c 1\uac1c\uc758 \uac80\uc0c9 \uacb0\uacfc \ub354 \ubcf4\uae30", "search.result.more.other": "\uc774 \ubb38\uc11c\uc5d0\uc11c #\uac1c\uc758 \uac80\uc0c9 \uacb0\uacfc \ub354 \ubcf4\uae30", "search.result.none": "\uac80\uc0c9\uc5b4\uc640 \uc77c\uce58\ud558\ub294 \ubb38\uc11c\uac00 \uc5c6\uc2b5\ub2c8\ub2e4", "search.result.one": "1\uac1c\uc758 \uc77c\uce58\ud558\ub294 \ubb38\uc11c", "search.result.other": "#\uac1c\uc758 \uc77c\uce58\ud558\ub294 \ubb38\uc11c", "search.result.placeholder": "\uac80\uc0c9\uc5b4\ub97c \uc785\ub825\ud558\uc138\uc694", "search.result.term.missing": "\ud3ec\ud568\ub418\uc9c0 \uc54a\uc740 \uac80\uc0c9\uc5b4", "select.version": "\ubc84\uc804 \uc120\ud0dd"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
+      
+        <script src="../javascripts/title-link.js"></script>
+      
+    
+  </body>
+</html>
