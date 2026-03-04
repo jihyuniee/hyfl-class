@@ -8,8 +8,8 @@ type Role = {
   dept: string;
   role_name: string;
   duties: string | null;
+  description: string | null;
   is_active: boolean;
-  created_at: string;
 };
 
 type Application = {
@@ -17,55 +17,30 @@ type Application = {
   role_id: string;
   student_no: string;
   name: string;
-  created_at: string;
 };
 
-function formatKST(iso: string) {
-  const d = new Date(iso);
-  return d.toLocaleString("ko-KR", { timeZone: "Asia/Seoul" });
-}
-
 export default function RolesPage() {
+
   const [roles, setRoles] = useState<Role[]>([]);
   const [apps, setApps] = useState<Application[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [err, setErr] = useState<string | null>(null);
-
   const [studentNo, setStudentNo] = useState("");
   const [name, setName] = useState("");
-
-  // 역할 제안 state
-  const [proposerName, setProposerName] = useState("");
-  const [suggestedRole, setSuggestedRole] = useState("");
-  const [reason, setReason] = useState("");
+  const [loading, setLoading] = useState(false);
 
   async function load() {
-    setErr(null);
 
-    const { data: roleData, error: roleErr } = await supabase
+    const { data: roleData } = await supabase
       .from("roles")
       .select("*")
       .eq("is_active", true)
-      .order("dept", { ascending: true });
+      .order("dept");
 
-    if (roleErr) {
-      setErr(roleErr.message);
-      return;
-    }
-
-    setRoles((roleData as Role[]) ?? []);
-
-    const { data: appData, error: appErr } = await supabase
+    const { data: appData } = await supabase
       .from("role_applications")
-      .select("*")
-      .order("created_at", { ascending: false });
+      .select("*");
 
-    if (appErr) {
-      setErr(appErr.message);
-      return;
-    }
-
-    setApps((appData as Application[]) ?? []);
+    setRoles(roleData ?? []);
+    setApps(appData ?? []);
   }
 
   useEffect(() => {
@@ -73,177 +48,292 @@ export default function RolesPage() {
   }, []);
 
   const appsByRoleId = useMemo(() => {
+
     const map = new Map<string, Application[]>();
+
     for (const a of apps) {
+
       const arr = map.get(a.role_id) ?? [];
       arr.push(a);
       map.set(a.role_id, arr);
+
     }
+
     return map;
+
   }, [apps]);
 
-  async function apply(roleId: string) {
-    if (!studentNo.trim() || !name.trim()) {
-      alert("학번과 이름을 입력해 주세요.");
+  const myRoles = apps.filter(
+    (a) => a.student_no === studentNo && a.name === name
+  );
+
+  async function apply(role: Role) {
+
+    if (!studentNo || !name) {
+      alert("학번과 이름을 입력하세요.");
+      return;
+    }
+
+    const already = apps.find(
+      (a) =>
+        a.role_id === role.id &&
+        a.student_no === studentNo
+    );
+
+    if (already) {
+      alert("이미 지원했습니다.");
       return;
     }
 
     setLoading(true);
 
-    const { error } = await supabase.from("role_applications").insert({
-      role_id: roleId,
-      student_no: studentNo.trim(),
-      name: name.trim(),
-    });
+    const { error } = await supabase
+      .from("role_applications")
+      .insert({
+        role_id: role.id,
+        student_no: studentNo,
+        name: name,
+      });
 
     setLoading(false);
-
-    if (error) {
-      setErr(error.message);
-      return;
-    }
-
-    await load();
-    alert("지원 완료!");
-  }
-
-  async function submitSuggestion() {
-    if (!proposerName || !suggestedRole) {
-      alert("이름과 역할을 입력하세요.");
-      return;
-    }
-
-    const { error } = await supabase.from("role_suggestions").insert({
-      proposer_name: proposerName,
-      suggested_role: suggestedRole,
-      reason: reason,
-    });
 
     if (error) {
       alert(error.message);
       return;
     }
 
-    setSuggestedRole("");
-    setReason("");
-    alert("역할 제안이 등록되었습니다.");
+    await load();
+
+    alert(`${role.role_name} 지원 완료 🙂`);
   }
 
+  function renderDescription(role: Role) {
+
+    const text = role.description ?? role.duties;
+
+    if (!text) return null;
+
+    return (
+      <div className="mt-2 text-sm text-gray-700 bg-gray-50 p-3 rounded-lg whitespace-pre-wrap">
+        {text}
+      </div>
+    );
+  }
+
+  const leaders = roles.filter(
+    (r) => r.dept === "자치기획부"
+  );
+
+  const rolesByDept = useMemo(() => {
+
+    const grouped: Record<string, Role[]> = {};
+
+    roles.forEach((r) => {
+
+      if (r.dept === "자치기획부") return;
+
+      if (!grouped[r.dept]) {
+        grouped[r.dept] = [];
+      }
+
+      grouped[r.dept].push(r);
+
+    });
+
+    return grouped;
+
+  }, [roles]);
+
   return (
-    <div className="space-y-6">
+
+    <div className="space-y-8">
+
+
+      {/* 제목 */}
 
       <div className="hy-card p-6">
-        <div className="text-sm text-gray-600">우리 반 운영</div>
-        <h1 className="hy-title mt-1 text-2xl font-bold">1인 1역할 지원</h1>
-        <p className="mt-2 text-sm text-gray-700">
+
+        <div className="text-sm text-gray-600">
+          우리 반 운영 시스템
+        </div>
+
+        <h1 className="text-2xl font-bold mt-1">
+          1인 1역할
+        </h1>
+
+        <p className="text-sm text-gray-700 mt-2">
           중복 지원 가능합니다. 겹치면 가위바위보 🙂
         </p>
+
       </div>
 
-      {/* 학생 정보 */}
-      <div className="hy-card p-5 space-y-3">
-        <div className="text-sm font-semibold">내 정보</div>
 
-        <div className="grid gap-3 md:grid-cols-2">
+      {/* 학생 정보 */}
+
+      <div className="hy-card p-5 space-y-3">
+
+        <div className="font-semibold">
+          내 정보 입력
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-3">
+
           <input
-            className="w-full rounded-2xl border px-4 py-3 text-sm"
+            className="border rounded-xl px-4 py-3 text-sm"
             placeholder="학번"
             value={studentNo}
             onChange={(e) => setStudentNo(e.target.value)}
           />
 
           <input
-            className="w-full rounded-2xl border px-4 py-3 text-sm"
+            className="border rounded-xl px-4 py-3 text-sm"
             placeholder="이름"
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
+
         </div>
+
       </div>
 
-      {/* 역할 목록 */}
-      <div className="space-y-3">
-        {roles.map((r) => {
-          const applicants = appsByRoleId.get(r.id) ?? [];
 
-          return (
-            <div key={r.id} className="hy-card p-5">
-              <div className="flex justify-between">
+      {/* 내가 지원한 역할 */}
 
-                <div>
-                  <div className="text-xs text-gray-500">{r.dept}</div>
-                  <div className="font-bold">{r.role_name}</div>
+      {myRoles.length > 0 && (
 
-                  {r.duties && (
-                    <div className="text-sm text-gray-700 mt-1">
-                      {r.duties}
-                    </div>
-                  )}
-                </div>
+        <div className="hy-card p-5">
 
-                <button
-                  className="hy-btn hy-btn-primary text-white text-sm"
-                  onClick={() => apply(r.id)}
-                >
-                  지원
-                </button>
+          <div className="font-semibold mb-3">
+            내가 지원한 역할
+          </div>
 
-              </div>
+          <ul className="text-sm space-y-1">
 
-              <div className="mt-3 text-sm text-gray-600">
-                지원자 {applicants.length}명
-              </div>
+            {myRoles.map((a) => {
 
-              <ul className="mt-2 text-sm">
-                {applicants.map((a) => (
-                  <li key={a.id}>
-                    {a.name} ({a.student_no})
-                  </li>
-                ))}
-              </ul>
+              const role = roles.find(
+                (r) => r.id === a.role_id
+              );
+
+              return (
+                <li key={a.id}>
+                  {role?.role_name}
+                </li>
+              );
+
+            })}
+
+          </ul>
+
+        </div>
+
+      )}
+
+
+      {/* 회장단 */}
+
+      <div className="hy-card p-5">
+
+        <div className="font-semibold mb-4">
+          자치기획부 (회장단)
+        </div>
+
+        {leaders.map((r) => (
+
+          <div key={r.id} className="mb-4">
+
+            <div className="font-bold">
+              {r.role_name}
             </div>
-          );
-        })}
-      </div>
 
-      {/* 역할 제안 */}
-      <div className="hy-card p-5 space-y-3">
+            {renderDescription(r)}
 
-        <div className="font-semibold">+ 새로운 역할 제안</div>
+            <div className="text-xs text-gray-500 mt-1">
+              회장단 공약으로 선출
+            </div>
 
-        <div className="grid gap-3 md:grid-cols-3">
+          </div>
 
-          <input
-            className="rounded-2xl border px-4 py-3 text-sm"
-            placeholder="이름"
-            value={proposerName}
-            onChange={(e) => setProposerName(e.target.value)}
-          />
-
-          <input
-            className="rounded-2xl border px-4 py-3 text-sm"
-            placeholder="추가할 역할"
-            value={suggestedRole}
-            onChange={(e) => setSuggestedRole(e.target.value)}
-          />
-
-          <input
-            className="rounded-2xl border px-4 py-3 text-sm"
-            placeholder="이유"
-            value={reason}
-            onChange={(e) => setReason(e.target.value)}
-          />
-
-        </div>
-
-        <button
-          className="hy-btn hy-btn-primary text-white text-sm"
-          onClick={submitSuggestion}
-        >
-          역할 제안하기
-        </button>
+        ))}
 
       </div>
+
+
+      {/* 부서별 역할 */}
+
+      {Object.entries(rolesByDept).map(
+        ([dept, deptRoles]) => (
+
+          <div key={dept} className="hy-card p-5">
+
+            <div className="font-semibold mb-4">
+              📁 {dept}
+            </div>
+
+            <div className="space-y-4">
+
+              {deptRoles.map((r) => {
+
+                const applicants =
+                  appsByRoleId.get(r.id) ?? [];
+
+                return (
+
+                  <div
+                    key={r.id}
+                    className="border rounded-xl p-4"
+                  >
+
+                    <div className="flex justify-between items-start">
+
+                      <div>
+
+                        <div className="font-semibold">
+                          {r.role_name}
+                        </div>
+
+                        {renderDescription(r)}
+
+                      </div>
+
+                      <button
+                        disabled={loading}
+                        className="hy-btn hy-btn-primary text-white text-sm"
+                        onClick={() => apply(r)}
+                      >
+                        지원
+                      </button>
+
+                    </div>
+
+                    <div className="mt-3 text-sm text-gray-600">
+                      지원자 {applicants.length}명
+                    </div>
+
+                    <ul className="text-sm mt-1 space-y-1">
+
+                      {applicants.map((a) => (
+
+                        <li key={a.id}>
+                          {a.name} ({a.student_no})
+                        </li>
+
+                      ))}
+
+                    </ul>
+
+                  </div>
+
+                );
+
+              })}
+
+            </div>
+
+          </div>
+
+        )
+      )}
 
     </div>
   );
