@@ -1,7 +1,4 @@
-"use client";
-
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 
 const links = [
   { href: "/", label: "홈" },
@@ -11,17 +8,12 @@ const links = [
   { href: "/schedule", label: "일정/수행" },
   { href: "/counseling", label: "상담" },
   { href: "/rules", label: "규칙" },
-  { href: "/wall", label: "학생 소개" },
+  { href: "/students", label: "학생 소개" }, // 담벼락 연결(이미 쓰는 구조)
+  { href: "/campaign", label: "공약" },
+  { href: "/roles", label: "1인1역할" },
 ];
 
-function isActive(pathname: string, href: string) {
-  if (href === "/") return pathname === "/";
-  return pathname === href || pathname.startsWith(href + "/");
-}
-
 export default function NavBar() {
-  const pathname = usePathname();
-
   return (
     <header className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur">
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
@@ -29,30 +21,21 @@ export default function NavBar() {
           2-2 우리반
         </Link>
 
-        {/* 데스크톱 메뉴 */}
-        <div className="hidden items-center gap-2 md:flex">
-          {links.map((l) => {
-            const active = isActive(pathname, l.href);
-            return (
-              <Link
-                key={l.href}
-                href={l.href}
-                className={`rounded-full px-3 py-1.5 text-sm transition ${
-                  active
-                    ? "hy-btn-primary text-white"
-                    : "text-gray-700 hover:bg-black/[0.04] hover:text-black"
-                }`}
-              >
-                {l.label}
-              </Link>
-            );
-          })}
+        <div className="hidden gap-4 md:flex">
+          {links.map((l) => (
+            <Link
+              key={l.href}
+              href={l.href}
+              className="text-sm text-gray-700 hover:text-black"
+            >
+              {l.label}
+            </Link>
+          ))}
         </div>
 
-        {/* 우측 버튼 */}
         <Link
           href="/schedule"
-          className="hy-btn hy-btn-primary text-sm text-white"
+          className="rounded-full bg-black px-3 py-1.5 text-sm text-white hover:opacity-90"
         >
           오늘의 일정
         </Link>
@@ -61,22 +44,15 @@ export default function NavBar() {
       {/* 모바일 메뉴 */}
       <div className="mx-auto block max-w-6xl px-4 pb-3 md:hidden">
         <div className="flex flex-wrap gap-2">
-          {links.map((l) => {
-            const active = isActive(pathname, l.href);
-            return (
-              <Link
-                key={l.href}
-                href={l.href}
-                className={`rounded-full border px-3 py-1 text-xs transition ${
-                  active
-                    ? "bg-black text-white border-black"
-                    : "text-gray-700 hover:bg-black/[0.04]"
-                }`}
-              >
-                {l.label}
-              </Link>
-            );
-          })}
+          {links.map((l) => (
+            <Link
+              key={l.href}
+              href={l.href}
+              className="rounded-full border px-3 py-1 text-xs text-gray-700"
+            >
+              {l.label}
+            </Link>
+          ))}
         </div>
       </div>
     </header>
