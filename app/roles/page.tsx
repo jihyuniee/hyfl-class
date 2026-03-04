@@ -31,9 +31,13 @@ export default function RolesPage() {
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState<string | null>(null);
 
-  // 학생 입력(간단 버전: 이름/학번만)
   const [studentNo, setStudentNo] = useState("");
   const [name, setName] = useState("");
+
+  // 역할 제안 state
+  const [proposerName, setProposerName] = useState("");
+  const [suggestedRole, setSuggestedRole] = useState("");
+  const [reason, setReason] = useState("");
 
   async function load() {
     setErr(null);
@@ -42,13 +46,13 @@ export default function RolesPage() {
       .from("roles")
       .select("*")
       .eq("is_active", true)
-      .order("dept", { ascending: true })
-      .order("role_name", { ascending: true });
+      .order("dept", { ascending: true });
 
     if (roleErr) {
       setErr(roleErr.message);
       return;
     }
+
     setRoles((roleData as Role[]) ?? []);
 
     const { data: appData, error: appErr } = await supabase
@@ -60,6 +64,7 @@ export default function RolesPage() {
       setErr(appErr.message);
       return;
     }
+
     setApps((appData as Application[]) ?? []);
   }
 
@@ -79,11 +84,11 @@ export default function RolesPage() {
 
   async function apply(roleId: string) {
     if (!studentNo.trim() || !name.trim()) {
-      alert("학번/이름을 먼저 입력해줘.");
+      alert("학번과 이름을 입력해 주세요.");
       return;
     }
+
     setLoading(true);
-    setErr(null);
 
     const { error } = await supabase.from("role_applications").insert({
       role_id: roleId,
@@ -99,30 +104,54 @@ export default function RolesPage() {
     }
 
     await load();
-    alert("지원 완료! (다중지원 가능)");
+    alert("지원 완료!");
+  }
+
+  async function submitSuggestion() {
+    if (!proposerName || !suggestedRole) {
+      alert("이름과 역할을 입력하세요.");
+      return;
+    }
+
+    const { error } = await supabase.from("role_suggestions").insert({
+      proposer_name: proposerName,
+      suggested_role: suggestedRole,
+      reason: reason,
+    });
+
+    if (error) {
+      alert(error.message);
+      return;
+    }
+
+    setSuggestedRole("");
+    setReason("");
+    alert("역할 제안이 등록되었습니다.");
   }
 
   return (
     <div className="space-y-6">
+
       <div className="hy-card p-6">
         <div className="text-sm text-gray-600">우리 반 운영</div>
-        <h1 className="hy-title mt-1 text-2xl font-bold">1인 1역할 지원 🧩</h1>
+        <h1 className="hy-title mt-1 text-2xl font-bold">1인 1역할 지원</h1>
         <p className="mt-2 text-sm text-gray-700">
-          이미 지원자가 있어도 <span className="font-semibold">추가 지원 가능</span>해.
-          겹치면 나중에 가위바위보/조율로 결정!
+          중복 지원 가능합니다. 겹치면 가위바위보 🙂
         </p>
       </div>
 
-      {/* 학생 정보 입력 */}
+      {/* 학생 정보 */}
       <div className="hy-card p-5 space-y-3">
         <div className="text-sm font-semibold">내 정보</div>
+
         <div className="grid gap-3 md:grid-cols-2">
           <input
             className="w-full rounded-2xl border px-4 py-3 text-sm"
-            placeholder="학번 (예: 20202)"
+            placeholder="학번"
             value={studentNo}
             onChange={(e) => setStudentNo(e.target.value)}
           />
+
           <input
             className="w-full rounded-2xl border px-4 py-3 text-sm"
             placeholder="이름"
@@ -130,88 +159,92 @@ export default function RolesPage() {
             onChange={(e) => setName(e.target.value)}
           />
         </div>
-
-        <div className="flex items-center gap-2">
-          <button className="hy-btn text-sm" onClick={load}>
-            새로고침
-          </button>
-          {loading && <div className="text-xs text-gray-600">처리 중...</div>}
-        </div>
-
-        {err && (
-          <div className="rounded-2xl border border-red-200 bg-red-50 p-3 text-sm text-red-700">
-            오류: {err}
-          </div>
-        )}
       </div>
 
       {/* 역할 목록 */}
       <div className="space-y-3">
-        {roles.length === 0 ? (
-          <div className="hy-card p-6 text-sm text-gray-700">등록된 역할이 없어.</div>
-        ) : (
-          roles.map((r) => {
-            const applicants = appsByRoleId.get(r.id) ?? [];
-            return (
-              <div key={r.id} className="hy-card p-5">
-                <div className="flex flex-wrap items-start justify-between gap-3">
-                  <div>
-                    <div className="text-xs font-semibold text-gray-500">{r.dept}</div>
-                    <div className="text-base font-bold">{r.role_name}</div>
-                    {r.duties && (
-                      <div className="mt-1 text-sm text-gray-700 whitespace-pre-wrap">
-                        {r.duties}
-                      </div>
-                    )}
-                  </div>
+        {roles.map((r) => {
+          const applicants = appsByRoleId.get(r.id) ?? [];
 
-                  <button
-                    className="hy-btn hy-btn-primary text-sm text-white"
-                    onClick={() => apply(r.id)}
-                    disabled={loading}
-                  >
-                    지원하기
-                  </button>
-                </div>
+          return (
+            <div key={r.id} className="hy-card p-5">
+              <div className="flex justify-between">
 
-                <div className="mt-4 rounded-2xl bg-zinc-50 p-4">
-                  <div className="text-xs font-semibold text-gray-600">
-                    지원자 {applicants.length}명
-                  </div>
-                  {applicants.length === 0 ? (
-                    <div className="mt-2 text-sm text-gray-600">아직 지원자가 없어.</div>
-                  ) : (
-                    <ul className="mt-2 space-y-1 text-sm text-gray-800">
-                      {applicants.slice(0, 10).map((a) => (
-                        <li key={a.id} className="flex justify-between gap-2">
-                          <span>
-                            {a.name} ({a.student_no})
-                          </span>
-                          <span className="text-xs text-gray-500">{formatKST(a.created_at)}</span>
-                        </li>
-                      ))}
-                      {applicants.length > 10 && (
-                        <li className="text-xs text-gray-500">
-                          ... {applicants.length - 10}명 더 있음
-                        </li>
-                      )}
-                    </ul>
+                <div>
+                  <div className="text-xs text-gray-500">{r.dept}</div>
+                  <div className="font-bold">{r.role_name}</div>
+
+                  {r.duties && (
+                    <div className="text-sm text-gray-700 mt-1">
+                      {r.duties}
+                    </div>
                   )}
                 </div>
+
+                <button
+                  className="hy-btn hy-btn-primary text-white text-sm"
+                  onClick={() => apply(r.id)}
+                >
+                  지원
+                </button>
+
               </div>
-            );
-          })
-        )}
+
+              <div className="mt-3 text-sm text-gray-600">
+                지원자 {applicants.length}명
+              </div>
+
+              <ul className="mt-2 text-sm">
+                {applicants.map((a) => (
+                  <li key={a.id}>
+                    {a.name} ({a.student_no})
+                  </li>
+                ))}
+              </ul>
+            </div>
+          );
+        })}
       </div>
 
-      <div className="hy-card p-5 text-sm text-gray-700">
-        <div className="font-semibold">운영 규칙</div>
-        <ul className="mt-2 list-disc pl-5">
-          <li>지원은 중복 가능</li>
-          <li>겹치면 담임 진행으로 조율/가위바위보</li>
-          <li>확정 결과는 이후 공지로 안내</li>
-        </ul>
+      {/* 역할 제안 */}
+      <div className="hy-card p-5 space-y-3">
+
+        <div className="font-semibold">+ 새로운 역할 제안</div>
+
+        <div className="grid gap-3 md:grid-cols-3">
+
+          <input
+            className="rounded-2xl border px-4 py-3 text-sm"
+            placeholder="이름"
+            value={proposerName}
+            onChange={(e) => setProposerName(e.target.value)}
+          />
+
+          <input
+            className="rounded-2xl border px-4 py-3 text-sm"
+            placeholder="추가할 역할"
+            value={suggestedRole}
+            onChange={(e) => setSuggestedRole(e.target.value)}
+          />
+
+          <input
+            className="rounded-2xl border px-4 py-3 text-sm"
+            placeholder="이유"
+            value={reason}
+            onChange={(e) => setReason(e.target.value)}
+          />
+
+        </div>
+
+        <button
+          className="hy-btn hy-btn-primary text-white text-sm"
+          onClick={submitSuggestion}
+        >
+          역할 제안하기
+        </button>
+
       </div>
+
     </div>
   );
 }

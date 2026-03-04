@@ -8,7 +8,7 @@ const links = [
   { href: "/schedule", label: "일정/수행" },
   { href: "/counseling", label: "상담" },
   { href: "/rules", label: "규칙" },
-  { href: "/students", label: "학생 소개" }, // 담벼락 연결(이미 쓰는 구조)
+  { href: "/wall", label: "학생 소개" }, // 담벼락 연결(이미 쓰는 구조)
   { href: "/campaign", label: "공약" },
   { href: "/roles", label: "1인1역할" },
 ];
