@@ -35,6 +35,7 @@ const NAV_GROUPS = [
       { href: "/counseling", label: "상담" },
       { href: "/pledges", label: "규칙" },
       { href: "/board", label: "신문고" },
+      { href: "/hr", label: "HR 기록" },
     ],
   },
 ];
