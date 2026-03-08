@@ -123,8 +123,7 @@ export default function RolesFixedPage() {
           1인 1역할 최종표
         </h1>
         <p className="mt-3 text-sm leading-6 text-gray-700">
-          우리 반의 역할은 업로드한 학급 조직도 PDF의 부서·역할 체계를 바탕으로 정리했고,
-          일부 실제 운영 역할은 추가 운영 역할로 따로 묶었어. :contentReference[oaicite:1]{index=1}
+
         </p>
       </section>
 
