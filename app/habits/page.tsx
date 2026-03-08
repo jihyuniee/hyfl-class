@@ -255,13 +255,31 @@ export default function Habit90Page() {
 
       {/* ── 내 정보 ── */}
       <div className="hy-card" style={{ padding:"18px 22px" }}>
-        <p style={{ fontSize:12,fontWeight:800,color:"var(--text-subtle)",margin:"0 0 10px",letterSpacing:"0.06em",textTransform:"uppercase" }}>
+        <p style={{ fontSize:12,fontWeight:800,color:"var(--text-subtle)",margin:"0 0 4px",letterSpacing:"0.06em",textTransform:"uppercase" }}>
           내 정보 입력
         </p>
-        <div style={{ display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(180px,1fr))",gap:10 }}>
-          <input placeholder="학번 (예: 2201)" value={studentNo} onChange={e=>setStudentNo(e.target.value)} className="hy-input"/>
-          <input placeholder="이름" value={name} onChange={e=>setName(e.target.value)} className="hy-input"/>
+        <p style={{ fontSize:13,color:"var(--text-muted)",margin:"0 0 12px",fontWeight:500 }}>
+          학번과 이름을 입력하고 <b>확인 버튼</b>을 눌러요. 매일 들어올 때마다 여기서 시작! 📌
+        </p>
+        <div style={{ display:"flex",gap:10,flexWrap:"wrap",alignItems:"center" }}>
+          <input placeholder="학번 (예: 2201)" value={studentNo}
+            onChange={e=>{ setStudentNo(e.target.value); setMyHabit(null); }}
+            onKeyDown={e=>e.key==="Enter" && loadMine()}
+            className="hy-input" style={{ maxWidth:160 }}/>
+          <input placeholder="이름" value={name}
+            onChange={e=>{ setName(e.target.value); setMyHabit(null); }}
+            onKeyDown={e=>e.key==="Enter" && loadMine()}
+            className="hy-input" style={{ maxWidth:140 }}/>
+          <button onClick={loadMine}
+            className="hy-btn hy-btn-primary" style={{ fontSize:13,padding:"9px 20px",whiteSpace:"nowrap" }}>
+            내 습관 불러오기 →
+          </button>
         </div>
+        {studentNo && name && myHabit===null && (
+          <p style={{ fontSize:12,color:"var(--text-subtle)",marginTop:10,fontWeight:600 }}>
+            💡 버튼을 눌러야 내 습관을 찾아올 수 있어요!
+          </p>
+        )}
       </div>
 
       {/* ── 오늘 체크 탭 ── */}
