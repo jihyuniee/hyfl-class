@@ -34,6 +34,7 @@ const NAV_GROUPS = [
     items: [
       { href: "/counseling", label: "상담" },
       { href: "/pledges", label: "규칙" },
+      { href: "/board", label: "신문고" },
     ],
   },
 ];
