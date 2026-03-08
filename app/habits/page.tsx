@@ -65,7 +65,9 @@ export default function Habit90Page() {
   const [habitTitle, setHabitTitle] = useState("");
   const [habitNote,  setHabitNote]  = useState("");
 
-  const [myHabit, setMyHabit] = useState<HabitItem | null>(null);
+  const [myHabit,       setMyHabit]       = useState<HabitItem | null>(null);
+  const [myHabitLoaded, setMyHabitLoaded] = useState(false);
+  const [myHabitLoading,setMyHabitLoading]= useState(false);
   const [habits,  setHabits]  = useState<HabitItem[]>([]);
   const [checks,  setChecks]  = useState<HabitCheck[]>([]);
   const [loading,  setLoading]  = useState(false);
@@ -95,12 +97,17 @@ export default function Habit90Page() {
   }
 
   async function loadMine() {
-    if (!studentNo || !name) { setMyHabit(null); return; }
-    const { data } = await supabase
+    if (!studentNo || !name) { setMyHabit(null); setMyHabitLoaded(false); return; }
+    setMyHabitLoading(true);
+    setMyHabitLoaded(false);
+    const { data, error } = await supabase
       .from("habit_items").select("*")
       .eq("student_no", studentNo.trim())
       .eq("name", name.trim())
       .limit(1);
+    setMyHabitLoading(false);
+    setMyHabitLoaded(true);
+    if (error) { alert("데이터를 불러오는 중 오류가 발생했어요: " + error.message); return; }
     setMyHabit((data?.[0] as HabitItem) ?? null);
   }
 
@@ -262,21 +269,31 @@ export default function Habit90Page() {
         </p>
         <div style={{ display:"flex",gap:10,flexWrap:"wrap",alignItems:"center" }}>
           <input placeholder="학번 (예: 2201)" value={studentNo}
-            onChange={e=>setStudentNo(e.target.value)}
+            onChange={e=>{ setStudentNo(e.target.value); setMyHabitLoaded(false); setMyHabit(null); }}
             onKeyDown={e=>e.key==="Enter" && loadMine()}
             className="hy-input" style={{ maxWidth:160 }}/>
           <input placeholder="이름" value={name}
-            onChange={e=>setName(e.target.value)}
+            onChange={e=>{ setName(e.target.value); setMyHabitLoaded(false); setMyHabit(null); }}
             onKeyDown={e=>e.key==="Enter" && loadMine()}
             className="hy-input" style={{ maxWidth:140 }}/>
-          <button onClick={()=>loadMine()}
+          <button onClick={()=>loadMine()} disabled={myHabitLoading}
             className="hy-btn hy-btn-primary" style={{ fontSize:13,padding:"9px 20px",whiteSpace:"nowrap" }}>
-            내 습관 불러오기 →
+            {myHabitLoading ? "불러오는 중..." : "내 습관 불러오기 →"}
           </button>
         </div>
-        {studentNo && name && myHabit===null && (
+        {studentNo && name && !myHabitLoaded && !myHabitLoading && (
           <p style={{ fontSize:12,color:"#f97316",marginTop:10,fontWeight:700 }}>
             👆 학번과 이름 입력 후 버튼을 눌러주세요!
+          </p>
+        )}
+        {myHabitLoaded && myHabit===null && (
+          <p style={{ fontSize:12,color:"#6b7280",marginTop:10,fontWeight:700 }}>
+            ℹ️ 등록된 습관이 없어요. 아래에서 새 습관을 등록해보세요!
+          </p>
+        )}
+        {myHabitLoaded && myHabit && (
+          <p style={{ fontSize:12,color:"#22c55e",marginTop:10,fontWeight:700 }}>
+            ✅ 내 습관을 불러왔어요!
           </p>
         )}
       </div>
