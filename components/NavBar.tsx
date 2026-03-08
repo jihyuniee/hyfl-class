@@ -4,14 +4,15 @@ const links = [
   { href: "/", label: "홈" },
   { href: "/notice", label: "공지" },
   { href: "/teacher", label: "담임 소개" },
+  { href: "/roles", label: "1인1역할" },
+  { href: "/cleaning", label: "청소 역할" },
   { href: "/class", label: "우리반" },
   { href: "/schedule", label: "일정/수행" },
-  { href: "/counseling", label: "상담" },
   { href: "/rules", label: "규칙" },
   { href: "/wall", label: "학생 소개" }, // 담벼락 연결(이미 쓰는 구조)
   { href: "/campaign", label: "공약" },
-  { href: "/roles", label: "1인1역할" },
   { href: "/habits", label: "90일 습관" },
+  { href: "/counseling", label: "상담" },
 ];
 
 export default function NavBar() {

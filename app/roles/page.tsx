@@ -1,433 +1,215 @@
-"use client";
+export default function RolesFixedPage() {
+  const sections = [
+    {
+      dept: "자치기획부",
+      emoji: "👑",
+      roles: [
+        {
+          role: "학급 회장",
+          students: ["주보민"],
+          desc: "배려와 열정이 가득한 학급이 될 수 있도록 노력하고, 학급 일을 총괄 관리",
+        },
+        {
+          role: "학급 부회장 A",
+          students: ["강지우"],
+          desc: "회장과 함께 학급 의견을 수합하고 담임에게 전달",
+        },
+        {
+          role: "학급 부회장 B",
+          students: ["이시원"],
+          desc: "각 교과 선생님과 학급 친구들 사이의 연결 역할",
+        },
+      ],
+    },
+    {
+      dept: "행정안전부",
+      emoji: "🗂️",
+      roles: [
+        {
+          role: "독서활동 관리자",
+          students: ["김태현"],
+          desc: "추천 도서 관리 및 독서 활동 운영",
+        },
+        {
+          role: "게시판 관리자",
+          students: ["최인아"],
+          desc: "학급 게시판 관리 / 칠판 메모 / 동기부여 글귀 정리",
+        },
+        {
+          role: "기록물 관리자",
+          students: ["김혜민"],
+          desc: "출석부 관리 / 학급 문서 수합 / 학급 회의 시 서기 역할",
+        },
+      ],
+    },
+    {
+      dept: "소통환경부",
+      emoji: "🌿",
+      roles: [
+        {
+          role: "배치 관리자",
+          students: ["유다현", "손정연"],
+          desc: "자리 배치 및 조 편성 관리",
+        },
+        {
+          role: "교실환경 관리자",
+          students: ["박우진"],
+          desc: "청소 및 교실 환경 점검",
+        },
+        {
+          role: "에너지 관리자",
+          students: ["장지현"],
+          desc: "냉난방 / 전등 / 문단속 관리",
+        },
+        {
+          role: "이벤트 관리자",
+          students: ["전주하"],
+          desc: "학급 분위기 조성 캠페인 기획",
+        },
+      ],
+    },
+    {
+      dept: "교육성장부",
+      emoji: "📘",
+      roles: [
+        {
+          role: "쪽지시험 관리자",
+          students: ["양효승", "김하연"],
+          desc: "조회 시간 단어시험 및 학급 쪽지시험 운영",
+        },
+        {
+          role: "멀티미디어 관리자",
+          students: ["성연준"],
+          desc: "컴퓨터 및 정보기기 관리 / 학급 멀티미디어 운영",
+        },
+      ],
+    },
+    {
+      dept: "문화체육부",
+      emoji: "🎬",
+      roles: [
+        {
+          role: "영상-사진 관리자",
+          students: ["이조은"],
+          desc: "학급 단체사진 기획 / 학급 추억 영상 촬영",
+        },
+      ],
+    },
+  ];
 
-import { useEffect, useMemo, useState } from "react";
-import { supabase } from "@/components/lib/supabaseClient";
-
-type Role = {
-  id: string;
-  dept: string;
-  role_name: string;
-  duties: string | null;
-  description: string | null;
-  is_active: boolean;
-};
-
-type Application = {
-  id: string;
-  role_id: string;
-  student_no: string;
-  name: string;
-};
-
-export default function RolesPage() {
-
-  const [roles, setRoles] = useState<Role[]>([]);
-  const [apps, setApps] = useState<Application[]>([]);
-  const [studentNo, setStudentNo] = useState("");
-  const [name, setName] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  const [comment, setComment] = useState("");
-  const [requestType, setRequestType] = useState("");
-  const [requestRole, setRequestRole] = useState("");
-  const [requestReason, setRequestReason] = useState("");
-
-  async function load() {
-
-    const { data: roleData } = await supabase
-      .from("roles")
-      .select("*")
-      .eq("is_active", true)
-      .order("dept");
-
-    const { data: appData } = await supabase
-      .from("role_applications")
-      .select("*");
-
-    setRoles(roleData ?? []);
-    setApps(appData ?? []);
-  }
-
-  useEffect(() => {
-    load();
-  }, []);
-
-  const appsByRoleId = useMemo(() => {
-
-    const map = new Map<string, Application[]>();
-
-    for (const a of apps) {
-
-      const arr = map.get(a.role_id) ?? [];
-      arr.push(a);
-      map.set(a.role_id, arr);
-
-    }
-
-    return map;
-
-  }, [apps]);
-
-  const myRoles = apps.filter(
-    (a) => a.student_no === studentNo && a.name === name
-  );
-
-  async function apply(role: Role) {
-
-    if (!studentNo || !name) {
-      alert("학번과 이름을 입력하세요.");
-      return;
-    }
-
-    const already = apps.find(
-      (a) =>
-        a.role_id === role.id &&
-        a.student_no === studentNo
-    );
-
-    if (already) {
-      alert("이미 지원했습니다.");
-      return;
-    }
-
-    setLoading(true);
-
-    const { error } = await supabase
-      .from("role_applications")
-      .insert({
-        role_id: role.id,
-        student_no: studentNo,
-        name: name,
-      });
-
-    setLoading(false);
-
-    if (error) {
-      alert(error.message);
-      return;
-    }
-
-    await load();
-
-    alert(`${role.role_name} 지원 완료 🙂`);
-  }
-
-  async function submitComment(roleId: string) {
-
-    if (!name) {
-      alert("이름을 입력하세요.");
-      return;
-    }
-
-    if (!comment) {
-      alert("의견을 입력하세요.");
-      return;
-    }
-
-    await supabase.from("role_comments").insert({
-      role_id: roleId,
-      student_name: name,
-      comment: comment
-    });
-
-    setComment("");
-    alert("의견이 등록되었습니다 🙂");
-  }
-
-  async function submitRequest() {
-
-    if (!name || !requestType || !requestRole) {
-      alert("이름과 요청 내용을 입력하세요.");
-      return;
-    }
-
-    await supabase.from("role_requests").insert({
-      name: name,
-      request_type: requestType,
-      role_name: requestRole,
-      reason: requestReason
-    });
-
-    setRequestRole("");
-    setRequestReason("");
-
-    alert("요청이 등록되었습니다 🙂");
-  }
-
-  function renderDescription(role: Role) {
-
-    const text = role.description ?? role.duties;
-
-    if (!text) return null;
-
-    return (
-      <div className="mt-2 text-sm text-gray-700 bg-gray-50 p-3 rounded-lg whitespace-pre-wrap">
-        {text}
-      </div>
-    );
-  }
-
-  const leaders = roles.filter(
-    (r) => r.dept === "자치기획부"
-  );
-
-  const rolesByDept = useMemo(() => {
-
-    const grouped: Record<string, Role[]> = {};
-
-    roles.forEach((r) => {
-
-      if (r.dept === "자치기획부") return;
-
-      if (!grouped[r.dept]) {
-        grouped[r.dept] = [];
-      }
-
-      grouped[r.dept].push(r);
-
-    });
-
-    return grouped;
-
-  }, [roles]);
+  const extraRoles = [
+    {
+      role: "급식",
+      students: ["정은지"],
+      desc: "급식 관련 전달 및 간단한 정리",
+    },
+    {
+      role: "쓰레기",
+      students: ["윤혜림", "이승지", "현서정", "박민석"],
+      desc: "분리수거 및 쓰레기 정리 담당",
+    },
+    {
+      role: "칠판",
+      students: ["심지안", "송민주", "김은솔"],
+      desc: "칠판 정리 및 수업 전후 환경 정돈",
+    },
+  ];
 
   return (
-
-    <div className="space-y-8">
-
-      <div className="hy-card p-6">
-
-        <div className="text-sm text-gray-600">
-          우리 반 운영 시스템
-        </div>
-
-        <h1 className="text-2xl font-bold mt-1">
-          1인 1역할
+    <div className="mx-auto max-w-6xl space-y-8 px-4 py-8">
+      <section className="rounded-[28px] border border-rose-100 bg-gradient-to-br from-rose-50 via-white to-sky-50 p-8 shadow-sm">
+        <div className="text-sm font-medium text-rose-500">2학년 2반 학급 운영 조직</div>
+        <h1 className="mt-2 text-3xl font-bold tracking-tight text-gray-900">
+          1인 1역할 최종표
         </h1>
-
-        <p className="text-sm text-gray-700 mt-2">
-          중복 지원 가능합니다. 겹치면 가위바위보 🙂
+        <p className="mt-3 text-sm leading-6 text-gray-700">
+          우리 반의 역할은 업로드한 학급 조직도 PDF의 부서·역할 체계를 바탕으로 정리했고,
+          일부 실제 운영 역할은 추가 운영 역할로 따로 묶었어. :contentReference[oaicite:1]{index=1}
         </p>
+      </section>
 
-      </div>
-
-      <div className="hy-card p-5 space-y-3">
-
-        <div className="font-semibold">
-          내 정보 입력
-        </div>
-
-        <div className="grid md:grid-cols-2 gap-3">
-
-          <input
-            className="border rounded-xl px-4 py-3 text-sm"
-            placeholder="학번"
-            value={studentNo}
-            onChange={(e) => setStudentNo(e.target.value)}
-          />
-
-          <input
-            className="border rounded-xl px-4 py-3 text-sm"
-            placeholder="이름"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-
-        </div>
-
-      </div>
-
-      {myRoles.length > 0 && (
-
-        <div className="hy-card p-5">
-
-          <div className="font-semibold mb-3">
-            내가 지원한 역할
+      {sections.map((section) => (
+        <section
+          key={section.dept}
+          className="rounded-[24px] border border-gray-200 bg-white p-6 shadow-sm"
+        >
+          <div className="mb-4 flex items-center gap-2">
+            <span className="text-2xl">{section.emoji}</span>
+            <h2 className="text-xl font-bold text-gray-900">{section.dept}</h2>
           </div>
 
-          <ul className="text-sm space-y-1">
-
-            {myRoles.map((a) => {
-
-              const role = roles.find(
-                (r) => r.id === a.role_id
-              );
-
-              return (
-                <li key={a.id}>
-                  {role?.role_name}
-                </li>
-              );
-
-            })}
-
-          </ul>
-
-        </div>
-
-      )}
-
-      <div className="hy-card p-5">
-
-        <div className="font-semibold mb-4">
-          자치기획부 (회장단)
-        </div>
-
-        {leaders.map((r) => (
-
-          <div key={r.id} className="mb-4">
-
-            <div className="font-bold">
-              {r.role_name}
-            </div>
-
-            {renderDescription(r)}
-
-            <div className="text-xs text-gray-500 mt-1">
-              회장단 공약으로 선출
-            </div>
-
-          </div>
-
-        ))}
-
-      </div>
-
-      {Object.entries(rolesByDept).map(
-        ([dept, deptRoles]) => (
-
-          <div key={dept} className="hy-card p-5">
-
-            <div className="font-semibold mb-4">
-              📁 {dept}
-            </div>
-
-            <div className="space-y-4">
-
-              {deptRoles.map((r) => {
-
-                const applicants =
-                  appsByRoleId.get(r.id) ?? [];
-
-                return (
-
-                  <div
-                    key={r.id}
-                    className="border rounded-xl p-4"
-                  >
-
-                    <div className="flex justify-between items-start">
-
-                      <div>
-
-                        <div className="font-semibold">
-                          {r.role_name}
-                        </div>
-
-                        {renderDescription(r)}
-
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[720px] border-collapse">
+              <thead>
+                <tr className="bg-gray-50 text-left">
+                  <th className="rounded-l-2xl border-b px-4 py-3 text-sm font-semibold text-gray-700">
+                    역할
+                  </th>
+                  <th className="border-b px-4 py-3 text-sm font-semibold text-gray-700">
+                    담당자
+                  </th>
+                  <th className="rounded-r-2xl border-b px-4 py-3 text-sm font-semibold text-gray-700">
+                    설명
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {section.roles.map((item) => (
+                  <tr key={`${section.dept}-${item.role}`} className="align-top">
+                    <td className="border-b px-4 py-4 text-sm font-semibold text-gray-900">
+                      {item.role}
+                    </td>
+                    <td className="border-b px-4 py-4 text-sm text-gray-800">
+                      <div className="flex flex-wrap gap-2">
+                        {item.students.map((student) => (
+                          <span
+                            key={student}
+                            className="rounded-full bg-rose-100 px-3 py-1 text-xs font-medium text-rose-700"
+                          >
+                            {student}
+                          </span>
+                        ))}
                       </div>
-
-                      <button
-                        disabled={loading}
-                        className="hy-btn hy-btn-primary text-white text-sm"
-                        onClick={() => apply(r)}
-                      >
-                        지원
-                      </button>
-
-                    </div>
-
-                    <div className="mt-3 text-sm text-gray-600">
-                      지원자 {applicants.length}명
-                    </div>
-
-                    <ul className="text-sm mt-1 space-y-1">
-
-                      {applicants.map((a) => (
-
-                        <li key={a.id}>
-                          {a.name} ({a.student_no})
-                        </li>
-
-                      ))}
-
-                    </ul>
-
-                    <div className="mt-3">
-
-                      <input
-                        className="border rounded-lg px-3 py-2 text-sm w-full"
-                        placeholder="이 역할에 대한 의견"
-                        value={comment}
-                        onChange={(e)=>setComment(e.target.value)}
-                      />
-
-                      <button
-                        className="text-sm mt-2 hy-btn"
-                        onClick={()=>submitComment(r.id)}
-                      >
-                        의견 남기기
-                      </button>
-
-                    </div>
-
-                  </div>
-
-                );
-
-              })}
-
-            </div>
-
+                    </td>
+                    <td className="border-b px-4 py-4 text-sm leading-6 text-gray-700">
+                      {item.desc}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
+        </section>
+      ))}
 
-        )
-      )}
-
-      <div className="hy-card p-5 space-y-3">
-
-        <div className="font-semibold">
-          우리 반 역할 제안
+      <section className="rounded-[24px] border border-amber-200 bg-amber-50 p-6 shadow-sm">
+        <div className="mb-4 flex items-center gap-2">
+          <span className="text-2xl">✨</span>
+          <h2 className="text-xl font-bold text-gray-900">추가 운영 역할</h2>
         </div>
 
-        <select
-          className="border rounded-lg px-3 py-2 text-sm"
-          value={requestType}
-          onChange={(e)=>setRequestType(e.target.value)}
-        >
-
-          <option value="">선택</option>
-          <option value="add">역할 추가 요청</option>
-          <option value="remove">역할 삭제 요청</option>
-
-        </select>
-
-        <input
-          className="border rounded-lg px-3 py-2 text-sm"
-          placeholder="역할 이름"
-          value={requestRole}
-          onChange={(e)=>setRequestRole(e.target.value)}
-        />
-
-        <textarea
-          className="border rounded-lg px-3 py-2 text-sm"
-          placeholder="이유"
-          value={requestReason}
-          onChange={(e)=>setRequestReason(e.target.value)}
-        />
-
-        <button
-          className="hy-btn hy-btn-primary text-white"
-          onClick={submitRequest}
-        >
-          제안하기
-        </button>
-
-      </div>
-
+        <div className="grid gap-4 md:grid-cols-3">
+          {extraRoles.map((item) => (
+            <div
+              key={item.role}
+              className="rounded-2xl border border-amber-200 bg-white p-5 shadow-sm"
+            >
+              <div className="text-base font-bold text-gray-900">{item.role}</div>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {item.students.map((student) => (
+                  <span
+                    key={student}
+                    className="rounded-full bg-sky-100 px-3 py-1 text-xs font-medium text-sky-700"
+                  >
+                    {student}
+                  </span>
+                ))}
+              </div>
+              <div className="mt-3 text-sm leading-6 text-gray-700">{item.desc}</div>
+            </div>
+          ))}
+        </div>
+      </section>
     </div>
-
   );
-
 }
