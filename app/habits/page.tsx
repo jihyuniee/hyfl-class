@@ -110,11 +110,7 @@ export default function Habit90Page() {
     if (data && data.length > 0) {
       setMyHabit(data[0] as HabitItem);
     } else {
-      alert("습관을 찾지 못했어요.
-학번: " + studentNo.trim() + "
-이름: " + name.trim() + "
-
-DB 값과 정확히 일치해야 해요!");
+      alert('Not found. studentNo=' + studentNo.trim() + ' name=' + name.trim());
       setMyHabit(null);
     }
   }
