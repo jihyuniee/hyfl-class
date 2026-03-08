@@ -105,7 +105,6 @@ export default function Habit90Page() {
   }
 
   useEffect(() => { loadAll(); }, []);
-  useEffect(() => { loadMine(); }, [studentNo, name]);
 
   const checksByHabitId = useMemo(() => {
     const map = new Map<string, HabitCheck[]>();
@@ -263,21 +262,21 @@ export default function Habit90Page() {
         </p>
         <div style={{ display:"flex",gap:10,flexWrap:"wrap",alignItems:"center" }}>
           <input placeholder="학번 (예: 2201)" value={studentNo}
-            onChange={e=>{ setStudentNo(e.target.value); setMyHabit(null); }}
+            onChange={e=>setStudentNo(e.target.value)}
             onKeyDown={e=>e.key==="Enter" && loadMine()}
             className="hy-input" style={{ maxWidth:160 }}/>
           <input placeholder="이름" value={name}
-            onChange={e=>{ setName(e.target.value); setMyHabit(null); }}
+            onChange={e=>setName(e.target.value)}
             onKeyDown={e=>e.key==="Enter" && loadMine()}
             className="hy-input" style={{ maxWidth:140 }}/>
-          <button onClick={loadMine}
+          <button onClick={()=>loadMine()}
             className="hy-btn hy-btn-primary" style={{ fontSize:13,padding:"9px 20px",whiteSpace:"nowrap" }}>
             내 습관 불러오기 →
           </button>
         </div>
         {studentNo && name && myHabit===null && (
-          <p style={{ fontSize:12,color:"var(--text-subtle)",marginTop:10,fontWeight:600 }}>
-            💡 버튼을 눌러야 내 습관을 찾아올 수 있어요!
+          <p style={{ fontSize:12,color:"#f97316",marginTop:10,fontWeight:700 }}>
+            👆 학번과 이름 입력 후 버튼을 눌러주세요!
           </p>
         )}
       </div>
