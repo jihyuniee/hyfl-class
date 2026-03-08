@@ -95,13 +95,28 @@ export default function Habit90Page() {
   }
 
   async function loadMine() {
-    if (!studentNo || !name) { setMyHabit(null); return; }
-    const { data } = await supabase
+    console.log("loadMine called", { studentNo, name });
+    if (!studentNo.trim() || !name.trim()) {
+      alert("학번과 이름을 모두 입력해주세요!");
+      return;
+    }
+    const { data, error } = await supabase
       .from("habit_items").select("*")
       .eq("student_no", studentNo.trim())
       .eq("name", name.trim())
       .limit(1);
-    setMyHabit((data?.[0] as HabitItem) ?? null);
+    console.log("result", data, error);
+    if (error) { alert("오류: " + error.message); return; }
+    if (data && data.length > 0) {
+      setMyHabit(data[0] as HabitItem);
+    } else {
+      alert("습관을 찾지 못했어요.
+학번: " + studentNo.trim() + "
+이름: " + name.trim() + "
+
+DB 값과 정확히 일치해야 해요!");
+      setMyHabit(null);
+    }
   }
 
   useEffect(() => { loadAll(); }, []);
