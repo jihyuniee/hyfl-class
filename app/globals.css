@@ -136,3 +136,12 @@ body {
 .hy-quick-link:hover {
   transform: translateY(-4px) scale(1.02);
 }
+
+.hy-hero {
+  background: linear-gradient(135deg, #f9a8d4 0%, #c084fc 40%, #818cf8 100%);
+  border-radius: 28px;
+  padding: 32px 28px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 12px 40px rgba(192,132,252,0.35);
+}
