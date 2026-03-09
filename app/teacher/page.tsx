@@ -42,7 +42,7 @@ export default function TeacherPage() {
       <div className="rounded-2xl border bg-white p-6">
         <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
           <div className="space-y-2">
-            <div className="text-sm text-gray-600">2학년 2반 담임 자기소개</div>
+            <div className="text-sm text-gray-600">한영외국어고등학교 2학년 2반 담임 자기소개</div>
             <h1 className="text-2xl font-bold text-gray-900">
               안녕하세요, 지현쌤(정보쌤/인탐쌤/컴쌤)입니다.
             </h1>
@@ -253,7 +253,7 @@ export default function TeacherPage() {
         <div style={{ display:'flex', alignItems:'center', gap:12, padding:'20px 24px', background:'linear-gradient(135deg,#f0fdf4,#dcfce7)', borderRadius:22, border:'1.5px solid #86efac' }}>
           <span style={{ fontSize:28 }}>📢</span>
           <div>
-            <p style={{ fontSize:12, fontWeight:800, color:'#22c55e', margin:'0 0 2px', textTransform:'uppercase', letterSpacing:'0.06em' }}>2025학년도</p>
+            <p style={{ fontSize:12, fontWeight:800, color:'#22c55e', margin:'0 0 2px', textTransform:'uppercase', letterSpacing:'0.06em' }}>2026학년도</p>
             <h2 style={{ fontSize:17, fontWeight:900, color:'var(--text)', margin:0, letterSpacing:'-0.3px' }}>우리반 학급 자율활동 안내</h2>
             <p style={{ fontSize:13, color:'var(--text-muted)', margin:'4px 0 0', fontWeight:500 }}>올해 우리 반은 다음 3가지 학급 자율활동을 진행합니다.</p>
           </div>

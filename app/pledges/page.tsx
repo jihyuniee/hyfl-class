@@ -1,294 +1,141 @@
-"use client";
-
-import { useEffect, useMemo, useState } from "react";
-import { supabase } from "@/components/lib/supabaseClient";
-
-type PledgeRow = {
-  id: string;
-  created_at: string;
-  role: string;
-  candidate_name: string;
-  class_no: string;
-  pledge_1: string;
-  pledge_2: string;
-  pledge_3: string;
-  detail: string | null;
-  is_published: boolean;
-};
-
-function formatKST(iso: string) {
-  const d = new Date(iso);
-  return d.toLocaleString("ko-KR", { timeZone: "Asia/Seoul" });
-}
-
-function Card({ children }: { children: React.ReactNode }) {
-  return <div className="hy-card p-5">{children}</div>;
-}
-
-const ADMIN_UNLOCK_KEY = "hyfl_admin_unlock_v1"; // counseling admin에서 쓰던 거랑 맞춰도 됨
-
 export default function PledgesPage() {
-  const [loading, setLoading] = useState(false);
-  const [list, setList] = useState<PledgeRow[]>([]);
-  const [err, setErr] = useState<string | null>(null);
-
-  // 폼
-  const [role, setRole] = useState<"회장" | "부회장">("회장");
-  const [candidateName, setCandidateName] = useState("");
-  const [pledge1, setPledge1] = useState("");
-  const [pledge2, setPledge2] = useState("");
-  const [pledge3, setPledge3] = useState("");
-  const [detail, setDetail] = useState("");
-  const [isPublished, setIsPublished] = useState(true);
-
-  // 담임(관리자) 여부: localStorage에 unlock 값이 있으면 삭제 버튼 활성화
-  const isAdmin = useMemo(() => {
-    if (typeof window === "undefined") return false;
-    return localStorage.getItem(ADMIN_UNLOCK_KEY) === "true";
-  }, []);
-
-  async function load() {
-    setErr(null);
-    const { data, error } = await supabase
-      .from("pledges")
-      .select("*")
-      .order("created_at", { ascending: false });
-
-    if (error) {
-      setErr(error.message);
-      return;
-    }
-    setList((data as PledgeRow[]) ?? []);
-  }
-
-  useEffect(() => {
-    load();
-  }, []);
-
-  const canSubmit = useMemo(() => {
-    return (
-      candidateName.trim().length >= 1 &&
-      pledge1.trim().length >= 2 &&
-      pledge2.trim().length >= 2 &&
-      pledge3.trim().length >= 2
-    );
-  }, [candidateName, pledge1, pledge2, pledge3]);
-
-  async function submit() {
-    if (!canSubmit) return;
-    setLoading(true);
-    setErr(null);
-
-    const { error } = await supabase.from("pledges").insert({
-      role,
-      candidate_name: candidateName.trim(),
-      class_no: "2-2",
-      pledge_1: pledge1.trim(),
-      pledge_2: pledge2.trim(),
-      pledge_3: pledge3.trim(),
-      detail: detail.trim() ? detail.trim() : null,
-      is_published: isPublished,
-    });
-
-    setLoading(false);
-
-    if (error) {
-      setErr(error.message);
-      return;
-    }
-
-    // 리셋
-    // setCandidateName(""); // 이름은 남기고 싶으면 주석 처리
-    setPledge1("");
-    setPledge2("");
-    setPledge3("");
-    setDetail("");
-    setIsPublished(true);
-
-    await load();
-  }
-
-  async function deleteOne(id: string) {
-    if (!isAdmin) return;
-    if (!confirm("이 공약을 삭제할까?")) return;
-
-    const { error } = await supabase.from("pledges").delete().eq("id", id);
-    if (error) {
-      alert("삭제 오류: " + error.message);
-      return;
-    }
-    await load();
-  }
+  const RULES = [
+    {
+      emoji: "🏫",
+      title: "교실 생활 규칙",
+      color: "linear-gradient(135deg,#f472b6,#a78bfa)",
+      shadow: "rgba(244,114,182,0.2)",
+      items: [
+        "거짓말 금지 — 실수는 괜찮지만, 숨기지는 말기. 같이 해결하기.",
+        "배려하기 — 말투·표정·뒷말로 사람을 힘들게 하지 않기.",
+        "청소는 '우리 일' — 교실은 함께 쓰는 공간입니다.",
+        "예의 — 선생님뿐 아니라 친구·타 반·급식실·행정실 모두에게 예의 지키기.",
+        "이기주의로 공동체를 망가뜨리는 행동(책임 회피, 남에게 떠넘기기 등) 금지.",
+      ],
+    },
+    {
+      emoji: "📚",
+      title: "수업 시간 규칙",
+      color: "linear-gradient(135deg,#3b82f6,#6366f1)",
+      shadow: "rgba(59,130,246,0.2)",
+      items: [
+        "수업 시작 전 준비물 챙겨두기.",
+        "수업 중 핸드폰은 정해진 규칙에 따라.",
+        "태도 — 수업·조회·종례에서 기본 태도는 서로에 대한 존중.",
+        "모르는 것은 적극적으로 질문하기. 모른다고 부끄러운 게 아닙니다.",
+        "멘토·멘티 활동 시간에는 서로 성실하게 참여하기.",
+      ],
+    },
+    {
+      emoji: "📱",
+      title: "연락 규칙",
+      color: "linear-gradient(135deg,#34d399,#0ea5e9)",
+      shadow: "rgba(52,211,153,0.2)",
+      items: [
+        "오후 6시 이후에는 선생님 답변이 늦을 수 있습니다.",
+        "급한 일은 우리 반에서 정한 채널(카톡 등)로 보내주세요.",
+        "메시지는 예의 있는 문장으로 부탁합니다.",
+        "단체 채팅방에서는 불필요한 메시지 자제하기.",
+        "친구에게도 연락할 때는 늦은 시간 배려하기.",
+      ],
+    },
+    {
+      emoji: "🗣️",
+      title: "학생들이 정한 약속",
+      color: "linear-gradient(135deg,#fb923c,#f472b6)",
+      shadow: "rgba(251,146,60,0.2)",
+      items: [
+        "🔜 학급회의에서 정해지면 업데이트될 예정이에요!",
+      ],
+      pending: true,
+    },
+  ];
 
   return (
-    <div className="space-y-6">
-      <div className="hy-card p-6">
-        <div className="text-sm text-gray-600">우리반이 함께 만드는 학급자치</div>
-        <h1 className="hy-title mt-1 text-2xl font-bold">회장/부회장 공약 게시판 🗳️</h1>
-        <p className="mt-2 text-sm text-gray-700">
-          공약은 <span className="font-semibold">실현 가능한 약속</span>으로,
-          <span className="font-semibold"> 구체적으로</span> 써주기 🙂
+    <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+
+      {/* 헤더 */}
+      <div style={{
+        background: "linear-gradient(135deg,#f472b6 0%,#a78bfa 50%,#818cf8 100%)",
+        borderRadius: 28, padding: "32px 28px",
+        position: "relative", overflow: "hidden",
+        boxShadow: "0 12px 40px rgba(244,114,182,0.3)",
+      }}>
+        {[{w:140,h:140,top:-40,right:-20,op:0.08},{w:70,h:70,bottom:-10,left:60,op:0.07}].map((b,i)=>(
+          <div key={i} style={{ position:"absolute",width:b.w,height:b.h,top:b.top,right:b.right,bottom:b.bottom,left:b.left,borderRadius:"50%",background:"#fff",opacity:b.op }}/>
+        ))}
+        <div style={{ position: "relative" }}>
+          <div style={{ display:"inline-flex",alignItems:"center",background:"rgba(255,255,255,0.2)",backdropFilter:"blur(8px)",borderRadius:999,padding:"4px 14px",marginBottom:12,border:"1px solid rgba(255,255,255,0.3)" }}>
+            <span style={{ fontSize:12, color:"#fff", fontWeight:700 }}>2026학년도 2학년 2반</span>
+          </div>
+          <h1 style={{ color:"#fff", fontSize:"clamp(22px,4vw,32px)", fontWeight:900, margin:"0 0 8px", letterSpacing:"-0.5px" }}>
+            📋 우리반 규칙
+          </h1>
+          <p style={{ color:"rgba(255,255,255,0.85)", fontSize:13, margin:0, fontWeight:500, lineHeight:1.7 }}>
+            함께 만들어가는 우리반 약속이에요. 서로 존중하며 즐거운 교실을 만들어요 🌸
+          </p>
+        </div>
+      </div>
+
+      {/* 슬로건 */}
+      <div style={{
+        padding: "18px 22px", borderRadius: 18,
+        background: "linear-gradient(135deg,#fdf2f8,#f5f3ff)",
+        border: "1.5px solid #e9d5ff",
+        display: "flex", alignItems: "center", gap: 14,
+      }}>
+        <span style={{ fontSize: 28 }}>💬</span>
+        <div>
+          <p style={{ fontSize: 12, fontWeight: 800, color: "var(--text-subtle)", margin: "0 0 4px", textTransform: "uppercase", letterSpacing: "0.06em" }}>우리반 슬로건</p>
+          <p style={{ fontSize: 16, fontWeight: 900, color: "var(--text)", margin: 0, letterSpacing: "-0.3px" }}>
+            "지금부터 할 수 있는 것부터, 나부터."
+          </p>
+        </div>
+      </div>
+
+      {/* 규칙 카드들 */}
+      {RULES.map((rule) => (
+        <div key={rule.title} style={{ borderRadius: 20, overflow: "hidden", boxShadow: `0 4px 20px ${rule.shadow}`, opacity: rule.pending ? 0.8 : 1 }}>
+          <div style={{ background: rule.color, padding: "16px 22px", display: "flex", alignItems: "center", gap: 10 }}>
+            <span style={{ fontSize: 24 }}>{rule.emoji}</span>
+            <h3 style={{ color: "#fff", fontSize: 16, fontWeight: 900, margin: 0, letterSpacing: "-0.3px" }}>
+              {rule.title}
+            </h3>
+            {rule.pending && (
+              <span style={{ marginLeft: "auto", fontSize: 11, fontWeight: 700, background: "rgba(255,255,255,0.25)", color: "#fff", padding: "3px 10px", borderRadius: 999 }}>
+                업데이트 예정
+              </span>
+            )}
+          </div>
+          <div style={{ background: "#fff", padding: "16px 22px" }}>
+            <ul style={{ margin: 0, padding: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 10 }}>
+              {rule.items.map((item, i) => (
+                <li key={i} style={{ display: "flex", alignItems: "flex-start", gap: 10, fontSize: 14, color: "var(--text-muted)", lineHeight: 1.7 }}>
+                  <span style={{
+                    width: 22, height: 22, borderRadius: 7, flexShrink: 0,
+                    background: rule.pending ? "#f3f4f6" : rule.color,
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    fontSize: 11, fontWeight: 900, color: rule.pending ? "#9ca3af" : "#fff",
+                    marginTop: 2,
+                  }}>
+                    {rule.pending ? "?" : i + 1}
+                  </span>
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      ))}
+
+      {/* 안내 */}
+      <div style={{ padding: "16px 20px", borderRadius: 16, background: "#fffbeb", border: "1.5px solid #fde68a" }}>
+        <p style={{ fontSize: 13, fontWeight: 700, color: "#f59e0b", margin: "0 0 4px" }}>💡 규칙 업데이트 안내</p>
+        <p style={{ fontSize: 13, color: "var(--text-muted)", margin: 0, lineHeight: 1.7 }}>
+          학급회의에서 새로운 약속이 정해지면 선생님이 이 페이지에 추가할 거예요. 의견이 있으면 신문고에 남겨줘요!
         </p>
       </div>
 
-      {/* 작성 */}
-      <Card>
-        <div className="text-base font-semibold">공약 등록하기</div>
-
-        <div className="mt-4 grid gap-3">
-          <div className="grid gap-3 md:grid-cols-2">
-            <select
-              className="w-full rounded-2xl border px-4 py-3 text-sm"
-              value={role}
-              onChange={(e) => setRole(e.target.value as any)}
-            >
-              <option value="회장">회장</option>
-              <option value="부회장">부회장</option>
-            </select>
-
-            <input
-              className="w-full rounded-2xl border px-4 py-3 text-sm"
-              placeholder="후보 이름 (예: 김민지 / 22번 민지)"
-              value={candidateName}
-              onChange={(e) => setCandidateName(e.target.value)}
-            />
-          </div>
-
-          <input
-            className="w-full rounded-2xl border px-4 py-3 text-sm"
-            placeholder="공약 1 (예: 수행평가 일정 주간 정리)"
-            value={pledge1}
-            onChange={(e) => setPledge1(e.target.value)}
-          />
-          <input
-            className="w-full rounded-2xl border px-4 py-3 text-sm"
-            placeholder="공약 2 (예: 학급 행사/이벤트 월 1회 운영)"
-            value={pledge2}
-            onChange={(e) => setPledge2(e.target.value)}
-          />
-          <input
-            className="w-full rounded-2xl border px-4 py-3 text-sm"
-            placeholder="공약 3 (예: 학급 건의함 피드백 정리/공개)"
-            value={pledge3}
-            onChange={(e) => setPledge3(e.target.value)}
-          />
-
-          <textarea
-            className="min-h-[90px] w-full rounded-2xl border px-4 py-3 text-sm"
-            placeholder="추가 설명(선택) - 어떻게 실행할지, 기간/방법, 팀 구성 등"
-            value={detail}
-            onChange={(e) => setDetail(e.target.value)}
-          />
-
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <label className="flex items-center gap-2 text-sm text-gray-700">
-              <input
-                type="checkbox"
-                checked={isPublished}
-                onChange={(e) => setIsPublished(e.target.checked)}
-              />
-              게시(우리 반 친구들이 볼 수 있게)
-            </label>
-
-            <button
-              className={`hy-btn hy-btn-primary text-sm text-white ${
-                !canSubmit || loading ? "opacity-60" : ""
-              }`}
-              onClick={submit}
-              disabled={!canSubmit || loading}
-            >
-              {loading ? "등록 중..." : "공약 등록하기"}
-            </button>
-          </div>
-
-          {!canSubmit && (
-            <div className="text-xs text-gray-500">
-              필수: 후보 이름, 공약 1~3 (각 2글자 이상)
-            </div>
-          )}
-
-          {err && (
-            <div className="rounded-2xl border border-red-200 bg-red-50 p-3 text-sm text-red-700">
-              오류: {err}
-            </div>
-          )}
-        </div>
-      </Card>
-
-      {/* 목록 */}
-      <div className="space-y-3">
-        <div className="flex items-center justify-between">
-          <div className="text-sm font-semibold text-gray-700">
-            등록된 공약 {list.filter((x) => x.is_published).length}개
-          </div>
-          <button className="hy-btn text-sm" onClick={load}>
-            새로고침
-          </button>
-        </div>
-
-        {list.filter((x) => x.is_published).length === 0 ? (
-          <div className="hy-card p-6 text-sm text-gray-700">
-            아직 공약이 없어. 첫 공약의 주인공이 되어줘 🙂
-          </div>
-        ) : (
-          list
-            .filter((x) => x.is_published)
-            .map((p) => (
-              <div key={p.id} className="hy-card p-5">
-                <div className="flex items-start justify-between gap-3">
-                  <div>
-                    <div className="text-sm font-semibold">
-                      [{p.role}] {p.candidate_name}
-                    </div>
-                    <div className="mt-1 text-xs text-gray-500">
-                      {formatKST(p.created_at)}
-                    </div>
-                  </div>
-
-                  {isAdmin && (
-                    <button
-                      className="rounded-full border px-3 py-1 text-xs hover:bg-gray-50"
-                      onClick={() => deleteOne(p.id)}
-                    >
-                      삭제
-                    </button>
-                  )}
-                </div>
-
-                <div className="mt-4 grid gap-2 text-sm">
-                  <div className="rounded-2xl bg-zinc-50 p-4">
-                    <div className="text-xs font-semibold text-gray-600">공약 1</div>
-                    <div className="mt-1 whitespace-pre-wrap text-gray-900">{p.pledge_1}</div>
-                  </div>
-                  <div className="rounded-2xl bg-zinc-50 p-4">
-                    <div className="text-xs font-semibold text-gray-600">공약 2</div>
-                    <div className="mt-1 whitespace-pre-wrap text-gray-900">{p.pledge_2}</div>
-                  </div>
-                  <div className="rounded-2xl bg-zinc-50 p-4">
-                    <div className="text-xs font-semibold text-gray-600">공약 3</div>
-                    <div className="mt-1 whitespace-pre-wrap text-gray-900">{p.pledge_3}</div>
-                  </div>
-
-                  {p.detail?.trim() && (
-                    <div className="rounded-2xl bg-zinc-50 p-4">
-                      <div className="text-xs font-semibold text-gray-600">추가 설명</div>
-                      <div className="mt-1 whitespace-pre-wrap text-gray-900">{p.detail}</div>
-                    </div>
-                  )}
-                </div>
-              </div>
-            ))
-        )}
-      </div>
-
-      <div className="hy-card p-5 text-sm text-gray-700">
-        <div className="font-semibold">공약 작성 가이드 ✨</div>
-        <ul className="mt-2 list-disc pl-5">
-          <li>“열심히 하겠습니다”보다 “무엇을/어떻게/언제”가 들어가게</li>
-          <li>한 달에 한 번 확인 가능한 형태면 더 신뢰감 있음</li>
-          <li>현실적으로 할 수 있는 만큼만 약속하기</li>
-        </ul>
-      </div>
     </div>
   );
 }

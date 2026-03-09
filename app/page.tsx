@@ -35,7 +35,7 @@ export default function Home() {
       {/* ── 우리반 사진 히어로 ── */}
       <div style={{ borderRadius: 28, overflow: "hidden", position: "relative", boxShadow: "0 12px 40px rgba(0,0,0,0.18)" }}>
         {/* 사진 */}
-        <div style={{ position: "relative", width: "100%", height: "clamp(220px, 40vw, 420px)" }}>
+        <div style={{ position: "relative", width: "100%", height: "clamp(320px, 55vw, 580px)" }}>
           <Image
             src="/class-photo.jpg"
             alt="2-2 우리반"
@@ -62,7 +62,7 @@ export default function Home() {
             border: "1px solid rgba(255,255,255,0.35)",
           }}>
             <span style={{ fontSize: 12, color: "#fff", fontWeight: 700 }}>
-              2025학년도 2학년 2반 🌸
+              2026학년도 한영외국어고등학교 2학년 2반 🌸
             </span>
           </div>
           <h1 style={{
@@ -110,25 +110,11 @@ export default function Home() {
             <h2 style={{ fontSize: 17, fontWeight: 900, color: "var(--text)", margin: "0 0 8px", letterSpacing: "-0.3px" }}>
               급훈: Oh, my God! 오 내 신!
             </h2>
-            <p style={{ fontSize: 14, color: "var(--text-muted)", lineHeight: 1.85, margin: 0 }}>
-              이 급훈은 두 가지 의미를 품고 있어요. 🎯
-            </p>
-            <div style={{ marginTop: 12, display: "flex", flexDirection: "column", gap: 10 }}>
-              <div style={{ padding: "12px 16px", borderRadius: 12, background: "rgba(167,139,250,0.1)", border: "1px solid #ddd6fe" }}>
-                <p style={{ fontSize: 13, fontWeight: 800, color: "#7c3aed", margin: "0 0 4px" }}>📚 내신 의미</p>
-                <p style={{ fontSize: 13, color: "var(--text-muted)", margin: 0, lineHeight: 1.7 }}>
-                  "오 내 신(내신)!" — 내신 시험을 향한 우리의 다짐이에요.
-                  시험마다 최선을 다해 좋은 내신 성적을 만들어 나가자는 의미예요.
-                </p>
-              </div>
-              <div style={{ padding: "12px 16px", borderRadius: 12, background: "rgba(129,140,248,0.1)", border: "1px solid #c7d2fe" }}>
-                <p style={{ fontSize: 13, fontWeight: 800, color: "#4f46e5", margin: "0 0 4px" }}>🙏 신앙 의미</p>
-                <p style={{ fontSize: 13, color: "var(--text-muted)", margin: 0, lineHeight: 1.7 }}>
-                  "Oh, my God!" — 하나님을 향한 감탄과 고백이에요.
-                  우리가 직접적으로 알든 모르든, 우리의 모든 삶 속에 하나님의 섭리가 함께하길 바라는 마음을 담았어요.
-                  기가 막힌 내신, 기가 막힌 하루하루가 되길 🌟
-                </p>
-              </div>
+            <div style={{ marginTop: 8, padding: "12px 16px", borderRadius: 12, background: "rgba(167,139,250,0.1)", border: "1px solid #ddd6fe" }}>
+              <p style={{ fontSize: 13, color: "var(--text-muted)", margin: 0, lineHeight: 1.7 }}>
+                "오 내 신(내신)!" — 내신 시험을 향한 우리의 다짐이에요.
+                시험마다 최선을 다해 좋은 내신 성적을 만들어 나가자는 의미예요. 기가 막힌 내신, 기가 막힌 한 해가 되길 🌟
+              </p>
             </div>
           </div>
         </div>
