@@ -42,6 +42,11 @@ export default function BoardPage() {
   const [filter, setFilter] = useState("전체");
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
+  // 관리자
+  const [pw, setPw]           = useState("");
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [pwOpen, setPwOpen]   = useState(false);
+
   // 글 작성 폼
   const [formOpen, setFormOpen] = useState(false);
   const [fCat,     setFCat]     = useState<Post["category"]>("건의사항");
@@ -70,7 +75,10 @@ export default function BoardPage() {
 
   useEffect(() => { load(); }, []);
 
-  const filtered = posts.filter(p => filter === "전체" || p.category === filter);
+  const filtered = posts.filter(p => {
+    if (p.category === "선생님께" && !isAdmin) return false;
+    return filter === "전체" || p.category === filter;
+  });
 
   function commentsOf(postId: string) {
     return comments.filter(c => c.post_id === postId);
@@ -138,12 +146,40 @@ export default function BoardPage() {
             </button>
           ))}
         </div>
-        <button onClick={() => setFormOpen(o => !o)}
-          className="hy-btn hy-btn-primary"
-          style={{ fontSize:13, padding:"8px 18px" }}>
-          {formOpen ? "닫기" : "✏️ 글쓰기"}
-        </button>
+        <div style={{ display:"flex", gap:8 }}>
+          {!isAdmin ? (
+            <button onClick={() => setPwOpen(o => !o)} className="hy-btn" style={{ fontSize:12 }}>
+              🔒 선생님 로그인
+            </button>
+          ) : (
+            <button onClick={() => setIsAdmin(false)} className="hy-btn" style={{ fontSize:12, color:"var(--primary)", borderColor:"var(--primary)" }}>
+              ✅ 선생님 모드
+            </button>
+          )}
+          <button onClick={() => setFormOpen(o => !o)}
+            className="hy-btn hy-btn-primary"
+            style={{ fontSize:13, padding:"8px 18px" }}>
+            {formOpen ? "닫기" : "✏️ 글쓰기"}
+          </button>
+        </div>
       </div>
+
+      {/* 선생님 로그인 */}
+      {pwOpen && !isAdmin && (
+        <div className="hy-card" style={{ padding:"16px 20px" }}>
+          <p style={{ fontSize:13, fontWeight:700, color:"var(--text-muted)", margin:"0 0 10px" }}>
+            🔒 선생님께 보내는 글은 선생님만 볼 수 있어요.
+          </p>
+          <div style={{ display:"flex", gap:8, alignItems:"center" }}>
+            <input type="password" placeholder="비밀번호 입력"
+              value={pw} onChange={e => setPw(e.target.value)}
+              onKeyDown={e => { if(e.key==="Enter") { setIsAdmin(pw==="hyfl2025"); if(pw==="hyfl2025") setPwOpen(false); }}}
+              className="hy-input" style={{ maxWidth:180 }}/>
+            <button onClick={() => { setIsAdmin(pw==="hyfl2025"); if(pw==="hyfl2025") setPwOpen(false); else alert("비밀번호가 틀렸어요"); }}
+              className="hy-btn" style={{ fontSize:13 }}>확인</button>
+          </div>
+        </div>
+      )}
 
       {/* 글쓰기 폼 */}
       {formOpen && (
@@ -178,6 +214,16 @@ export default function BoardPage() {
               {loading ? "등록 중..." : "등록하기"}
             </button>
           </div>
+        </div>
+      )}
+
+      {/* 선생님께 잠금 안내 */}
+      {(filter === "선생님께" || filter === "전체") && !isAdmin && (
+        <div style={{ padding:"14px 18px", borderRadius:14, background:"#f0fdf4", border:"1.5px solid #86efac", display:"flex", alignItems:"center", gap:10 }}>
+          <span style={{ fontSize:20 }}>🔒</span>
+          <p style={{ fontSize:13, color:"#16a34a", fontWeight:700, margin:0 }}>
+            선생님께 보내는 글은 선생님만 볼 수 있어요. 선생님 로그인 후 확인 가능해요.
+          </p>
         </div>
       )}
 
