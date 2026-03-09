@@ -40,7 +40,7 @@ export default function Home() {
             src="/class-photo.jpg"
             alt="2-2 우리반"
             fill
-            style={{ objectFit: "cover", objectPosition: "center top" }}
+            style={{ objectFit: "cover", objectPosition: "center 60%" }}
             priority
           />
           {/* 어두운 그라데이션 오버레이 */}
@@ -79,7 +79,7 @@ export default function Home() {
             borderRadius: 16, padding: "10px 18px",
             border: "1px solid rgba(255,255,255,0.3)",
           }}>
-            <span style={{ fontSize: 20 }}>✝️</span>
+            <span style={{ fontSize: 20 }}>🌟</span>
             <div>
               <div style={{ fontSize: 15, fontWeight: 900, color: "#fff", letterSpacing: "-0.3px", textShadow: "0 1px 8px rgba(0,0,0,0.4)" }}>
                 Oh, my God! 오 내 신!
@@ -105,7 +105,7 @@ export default function Home() {
             background: "linear-gradient(135deg,#a78bfa,#818cf8)",
             display: "flex", alignItems: "center", justifyContent: "center",
             fontSize: 22, boxShadow: "0 4px 12px rgba(167,139,250,0.4)",
-          }}>✝️</div>
+          }}>🌟</div>
           <div>
             <h2 style={{ fontSize: 17, fontWeight: 900, color: "var(--text)", margin: "0 0 8px", letterSpacing: "-0.3px" }}>
               급훈: Oh, my God! 오 내 신!
