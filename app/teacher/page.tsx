@@ -247,6 +247,91 @@ export default function TeacherPage() {
         </div>
       </Card>
 
+
+      {/* 학급 자율활동 안내 */}
+      <div style={{ display:'flex', flexDirection:'column', gap:16 }}>
+        <div style={{ display:'flex', alignItems:'center', gap:12, padding:'20px 24px', background:'linear-gradient(135deg,#f0fdf4,#dcfce7)', borderRadius:22, border:'1.5px solid #86efac' }}>
+          <span style={{ fontSize:28 }}>📢</span>
+          <div>
+            <p style={{ fontSize:12, fontWeight:800, color:'#22c55e', margin:'0 0 2px', textTransform:'uppercase', letterSpacing:'0.06em' }}>2025학년도</p>
+            <h2 style={{ fontSize:17, fontWeight:900, color:'var(--text)', margin:0, letterSpacing:'-0.3px' }}>우리반 학급 자율활동 안내</h2>
+            <p style={{ fontSize:13, color:'var(--text-muted)', margin:'4px 0 0', fontWeight:500 }}>올해 우리 반은 다음 3가지 학급 자율활동을 진행합니다.</p>
+          </div>
+        </div>
+
+        {[
+          {
+            emoji: '🔬',
+            title: '전공분야별 심화탐구활동',
+            color: 'linear-gradient(135deg,#0ea5e9,#6366f1)',
+            shadow: 'rgba(14,165,233,0.2)',
+            href: '/research',
+            items: [
+              '공통된 탐구 주제를 선정합니다.',
+              '학년 초 관심 분야 또는 희망 진로를 바탕으로 모둠을 구성합니다.',
+              '모둠별로 관련 도서를 선정하여 아침 자습 시간을 활용해 독서를 진행합니다.',
+              '아침시간 및 HR 시간을 활용하여 심화 탐구 활동을 진행합니다.',
+              '설문조사, 잡지 제작 등 다양한 형태의 결과물을 제작하고 1학기 말에 중간 보고물을 제출합니다.',
+              '학년 말 HR 시간을 활용하여 모둠별 탐구 결과를 발표합니다.',
+            ],
+            note: '운영: HR 시간 활동은 회장, 부회장이 중심이 되어 진행합니다.',
+          },
+          {
+            emoji: '🤝',
+            title: '교과 멘토·멘티 협력 학습 활동',
+            color: 'linear-gradient(135deg,#f59e0b,#ef4444)',
+            shadow: 'rgba(245,158,11,0.2)',
+            href: '/mentor',
+            items: [
+              '교과별로 학습 역량이 우수한 학생을 멘토로 선발합니다.',
+              '멘토는 친구들의 질문에 답변하며 학습을 돕습니다.',
+              '시험 기간 전 예상 문제 제작 및 학습 자료 공유 활동을 합니다.',
+              '간단한 쪽지시험 또는 문제 풀이 활동을 통해 학습 내용을 점검합니다.',
+              '멘토 학생은 활동 내용을 멘토 활동 기록지에 작성합니다.',
+            ],
+            note: '운영: HR 시간 활동은 회장, 부회장이 중심이 되어 진행합니다.',
+          },
+          {
+            emoji: '💪',
+            title: '90일 좋은 습관 만들기 프로젝트',
+            color: 'linear-gradient(135deg,#34d399,#3b82f6)',
+            shadow: 'rgba(52,211,153,0.2)',
+            href: '/habits',
+            items: [
+              '각자 만들고 싶은 좋은 습관을 하나 정합니다.',
+              '90일 동안 꾸준히 실천하며 습관 형성을 목표로 합니다.',
+              '매일 실천 여부를 웹앱에 체크합니다.',
+              '서로의 실천을 응원하며 꾸준한 자기관리 습관을 기릅니다.',
+            ],
+            note: '운영: 웹앱을 통해 수시로 체크합니다.',
+          },
+        ].map((act) => (
+          <div key={act.title} style={{ borderRadius:20, overflow:'hidden', boxShadow: }}>
+            <div style={{ background:act.color, padding:'16px 22px', display:'flex', alignItems:'center', justifyContent:'space-between' }}>
+              <div style={{ display:'flex', alignItems:'center', gap:10 }}>
+                <span style={{ fontSize:24 }}>{act.emoji}</span>
+                <h3 style={{ color:'#fff', fontSize:15, fontWeight:900, margin:0, letterSpacing:'-0.3px' }}>{act.title}</h3>
+              </div>
+              <a href={act.href} style={{ fontSize:12, fontWeight:700, color:'#fff', background:'rgba(255,255,255,0.2)', padding:'4px 12px', borderRadius:999, textDecoration:'none', border:'1px solid rgba(255,255,255,0.3)', whiteSpace:'nowrap' }}>
+                바로가기 →
+              </a>
+            </div>
+            <div style={{ background:'#fff', padding:'16px 22px' }}>
+              <ul style={{ margin:0, padding:0, listStyle:'none', display:'flex', flexDirection:'column', gap:7 }}>
+                {act.items.map((item, i) => (
+                  <li key={i} style={{ display:'flex', alignItems:'flex-start', gap:8, fontSize:13, color:'var(--text-muted)', lineHeight:1.6 }}>
+                    <span style={{ width:6, height:6, borderRadius:'50%', background:'var(--primary)', flexShrink:0, marginTop:6 }}/>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <div style={{ marginTop:12, padding:'8px 14px', borderRadius:10, background:'#f9fafb', border:'1px solid var(--border)' }}>
+                <p style={{ fontSize:12, fontWeight:700, color:'var(--text-subtle)', margin:0 }}>📌 {act.note}</p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
       {/* 하단 안내 */}
       <div className="rounded-2xl border bg-emerald-50 p-4 text-sm text-gray-800">
         <div className="font-semibold">사진(컴도리/컴수니) 넣는 방법</div>
