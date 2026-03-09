@@ -208,7 +208,6 @@ export default function AlbumPage() {
               ref={fileInputRef}
               type="file"
               accept="image/*"
-              capture="environment"
               onChange={onFileChange}
               style={{ display:"none" }}
             />
