@@ -17,6 +17,7 @@ const NAV_GROUPS = [
     items: [
       { href: "/teacher", label: "담임 소개" },
       { href: "/wall", label: "학생 소개" },
+      { href: "/album", label: "앨범 📸" },
       { href: "/campaign", label: "공약" },
     ],
   },
