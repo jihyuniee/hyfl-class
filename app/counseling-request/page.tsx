@@ -115,10 +115,11 @@ export default function CounselingPage() {
         <div style={{ position:"relative" }}>
           <p style={{ color:"rgba(255,255,255,0.8)", fontSize:13, fontWeight:600, margin:"0 0 6px" }}>선생님과 1:1</p>
           <h1 style={{ color:"#fff", fontSize:"clamp(22px,4vw,32px)", fontWeight:900, margin:"0 0 8px", letterSpacing:"-0.5px" }}>
-            💌 상담 신청
+            💌 1차 상담 신청
           </h1>
-          <p style={{ color:"rgba(255,255,255,0.85)", fontSize:13, margin:0, fontWeight:500 }}>
-            가능한 시간을 확인하고 신청해요. 비밀 상담도 가능해요 🔒
+          <p style={{ color:"rgba(255,255,255,0.85)", fontSize:13, margin:0, fontWeight:500, lineHeight:1.7 }}>
+            선생님이 등록한 가능 시간 중 원하는 시간을 선택해 신청해요.<br/>
+            이미 신청된 시간을 피해서 신청해주세요 🙏 비밀 상담도 가능해요 🔒
           </p>
         </div>
       </div>
@@ -209,7 +210,7 @@ export default function CounselingPage() {
       {selectedSlot && (
         <div style={{ position:"fixed", inset:0, background:"rgba(0,0,0,0.4)", display:"flex", alignItems:"center", justifyContent:"center", zIndex:1000, padding:20 }}>
           <div style={{ background:"#fff", borderRadius:24, padding:"28px 26px", maxWidth:420, width:"100%", boxShadow:"0 20px 60px rgba(0,0,0,0.2)" }}>
-            <h3 style={{ fontSize:17, fontWeight:900, color:"var(--text)", margin:"0 0 6px" }}>상담 신청</h3>
+            <h3 style={{ fontSize:17, fontWeight:900, color:"var(--text)", margin:"0 0 6px" }}>1차 상담 신청</h3>
             <p style={{ fontSize:13, color:"var(--text-muted)", margin:"0 0 20px" }}>
               📅 {fmtDate(selectedSlot.date)} {selectedSlot.time}
             </p>
