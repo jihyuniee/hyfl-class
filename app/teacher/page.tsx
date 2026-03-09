@@ -306,7 +306,7 @@ export default function TeacherPage() {
             note: '운영: 웹앱을 통해 수시로 체크합니다.',
           },
         ].map((act) => (
-          <div key={act.title} style={{ borderRadius:20, overflow:'hidden', boxShadow: }}>
+          <div key={act.title} style={{ borderRadius:20, overflow:'hidden', boxShadow:`0 4px 20px ${act.shadow}` }}>
             <div style={{ background:act.color, padding:'16px 22px', display:'flex', alignItems:'center', justifyContent:'space-between' }}>
               <div style={{ display:'flex', alignItems:'center', gap:10 }}>
                 <span style={{ fontSize:24 }}>{act.emoji}</span>
