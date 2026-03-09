@@ -84,7 +84,7 @@ export default function AlbumPage() {
 
     setUploadPct(30);
     const { data: storageData, error: storageErr } = await supabase.storage
-      .from("album")
+      .from("uploads")
       .upload(fileName, fFile, { cacheControl: "3600", upsert: false });
 
     if (storageErr) {
@@ -95,7 +95,7 @@ export default function AlbumPage() {
     }
 
     setUploadPct(70);
-    const { data: urlData } = supabase.storage.from("album").getPublicUrl(storageData.path);
+    const { data: urlData } = supabase.storage.from("uploads").getPublicUrl(storageData.path);
     const imageUrl = urlData.publicUrl;
 
     setUploadPct(90);
