@@ -29,12 +29,17 @@ const NAV_GROUPS = [
     items: [
       { href: "/todo", label: "나의 할일 ✅" },
       { href: "/schedule", label: "일정/수행" },
-      { href: "/habits", label: "90일 습관" },
-      { href: "/research", label: "심화탐구" },
-      { href: "/mentor", label: "멘토·멘티" },
       { href: "/roles", label: "1인1역할" },
       { href: "/cleaning", label: "청소" },
       { href: "/study", label: "야자 신청" },
+    ],
+  },
+  {
+    label: "자율활동", emoji: "🌱",
+    items: [
+      { href: "/habits", label: "90일 습관" },
+      { href: "/research", label: "심화탐구" },
+      { href: "/mentor", label: "멘토·멘티" },
     ],
   },
   {
