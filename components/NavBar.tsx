@@ -10,6 +10,8 @@ const NAV_GROUPS = [
     items: [
       { href: "/", label: "홈" },
       { href: "/notice", label: "공지" },
+      { href: "/meal", label: "급식 🍱" },
+      { href: "/praise", label: "칭찬 🌟" },
     ],
   },
   {
