@@ -15,6 +15,7 @@ const NAV_GROUPS = [
   {
     label: "우리반", emoji: "👥",
     items: [
+      { href: "/about", label: "학급 소개 🏫" },
       { href: "/teacher", label: "담임 소개" },
       { href: "/wall", label: "학생 소개" },
       { href: "/album", label: "앨범 📸" },
