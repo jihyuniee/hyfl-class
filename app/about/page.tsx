@@ -120,17 +120,12 @@ export default function AboutPage() {
         <h2 style={{ fontSize:"clamp(20px,5vw,30px)", fontWeight:900, color:"var(--text)", margin:"0 0 16px", letterSpacing:"-0.5px" }}>
           Oh, my God! 오 내 신!
         </h2>
-        <div style={{ display:"flex", flexDirection:"column", gap:8, maxWidth:420, margin:"0 auto" }}>
-          <div style={{ background:"#fff", borderRadius:14, padding:"12px 18px", border:"1px solid #f9a8d4" }}>
-            <span style={{ fontSize:13, color:"var(--text-muted)", fontWeight:600 }}>
-              🙏 <b>Oh, my God!</b> — 매 순간 감사하는 마음으로
-            </span>
-          </div>
-          <div style={{ background:"#fff", borderRadius:14, padding:"12px 18px", border:"1px solid #c4b5fd" }}>
-            <span style={{ fontSize:13, color:"var(--text-muted)", fontWeight:600 }}>
-              📚 <b>오 내 신!</b> — 오직 내신만이 살 길! 열심히 공부하자
-            </span>
-          </div>
+        <div style={{ maxWidth:460, margin:"0 auto", background:"#fff", borderRadius:16, padding:"16px 20px", border:"1px solid #f9a8d4" }}>
+          <p style={{ fontSize:14, color:"var(--text-muted)", fontWeight:600, margin:0, lineHeight:1.8 }}>
+            🌟 <b>"오 내 신(내신)!"</b> — 내신 시험을 향한 우리의 다짐이에요.<br/>
+            시험마다 최선을 다해 좋은 내신 성적을 만들어 나가자는 의미예요.<br/>
+            기가 막힌 내신, 기가 막힌 한 해가 되길 🌟
+          </p>
         </div>
       </div>
 
