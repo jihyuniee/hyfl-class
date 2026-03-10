@@ -27,6 +27,7 @@ const NAV_GROUPS = [
   {
     label: "활동", emoji: "📋",
     items: [
+      { href: "/todo", label: "나의 할일 ✅" },
       { href: "/schedule", label: "일정/수행" },
       { href: "/habits", label: "90일 습관" },
       { href: "/research", label: "심화탐구" },
@@ -39,7 +40,7 @@ const NAV_GROUPS = [
   {
     label: "소통", emoji: "💬",
     items: [
-      { href: "/counseling", label: "상담" },
+      { href: "/counseling-request", label: "상담" },
       { href: "/pledges", label: "규칙" },
       { href: "/board", label: "신문고" },
       { href: "/contacts", label: "연락처 확인 🔒" },

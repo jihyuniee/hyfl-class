@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from "@/components/lib/supabaseClient";
 
 type PledgeRow = {
@@ -14,190 +14,80 @@ type PledgeRow = {
   is_public: boolean;
 };
 
-function formatKST(iso: string) {
-  const d = new Date(iso);
-  return d.toLocaleString("ko-KR", { timeZone: "Asia/Seoul" });
-}
-
 export default function CampaignPage() {
   const [list, setList] = useState<PledgeRow[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [err, setErr] = useState<string | null>(null);
-
-  const [studentNo, setStudentNo] = useState("");
-  const [name, setName] = useState("");
-  const [position, setPosition] = useState<"회장" | "부회장A" | "부회장B">("회장");
-  const [title, setTitle] = useState("");
-  const [pledges, setPledges] = useState("");
-  const [isPublic, setIsPublic] = useState(true);
 
   async function load() {
-    setErr(null);
-    const { data, error } = await supabase
+    const { data } = await supabase
       .from("campaign_pledges")
       .select("*")
+      .eq("is_public", true)
       .order("created_at", { ascending: false });
-
-    if (error) return setErr(error.message);
     setList((data as PledgeRow[]) ?? []);
   }
 
-  useEffect(() => {
-    load();
-  }, []);
+  useEffect(() => { load(); }, []);
 
-  const canSubmit = useMemo(() => {
-    return (
-      studentNo.trim().length >= 2 &&
-      name.trim().length >= 1 &&
-      title.trim().length >= 2 &&
-      pledges.trim().length >= 10
-    );
-  }, [studentNo, name, title, pledges]);
+  const byPosition: Record<string, PledgeRow[]> = {};
+  list.forEach(p => {
+    if (!byPosition[p.position]) byPosition[p.position] = [];
+    byPosition[p.position].push(p);
+  });
 
-  async function submit() {
-    if (!canSubmit) return;
-    setLoading(true);
-    setErr(null);
-
-    const { error } = await supabase.from("campaign_pledges").insert({
-      student_no: studentNo.trim(),
-      name: name.trim(),
-      position,
-      title: title.trim(),
-      pledges: pledges.trim(),
-      is_public: isPublic,
-    });
-
-    setLoading(false);
-    if (error) return setErr(error.message);
-
-    setTitle("");
-    setPledges("");
-    await load();
-  }
+  const positionOrder = ["회장", "부회장A", "부회장B"];
+  const positionLabel: Record<string, string> = {
+    "회장": "🏅 회장",
+    "부회장A": "🥈 부회장 A",
+    "부회장B": "🥈 부회장 B",
+  };
 
   return (
-    <div className="space-y-6">
-      <div className="hy-card p-6">
-        <div className="text-sm text-gray-600">우리 반이 함께 만드는 선거 게시판</div>
-        <h1 className="hy-title mt-1 text-2xl font-bold">회장/부회장 공약 🌷</h1>
-        <p className="mt-2 text-sm text-gray-700">
-          공약은 “멋있게”보다 <span className="font-semibold">실행 가능하게</span> 🙂
+    <div style={{ display:"flex", flexDirection:"column", gap:20 }}>
+
+      <div className="hy-hero">
+        <div style={{ display:"inline-flex", alignItems:"center", background:"rgba(255,255,255,0.2)", backdropFilter:"blur(8px)", borderRadius:999, padding:"4px 14px", marginBottom:12, border:"1px solid rgba(255,255,255,0.3)" }}>
+          <span style={{ fontSize:12, color:"#fff", fontWeight:700 }}>✅ 선거 완료</span>
+        </div>
+        <h1 style={{ color:"#fff", fontSize:"clamp(22px,4vw,32px)", fontWeight:900, margin:"0 0 8px" }}>
+          🌷 회장/부회장 공약
+        </h1>
+        <p style={{ color:"rgba(255,255,255,0.85)", fontSize:13, margin:0, fontWeight:500, lineHeight:1.7 }}>
+          선거에서 약속한 공약들이에요.<br/>잘 이행되고 있는지 함께 지켜봐요 🙂
         </p>
       </div>
 
-      <div className="hy-card p-5 space-y-3">
-        <div className="text-base font-semibold">공약 등록</div>
-
-        <div className="grid gap-3 md:grid-cols-3">
-          <input
-            className="w-full rounded-2xl border px-4 py-3 text-sm"
-            placeholder="학번 (예: 20202)"
-            value={studentNo}
-            onChange={(e) => setStudentNo(e.target.value)}
-          />
-          <input
-            className="w-full rounded-2xl border px-4 py-3 text-sm"
-            placeholder="이름"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-          <select
-            className="w-full rounded-2xl border px-4 py-3 text-sm"
-            value={position}
-            onChange={(e) => setPosition(e.target.value as any)}
-          >
-            <option value="회장">회장</option>
-            <option value="부회장A">부회장 A</option>
-            <option value="부회장B">부회장 B</option>
-          </select>
+      {list.length === 0 ? (
+        <div className="hy-card" style={{ padding:"40px", textAlign:"center" }}>
+          <p style={{ fontSize:15, color:"var(--text-subtle)", fontWeight:600 }}>등록된 공약이 없어요</p>
         </div>
-
-        <input
-          className="w-full rounded-2xl border px-4 py-3 text-sm"
-          placeholder="공약 제목 (예: 우리 반 ‘약속 3가지’ 만들기)"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-
-        <textarea
-          className="min-h-[130px] w-full rounded-2xl border px-4 py-3 text-sm"
-          placeholder={`공약 내용 (예시)
-- 공약 1: (무엇을) (언제까지) (어떻게)
-- 공약 2: ...
-- 공약 3: ...
-* 실행 계획이 들어가면 더 좋아요!`}
-          value={pledges}
-          onChange={(e) => setPledges(e.target.value)}
-        />
-
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <label className="flex items-center gap-2 text-sm text-gray-700">
-            <input
-              type="checkbox"
-              checked={isPublic}
-              onChange={(e) => setIsPublic(e.target.checked)}
-            />
-            전체 공개(우리 반이 볼 수 있게)
-          </label>
-
-          <button
-            className={`hy-btn hy-btn-primary text-sm text-white ${
-              !canSubmit || loading ? "opacity-60" : ""
-            }`}
-            onClick={submit}
-            disabled={!canSubmit || loading}
-          >
-            {loading ? "올리는 중..." : "공약 게시하기"}
-          </button>
-        </div>
-
-        {!canSubmit && (
-          <div className="text-xs text-gray-500">
-            필수: 학번, 이름, 공약 제목, 공약 내용(10자 이상)
-          </div>
-        )}
-
-        {err && (
-          <div className="rounded-2xl border border-red-200 bg-red-50 p-3 text-sm text-red-700">
-            오류: {err}
-          </div>
-        )}
-      </div>
-
-      <div className="space-y-3">
-        <div className="flex items-center justify-between">
-          <div className="text-sm font-semibold text-gray-700">게시된 공약 {list.length}개</div>
-          <button className="hy-btn text-sm" onClick={load}>새로고침</button>
-        </div>
-
-        {list.length === 0 ? (
-          <div className="hy-card p-6 text-sm text-gray-700">
-            아직 공약이 없어 🙂 첫 공약의 주인공이 되어줘!
-          </div>
-        ) : (
-          list.map((p) => (
-            <div key={p.id} className="hy-card p-5">
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  <div className="text-sm font-semibold">
-                    [{p.position}] {p.title}
+      ) : (
+        positionOrder.filter(pos => byPosition[pos]?.length > 0).map(pos => (
+          <div key={pos}>
+            <p style={{ fontSize:14, fontWeight:900, color:"var(--text-muted)", margin:"0 0 10px" }}>
+              {positionLabel[pos] ?? pos}
+            </p>
+            <div style={{ display:"flex", flexDirection:"column", gap:12 }}>
+              {byPosition[pos].map(p => (
+                <div key={p.id} className="hy-card" style={{ padding:"22px 24px" }}>
+                  <div style={{ marginBottom:14 }}>
+                    <p style={{ fontSize:16, fontWeight:900, color:"var(--text)", margin:"0 0 4px" }}>
+                      {p.title}
+                    </p>
+                    <p style={{ fontSize:12, color:"var(--primary)", fontWeight:700, margin:0 }}>
+                      {p.name} ({p.student_no})
+                    </p>
                   </div>
-                  <div className="mt-1 text-xs text-gray-500">
-                    {p.name} ({p.student_no}) · {formatKST(p.created_at)}
-                    {!p.is_public && " · (비공개)"}
+                  <div style={{ background:"#f9fafb", borderRadius:14, padding:"14px 18px" }}>
+                    <p style={{ fontSize:13, color:"var(--text)", lineHeight:1.9, margin:0, whiteSpace:"pre-wrap" }}>
+                      {p.pledges}
+                    </p>
                   </div>
                 </div>
-              </div>
-
-              <div className="mt-3 whitespace-pre-wrap text-sm leading-7 text-gray-800">
-                {p.pledges}
-              </div>
+              ))}
             </div>
-          ))
-        )}
-      </div>
+          </div>
+        ))
+      )}
     </div>
   );
 }
