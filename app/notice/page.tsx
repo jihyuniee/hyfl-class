@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { supabase } from "@/components/lib/supabaseClient";
 
 type Notice = {
@@ -28,8 +28,20 @@ export default function NoticePage() {
   const [fTitle,   setFTitle]   = useState("");
   const [fContent, setFContent] = useState("");
   const [fPinned,  setFPinned]  = useState(false);
-  const [fImage,   setFImage]   = useState("");
+  const [fFile,    setFFile]    = useState<File | null>(null);
+  const [fPreview, setFPreview] = useState("");
+  const [uploading,setUploading]= useState(false);
   const [loading,  setLoading]  = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  function onFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setFFile(file);
+    const reader = new FileReader();
+    reader.onload = ev => setFPreview(ev.target?.result as string);
+    reader.readAsDataURL(file);
+  }
   const [adminPw,  setAdminPw]  = useState("");
   const [isAdmin,  setIsAdmin]  = useState(false);
 
@@ -47,17 +59,57 @@ export default function NoticePage() {
   async function submit() {
     if (!fTitle.trim() || !fContent.trim()) { alert("제목과 내용을 입력하세요"); return; }
     setLoading(true);
+    let imageUrl: string | null = null;
+
+    if (fFile) {
+      setUploading(true);
+      const ext = fFile.name.split(".").pop();
+      const fileName = `notice_${Date.now()}.${ext}`;
+      const { data: storageData, error: storageErr } = await supabase.storage
+        .from("uploads")
+        .upload(fileName, fFile, { cacheControl: "3600", upsert: false });
+      setUploading(false);
+      if (storageErr) { alert("이미지 업로드 실패: " + storageErr.message); setLoading(false); return; }
+      const { data: urlData } = supabase.storage.from("uploads").getPublicUrl(storageData.path);
+      imageUrl = urlData.publicUrl;
+    }
+
     const { error } = await supabase.from("notices").insert({
       title: fTitle.trim(),
       content: fContent.trim(),
       is_pinned: fPinned,
-      image_url: fImage.trim() || null,
+      image_url: imageUrl,
     });
     setLoading(false);
     if (error) { alert(error.message); return; }
-    setFTitle(""); setFContent(""); setFPinned(false); setFImage("");
+    setFTitle(""); setFContent(""); setFPinned(false);
+    setFFile(null); setFPreview("");
+    if (fileInputRef.current) fileInputRef.current.value = "";
     setFormOpen(false);
     await load();
+  }
+
+  async function handlePaste(e: React.ClipboardEvent<HTMLTextAreaElement>) {
+    const items = e.clipboardData.items;
+    for (let i = 0; i < items.length; i++) {
+      if (items[i].type.startsWith("image/")) {
+        e.preventDefault();
+        const file = items[i].getAsFile();
+        if (!file) return;
+        setUploading(true);
+        const ext = file.type.split("/")[1] || "png";
+        const fileName = `notice_paste_${Date.now()}.${ext}`;
+        const { data: storageData, error: storageErr } = await supabase.storage
+          .from("uploads")
+          .upload(fileName, file, { cacheControl: "3600", upsert: false });
+        setUploading(false);
+        if (storageErr) { alert("이미지 업로드 실패: " + storageErr.message); return; }
+        const { data: urlData } = supabase.storage.from("uploads").getPublicUrl(storageData.path);
+        setFPreview(urlData.publicUrl);
+        setFFile(file);
+        return;
+      }
+    }
   }
 
   async function togglePin(id: string, current: boolean) {
@@ -128,13 +180,27 @@ export default function NoticePage() {
             <input placeholder="제목 *" value={fTitle} onChange={e => setFTitle(e.target.value)}
               className="hy-input" />
             <textarea
-              placeholder="내용을 입력하세요. 카톡 내용 그대로 붙여넣어도 돼요 🙂"
+              placeholder="내용을 입력하세요. 카톡 내용 그대로 붙여넣어도 돼요 🙂&#10;이미지는 Ctrl+V(붙여넣기)로 바로 첨부할 수 있어요 📷"
               value={fContent} onChange={e => setFContent(e.target.value)}
+              onPaste={handlePaste}
               className="hy-input" style={{ minHeight:140, resize:"vertical" }}
             />
-            <input placeholder="이미지 URL (선택)"
-              value={fImage} onChange={e => setFImage(e.target.value)}
-              className="hy-input" />
+            {/* 이미지 업로드 */}
+            <div
+              onClick={() => fileInputRef.current?.click()}
+              style={{ border:"2px dashed #f9a8d4", borderRadius:14, padding:"18px", textAlign:"center", cursor:"pointer",
+                background: fPreview ? "#000" : "var(--primary-light)", minHeight:80,
+                display:"flex", alignItems:"center", justifyContent:"center", position:"relative", overflow:"hidden" }}>
+              {fPreview
+                ? <img src={fPreview} alt="미리보기" style={{ maxWidth:"100%", maxHeight:200, objectFit:"contain", borderRadius:8 }}/>
+                : <div>
+                    <p style={{ fontSize:13, fontWeight:800, color:"var(--primary)", margin:"0 0 2px" }}>📷 이미지 첨부 (선택)</p>
+                    <p style={{ fontSize:12, color:"var(--text-subtle)", margin:0 }}>클릭해서 사진 선택</p>
+                  </div>
+              }
+            </div>
+            <input ref={fileInputRef} type="file" accept="image/*" onChange={onFileChange} style={{ display:"none" }}/>
+            {uploading && <p style={{ fontSize:13, color:"var(--primary)", fontWeight:700, margin:0 }}>이미지 업로드 중...</p>}
             <label style={{ display:"flex", alignItems:"center", gap:8, cursor:"pointer", fontSize:13, color:"var(--text-muted)", fontWeight:600 }}>
               <input type="checkbox" checked={fPinned} onChange={e => setFPinned(e.target.checked)} />
               📌 상단 고정
