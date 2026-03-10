@@ -37,8 +37,6 @@ const NAV_GROUPS = [
   {
     label: "소통", emoji: "💬",
     items: [
-      { href: "/counseling", label: "상담" },
-      { href: "/counseling-request", label: "상담 신청" },
       { href: "/pledges", label: "규칙" },
       { href: "/board", label: "신문고" },
       { href: "/contacts", label: "연락처 확인 🔒" },
