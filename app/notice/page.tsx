@@ -9,7 +9,7 @@ type Notice = {
   title: string;
   content: string;
   is_pinned: boolean;
-  image_url: string | null;
+  image_urls: string[];
 };
 
 function timeAgo(iso: string) {
@@ -22,28 +22,17 @@ function timeAgo(iso: string) {
 }
 
 export default function NoticePage() {
-  const [notices, setNotices] = useState<Notice[]>([]);
+  const [notices,    setNotices]    = useState<Notice[]>([]);
   const [expandedId, setExpandedId] = useState<string | null>(null);
-  const [formOpen, setFormOpen] = useState(false);
-  const [fTitle,   setFTitle]   = useState("");
-  const [fContent, setFContent] = useState("");
-  const [fPinned,  setFPinned]  = useState(false);
-  const [fFile,    setFFile]    = useState<File | null>(null);
-  const [fPreview, setFPreview] = useState("");
-  const [uploading,setUploading]= useState(false);
-  const [loading,  setLoading]  = useState(false);
+  const [formOpen,   setFormOpen]   = useState(false);
+  const [fTitle,     setFTitle]     = useState("");
+  const [fPinned,    setFPinned]    = useState(false);
+  const [uploading,  setUploading]  = useState(false);
+  const [loading,    setLoading]    = useState(false);
+  const [adminPw,    setAdminPw]    = useState("");
+  const [isAdmin,    setIsAdmin]    = useState(false);
+  const editorRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-
-  function onFileChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    setFFile(file);
-    const reader = new FileReader();
-    reader.onload = ev => setFPreview(ev.target?.result as string);
-    reader.readAsDataURL(file);
-  }
-  const [adminPw,  setAdminPw]  = useState("");
-  const [isAdmin,  setIsAdmin]  = useState(false);
 
   async function load() {
     const { data } = await supabase
@@ -56,60 +45,95 @@ export default function NoticePage() {
 
   useEffect(() => { load(); }, []);
 
-  async function submit() {
-    if (!fTitle.trim() || !fContent.trim()) { alert("제목과 내용을 입력하세요"); return; }
-    setLoading(true);
-    let imageUrl: string | null = null;
+  async function uploadAndInsertImage(file: File) {
+    setUploading(true);
+    const ext = file.type.split("/")[1] || "png";
+    const fileName = `notice_${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`;
+    const { data: storageData, error } = await supabase.storage
+      .from("uploads")
+      .upload(fileName, file, { cacheControl: "3600", upsert: false });
+    setUploading(false);
+    if (error) { alert("이미지 업로드 실패: " + error.message); return; }
+    const { data: urlData } = supabase.storage.from("uploads").getPublicUrl(storageData.path);
+    const url = urlData.publicUrl;
 
-    if (fFile) {
-      setUploading(true);
-      const ext = fFile.name.split(".").pop();
-      const fileName = `notice_${Date.now()}.${ext}`;
-      const { data: storageData, error: storageErr } = await supabase.storage
-        .from("uploads")
-        .upload(fileName, fFile, { cacheControl: "3600", upsert: false });
-      setUploading(false);
-      if (storageErr) { alert("이미지 업로드 실패: " + storageErr.message); setLoading(false); return; }
-      const { data: urlData } = supabase.storage.from("uploads").getPublicUrl(storageData.path);
-      imageUrl = urlData.publicUrl;
+    // 커서 위치에 이미지 삽입
+    const img = document.createElement("img");
+    img.src = url;
+    img.style.cssText = "max-width:100%;border-radius:10px;margin:8px 0;display:block;";
+    img.contentEditable = "false";
+
+    const sel = window.getSelection();
+    if (sel && sel.rangeCount > 0 && editorRef.current?.contains(sel.anchorNode)) {
+      const range = sel.getRangeAt(0);
+      range.deleteContents();
+      // 이미지 앞뒤에 줄바꿈
+      const br1 = document.createElement("br");
+      const br2 = document.createElement("br");
+      range.insertNode(br2);
+      range.insertNode(img);
+      range.insertNode(br1);
+      range.setStartAfter(br2);
+      range.collapse(true);
+      sel.removeAllRanges();
+      sel.addRange(range);
+    } else {
+      editorRef.current?.appendChild(img);
     }
-
-    const { error } = await supabase.from("notices").insert({
-      title: fTitle.trim(),
-      content: fContent.trim(),
-      is_pinned: fPinned,
-      image_url: imageUrl,
-    });
-    setLoading(false);
-    if (error) { alert(error.message); return; }
-    setFTitle(""); setFContent(""); setFPinned(false);
-    setFFile(null); setFPreview("");
-    if (fileInputRef.current) fileInputRef.current.value = "";
-    setFormOpen(false);
-    await load();
   }
 
-  async function handlePaste(e: React.ClipboardEvent<HTMLTextAreaElement>) {
+  async function handlePaste(e: React.ClipboardEvent<HTMLDivElement>) {
     const items = e.clipboardData.items;
     for (let i = 0; i < items.length; i++) {
       if (items[i].type.startsWith("image/")) {
         e.preventDefault();
         const file = items[i].getAsFile();
-        if (!file) return;
-        setUploading(true);
-        const ext = file.type.split("/")[1] || "png";
-        const fileName = `notice_paste_${Date.now()}.${ext}`;
-        const { data: storageData, error: storageErr } = await supabase.storage
-          .from("uploads")
-          .upload(fileName, file, { cacheControl: "3600", upsert: false });
-        setUploading(false);
-        if (storageErr) { alert("이미지 업로드 실패: " + storageErr.message); return; }
-        const { data: urlData } = supabase.storage.from("uploads").getPublicUrl(storageData.path);
-        setFPreview(urlData.publicUrl);
-        setFFile(file);
+        if (file) await uploadAndInsertImage(file);
         return;
       }
     }
+  }
+
+  async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const files = Array.from(e.target.files ?? []);
+    for (const file of files) {
+      await uploadAndInsertImage(file);
+    }
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  }
+
+  // editor HTML에서 텍스트와 이미지 URL 추출
+  function parseEditor(): { content: string; image_urls: string[] } {
+    const el = editorRef.current;
+    if (!el) return { content: "", image_urls: [] };
+    const image_urls: string[] = [];
+    // 이미지를 [이미지N] 플레이스홀더로 대체해서 텍스트 추출
+    const clone = el.cloneNode(true) as HTMLElement;
+    clone.querySelectorAll("img").forEach((img, idx) => {
+      image_urls.push(img.src);
+      img.replaceWith(`[이미지${idx+1}]`);
+    });
+    const content = clone.innerText.trim();
+    return { content, image_urls };
+  }
+
+  async function submit() {
+    if (!fTitle.trim()) { alert("제목을 입력하세요"); return; }
+    const { content, image_urls } = parseEditor();
+    if (!content && image_urls.length === 0) { alert("내용을 입력하세요"); return; }
+    setLoading(true);
+    const { error } = await supabase.from("notices").insert({
+      title: fTitle.trim(),
+      content: editorRef.current?.innerHTML ?? "",  // HTML 그대로 저장
+      is_pinned: fPinned,
+      image_urls,
+    });
+    setLoading(false);
+    if (error) { alert(error.message); return; }
+    setFTitle(""); setFPinned(false);
+    if (editorRef.current) editorRef.current.innerHTML = "";
+    setFormOpen(false);
+    await load();
   }
 
   async function togglePin(id: string, current: boolean) {
@@ -132,9 +156,7 @@ export default function NoticePage() {
       {/* 헤더 */}
       <div className="hy-hero">
         <div style={{ position:"relative" }}>
-          <p style={{ color:"rgba(255,255,255,0.8)", fontSize:13, fontWeight:600, margin:"0 0 6px" }}>
-            우리반 소식
-          </p>
+          <p style={{ color:"rgba(255,255,255,0.8)", fontSize:13, fontWeight:600, margin:"0 0 6px" }}>우리반 소식</p>
           <h1 style={{ color:"#fff", fontSize:"clamp(22px,4vw,32px)", fontWeight:900, margin:0, letterSpacing:"-0.5px" }}>
             📢 공지사항
           </h1>
@@ -146,26 +168,18 @@ export default function NoticePage() {
         <div style={{ display:"flex", alignItems:"center", gap:8 }}>
           {!isAdmin ? (
             <>
-              <input
-                type="password" placeholder="관리자 비밀번호"
+              <input type="password" placeholder="관리자 비밀번호"
                 value={adminPw} onChange={e => setAdminPw(e.target.value)}
                 className="hy-input" style={{ maxWidth:180 }}
-                onKeyDown={e => e.key === "Enter" && setIsAdmin(adminPw === "hyfl2025")}
-              />
+                onKeyDown={e => e.key === "Enter" && setIsAdmin(adminPw === "hyfl2025")}/>
               <button onClick={() => setIsAdmin(adminPw === "hyfl2025")}
-                className="hy-btn" style={{ fontSize:13, padding:"8px 16px" }}>
-                확인
-              </button>
+                className="hy-btn" style={{ fontSize:13 }}>확인</button>
             </>
           ) : (
-            <span style={{ fontSize:13, color:"var(--primary)", fontWeight:700 }}>
-              ✅ 관리자 모드
-            </span>
+            <span style={{ fontSize:13, color:"var(--primary)", fontWeight:700 }}>✅ 관리자 모드</span>
           )}
         </div>
-        <button onClick={() => setFormOpen(o => !o)}
-          className="hy-btn hy-btn-primary"
-          style={{ fontSize:13, padding:"8px 18px" }}>
+        <button onClick={() => setFormOpen(o => !o)} className="hy-btn hy-btn-primary" style={{ fontSize:13 }}>
           {formOpen ? "닫기" : "✏️ 공지 작성"}
         </button>
       </div>
@@ -173,40 +187,52 @@ export default function NoticePage() {
       {/* 공지 작성 폼 */}
       {formOpen && (
         <div className="hy-card" style={{ padding:"22px 24px" }}>
-          <h3 style={{ fontSize:15, fontWeight:800, color:"var(--text)", margin:"0 0 16px" }}>
-            공지 작성하기
-          </h3>
+          <h3 style={{ fontSize:15, fontWeight:800, color:"var(--text)", margin:"0 0 16px" }}>공지 작성하기</h3>
           <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
-            <input placeholder="제목 *" value={fTitle} onChange={e => setFTitle(e.target.value)}
-              className="hy-input" />
-            <textarea
-              placeholder="내용을 입력하세요. 카톡 내용 그대로 붙여넣어도 돼요 🙂&#10;이미지는 Ctrl+V(붙여넣기)로 바로 첨부할 수 있어요 📷"
-              value={fContent} onChange={e => setFContent(e.target.value)}
-              onPaste={handlePaste}
-              className="hy-input" style={{ minHeight:140, resize:"vertical" }}
-            />
-            {/* 이미지 업로드 */}
-            <div
-              onClick={() => fileInputRef.current?.click()}
-              style={{ border:"2px dashed #f9a8d4", borderRadius:14, padding:"18px", textAlign:"center", cursor:"pointer",
-                background: fPreview ? "#000" : "var(--primary-light)", minHeight:80,
-                display:"flex", alignItems:"center", justifyContent:"center", position:"relative", overflow:"hidden" }}>
-              {fPreview
-                ? <img src={fPreview} alt="미리보기" style={{ maxWidth:"100%", maxHeight:200, objectFit:"contain", borderRadius:8 }}/>
-                : <div>
-                    <p style={{ fontSize:13, fontWeight:800, color:"var(--primary)", margin:"0 0 2px" }}>📷 이미지 첨부 (선택)</p>
-                    <p style={{ fontSize:12, color:"var(--text-subtle)", margin:0 }}>클릭해서 사진 선택</p>
-                  </div>
-              }
+            <input placeholder="제목 *" value={fTitle} onChange={e => setFTitle(e.target.value)} className="hy-input"/>
+
+            {/* 툴바 */}
+            <div style={{ display:"flex", gap:6, flexWrap:"wrap", padding:"8px 12px", background:"#f9fafb", borderRadius:"12px 12px 0 0", border:"1.5px solid var(--border)", borderBottom:"none" }}>
+              <button onClick={() => fileInputRef.current?.click()}
+                style={{ padding:"5px 12px", borderRadius:999, border:"1.5px solid var(--border)", background:"#fff", cursor:"pointer", fontSize:12, fontWeight:700, fontFamily:"inherit", color:"var(--text-muted)" }}>
+                📷 사진 삽입
+              </button>
+              {uploading && <span style={{ fontSize:12, color:"var(--primary)", fontWeight:700, alignSelf:"center" }}>⏳ 업로드 중...</span>}
+              <span style={{ fontSize:11, color:"var(--text-subtle)", alignSelf:"center", marginLeft:"auto" }}>
+                Ctrl+V 로도 이미지 붙여넣기 가능
+              </span>
             </div>
-            <input ref={fileInputRef} type="file" accept="image/*" onChange={onFileChange} style={{ display:"none" }}/>
-            {uploading && <p style={{ fontSize:13, color:"var(--primary)", fontWeight:700, margin:0 }}>이미지 업로드 중...</p>}
+            <input ref={fileInputRef} type="file" accept="image/*" multiple onChange={handleFileChange} style={{ display:"none" }}/>
+
+            {/* 에디터 */}
+            <div
+              ref={editorRef}
+              contentEditable
+              onPaste={handlePaste}
+              data-placeholder="내용을 입력하세요. 사진을 원하는 위치에 Ctrl+V로 바로 붙여넣을 수 있어요 📷"
+              suppressContentEditableWarning
+              style={{
+                minHeight:180, padding:"14px 16px",
+                border:"1.5px solid var(--border)", borderRadius:"0 0 12px 12px",
+                fontSize:14, lineHeight:1.8, color:"var(--text)",
+                outline:"none", background:"#fff",
+                fontFamily:"'Noto Sans KR', sans-serif",
+              }}
+            />
+
+            <style>{`
+              [contenteditable]:empty:before {
+                content: attr(data-placeholder);
+                color: #b8a8c8;
+                pointer-events: none;
+              }
+            `}</style>
+
             <label style={{ display:"flex", alignItems:"center", gap:8, cursor:"pointer", fontSize:13, color:"var(--text-muted)", fontWeight:600 }}>
-              <input type="checkbox" checked={fPinned} onChange={e => setFPinned(e.target.checked)} />
+              <input type="checkbox" checked={fPinned} onChange={e => setFPinned(e.target.checked)}/>
               📌 상단 고정
             </label>
-            <button onClick={submit} disabled={loading}
-              className="hy-btn hy-btn-primary" style={{ fontSize:13, alignSelf:"flex-start" }}>
+            <button onClick={submit} disabled={loading || uploading} className="hy-btn hy-btn-primary" style={{ fontSize:13, alignSelf:"flex-start" }}>
               {loading ? "등록 중..." : "공지 올리기"}
             </button>
           </div>
@@ -224,8 +250,7 @@ export default function NoticePage() {
               isAdmin={isAdmin}
               onPin={() => togglePin(n.id, n.is_pinned)}
               onDelete={() => deleteNotice(n.id)}
-              pinned
-            />
+              pinned/>
           ))}
         </div>
       )}
@@ -235,9 +260,7 @@ export default function NoticePage() {
         {pinned.length > 0 && <p className="hy-section-label" style={{ marginBottom:4 }}>전체 공지</p>}
         {regular.length === 0 && pinned.length === 0 ? (
           <div className="hy-card" style={{ padding:"40px", textAlign:"center" }}>
-            <p style={{ fontSize:15, color:"var(--text-subtle)", fontWeight:600 }}>
-              아직 공지가 없어요 🌱
-            </p>
+            <p style={{ fontSize:15, color:"var(--text-subtle)", fontWeight:600 }}>아직 공지가 없어요 🌱</p>
           </div>
         ) : regular.map(n => (
           <NoticeCard key={n.id} notice={n}
@@ -246,11 +269,9 @@ export default function NoticePage() {
             isAdmin={isAdmin}
             onPin={() => togglePin(n.id, n.is_pinned)}
             onDelete={() => deleteNotice(n.id)}
-            pinned={false}
-          />
+            pinned={false}/>
         ))}
       </div>
-
     </div>
   );
 }
@@ -264,15 +285,6 @@ function NoticeCard({ notice, expanded, onToggle, isAdmin, onPin, onDelete, pinn
   onDelete: () => void;
   pinned: boolean;
 }) {
-  function timeAgo(iso: string) {
-    const diff = Math.floor((Date.now() - new Date(iso).getTime()) / 1000);
-    if (diff < 60) return "방금 전";
-    if (diff < 3600) return `${Math.floor(diff/60)}분 전`;
-    if (diff < 86400) return `${Math.floor(diff/3600)}시간 전`;
-    const d = new Date(iso);
-    return `${d.getMonth()+1}월 ${d.getDate()}일`;
-  }
-
   return (
     <div className="hy-card" style={{
       padding:"18px 22px",
@@ -288,10 +300,11 @@ function NoticeCard({ notice, expanded, onToggle, isAdmin, onPin, onDelete, pinn
               </span>
             )}
             <span style={{ fontWeight:800, fontSize:15, color:"var(--text)" }}>{notice.title}</span>
+            {notice.image_urls?.length > 0 && (
+              <span style={{ fontSize:11, color:"var(--text-subtle)", fontWeight:600 }}>🖼️ {notice.image_urls.length}장</span>
+            )}
           </div>
-          <span style={{ fontSize:12, color:"var(--text-subtle)", fontWeight:500 }}>
-            {timeAgo(notice.created_at)}
-          </span>
+          <span style={{ fontSize:12, color:"var(--text-subtle)", fontWeight:500 }}>{timeAgo(notice.created_at)}</span>
         </div>
         {isAdmin && (
           <div style={{ display:"flex", gap:6, flexShrink:0 }}>
@@ -309,13 +322,11 @@ function NoticeCard({ notice, expanded, onToggle, isAdmin, onPin, onDelete, pinn
 
       {expanded && (
         <div style={{ marginTop:14, paddingTop:14, borderTop:"1.5px solid var(--border)" }}>
-          <p style={{ fontSize:14, color:"var(--text)", lineHeight:1.8, margin:0, whiteSpace:"pre-wrap" }}>
-            {notice.content}
-          </p>
-          {notice.image_url && (
-            <img src={notice.image_url} alt="공지 이미지"
-              style={{ marginTop:14, width:"100%", maxWidth:480, borderRadius:12 }} />
-          )}
+          {/* HTML 그대로 렌더링 (이미지 위치 보존) */}
+          <div
+            style={{ fontSize:14, color:"var(--text)", lineHeight:1.8 }}
+            dangerouslySetInnerHTML={{ __html: notice.content }}
+          />
         </div>
       )}
     </div>
