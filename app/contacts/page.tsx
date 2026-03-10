@@ -136,6 +136,18 @@ export default function ContactsPage() {
         </p>
       </div>
 
+      {/* 안내 카드 */}
+      <div style={{ borderRadius:18, padding:"18px 20px", background:"linear-gradient(135deg,#fffbeb,#fef9c3)", border:"1.5px solid #fde68a" }}>
+        <p style={{ fontSize:14, fontWeight:900, color:"#92400e", margin:"0 0 8px" }}>📢 꼭 확인해주세요!</p>
+        <p style={{ fontSize:13, color:"#78350f", margin:"0 0 6px", lineHeight:1.7, fontWeight:500 }}>
+          첫 시간에 작성한 설문을 바탕으로 연락처를 정리했어요.<br/>
+          아래에서 본인 인증 후 번호가 맞는지 꼭 확인해주세요.
+        </p>
+        <p style={{ fontSize:13, color:"#78350f", margin:0, lineHeight:1.7, fontWeight:600 }}>
+          📌 이 연락처는 <b>학교 크로샷</b>에 등록되어, 학교에서 연락 문자가 올 때 사용됩니다.
+        </p>
+      </div>
+
       <div className="hy-card" style={{ padding:"28px 24px", maxWidth:420, margin:"0 auto", width:"100%" }}>
         <h2 style={{ fontSize:16, fontWeight:900, color:"var(--text)", margin:"0 0 6px" }}>🔐 본인 인증</h2>
         <p style={{ fontSize:13, color:"var(--text-muted)", margin:"0 0 20px", lineHeight:1.6 }}>
