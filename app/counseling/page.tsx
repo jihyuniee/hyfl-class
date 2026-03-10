@@ -1,575 +1,420 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { supabase } from "../../components/lib/supabaseClient";
+import { useEffect, useState } from "react";
+import { supabase } from "@/components/lib/supabaseClient";
 
-type CounselingForm = {
-  studentNo: string;
-  name: string;
-
-  // 연락 관련
-  parentContact: string;
-  preferredContactMethod: "카톡" | "문자" | "전화" | "이메일" | "기타";
-  preferredContactDetail: string;
-
-  // 기본 정보
-  mbti: string;
-  closeFriends: string;
-
-  // 상담 관련
-  firstImpression: string;
-  wantClassActivity: string;
-
-  likeSubject: string;
-  likeReason: string;
-  dislikeSubject: string;
-  dislikeReason: string;
-
-  hobby: string;
-  presentationStyle: string;
-  learningHelpStyle: string;
-
-  parentsStyle: string;
-  parentsMeaning: string;
-
-  talkWith: string;
-
-  strengths: string;
-  weaknesses: string;
-
-  adjectives: string;
-  wantToBe: string;
-
-  dream: string;
-  habitToFix: string;
-
-  messageToTeacher: string;
-  teacherShouldKnow: string;
+type Slot = {
+  id: string;
+  date: string;
+  time: string;
+  is_available: boolean;
 };
 
-const STORAGE_KEY = "hyfl_private_counseling_submissions_v1";
+type Application = {
+  id: string;
+  slot_id: string;
+  student_no: string;
+  name: string;
+  reason: string | null;
+  is_private: boolean;
+  created_at: string;
+};
 
-function saveSubmission(payload: CounselingForm) {
-  const now = new Date();
-  const record = {
-    id: `${now.getTime()}`,
-    createdAt: now.toISOString(),
-    payload,
-  };
+type WalkIn = {
+  id: string;
+  created_at: string;
+  student_no: string;
+  name: string;
+  content: string;
+  preferred_time: string | null;
+  is_private: boolean;
+  is_checked: boolean;
+};
 
-  const prev = localStorage.getItem(STORAGE_KEY);
-  const list = prev ? JSON.parse(prev) : [];
-  list.unshift(record);
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+const ADMIN_PW = "hyfl2025";
+
+function fmtDate(d: string) {
+  const dt = new Date(`${d}T00:00:00+09:00`);
+  const days = ["일","월","화","수","목","금","토"];
+  return `${dt.getMonth()+1}월 ${dt.getDate()}일 (${days[dt.getDay()]})`;
+}
+function timeAgo(iso: string) {
+  const diff = Math.floor((Date.now() - new Date(iso).getTime()) / 1000);
+  if (diff < 60) return "방금 전";
+  if (diff < 3600) return `${Math.floor(diff/60)}분 전`;
+  if (diff < 86400) return `${Math.floor(diff/3600)}시간 전`;
+  const d = new Date(iso);
+  return `${d.getMonth()+1}월 ${d.getDate()}일`;
 }
 
 export default function CounselingPage() {
-  const [form, setForm] = useState<CounselingForm>({
-    studentNo: "",
-    name: "",
-    parentContact: "",
-    preferredContactMethod: "카톡",
-    preferredContactDetail: "",
-    mbti: "",
-    closeFriends: "",
+  const [tab, setTab] = useState<"formal"|"walkin">("formal");
 
-    firstImpression: "",
-    wantClassActivity: "",
+  // ── 정식 상담 ──
+  const [slots,        setSlots]        = useState<Slot[]>([]);
+  const [applications, setApplications] = useState<Application[]>([]);
+  const [selectedSlot, setSelectedSlot] = useState<Slot | null>(null);
+  const [sName,        setSName]        = useState("");
+  const [sNo,          setSNo]          = useState("");
+  const [sReason,      setSReason]      = useState("");
+  const [sPrivate,     setSPrivate]     = useState(false);
+  const [submitting,   setSubmitting]   = useState(false);
 
-    likeSubject: "",
-    likeReason: "",
-    dislikeSubject: "",
-    dislikeReason: "",
+  // ── 수시 상담 ──
+  const [walkIns,      setWalkIns]      = useState<WalkIn[]>([]);
+  const [wName,        setWName]        = useState("");
+  const [wNo,          setWNo]          = useState("");
+  const [wContent,     setWContent]     = useState("");
+  const [wPreferred,   setWPreferred]   = useState("");
+  const [wPrivate,     setWPrivate]     = useState(false);
+  const [wSubmitting,  setWSubmitting]  = useState(false);
+  const [wDone,        setWDone]        = useState(false);
 
-    hobby: "",
-    presentationStyle: "",
-    learningHelpStyle: "",
+  // ── 관리자 ──
+  const [pw,        setPw]        = useState("");
+  const [isAdmin,   setIsAdmin]   = useState(false);
+  const [fDate,     setFDate]     = useState("");
+  const [fTime,     setFTime]     = useState("");
+  const [addLoading,setAddLoading]= useState(false);
 
-    parentsStyle: "",
-    parentsMeaning: "",
+  async function load() {
+    const { data: sd } = await supabase.from("counseling_slots").select("*").order("date").order("time");
+    const { data: ad } = await supabase.from("counseling_applications").select("*").order("created_at");
+    const { data: wd } = await supabase.from("counseling_walkins").select("*").order("created_at", { ascending: false });
+    setSlots((sd as Slot[]) ?? []);
+    setApplications((ad as Application[]) ?? []);
+    setWalkIns((wd as WalkIn[]) ?? []);
+  }
 
-    talkWith: "",
+  useEffect(() => { load(); }, []);
 
-    strengths: "",
-    weaknesses: "",
+  // 정식 상담 신청
+  async function submitFormal() {
+    if (!selectedSlot) { alert("시간을 선택해주세요"); return; }
+    if (!sName.trim() || !sNo.trim()) { alert("이름과 학번을 입력해주세요"); return; }
+    setSubmitting(true);
+    await supabase.from("counseling_applications").insert({
+      slot_id: selectedSlot.id,
+      student_no: sNo.trim(),
+      name: sName.trim(),
+      reason: sReason.trim() || null,
+      is_private: sPrivate,
+    });
+    await supabase.from("counseling_slots").update({ is_available: false }).eq("id", selectedSlot.id);
+    setSubmitting(false);
+    setSelectedSlot(null); setSName(""); setSNo(""); setSReason(""); setSPrivate(false);
+    await load();
+    alert("신청 완료! 선생님이 확인하실 거예요 🙂");
+  }
 
-    adjectives: "",
-    wantToBe: "",
+  // 수시 상담 신청
+  async function submitWalkIn() {
+    if (!wName.trim() || !wNo.trim()) { alert("이름과 학번을 입력해주세요"); return; }
+    if (!wContent.trim()) { alert("상담 내용을 입력해주세요"); return; }
+    setWSubmitting(true);
+    await supabase.from("counseling_walkins").insert({
+      student_no: wNo.trim(),
+      name: wName.trim(),
+      content: wContent.trim(),
+      preferred_time: wPreferred.trim() || null,
+      is_private: wPrivate,
+      is_checked: false,
+    });
+    setWSubmitting(false);
+    setWName(""); setWNo(""); setWContent(""); setWPreferred(""); setWPrivate(false);
+    setWDone(true);
+    await load();
+  }
 
-    dream: "",
-    habitToFix: "",
+  // 관리자 슬롯 추가
+  async function addSlot() {
+    if (!fDate || !fTime.trim()) { alert("날짜와 시간을 입력해주세요"); return; }
+    setAddLoading(true);
+    await supabase.from("counseling_slots").insert({ date: fDate, time: fTime.trim(), is_available: true });
+    setAddLoading(false);
+    setFDate(""); setFTime("");
+    await load();
+  }
 
-    messageToTeacher: "",
-    teacherShouldKnow: "",
+  async function deleteSlot(id: string) {
+    if (!confirm("슬롯을 삭제할까요?")) return;
+    await supabase.from("counseling_slots").delete().eq("id", id);
+    await load();
+  }
+
+  async function toggleChecked(id: string, current: boolean) {
+    await supabase.from("counseling_walkins").update({ is_checked: !current }).eq("id", id);
+    await load();
+  }
+
+  const availableSlots = slots.filter(s => s.is_available);
+  const takenSlots     = slots.filter(s => !s.is_available);
+  const groupedSlots: Record<string, Slot[]> = {};
+  availableSlots.forEach(s => {
+    if (!groupedSlots[s.date]) groupedSlots[s.date] = [];
+    groupedSlots[s.date].push(s);
   });
 
-  const [submitted, setSubmitted] = useState(false);
-
-  const canSubmit = useMemo(() => {
-    return form.studentNo.trim() && form.name.trim();
-  }, [form.studentNo, form.name]);
-
-  function update<K extends keyof CounselingForm>(key: K, value: CounselingForm[K]) {
-    setForm((p) => ({ ...p, [key]: value }));
-  }
-
-  async function onSubmit(e: React.FormEvent) {
-  e.preventDefault();
-  if (!canSubmit) return;
-
-  const { error } = await supabase.from("counseling_submissions").insert([
-    {
-      student_no: form.studentNo,
-      name: form.name,
-
-      parent_contact: form.parentContact,
-      preferred_contact_method: form.preferredContactMethod,
-      preferred_contact_detail: form.preferredContactDetail,
-
-      mbti: form.mbti,
-      close_friends: form.closeFriends,
-
-      first_impression: form.firstImpression,
-      want_class_activity: form.wantClassActivity,
-
-      like_subject: form.likeSubject,
-      like_reason: form.likeReason,
-      dislike_subject: form.dislikeSubject,
-      dislike_reason: form.dislikeReason,
-
-      hobby: form.hobby,
-      presentation_style: form.presentationStyle,
-      learning_help_style: form.learningHelpStyle,
-
-      parents_style: form.parentsStyle,
-      parents_meaning: form.parentsMeaning,
-
-      talk_with: form.talkWith,
-
-      strengths: form.strengths,
-      weaknesses: form.weaknesses,
-
-      adjectives: form.adjectives,
-      want_to_be: form.wantToBe,
-
-      dream: form.dream,
-      habit_to_fix: form.habitToFix,
-
-      message_to_teacher: form.messageToTeacher,
-      teacher_should_know: form.teacherShouldKnow,
-    },
-  ]);
-
-  if (error) {
-    alert("저장 실패: " + error.message);
-    return;
-  }
-
-  setSubmitted(true);
-}
-  if (submitted) {
-    return (
-      <div className="space-y-4">
-        <h1 className="text-2xl font-bold">제출 완료 ✅</h1>
-        <div className="rounded-2xl border bg-white p-5 text-sm text-gray-700">
-          <p className="font-semibold">비공개 설문이 저장되었어.</p>
-          <p className="mt-2">
-            (현재 단계에서는 <span className="font-semibold">이 브라우저</span>에만 저장돼.
-            다음 단계에서 Supabase를 붙이면 담임 계정으로만 조회되게 만들 수 있어.)
-          </p>
-          <button
-            className="mt-4 rounded-full bg-black px-4 py-2 text-sm text-white hover:opacity-90"
-            onClick={() => {
-              setSubmitted(false);
-              setForm((p) => ({ ...p, messageToTeacher: "", teacherShouldKnow: "" }));
-            }}
-          >
-            새로 작성하기
-          </button>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <form onSubmit={onSubmit} className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold">비공개 상담 설문</h1>
-        <p className="mt-1 text-sm text-gray-600">
-          이 페이지의 내용은 “비공개”를 전제로 작성해. (다음 단계에서 담임만 열람하도록 완성할 거야.)
+    <div style={{ display:"flex", flexDirection:"column", gap:20 }}>
+
+      {/* 헤더 */}
+      <div className="hy-hero">
+        <h1 style={{ color:"#fff", fontSize:"clamp(20px,4vw,30px)", fontWeight:900, margin:"0 0 8px" }}>
+          💬 상담 신청
+        </h1>
+        <p style={{ color:"rgba(255,255,255,0.85)", fontSize:13, margin:0, fontWeight:500, lineHeight:1.7 }}>
+          정식 상담 기간에는 슬롯을 선택하고,<br/>
+          평소에는 언제든 수시 상담을 신청할 수 있어요
         </p>
       </div>
 
-      <div className="rounded-2xl border bg-amber-50 p-4 text-sm text-gray-800">
-        <p className="font-semibold">안내</p>
-        <ul className="mt-2 list-disc pl-5">
-          <li>솔직하게 적어도 괜찮아. 선생님이 더 잘 이해하고 돕기 위한 설문이야.</li>
-          <li>지금 버전은 제출 내용이 이 브라우저에만 저장돼. (배포 후에는 DB 연결 필요)</li>
-        </ul>
+      {/* 탭 */}
+      <div style={{ display:"flex", background:"#f3f4f6", borderRadius:16, padding:4, gap:4 }}>
+        {([
+          { key:"formal",  label:"📅 정식 상담", desc:"집중 상담 기간" },
+          { key:"walkin",  label:"🙋 수시 상담", desc:"평소 언제든" },
+        ] as const).map(t => (
+          <button key={t.key} onClick={() => setTab(t.key)}
+            style={{ flex:1, padding:"12px 8px", borderRadius:12, border:"none", cursor:"pointer", fontFamily:"inherit", transition:"all 0.15s",
+              background: tab===t.key ? "#fff" : "transparent",
+              boxShadow: tab===t.key ? "0 2px 8px rgba(0,0,0,0.08)" : "none",
+            }}>
+            <p style={{ fontSize:13, fontWeight:900, color: tab===t.key ? "var(--primary)" : "var(--text-muted)", margin:"0 0 2px" }}>{t.label}</p>
+            <p style={{ fontSize:11, fontWeight:600, color:"var(--text-subtle)", margin:0 }}>{t.desc}</p>
+          </button>
+        ))}
       </div>
 
-      {/* 기본 정보 */}
-      <section className="rounded-2xl border bg-white p-5 space-y-4">
-        <h2 className="text-sm font-semibold text-gray-700">0. 기본 정보</h2>
+      {/* 관리자 로그인 */}
+      <div style={{ display:"flex", alignItems:"center", gap:8, justifyContent:"flex-end" }}>
+        {!isAdmin ? (
+          <>
+            <input type="password" placeholder="관리자 비밀번호" value={pw}
+              onChange={e=>setPw(e.target.value)} onKeyDown={e=>e.key==="Enter"&&setIsAdmin(pw===ADMIN_PW)}
+              className="hy-input" style={{ maxWidth:180 }}/>
+            <button onClick={()=>setIsAdmin(pw===ADMIN_PW)} className="hy-btn" style={{ fontSize:13 }}>확인</button>
+          </>
+        ) : (
+          <span style={{ fontSize:13, color:"var(--primary)", fontWeight:700 }}>✅ 관리자 모드</span>
+        )}
+      </div>
 
-        <div className="grid gap-3 md:grid-cols-2">
-          <label className="space-y-1">
-            <div className="text-sm">학번 *</div>
-            <input
-              className="w-full rounded-xl border px-3 py-2"
-              value={form.studentNo}
-              onChange={(e) => update("studentNo", e.target.value)}
-              placeholder="예) 20501"
-              required
-            />
-          </label>
+      {/* ══ 정식 상담 탭 ══ */}
+      {tab === "formal" && (
+        <div style={{ display:"flex", flexDirection:"column", gap:16 }}>
 
-          <label className="space-y-1">
-            <div className="text-sm">이름 *</div>
-            <input
-              className="w-full rounded-xl border px-3 py-2"
-              value={form.name}
-              onChange={(e) => update("name", e.target.value)}
-              placeholder="이름"
-              required
-            />
-          </label>
+          {/* 관리자: 슬롯 추가 */}
+          {isAdmin && (
+            <div className="hy-card" style={{ padding:"20px 22px", background:"#fdf2f8" }}>
+              <h3 style={{ fontSize:14, fontWeight:900, color:"var(--primary)", margin:"0 0 14px" }}>➕ 상담 가능 시간 추가</h3>
+              <div style={{ display:"flex", gap:8, flexWrap:"wrap", alignItems:"flex-end" }}>
+                <div>
+                  <label style={{ fontSize:11, fontWeight:700, color:"var(--text-muted)", display:"block", marginBottom:4 }}>날짜</label>
+                  <input type="date" value={fDate} onChange={e=>setFDate(e.target.value)} className="hy-input"/>
+                </div>
+                <div>
+                  <label style={{ fontSize:11, fontWeight:700, color:"var(--text-muted)", display:"block", marginBottom:4 }}>시간</label>
+                  <input placeholder="예: 16:20~16:50" value={fTime} onChange={e=>setFTime(e.target.value)} className="hy-input" style={{ width:140 }}/>
+                </div>
+                <button onClick={addSlot} disabled={addLoading} className="hy-btn hy-btn-primary" style={{ fontSize:13 }}>
+                  {addLoading ? "추가 중..." : "추가"}
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* 신청 가능 슬롯 */}
+          {Object.keys(groupedSlots).length === 0 ? (
+            <div className="hy-card" style={{ padding:"40px", textAlign:"center" }}>
+              <p style={{ fontSize:28, margin:"0 0 10px" }}>📅</p>
+              <p style={{ fontSize:14, color:"var(--text-subtle)", fontWeight:600 }}>
+                현재 열린 상담 시간이 없어요.<br/>
+                <span style={{ fontSize:13 }}>정식 상담 기간이 시작되면 여기에 시간이 열려요.</span>
+              </p>
+            </div>
+          ) : (
+            Object.entries(groupedSlots).map(([date, daySlots]) => (
+              <div key={date}>
+                <p style={{ fontSize:13, fontWeight:800, color:"var(--text-muted)", margin:"0 0 8px" }}>📅 {fmtDate(date)}</p>
+                <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(140px,1fr))", gap:8 }}>
+                  {daySlots.map(slot => (
+                    <button key={slot.id}
+                      onClick={() => setSelectedSlot(selectedSlot?.id===slot.id ? null : slot)}
+                      style={{ padding:"14px 12px", borderRadius:14, border:"2px solid", cursor:"pointer", fontFamily:"inherit", transition:"all 0.15s", textAlign:"center",
+                        borderColor: selectedSlot?.id===slot.id ? "var(--primary)" : "var(--border)",
+                        background: selectedSlot?.id===slot.id ? "var(--primary-light)" : "#fff",
+                        color: selectedSlot?.id===slot.id ? "var(--primary)" : "var(--text)",
+                      }}>
+                      <p style={{ fontSize:14, fontWeight:900, margin:"0 0 3px" }}>{slot.time}</p>
+                      <p style={{ fontSize:11, fontWeight:600, color:"#22c55e", margin:0 }}>✅ 신청 가능</p>
+                      {isAdmin && (
+                        <button onClick={e=>{e.stopPropagation();deleteSlot(slot.id);}}
+                          style={{ marginTop:6, fontSize:10, padding:"2px 8px", borderRadius:999, border:"1px solid #fecaca", background:"#fff5f5", color:"#ef4444", cursor:"pointer", fontFamily:"inherit" }}>
+                          삭제
+                        </button>
+                      )}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ))
+          )}
+
+          {/* 신청 폼 */}
+          {selectedSlot && (
+            <div className="hy-card" style={{ padding:"22px 24px", border:"2px solid var(--primary)" }}>
+              <h3 style={{ fontSize:15, fontWeight:900, color:"var(--text)", margin:"0 0 4px" }}>📝 상담 신청</h3>
+              <p style={{ fontSize:13, color:"var(--primary)", fontWeight:700, margin:"0 0 16px" }}>
+                {fmtDate(selectedSlot.date)} {selectedSlot.time}
+              </p>
+              <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
+                <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:10 }}>
+                  <input placeholder="학번 *" value={sNo} onChange={e=>setSNo(e.target.value)} className="hy-input"/>
+                  <input placeholder="이름 *" value={sName} onChange={e=>setSName(e.target.value)} className="hy-input"/>
+                </div>
+                <textarea placeholder="상담 내용 (선택, 간단하게)" value={sReason} onChange={e=>setSReason(e.target.value)}
+                  className="hy-input" style={{ minHeight:80, resize:"vertical" }}/>
+                <label style={{ display:"flex", alignItems:"center", gap:8, fontSize:13, color:"var(--text-muted)", fontWeight:600, cursor:"pointer" }}>
+                  <input type="checkbox" checked={sPrivate} onChange={e=>setSPrivate(e.target.checked)}/>
+                  🔒 내용 비공개 (선생님만 확인)
+                </label>
+                <button onClick={submitFormal} disabled={submitting} className="hy-btn hy-btn-primary" style={{ fontSize:14 }}>
+                  {submitting ? "신청 중..." : "상담 신청하기"}
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* 관리자: 신청 현황 */}
+          {isAdmin && takenSlots.length > 0 && (
+            <div className="hy-card" style={{ padding:"20px 22px" }}>
+              <h3 style={{ fontSize:14, fontWeight:900, color:"var(--text)", margin:"0 0 14px" }}>📋 신청 현황 ({applications.length}건)</h3>
+              <div style={{ display:"flex", flexDirection:"column", gap:8 }}>
+                {applications.map(app => {
+                  const slot = slots.find(s=>s.id===app.slot_id);
+                  return (
+                    <div key={app.id} style={{ padding:"12px 16px", borderRadius:12, background:"#f9fafb", border:"1.5px solid var(--border)" }}>
+                      <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", flexWrap:"wrap", gap:6 }}>
+                        <div>
+                          <p style={{ fontSize:14, fontWeight:800, color:"var(--text)", margin:"0 0 2px" }}>
+                            {app.student_no} {app.name}
+                          </p>
+                          <p style={{ fontSize:12, color:"var(--primary)", fontWeight:700, margin:"0 0 4px" }}>
+                            📅 {slot ? `${fmtDate(slot.date)} ${slot.time}` : "-"}
+                          </p>
+                          {!app.is_private && app.reason && (
+                            <p style={{ fontSize:13, color:"var(--text-muted)", margin:0 }}>{app.reason}</p>
+                          )}
+                          {app.is_private && <p style={{ fontSize:12, color:"var(--text-subtle)", margin:0 }}>🔒 비공개</p>}
+                        </div>
+                        <span style={{ fontSize:11, color:"var(--text-subtle)", fontWeight:600 }}>{timeAgo(app.created_at)}</span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
+      )}
 
-        <div className="grid gap-3 md:grid-cols-2">
-          <label className="space-y-1">
-            <div className="text-sm">MBTI(선택)</div>
-            <input
-              className="w-full rounded-xl border px-3 py-2"
-              value={form.mbti}
-              onChange={(e) => update("mbti", e.target.value)}
-              placeholder="예) INFP"
-            />
-          </label>
+      {/* ══ 수시 상담 탭 ══ */}
+      {tab === "walkin" && (
+        <div style={{ display:"flex", flexDirection:"column", gap:16 }}>
 
-          <label className="space-y-1">
-            <div className="text-sm">학교에서 정말 친한 친구(여러 명 가능)</div>
-            <input
-              className="w-full rounded-xl border px-3 py-2"
-              value={form.closeFriends}
-              onChange={(e) => update("closeFriends", e.target.value)}
-              placeholder="이름을 쉼표로 구분"
-            />
-          </label>
-        </div>
-
-        <div className="grid gap-3 md:grid-cols-3">
-          <label className="space-y-1 md:col-span-2">
-            <div className="text-sm">선생님과 연락이 더 편한 학부모님 연락처(선택)</div>
-            <input
-              className="w-full rounded-xl border px-3 py-2"
-              value={form.parentContact}
-              onChange={(e) => update("parentContact", e.target.value)}
-              placeholder="예) 010-1234-5678"
-            />
-          </label>
-
-          <label className="space-y-1">
-            <div className="text-sm">연락 선호</div>
-            <select
-              className="w-full rounded-xl border px-3 py-2"
-              value={form.preferredContactMethod}
-              onChange={(e) => update("preferredContactMethod", e.target.value as any)}
-            >
-              <option>카톡</option>
-              <option>문자</option>
-              <option>전화</option>
-              <option>이메일</option>
-              <option>기타</option>
-            </select>
-          </label>
-        </div>
-
-        <label className="space-y-1">
-          <div className="text-sm">연락 관련 추가로 알려주고 싶은 것(선택)</div>
-          <input
-            className="w-full rounded-xl border px-3 py-2"
-            value={form.preferredContactDetail}
-            onChange={(e) => update("preferredContactDetail", e.target.value)}
-            placeholder="예) 저녁 7시 이후가 편해요 / 전화보다 문자 선호 등"
-          />
-        </label>
-      </section>
-
-      {/* 분위기/활동 */}
-      <section className="rounded-2xl border bg-white p-5 space-y-4">
-        <h2 className="text-sm font-semibold text-gray-700">1. 우리 반/선생님에 대해</h2>
-
-        <label className="space-y-1">
-          <div className="text-sm">새 담임 선생님의 첫인상(솔직)</div>
-          <textarea
-            className="w-full rounded-xl border px-3 py-2 min-h-[90px]"
-            value={form.firstImpression}
-            onChange={(e) => update("firstImpression", e.target.value)}
-            placeholder="편하게 써줘 🙂"
-          />
-        </label>
-
-        <label className="space-y-1">
-          <div className="text-sm">올해 꼭 한 번 해보고 싶은 학급 활동</div>
-          <textarea
-            className="w-full rounded-xl border px-3 py-2 min-h-[90px]"
-            value={form.wantClassActivity}
-            onChange={(e) => update("wantClassActivity", e.target.value)}
-            placeholder="예) 체육대회/보드게임/봉사/영화토론/학급여행 등"
-          />
-        </label>
-      </section>
-
-      {/* 과목 */}
-      <section className="rounded-2xl border bg-white p-5 space-y-4">
-        <h2 className="text-sm font-semibold text-gray-700">2. 과목</h2>
-
-        <div className="grid gap-3 md:grid-cols-2">
-          <label className="space-y-1">
-            <div className="text-sm">좋아하는 과목</div>
-            <input
-              className="w-full rounded-xl border px-3 py-2"
-              value={form.likeSubject}
-              onChange={(e) => update("likeSubject", e.target.value)}
-              placeholder="과목"
-            />
-          </label>
-          <label className="space-y-1">
-            <div className="text-sm">이유(간단히)</div>
-            <input
-              className="w-full rounded-xl border px-3 py-2"
-              value={form.likeReason}
-              onChange={(e) => update("likeReason", e.target.value)}
-              placeholder="예) 성취감/흥미/선생님 스타일 등"
-            />
-          </label>
-        </div>
-
-        <div className="grid gap-3 md:grid-cols-2">
-          <label className="space-y-1">
-            <div className="text-sm">싫어하는 과목</div>
-            <input
-              className="w-full rounded-xl border px-3 py-2"
-              value={form.dislikeSubject}
-              onChange={(e) => update("dislikeSubject", e.target.value)}
-              placeholder="과목"
-            />
-          </label>
-          <label className="space-y-1">
-            <div className="text-sm">이유(간단히)</div>
-            <input
-              className="w-full rounded-xl border px-3 py-2"
-              value={form.dislikeReason}
-              onChange={(e) => update("dislikeReason", e.target.value)}
-              placeholder="예) 어렵다/지루하다/부담된다 등"
-            />
-          </label>
-        </div>
-      </section>
-
-      {/* 학습/태도 */}
-      <section className="rounded-2xl border bg-white p-5 space-y-4">
-        <h2 className="text-sm font-semibold text-gray-700">3. 수업/학습 스타일</h2>
-
-        <label className="space-y-1">
-          <div className="text-sm">취미/특기/요즘 관심 있는 것</div>
-          <textarea
-            className="w-full rounded-xl border px-3 py-2 min-h-[90px]"
-            value={form.hobby}
-            onChange={(e) => update("hobby", e.target.value)}
-            placeholder="편하게 써줘!"
-          />
-        </label>
-
-        <label className="space-y-1">
-          <div className="text-sm">평소 발표는 어떻게 하나요?</div>
-          <select
-            className="w-full rounded-xl border px-3 py-2"
-            value={form.presentationStyle}
-            onChange={(e) => update("presentationStyle", e.target.value)}
-          >
-            <option value="">선택</option>
-            <option>① 궁금하거나 할 말 있으면 언제든지 한다</option>
-            <option>② 손드는 게 부끄러워 말 못하는 편이다</option>
-            <option>③ 발표에 관심이 없다</option>
-            <option>④ 시키면 하는 편이다</option>
-            <option>⑤ 시켜도 못 하는 편이다</option>
-            <option>⑥ 기타</option>
-          </select>
-        </label>
-
-        <label className="space-y-1">
-          <div className="text-sm">모르는 것이 있으면 주로 어떻게 하나요?</div>
-          <select
-            className="w-full rounded-xl border px-3 py-2"
-            value={form.learningHelpStyle}
-            onChange={(e) => update("learningHelpStyle", e.target.value)}
-          >
-            <option value="">선택</option>
-            <option>① 선생님께 묻는다</option>
-            <option>② 친구한테 묻는다</option>
-            <option>③ 부모님께 묻는다</option>
-            <option>④ 귀찮아서 넘어간다</option>
-            <option>⑤ 부끄러워서 묻지 못한다</option>
-            <option>⑥ 인터넷이나 책에서 찾는다</option>
-            <option>⑦ 기타</option>
-          </select>
-        </label>
-      </section>
-
-      {/* 가정/관계 */}
-      <section className="rounded-2xl border bg-white p-5 space-y-4">
-        <h2 className="text-sm font-semibold text-gray-700">4. 관계/가정</h2>
-
-        <label className="space-y-1">
-          <div className="text-sm">집에서 부모님은 나에게 어떻게 하나요?</div>
-          <select
-            className="w-full rounded-xl border px-3 py-2"
-            value={form.parentsStyle}
-            onChange={(e) => update("parentsStyle", e.target.value)}
-          >
-            <option value="">선택</option>
-            <option>① 무엇이든 꼼꼼히 살피고 챙겨보신다</option>
-            <option>② 하고 싶은 대로 내버려두신다</option>
-            <option>③ ‘공부해라’고 시키기만 하신다</option>
-            <option>④ 화내고 못 할 때는 때리신다</option>
-            <option>⑤ 바쁘셔서 관심을 쓸 겨를이 없다</option>
-            <option>⑥ 기타</option>
-          </select>
-        </label>
-
-        <label className="space-y-1">
-          <div className="text-sm">부모님은 나에게 어떤 분인가요?</div>
-          <textarea
-            className="w-full rounded-xl border px-3 py-2 min-h-[90px]"
-            value={form.parentsMeaning}
-            onChange={(e) => update("parentsMeaning", e.target.value)}
-          />
-        </label>
-
-        <label className="space-y-1">
-          <div className="text-sm">고민이 생기면 주로 누구와 의논하나요?</div>
-          <select
-            className="w-full rounded-xl border px-3 py-2"
-            value={form.talkWith}
-            onChange={(e) => update("talkWith", e.target.value)}
-          >
-            <option value="">선택</option>
-            <option>① 부모님</option>
-            <option>② 친구</option>
-            <option>③ 아는 언니/오빠/형/누나</option>
-            <option>④ 선생님</option>
-            <option>⑤ 기타</option>
-            <option>⑥ 없다</option>
-          </select>
-        </label>
-      </section>
-
-      {/* 자기이해 */}
-      <section className="rounded-2xl border bg-white p-5 space-y-4">
-        <h2 className="text-sm font-semibold text-gray-700">5. 나에 대해</h2>
-
-        <label className="space-y-1">
-          <div className="text-sm">나의 장점 3가지</div>
-          <textarea
-            className="w-full rounded-xl border px-3 py-2 min-h-[90px]"
-            value={form.strengths}
-            onChange={(e) => update("strengths", e.target.value)}
-            placeholder={"1)\n2)\n3)"}
-          />
-        </label>
-
-        <label className="space-y-1">
-          <div className="text-sm">나의 단점 3가지</div>
-          <textarea
-            className="w-full rounded-xl border px-3 py-2 min-h-[90px]"
-            value={form.weaknesses}
-            onChange={(e) => update("weaknesses", e.target.value)}
-            placeholder={"1)\n2)\n3)"}
-          />
-        </label>
-
-        <label className="space-y-1">
-          <div className="text-sm">나를 표현하는 형용사 5가지</div>
-          <textarea
-            className="w-full rounded-xl border px-3 py-2 min-h-[90px]"
-            value={form.adjectives}
-            onChange={(e) => update("adjectives", e.target.value)}
-            placeholder={"1)\n2)\n3)\n4)\n5)"}
-          />
-        </label>
-
-        <label className="space-y-1">
-          <div className="text-sm">내가 되고 싶은 사람은 어떤 사람인가요?</div>
-          <textarea
-            className="w-full rounded-xl border px-3 py-2 min-h-[90px]"
-            value={form.wantToBe}
-            onChange={(e) => update("wantToBe", e.target.value)}
-          />
-        </label>
-
-        <div className="grid gap-3 md:grid-cols-2">
-          <label className="space-y-1">
-            <div className="text-sm">장래희망/관심 분야</div>
-            <input
-              className="w-full rounded-xl border px-3 py-2"
-              value={form.dream}
-              onChange={(e) => update("dream", e.target.value)}
-              placeholder="예) 심리학 / 외교 / 데이터과학 / 아직 고민 중"
-            />
-          </label>
-
-          <label className="space-y-1">
-            <div className="text-sm">올해 고치고 싶은 버릇</div>
-            <input
-              className="w-full rounded-xl border px-3 py-2"
-              value={form.habitToFix}
-              onChange={(e) => update("habitToFix", e.target.value)}
-              placeholder="예) 미루기 / 늦잠 / 말투 등"
-            />
-          </label>
-        </div>
-      </section>
-
-      {/* 담임에게 */}
-      <section className="rounded-2xl border bg-white p-5 space-y-4">
-        <h2 className="text-sm font-semibold text-gray-700">6. 선생님께</h2>
-
-        <label className="space-y-1">
-          <div className="text-sm">선생님께 드리고 싶은 말</div>
-          <textarea
-            className="w-full rounded-xl border px-3 py-2 min-h-[90px]"
-            value={form.messageToTeacher}
-            onChange={(e) => update("messageToTeacher", e.target.value)}
-          />
-        </label>
-
-        <label className="space-y-1">
-          <div className="text-sm">
-            교사가 꼭 알아야/알아줬으면 하는 사항, 요즘 최대 고민 (없으면 비워도 됨)
+          {/* 안내 */}
+          <div style={{ padding:"16px 20px", borderRadius:16, background:"linear-gradient(135deg,#f0fdf4,#dcfce7)", border:"1.5px solid #86efac" }}>
+            <p style={{ fontSize:14, fontWeight:800, color:"#15803d", margin:"0 0 6px" }}>🙋 수시 상담이란?</p>
+            <p style={{ fontSize:13, color:"#166534", margin:0, lineHeight:1.7, fontWeight:500 }}>
+              정식 상담 기간이 아니어도, 고민이나 상담하고 싶은 내용이 있으면 언제든 신청해요.<br/>
+              선생님이 확인 후 편한 시간에 연락드릴게요 🙂
+            </p>
           </div>
-          <textarea
-            className="w-full rounded-xl border px-3 py-2 min-h-[110px]"
-            value={form.teacherShouldKnow}
-            onChange={(e) => update("teacherShouldKnow", e.target.value)}
-          />
-        </label>
-      </section>
 
-      <div className="flex items-center justify-between">
-        <div className="text-xs text-gray-600">
-          * 학번/이름만 필수. 나머지는 편한 만큼 작성하면 돼.
+          {/* 신청 완료 */}
+          {wDone ? (
+            <div className="hy-card" style={{ padding:"40px", textAlign:"center" }}>
+              <p style={{ fontSize:36, margin:"0 0 12px" }}>✅</p>
+              <p style={{ fontSize:16, fontWeight:900, color:"var(--text)", margin:"0 0 8px" }}>상담 신청 완료!</p>
+              <p style={{ fontSize:13, color:"var(--text-muted)", margin:"0 0 20px", lineHeight:1.7 }}>
+                선생님이 확인 후 연락드릴게요 🙂
+              </p>
+              <button onClick={() => setWDone(false)} className="hy-btn hy-btn-primary" style={{ fontSize:13 }}>
+                다시 신청하기
+              </button>
+            </div>
+          ) : (
+            <div className="hy-card" style={{ padding:"22px 24px" }}>
+              <h3 style={{ fontSize:15, fontWeight:900, color:"var(--text)", margin:"0 0 16px" }}>✏️ 수시 상담 신청</h3>
+              <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
+                <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:10 }}>
+                  <input placeholder="학번 *" value={wNo} onChange={e=>setWNo(e.target.value)} className="hy-input"/>
+                  <input placeholder="이름 *" value={wName} onChange={e=>setWName(e.target.value)} className="hy-input"/>
+                </div>
+                <textarea
+                  placeholder="상담하고 싶은 내용을 편하게 적어줘요 🙂&#10;(성적, 진로, 친구 관계, 학교생활 등 무엇이든 괜찮아요)"
+                  value={wContent} onChange={e=>setWContent(e.target.value)}
+                  className="hy-input" style={{ minHeight:120, resize:"vertical" }}/>
+                <input placeholder="희망 시간대 (선택, 예: 방과후, 점심시간, 평일 오후)"
+                  value={wPreferred} onChange={e=>setWPreferred(e.target.value)} className="hy-input"/>
+                <label style={{ display:"flex", alignItems:"center", gap:8, fontSize:13, color:"var(--text-muted)", fontWeight:600, cursor:"pointer" }}>
+                  <input type="checkbox" checked={wPrivate} onChange={e=>setWPrivate(e.target.checked)}/>
+                  🔒 내용 비공개 (선생님만 확인)
+                </label>
+                <button onClick={submitWalkIn} disabled={wSubmitting} className="hy-btn hy-btn-primary" style={{ fontSize:14 }}>
+                  {wSubmitting ? "신청 중..." : "상담 신청하기"}
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* 관리자: 수시 상담 목록 */}
+          {isAdmin && (
+            <div className="hy-card" style={{ padding:"20px 22px" }}>
+              <h3 style={{ fontSize:14, fontWeight:900, color:"var(--text)", margin:"0 0 14px" }}>
+                📋 수시 상담 신청 목록
+                <span style={{ fontSize:12, fontWeight:700, color:"#f59e0b", marginLeft:8 }}>
+                  미확인 {walkIns.filter(w=>!w.is_checked).length}건
+                </span>
+              </h3>
+              {walkIns.length === 0 ? (
+                <p style={{ fontSize:13, color:"var(--text-subtle)", fontWeight:600 }}>아직 신청이 없어요</p>
+              ) : (
+                <div style={{ display:"flex", flexDirection:"column", gap:8 }}>
+                  {walkIns.map(w => (
+                    <div key={w.id} style={{ padding:"14px 16px", borderRadius:12, background: w.is_checked ? "#f9fafb" : "#fffbeb",
+                      border:`1.5px solid ${w.is_checked ? "var(--border)" : "#fde68a"}` }}>
+                      <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", gap:8, marginBottom:8 }}>
+                        <div style={{ display:"flex", alignItems:"center", gap:8 }}>
+                          <span style={{ fontSize:11, padding:"2px 8px", borderRadius:999, fontWeight:800,
+                            background: w.is_checked ? "#f0fdf4" : "#fffbeb", color: w.is_checked ? "#16a34a" : "#f59e0b" }}>
+                            {w.is_checked ? "✅ 확인완료" : "⏳ 미확인"}
+                          </span>
+                          <span style={{ fontSize:14, fontWeight:900, color:"var(--text)" }}>{w.student_no} {w.name}</span>
+                        </div>
+                        <span style={{ fontSize:11, color:"var(--text-subtle)", fontWeight:600, flexShrink:0 }}>{timeAgo(w.created_at)}</span>
+                      </div>
+                      {!w.is_private && (
+                        <p style={{ fontSize:13, color:"var(--text-muted)", margin:"0 0 6px", lineHeight:1.6, whiteSpace:"pre-wrap" }}>{w.content}</p>
+                      )}
+                      {w.is_private && <p style={{ fontSize:12, color:"var(--text-subtle)", margin:"0 0 6px" }}>🔒 비공개</p>}
+                      {w.preferred_time && (
+                        <p style={{ fontSize:12, color:"var(--primary)", fontWeight:700, margin:"0 0 8px" }}>⏰ 희망 시간: {w.preferred_time}</p>
+                      )}
+                      <button onClick={() => toggleChecked(w.id, w.is_checked)}
+                        style={{ fontSize:11, padding:"4px 12px", borderRadius:999, border:"1.5px solid var(--border)", background:"#fff",
+                          cursor:"pointer", fontFamily:"inherit", fontWeight:700, color:"var(--text-muted)" }}>
+                        {w.is_checked ? "미확인으로 변경" : "✅ 확인 완료"}
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
         </div>
-
-        <button
-          type="submit"
-          disabled={!canSubmit}
-          className="rounded-full bg-black px-5 py-2 text-sm text-white hover:opacity-90 disabled:opacity-40"
-        >
-          제출하기
-        </button>
-      </div>
-    </form>
+      )}
+    </div>
   );
 }
