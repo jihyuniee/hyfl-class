@@ -113,9 +113,38 @@ export default function TeacherOnlyPage() {
     setWalls((c.data as WallPost[])??[]);
     setNotes((d.data as TeacherNote[])??[]);
     setAis((e.data as AiSummary[])??[]);
+    // counseling_submissions는 payload 없이 row에 flat하게 저장됨
     const parsed=((b.data??[]) as any[]).map((r:any)=>({
-      id:r.id,created_at:r.created_at,
-      payload:typeof r.payload==="string"?JSON.parse(r.payload):(r.payload??r),
+      id:r.id, created_at:r.created_at,
+      payload:{
+        studentNo: r.student_no??r.payload?.studentNo??"",
+        name: r.name??r.payload?.name??"",
+        parentContact: r.parent_contact??r.payload?.parentContact??"",
+        preferredContactMethod: r.preferred_contact_method??r.payload?.preferredContactMethod??"",
+        preferredContactDetail: r.preferred_contact_detail??r.payload?.preferredContactDetail??"",
+        mbti: r.mbti??r.payload?.mbti??"",
+        closeFriends: r.close_friends??r.payload?.closeFriends??"",
+        firstImpression: r.first_impression??r.payload?.firstImpression??"",
+        wantClassActivity: r.want_class_activity??r.payload?.wantClassActivity??"",
+        likeSubject: r.like_subject??r.payload?.likeSubject??"",
+        likeReason: r.like_reason??r.payload?.likeReason??"",
+        dislikeSubject: r.dislike_subject??r.payload?.dislikeSubject??"",
+        dislikeReason: r.dislike_reason??r.payload?.dislikeReason??"",
+        hobby: r.hobby??r.payload?.hobby??"",
+        presentationStyle: r.presentation_style??r.payload?.presentationStyle??"",
+        learningHelpStyle: r.learning_help_style??r.payload?.learningHelpStyle??"",
+        parentsStyle: r.parents_style??r.payload?.parentsStyle??"",
+        parentsMeaning: r.parents_meaning??r.payload?.parentsMeaning??"",
+        talkWith: r.talk_with??r.payload?.talkWith??"",
+        strengths: r.strengths??r.payload?.strengths??"",
+        weaknesses: r.weaknesses??r.payload?.weaknesses??"",
+        adjectives: r.adjectives??r.payload?.adjectives??"",
+        wantToBe: r.want_to_be??r.payload?.wantToBe??"",
+        dream: r.dream??r.payload?.dream??"",
+        habitToFix: r.habit_to_fix??r.payload?.habitToFix??"",
+        messageToTeacher: r.message_to_teacher??r.payload?.messageToTeacher??"",
+        teacherShouldKnow: r.teacher_should_know??r.payload?.teacherShouldKnow??"",
+      },
     }));
     setSubs(parsed as Submission[]);
     setLoading(false);
@@ -124,10 +153,33 @@ export default function TeacherOnlyPage() {
   // 인덱스
   const logMap:Record<string,CounselingLog[]>={};
   logs.forEach(l=>{if(!logMap[l.student_no])logMap[l.student_no]=[];logMap[l.student_no].push(l);});
+  // counseling_submissions: student_no로 매핑 (없으면 name으로 fallback)
   const subMap:Record<string,Submission>={};
-  subs.forEach(s=>{if(s.payload?.studentNo)subMap[s.payload.studentNo]=s;});
+  subs.forEach(s=>{
+    if(s.payload?.studentNo) subMap[s.payload.studentNo]=s;
+  });
+  // student_no 없는 경우 이름으로도 찾을 수 있게 별도 맵
+  const subByName:Record<string,Submission>={};
+  subs.forEach(s=>{
+    if(s.payload?.name) subByName[s.payload.name]=s;
+  });
+
+  // wall_posts: author_name에 실제 이름이 포함되어 있으면 매칭
+  // "연준/8", "주보민/ 21번 / 보민", "강지우 / 1번 / 깡지" 등 처리
   const wallMap:Record<string,WallPost>={};
-  walls.forEach(w=>{wallMap[w.author_name]=w;});
+  STUDENTS.forEach(student=>{
+    const match=walls.find(w=>{
+      const authorRaw=w.author_name??"";
+      // "/" 기준으로 분리해서 각 파트에 학생 이름 포함 여부 확인
+      const parts=authorRaw.split("/").map((p:string)=>p.trim());
+      return parts.some((part:string)=>
+        part===student.name ||                          // 정확 일치
+        student.name.includes(part) ||                 // 성연준 ⊃ 연준
+        part.includes(student.name)                    // 완전히 포함
+      );
+    });
+    if(match) wallMap[student.name]=match;
+  });
   const noteMap:Record<string,TeacherNote>={};
   notes.forEach(n=>{noteMap[n.student_no]=n;});
   const aiMap:Record<string,AiSummary>={};
@@ -179,7 +231,7 @@ export default function TeacherOnlyPage() {
   async function runQuick(){
     if(!sel)return;
     setQLoading(true);setQResult("");
-    const sub=subMap[sel.student_no];
+    const sub=subMap[sel.student_no]??subByName[sel.name];
     const wp=wallMap[sel.name];
     const wallP=wp?parseWall(wp.content):null;
     const myLogs=logMap[sel.student_no]??[];
@@ -291,7 +343,7 @@ export default function TeacherOnlyPage() {
 
   // ── 학생 상세 뷰 ──
   if(view==="student"&&sel){
-    const sub=subMap[sel.student_no];
+    const sub=subMap[sel.student_no]??subByName[sel.name];
     const wall=wallMap[sel.name];
     const wallP=wall?parseWall(wall.content):null;
     const myLogs=logMap[sel.student_no]??[];
@@ -535,7 +587,7 @@ export default function TeacherOnlyPage() {
             <p style={{color:"rgba(255,255,255,0.5)",fontSize:11,fontWeight:700,margin:"0 0 6px",letterSpacing:"0.12em"}}>🔒 TEACHER ONLY · 2026 한영외고 2-2</p>
             <h1 style={{color:"#fff",fontSize:"clamp(18px,4vw,26px)",fontWeight:900,margin:"0 0 10px"}}>📋 학생 상담 대시보드</h1>
             <div style={{display:"flex",gap:20,flexWrap:"wrap"}}>
-              {[{label:"전체",value:STUDENTS.length,color:"rgba(255,255,255,0.9)"},{label:"설문 완료",value:subs.length,color:"#86efac"},{label:"상담 완료",value:Object.keys(logMap).length,color:"#c4b5fd"},{label:"총 기록",value:logs.length,color:"#fde68a"}].map(s=>(
+              {[{label:"전체",value:STUDENTS.length,color:"rgba(255,255,255,0.9)"},{label:"설문 완료",value:STUDENTS.filter(s=>!!(subMap[s.student_no]??subByName[s.name])).length,color:"#86efac"},{label:"상담 완료",value:Object.keys(logMap).length,color:"#c4b5fd"},{label:"총 기록",value:logs.length,color:"#fde68a"}].map(s=>(
                 <div key={s.label}>
                   <p style={{fontSize:20,fontWeight:900,color:s.color,margin:"0 0 2px"}}>{s.value}</p>
                   <p style={{fontSize:11,color:"rgba(255,255,255,0.5)",margin:0,fontWeight:600}}>{s.label}</p>
@@ -554,7 +606,7 @@ export default function TeacherOnlyPage() {
             const cnt=logMap[s.student_no]?.length??0;
             const latest=logMap[s.student_no]?.[0];
             const lc=CATS.find(c=>c.key===latest?.category);
-            const hasSub=!!subMap[s.student_no];
+            const hasSub=!!(subMap[s.student_no]??subByName[s.name]);
             const hasWall=!!wallMap[s.name];
             const hasNote=!!noteMap[s.student_no];
             const hasAi=!!aiMap[s.student_no];
