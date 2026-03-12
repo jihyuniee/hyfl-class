@@ -93,7 +93,12 @@ export default function TeacherOnlyPage() {
   const [aiResult,setAiResult]=useState("");
   const [qLoading,setQLoading]=useState(false);
   const [qResult,setQResult]=useState("");
+  // 생기부 PDF 전용
+  const [gbFile,setGbFile]=useState<File|null>(null);
+  const [gbLoading,setGbLoading]=useState(false);
+  const [gbParsed,setGbParsed]=useState<{jaeyul:string;dongari:string;bongsa:string;jinro:string;haengbal:string;extra:string}|null>(null);
   const fileRef=useRef<HTMLInputElement>(null);
+  const gbFileRef=useRef<HTMLInputElement>(null);
 
   function login(){
     if(pw===TEACHER_PW){setAuthed(true);loadAll();}
@@ -164,28 +169,15 @@ export default function TeacherOnlyPage() {
     if(s.payload?.name) subByName[s.payload.name]=s;
   });
 
-  // wall_posts: author_name에 실제 이름이 포함되어 있으면 매칭
-  // "연준/8", "주보민/ 21번 / 보민", "강지우 / 1번 / 깡지" 등 처리
+  // wall_posts: author_name이 본명으로 저장됨 → 정확 일치
   const wallMap:Record<string,WallPost>={};
-  STUDENTS.forEach(student=>{
-    const match=walls.find(w=>{
-      const authorRaw=w.author_name??"";
-      // "/" 기준으로 분리해서 각 파트에 학생 이름 포함 여부 확인
-      const parts=authorRaw.split("/").map((p:string)=>p.trim());
-      return parts.some((part:string)=>
-        part===student.name ||                          // 정확 일치
-        student.name.includes(part) ||                 // 성연준 ⊃ 연준
-        part.includes(student.name)                    // 완전히 포함
-      );
-    });
-    if(match) wallMap[student.name]=match;
-  });
+  walls.forEach(w=>{wallMap[w.author_name]=w;});
   const noteMap:Record<string,TeacherNote>={};
   notes.forEach(n=>{noteMap[n.student_no]=n;});
   const aiMap:Record<string,AiSummary>={};
   ais.forEach(a=>{aiMap[a.student_no]=a;});
 
-  function openStu(s:Student){setSel(s);setNoteText(noteMap[s.student_no]?.content??"");setTab("overview");setAiResult("");setQResult("");setView("student");}
+  function openStu(s:Student){setSel(s);setNoteText(noteMap[s.student_no]?.content??"");setTab("overview");setAiResult("");setQResult("");setGbParsed(null);setGbFile(null);setView("student");}
 
   async function saveNote(){
     if(!sel)return;
@@ -210,6 +202,45 @@ export default function TeacherOnlyPage() {
     if(!confirm("삭제할까요?"))return;
     await supabase.from("counseling_logs").delete().eq("id",id);
     await loadAll();
+  }
+
+  // 생기부 PDF → 항목별 파싱
+  async function runGbParse(){
+    if(!gbFile||!sel)return;
+    setGbLoading(true);setGbParsed(null);
+    try{
+      const b64=await new Promise<string>((res,rej)=>{const r=new FileReader();r.onload=()=>res((r.result as string).split(",")[1]);r.onerror=()=>rej(new Error("실패"));r.readAsDataURL(gbFile);});
+      if(gbFile.type!=="application/pdf"){alert("PDF 파일만 지원해요.");setGbLoading(false);return;}
+      const resp=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({
+        model:"claude-sonnet-4-20250514",max_tokens:1500,
+        messages:[{role:"user",content:[
+          {type:"document",source:{type:"base64",media_type:"application/pdf",data:b64}},
+          {type:"text",text:`이것은 ${sel.name} 학생의 나이스 생기부 PDF입니다.
+아래 6개 항목을 각각 추출해서 JSON으로만 응답해주세요. 다른 텍스트 없이 JSON만:
+{
+  "jaeyul": "자율활동 특기사항 전체 내용",
+  "dongari": "동아리활동 특기사항 전체 내용",
+  "bongsa": "봉사활동 내용 요약",
+  "jinro": "진로활동 특기사항 전체 내용",
+  "haengbal": "행동특성 및 종합의견 전체 내용",
+  "extra": "교과세특 중 특이사항이나 눈에 띄는 내용 요약"
+}
+해당 항목이 없으면 빈 문자열로.`}
+        ]}],
+      })});
+      const data=await resp.json();
+      const text=data.content?.find((c:any)=>c.type==="text")?.text??"";
+      const clean=text.replace(/```json|```/g,"").trim();
+      const parsed=JSON.parse(clean);
+      setGbParsed(parsed);
+      // ai_summaries에 생기부 raw도 저장
+      await supabase.from("ai_summaries").upsert(
+        {student_no:sel.student_no,name:sel.name,summary:Object.entries(parsed).map(([k,v])=>`[${k}] ${v}`).join("\n\n"),raw_text:`[생기부PDF:${gbFile.name}]`,updated_at:new Date().toISOString()},
+        {onConflict:"student_no"}
+      );
+      await loadAll();
+    }catch(e){alert("파싱 오류가 발생했어요. PDF를 다시 확인해주세요.");}
+    setGbLoading(false);
   }
 
   async function runAI(){
@@ -238,6 +269,7 @@ export default function TeacherOnlyPage() {
     const note=noteMap[sel.student_no];
     const txt=`[설문]${sub?`MBTI:${sub.payload.mbti}, 친한친구:${sub.payload.closeFriends}, 취미:${sub.payload.hobby}, 좋아하는과목:${sub.payload.likeSubject}, 장점:${sub.payload.strengths}, 단점:${sub.payload.weaknesses}, 진로:${sub.payload.dream}, 고민의논:${sub.payload.talkWith}, 부모님스타일:${sub.payload.parentsStyle}, 선생님께:${sub.payload.messageToTeacher}, 알아줬으면:${sub.payload.teacherShouldKnow}`:"없음"}
 [자기소개]${wallP?`MBTI:${wallP.mbti}, 좋아하는것:${wallP.like}, 싫어하는것:${wallP.dislike}, 목표:${wallP.goal}, 선생님께:${wallP.message}`:"없음"}
+[생기부]${gbParsed?`자율:${gbParsed.jaeyul} / 동아리:${gbParsed.dongari} / 진로:${gbParsed.jinro} / 행동특성:${gbParsed.haengbal}`:(selAi?.summary?selAi.summary:"없음")}
 [상담기록${myLogs.length}건]${myLogs.map(l=>`${l.date}[${l.category}]${l.content}`).join(" / ")||"없음"}
 [교사메모]${note?.content||"없음"}`;
     try{
@@ -532,34 +564,92 @@ export default function TeacherOnlyPage() {
         )}
 
         {tab==="gb"&&(
-          <div className="hy-card" style={{padding:"22px 24px"}}>
-            <p style={{fontSize:13,fontWeight:900,color:"var(--text)",margin:"0 0 16px"}}>📝 생기부 기재 참고 모음</p>
-            {([{key:"gb_jaeyul",label:"자율활동",color:"#3b82f6"},{key:"gb_dongari",label:"동아리",color:"#a855f7"},{key:"gb_bongsa",label:"봉사",color:"#22c55e"},{key:"gb_jinro",label:"진로",color:"#f97316"}] as const).map(item=>{
-              const rel=myLogs.filter(l=>(l as any)[item.key]);
-              return(
-                <div key={item.key} style={{marginBottom:16}}>
-                  <p style={{fontSize:13,fontWeight:900,color:item.color,margin:"0 0 8px",borderBottom:`2px solid ${item.color}22`,paddingBottom:6}}>{item.label}</p>
-                  {rel.length===0?<p style={{fontSize:12,color:"var(--text-subtle)",fontWeight:500}}>기재 내용 없음</p>:rel.map(l=>(
-                    <div key={l.id} style={{marginBottom:6,padding:"10px 14px",borderRadius:10,background:"#f9fafb",border:"1px solid var(--border)"}}>
-                      <p style={{fontSize:11,color:"var(--text-subtle)",fontWeight:600,margin:"0 0 3px"}}>{fmtDate(l.date)}</p>
-                      <p style={{fontSize:13,color:"var(--text)",margin:0,lineHeight:1.7,whiteSpace:"pre-wrap"}}>{(l as any)[item.key]}</p>
+          <div style={{display:"flex",flexDirection:"column",gap:12}}>
+            {/* PDF 업로드 */}
+            <div className="hy-card" style={{padding:"20px 22px"}}>
+              <p style={{fontSize:13,fontWeight:900,color:"var(--text)",margin:"0 0 4px"}}>📄 나이스 생기부 PDF 업로드</p>
+              <p style={{fontSize:12,color:"var(--text-subtle)",fontWeight:600,margin:"0 0 12px"}}>업로드하면 항목별로 자동 파싱해줘요</p>
+              <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
+                <input ref={gbFileRef} type="file" accept=".pdf" onChange={e=>setGbFile(e.target.files?.[0]??null)} style={{display:"none"}}/>
+                <button onClick={()=>gbFileRef.current?.click()}
+                  style={{flex:1,padding:"12px",borderRadius:12,border:"2px dashed var(--border)",background:"#f9fafb",cursor:"pointer",fontFamily:"inherit",fontSize:13,fontWeight:700,color:"var(--text-muted)"}}>
+                  {gbFile?`📄 ${gbFile.name}`:"📁 생기부 PDF 선택"}
+                </button>
+                <button onClick={runGbParse} disabled={gbLoading||!gbFile}
+                  className="hy-btn hy-btn-primary" style={{fontSize:13,opacity:!gbFile?0.5:1,flexShrink:0}}>
+                  {gbLoading?"파싱 중... ✨":"분석하기"}
+                </button>
+              </div>
+            </div>
+
+            {/* 파싱된 생기부 항목별 카드 */}
+            {gbParsed&&(
+              <div style={{display:"flex",flexDirection:"column",gap:10}}>
+                {[
+                  {key:"jaeyul",  label:"자율활동",        color:"#3b82f6", emoji:"🏫"},
+                  {key:"dongari", label:"동아리활동",       color:"#a855f7", emoji:"🎭"},
+                  {key:"bongsa",  label:"봉사활동",         color:"#22c55e", emoji:"🤲"},
+                  {key:"jinro",   label:"진로활동",         color:"#f97316", emoji:"🎯"},
+                  {key:"haengbal",label:"행동특성 및 종합의견", color:"#ec4899", emoji:"💎"},
+                  {key:"extra",   label:"교과세특 특이사항", color:"#06b6d4", emoji:"📚"},
+                ].map(item=>{
+                  const val=(gbParsed as any)[item.key];
+                  if(!val?.trim())return null;
+                  return(
+                    <div key={item.key} className="hy-card" style={{padding:"16px 20px",borderLeft:`4px solid ${item.color}`}}>
+                      <p style={{fontSize:12,fontWeight:900,color:item.color,margin:"0 0 8px"}}>{item.emoji} {item.label}</p>
+                      <p style={{fontSize:13,color:"var(--text)",lineHeight:1.85,margin:0,whiteSpace:"pre-wrap"}}>{val}</p>
                     </div>
-                  ))}
-                </div>
-              );
-            })}
+                  );
+                })}
+              </div>
+            )}
+
+            {/* 이전 저장된 AI 요약이 있으면 표시 */}
+            {!gbParsed&&selAi&&(
+              <div className="hy-card" style={{padding:"16px 20px",background:"#f8f7ff",border:"1.5px solid #e0d9ff"}}>
+                <p style={{fontSize:12,fontWeight:800,color:"#5b21b6",margin:"0 0 8px"}}>🤖 이전 저장된 AI 요약 {selAi.raw_text&&<span style={{fontSize:11,color:"var(--text-subtle)",fontWeight:500}}>({selAi.raw_text})</span>}</p>
+                <p style={{fontSize:13,color:"var(--text)",lineHeight:1.85,margin:0,whiteSpace:"pre-wrap"}}>{selAi.summary}</p>
+              </div>
+            )}
+
+            {/* 상담 기록에서 생기부 메모 */}
+            <div className="hy-card" style={{padding:"16px 20px"}}>
+              <p style={{fontSize:12,fontWeight:900,color:"var(--text-muted)",margin:"0 0 12px"}}>✏️ 상담 중 기록한 생기부 메모</p>
+              {([{key:"gb_jaeyul",label:"자율",color:"#3b82f6"},{key:"gb_dongari",label:"동아리",color:"#a855f7"},{key:"gb_bongsa",label:"봉사",color:"#22c55e"},{key:"gb_jinro",label:"진로",color:"#f97316"}] as const).map(item=>{
+                const rel=myLogs.filter(l=>(l as any)[item.key]);
+                return rel.length>0?(
+                  <div key={item.key} style={{marginBottom:12}}>
+                    <p style={{fontSize:12,fontWeight:900,color:item.color,margin:"0 0 6px"}}>{item.label}</p>
+                    {rel.map(l=>(
+                      <div key={l.id} style={{marginBottom:5,padding:"8px 12px",borderRadius:10,background:"#f9fafb",border:"1px solid var(--border)"}}>
+                        <p style={{fontSize:11,color:"var(--text-subtle)",fontWeight:600,margin:"0 0 2px"}}>{fmtDate(l.date)}</p>
+                        <p style={{fontSize:13,color:"var(--text)",margin:0,lineHeight:1.6,whiteSpace:"pre-wrap"}}>{(l as any)[item.key]}</p>
+                      </div>
+                    ))}
+                  </div>
+                ):null;
+              })}
+              {myLogs.every(l=>!l.gb_jaeyul&&!l.gb_dongari&&!l.gb_bongsa&&!l.gb_jinro)&&(
+                <p style={{fontSize:12,color:"var(--text-subtle)",fontWeight:500}}>상담 기록에 생기부 메모가 없어요</p>
+              )}
+            </div>
           </div>
         )}
 
         {tab==="ai"&&(
           <div style={{display:"flex",flexDirection:"column",gap:12}}>
             <div className="hy-card" style={{padding:"22px 24px"}}>
-              <p style={{fontSize:13,fontWeight:900,color:"var(--text)",margin:"0 0 6px"}}>🤖 생기부 PDF AI 요약</p>
-              <p style={{fontSize:12,color:"var(--text-subtle)",fontWeight:600,margin:"0 0 14px"}}>생기부·성적표 PDF를 올리면 Claude가 활동 내역을 정리해줘요</p>
+              <p style={{fontSize:13,fontWeight:900,color:"var(--text)",margin:"0 0 6px"}}>🤖 종합 AI 요약</p>
+              <p style={{fontSize:12,color:"var(--text-subtle)",fontWeight:600,margin:"0 0 14px"}}>
+                설문+상담기록+메모{gbParsed?" + 생기부(업로드됨 ✅)":""} 를 종합해서 요약해줘요<br/>
+                생기부 PDF는 먼저 📝 생기부 탭에서 업로드하면 여기 요약에도 반영돼요
+              </p>
               <div style={{display:"flex",flexDirection:"column",gap:10}}>
                 <input ref={fileRef} type="file" accept=".pdf" onChange={e=>setAiFile(e.target.files?.[0]??null)} style={{display:"none"}}/>
-                <button onClick={()=>fileRef.current?.click()} style={{padding:"14px",borderRadius:14,border:"2px dashed var(--border)",background:"#f9fafb",cursor:"pointer",fontFamily:"inherit",fontSize:13,fontWeight:700,color:"var(--text-muted)"}}>
-                  {aiFile?`📄 ${aiFile.name}`:"📁 PDF 파일 선택"}
+                <button onClick={()=>fileRef.current?.click()}
+                  style={{padding:"12px",borderRadius:12,border:"2px dashed var(--border)",background:"#f9fafb",cursor:"pointer",fontFamily:"inherit",fontSize:13,fontWeight:700,color:"var(--text-muted)"}}>
+                  {aiFile?`📄 ${aiFile.name}`:"📁 추가 PDF 선택 (성적표 등, 선택사항)"}
                 </button>
                 <button onClick={runAI} disabled={aiLoading||!aiFile} className="hy-btn hy-btn-primary" style={{fontSize:13,opacity:!aiFile?0.5:1}}>
                   {aiLoading?"분석 중... ✨":"🤖 AI 요약 시작"}
