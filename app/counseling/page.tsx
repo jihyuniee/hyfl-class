@@ -93,6 +93,22 @@ export default function CounselingPage() {
     if (!selectedSlot) { alert("시간을 선택해주세요"); return; }
     if (!sName.trim() || !sNo.trim()) { alert("이름과 학번을 입력해주세요"); return; }
     setSubmitting(true);
+
+    // 1) 슬롯 최신 상태 재확인 (동시 신청 방지)
+    const { data: freshSlot } = await supabase
+      .from("counseling_slots").select("is_available").eq("id", selectedSlot.id).single();
+    if (!freshSlot?.is_available) {
+      setSubmitting(false);
+      alert("방금 다른 학생이 신청했어요 😢\n다른 시간을 선택해주세요!");
+      await load();
+      setSelectedSlot(null);
+      return;
+    }
+
+    // 2) 슬롯 먼저 잠금 (is_available = false)
+    await supabase.from("counseling_slots").update({ is_available: false }).eq("id", selectedSlot.id);
+
+    // 3) 신청 등록
     await supabase.from("counseling_applications").insert({
       slot_id: selectedSlot.id,
       student_no: sNo.trim(),
@@ -100,7 +116,7 @@ export default function CounselingPage() {
       reason: sReason.trim() || null,
       is_private: sPrivate,
     });
-    await supabase.from("counseling_slots").update({ is_available: false }).eq("id", selectedSlot.id);
+
     setSubmitting(false);
     setSelectedSlot(null); setSName(""); setSNo(""); setSReason(""); setSPrivate(false);
     await load();
