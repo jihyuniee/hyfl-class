@@ -147,13 +147,12 @@ export default function CounselingPage() {
     await load();
   }
 
-  const availableSlots = slots.filter(s => s.is_available);
-  const takenSlots     = slots.filter(s => !s.is_available);
-  const groupedSlots: Record<string, Slot[]> = {};
-  availableSlots.forEach(s => {
-    if (!groupedSlots[s.date]) groupedSlots[s.date] = [];
-    groupedSlots[s.date].push(s);
+  const allGroupedSlots: Record<string, Slot[]> = {};
+  slots.forEach(s => {
+    if (!allGroupedSlots[s.date]) allGroupedSlots[s.date] = [];
+    allGroupedSlots[s.date].push(s);
   });
+  const takenSlots = slots.filter(s => !s.is_available);
 
   return (
     <div style={{ display:"flex", flexDirection:"column", gap:20 }}>
@@ -224,8 +223,8 @@ export default function CounselingPage() {
             </div>
           )}
 
-          {/* 신청 가능 슬롯 */}
-          {Object.keys(groupedSlots).length === 0 ? (
+          {/* 슬롯 목록 */}
+          {Object.keys(allGroupedSlots).length === 0 ? (
             <div className="hy-card" style={{ padding:"40px", textAlign:"center" }}>
               <p style={{ fontSize:28, margin:"0 0 10px" }}>📅</p>
               <p style={{ fontSize:14, color:"var(--text-subtle)", fontWeight:600 }}>
@@ -234,28 +233,45 @@ export default function CounselingPage() {
               </p>
             </div>
           ) : (
-            Object.entries(groupedSlots).map(([date, daySlots]) => (
+            Object.entries(allGroupedSlots).map(([date, daySlots]) => (
               <div key={date}>
                 <p style={{ fontSize:13, fontWeight:800, color:"var(--text-muted)", margin:"0 0 8px" }}>📅 {fmtDate(date)}</p>
                 <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(140px,1fr))", gap:8 }}>
-                  {daySlots.map(slot => (
-                    <button key={slot.id}
-                      onClick={() => setSelectedSlot(selectedSlot?.id===slot.id ? null : slot)}
-                      style={{ padding:"14px 12px", borderRadius:14, border:"2px solid", cursor:"pointer", fontFamily:"inherit", transition:"all 0.15s", textAlign:"center",
-                        borderColor: selectedSlot?.id===slot.id ? "var(--primary)" : "var(--border)",
-                        background: selectedSlot?.id===slot.id ? "var(--primary-light)" : "#fff",
-                        color: selectedSlot?.id===slot.id ? "var(--primary)" : "var(--text)",
-                      }}>
-                      <p style={{ fontSize:14, fontWeight:900, margin:"0 0 3px" }}>{slot.time}</p>
-                      <p style={{ fontSize:11, fontWeight:600, color:"#22c55e", margin:0 }}>✅ 신청 가능</p>
-                      {isAdmin && (
-                        <button onClick={e=>{e.stopPropagation();deleteSlot(slot.id);}}
-                          style={{ marginTop:6, fontSize:10, padding:"2px 8px", borderRadius:999, border:"1px solid #fecaca", background:"#fff5f5", color:"#ef4444", cursor:"pointer", fontFamily:"inherit" }}>
-                          삭제
-                        </button>
-                      )}
-                    </button>
-                  ))}
+                  {daySlots.map(slot => {
+                    const app = applications.find(a => a.slot_id === slot.id);
+                    const isTaken = !slot.is_available;
+                    const isSelected = selectedSlot?.id === slot.id;
+                    return (
+                      <button key={slot.id}
+                        onClick={() => !isTaken && setSelectedSlot(isSelected ? null : slot)}
+                        style={{ padding:"14px 12px", borderRadius:14, border:"2px solid", fontFamily:"inherit", transition:"all 0.15s", textAlign:"center",
+                          cursor: isTaken ? "default" : "pointer",
+                          borderColor: isTaken ? "#fecaca" : isSelected ? "var(--primary)" : "var(--border)",
+                          background: isTaken ? "#fff5f5" : isSelected ? "var(--primary-light)" : "#fff",
+                          color: isTaken ? "#ef4444" : isSelected ? "var(--primary)" : "var(--text)",
+                          opacity: isTaken ? 0.85 : 1,
+                        }}>
+                        <p style={{ fontSize:14, fontWeight:900, margin:"0 0 4px" }}>{slot.time}</p>
+                        {isTaken ? (
+                          <>
+                            <p style={{ fontSize:11, fontWeight:700, color:"#ef4444", margin:"0 0 2px" }}>🔒 신청 완료</p>
+                            {/* 신청자: 관리자는 실명, 학생은 이름 첫글자+** */}
+                            <p style={{ fontSize:12, fontWeight:800, color:"#dc2626", margin:0 }}>
+                              {app ? (isAdmin ? `${app.name} (${app.student_no})` : `${app.name[0]}${"*".repeat(app.name.length-1)}`) : "-"}
+                            </p>
+                          </>
+                        ) : (
+                          <p style={{ fontSize:11, fontWeight:600, color:"#22c55e", margin:0 }}>✅ 신청 가능</p>
+                        )}
+                        {isAdmin && (
+                          <button onClick={e=>{e.stopPropagation();deleteSlot(slot.id);}}
+                            style={{ marginTop:6, fontSize:10, padding:"2px 8px", borderRadius:999, border:"1px solid #fecaca", background:"#fff5f5", color:"#ef4444", cursor:"pointer", fontFamily:"inherit" }}>
+                            삭제
+                          </button>
+                        )}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             ))
