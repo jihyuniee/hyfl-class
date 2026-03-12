@@ -117,18 +117,10 @@ export default function PraisePage() {
         </p>
       </div>
 
-      {/* 행발 안내 배너 */}
-      <div style={{ padding:"16px 20px", borderRadius:16,
-        background:"linear-gradient(135deg,#fffbeb,#fef3c7)", border:"2px solid #fbbf24" }}>
-        <p style={{ fontSize:14, fontWeight:900, color:"#92400e", margin:"0 0 6px" }}>
-          📋 이 게시판은 행동발달 기록에 활용돼요!
-        </p>
-        <p style={{ fontSize:12, color:"#78350f", margin:0, lineHeight:1.8, fontWeight:500 }}>
-          선생님이 생활기록부 행동발달 특기사항을 작성할 때 이 게시판의 내용을 참고해요.<br/>
-          <span style={{ fontWeight:800 }}>구체적인 사례 중심</span>으로 작성할수록 생기부에 잘 반영돼요 🙂<br/>
-          예) "수학 시간에 ~가 어려웠던 나에게 친절하게 풀이를 설명해줬다" 처럼 상황과 행동을 구체적으로!
-        </p>
-      </div>
+      {/* 행발 안내 — 은근하게 */}
+      <p style={{ fontSize:12, color:"var(--text-subtle)", fontWeight:600, margin:"0 0 -8px", textAlign:"right" }}>
+        💡 구체적으로 쓸수록 더 의미 있어요
+      </p>
 
       {/* 글쓰기 버튼 */}
       <div style={{ display:"flex", gap:10 }}>
@@ -150,9 +142,7 @@ export default function PraisePage() {
           <h3 style={{ fontSize:15, fontWeight:900, color:"var(--text)", margin:"0 0 4px" }}>
             {formType === "friend" ? "🙌 친구 칭찬하기" : "🌟 오늘 내 자랑하기"}
           </h3>
-          <p style={{ fontSize:12, color:"#f59e0b", fontWeight:700, margin:"0 0 16px" }}>
-            📋 행발 기록에 반영돼요 — 구체적인 상황과 행동을 써줘요!
-          </p>
+
           <div style={{ display:"flex", flexDirection:"column", gap:12 }}>
 
             {/* 내 이름 */}
@@ -216,7 +206,7 @@ export default function PraisePage() {
             {/* 내용 */}
             <div>
               <p style={{ fontSize:12, fontWeight:800, color:"var(--text-muted)", margin:"0 0 6px" }}>
-                구체적인 상황과 행동을 써줘요 * <span style={{ color:"#f59e0b" }}>(행발에 반영돼요!)</span>
+                어떤 상황이었는지 구체적으로 써줘요 *
               </p>
               <textarea
                 placeholder={formType === "friend"
