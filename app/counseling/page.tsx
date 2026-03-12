@@ -203,6 +203,39 @@ export default function CounselingPage() {
       {tab === "formal" && (
         <div style={{ display:"flex", flexDirection:"column", gap:16 }}>
 
+          {/* 관리자: 신청 현황 요약 (상단) */}
+          {isAdmin && applications.length > 0 && (
+            <div className="hy-card" style={{ padding:"20px 22px", background:"#fdf2f8", border:"2px solid var(--primary)" }}>
+              <h3 style={{ fontSize:14, fontWeight:900, color:"var(--primary)", margin:"0 0 14px" }}>
+                📋 상담 신청 현황 ({applications.length}건)
+              </h3>
+              <div style={{ display:"flex", flexDirection:"column", gap:8 }}>
+                {applications.map(app => {
+                  const slot = slots.find(s => s.id === app.slot_id);
+                  return (
+                    <div key={app.id} style={{ padding:"12px 16px", borderRadius:12, background:"#fff", border:"1.5px solid #f9a8d4" }}>
+                      <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", flexWrap:"wrap", gap:8 }}>
+                        <div>
+                          <p style={{ fontSize:14, fontWeight:900, color:"var(--text)", margin:"0 0 4px" }}>
+                            {app.student_no} {app.name}
+                          </p>
+                          <p style={{ fontSize:12, color:"var(--primary)", fontWeight:700, margin:"0 0 4px" }}>
+                            📅 {slot ? `${fmtDate(slot.date)} ${slot.time}` : "-"}
+                          </p>
+                          {!app.is_private && app.reason && (
+                            <p style={{ fontSize:13, color:"var(--text-muted)", margin:0, lineHeight:1.6 }}>{app.reason}</p>
+                          )}
+                          {app.is_private && <p style={{ fontSize:12, color:"var(--text-subtle)", margin:0 }}>🔒 내용 비공개</p>}
+                        </div>
+                        <span style={{ fontSize:11, color:"var(--text-subtle)", fontWeight:600, flexShrink:0 }}>{timeAgo(app.created_at)}</span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
           {/* 관리자: 슬롯 추가 */}
           {isAdmin && (
             <div className="hy-card" style={{ padding:"20px 22px", background:"#fdf2f8" }}>
@@ -302,36 +335,6 @@ export default function CounselingPage() {
             </div>
           )}
 
-          {/* 관리자: 신청 현황 */}
-          {isAdmin && takenSlots.length > 0 && (
-            <div className="hy-card" style={{ padding:"20px 22px" }}>
-              <h3 style={{ fontSize:14, fontWeight:900, color:"var(--text)", margin:"0 0 14px" }}>📋 신청 현황 ({applications.length}건)</h3>
-              <div style={{ display:"flex", flexDirection:"column", gap:8 }}>
-                {applications.map(app => {
-                  const slot = slots.find(s=>s.id===app.slot_id);
-                  return (
-                    <div key={app.id} style={{ padding:"12px 16px", borderRadius:12, background:"#f9fafb", border:"1.5px solid var(--border)" }}>
-                      <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", flexWrap:"wrap", gap:6 }}>
-                        <div>
-                          <p style={{ fontSize:14, fontWeight:800, color:"var(--text)", margin:"0 0 2px" }}>
-                            {app.student_no} {app.name}
-                          </p>
-                          <p style={{ fontSize:12, color:"var(--primary)", fontWeight:700, margin:"0 0 4px" }}>
-                            📅 {slot ? `${fmtDate(slot.date)} ${slot.time}` : "-"}
-                          </p>
-                          {!app.is_private && app.reason && (
-                            <p style={{ fontSize:13, color:"var(--text-muted)", margin:0 }}>{app.reason}</p>
-                          )}
-                          {app.is_private && <p style={{ fontSize:12, color:"var(--text-subtle)", margin:0 }}>🔒 비공개</p>}
-                        </div>
-                        <span style={{ fontSize:11, color:"var(--text-subtle)", fontWeight:600 }}>{timeAgo(app.created_at)}</span>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          )}
         </div>
       )}
 
