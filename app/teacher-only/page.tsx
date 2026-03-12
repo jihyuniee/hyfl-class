@@ -269,7 +269,7 @@ export default function TeacherOnlyPage() {
     const note=noteMap[sel.student_no];
     const txt=`[설문]${sub?`MBTI:${sub.payload.mbti}, 친한친구:${sub.payload.closeFriends}, 취미:${sub.payload.hobby}, 좋아하는과목:${sub.payload.likeSubject}, 장점:${sub.payload.strengths}, 단점:${sub.payload.weaknesses}, 진로:${sub.payload.dream}, 고민의논:${sub.payload.talkWith}, 부모님스타일:${sub.payload.parentsStyle}, 선생님께:${sub.payload.messageToTeacher}, 알아줬으면:${sub.payload.teacherShouldKnow}`:"없음"}
 [자기소개]${wallP?`MBTI:${wallP.mbti}, 좋아하는것:${wallP.like}, 싫어하는것:${wallP.dislike}, 목표:${wallP.goal}, 선생님께:${wallP.message}`:"없음"}
-[생기부]${gbParsed?`자율:${gbParsed.jaeyul} / 동아리:${gbParsed.dongari} / 진로:${gbParsed.jinro} / 행동특성:${gbParsed.haengbal}`:(selAi?.summary?selAi.summary:"없음")}
+[생기부]${gbParsed?`자율:${gbParsed.jaeyul} / 동아리:${gbParsed.dongari} / 진로:${gbParsed.jinro} / 행동특성:${gbParsed.haengbal}`:(aiMap[sel.student_no]?.summary?aiMap[sel.student_no].summary:"없음")}
 [상담기록${myLogs.length}건]${myLogs.map(l=>`${l.date}[${l.category}]${l.content}`).join(" / ")||"없음"}
 [교사메모]${note?.content||"없음"}`;
     try{
