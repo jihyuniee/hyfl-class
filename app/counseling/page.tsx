@@ -70,6 +70,19 @@ export default function CounselingPage() {
   const [wSubmitting,  setWSubmitting]  = useState(false);
   const [wDone,        setWDone]        = useState(false);
 
+  // ── 내 신청 확인 ──
+  const [checkNo,   setCheckNo]   = useState("");
+  const [checkName, setCheckName] = useState("");
+  const [myApp,     setMyApp]     = useState<Application | null | "none">(null);
+
+  async function checkMyApp() {
+    if (!checkNo.trim() || !checkName.trim()) return;
+    const found = applications.find(
+      a => a.student_no === checkNo.trim() && a.name === checkName.trim()
+    );
+    setMyApp(found ?? "none");
+  }
+
   // ── 관리자 ──
   const [pw,        setPw]        = useState("");
   const [isAdmin,   setIsAdmin]   = useState(false);
@@ -325,6 +338,40 @@ export default function CounselingPage() {
               </div>
             ))
           )}
+
+          {/* 내 신청 확인 */}
+          <div className="hy-card" style={{ padding:"20px 22px" }}>
+            <h3 style={{ fontSize:14, fontWeight:900, color:"var(--text)", margin:"0 0 12px" }}>🔍 내 신청 확인</h3>
+            <div style={{ display:"flex", gap:8, flexWrap:"wrap" }}>
+              <input placeholder="학번" value={checkNo} onChange={e=>setCheckNo(e.target.value)}
+                className="hy-input" style={{ flex:1, minWidth:100 }} inputMode="numeric"/>
+              <input placeholder="이름" value={checkName} onChange={e=>setCheckName(e.target.value)}
+                onKeyDown={e=>e.key==="Enter"&&checkMyApp()}
+                className="hy-input" style={{ flex:1, minWidth:80 }}/>
+              <button onClick={checkMyApp} className="hy-btn hy-btn-primary" style={{ fontSize:13, whiteSpace:"nowrap" }}>확인</button>
+            </div>
+            {myApp === "none" && (
+              <div style={{ marginTop:12, padding:"12px 16px", borderRadius:12, background:"#fff5f5", border:"1.5px solid #fecaca" }}>
+                <p style={{ fontSize:13, fontWeight:700, color:"#ef4444", margin:0 }}>
+                  😢 신청 내역이 없어요. 학번과 이름을 다시 확인해주세요.
+                </p>
+              </div>
+            )}
+            {myApp && myApp !== "none" && (() => {
+              const slot = slots.find(s => s.id === (myApp as Application).slot_id);
+              return (
+                <div style={{ marginTop:12, padding:"14px 16px", borderRadius:12, background:"#f0fdf4", border:"1.5px solid #86efac" }}>
+                  <p style={{ fontSize:14, fontWeight:900, color:"#15803d", margin:"0 0 6px" }}>✅ 신청 완료!</p>
+                  <p style={{ fontSize:13, fontWeight:700, color:"var(--text)", margin:"0 0 4px" }}>
+                    {(myApp as Application).name} ({(myApp as Application).student_no})
+                  </p>
+                  <p style={{ fontSize:13, color:"var(--primary)", fontWeight:700, margin:0 }}>
+                    📅 {slot ? `${fmtDate(slot.date)} ${slot.time}` : "-"}
+                  </p>
+                </div>
+              );
+            })()}
+          </div>
 
           {/* 신청 폼 */}
           {selectedSlot && (
