@@ -145,3 +145,76 @@ body {
   overflow: hidden;
   box-shadow: 0 12px 40px rgba(192,132,252,0.35);
 }
+
+/* ── 반응형 (모바일) ── */
+@media (max-width: 640px) {
+
+  /* 페이지 전체 패딩 */
+  main, [class*="container"] {
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+  }
+
+  /* 히어로 배너 */
+  .hy-hero {
+    padding: 24px 20px;
+    border-radius: 20px;
+  }
+
+  /* 카드 */
+  .hy-card {
+    border-radius: 16px;
+  }
+
+  /* 버튼 — 터치 영역 확보 */
+  .hy-btn {
+    padding: 12px 18px;
+    font-size: 14px;
+    min-height: 44px;
+  }
+
+  /* 인풋 */
+  .hy-input {
+    padding: 13px 14px;
+    font-size: 16px; /* iOS 자동 줌 방지 */
+    border-radius: 12px;
+  }
+
+  /* 퀵링크 그리드 */
+  .hy-quick-link {
+    padding: 16px 14px;
+    border-radius: 16px;
+    gap: 8px;
+  }
+
+  /* grid 계열 — 모바일에서 2열로 */
+  [style*="repeat(auto-fill"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* flex row → column 변환이 필요한 곳 */
+  .mobile-col {
+    flex-direction: column !important;
+  }
+
+  /* 텍스트 크기 조정 */
+  .mobile-sm { font-size: 12px !important; }
+  .mobile-md { font-size: 14px !important; }
+}
+
+/* ── 레이아웃 래퍼 ── */
+.page-wrapper {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 24px 20px 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+@media (max-width: 640px) {
+  .page-wrapper {
+    padding: 16px 14px 80px;
+    gap: 16px;
+  }
+}

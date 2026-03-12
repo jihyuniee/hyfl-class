@@ -1,6 +1,12 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import NavBar from "@/components/NavBar";
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+};
 
 export const metadata: Metadata = {
   title: "2-2 우리반",
@@ -18,9 +24,9 @@ export default function RootLayout({
         <NavBar />
         <main
           style={{
-            maxWidth: 1120,
+            maxWidth: 720,
             margin: "0 auto",
-            padding: "28px 20px 60px",
+            padding: "clamp(16px, 4vw, 28px) clamp(14px, 4vw, 20px) 80px",
           }}
         >
           {children}
