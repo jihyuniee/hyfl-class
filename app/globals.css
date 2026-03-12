@@ -204,7 +204,7 @@ body {
 
 /* ── 레이아웃 래퍼 ── */
 .page-wrapper {
-  max-width: 720px;
+  max-width: 1100px;
   margin: 0 auto;
   padding: 24px 20px 60px;
   display: flex;
@@ -216,5 +216,23 @@ body {
   .page-wrapper {
     padding: 16px 14px 80px;
     gap: 16px;
+  }
+}
+
+/* ── PC 레이아웃 최적화 ── */
+@media (min-width: 768px) {
+  /* 슬롯 그리드 — PC에서 더 많은 열 */
+  [style*="repeat(auto-fill, minmax(140px"] {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)) !important;
+  }
+
+  /* 카드 내부 padding 여유 */
+  .hy-card {
+    border-radius: 24px;
+  }
+
+  .hy-hero {
+    padding: 40px 36px;
+    border-radius: 32px;
   }
 }

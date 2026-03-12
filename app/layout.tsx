@@ -24,9 +24,9 @@ export default function RootLayout({
         <NavBar />
         <main
           style={{
-            maxWidth: 720,
+            maxWidth: 1100,
             margin: "0 auto",
-            padding: "clamp(16px, 4vw, 28px) clamp(14px, 4vw, 20px) 80px",
+            padding: "clamp(16px, 3vw, 28px) clamp(14px, 4vw, 40px) 80px",
           }}
         >
           {children}
