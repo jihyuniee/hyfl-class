@@ -228,8 +228,16 @@ export default function CounselingPage() {
                           <p style={{ fontSize:12, color:"var(--primary)", fontWeight:700, margin:"0 0 4px" }}>
                             📅 {slot ? `${fmtDate(slot.date)} ${slot.time}` : "-"}
                           </p>
-                          {!app.is_private && app.reason && <p style={{ fontSize:13, color:"var(--text-muted)", margin:0 }}>{app.reason}</p>}
-                          {app.is_private && <p style={{ fontSize:12, color:"var(--text-subtle)", margin:0 }}>🔒 내용 비공개</p>}
+                          {app.reason ? (
+                            <div style={{ marginTop:6, padding:"8px 12px", borderRadius:8,
+                              background: app.is_private ? "#fff5f5" : "#f9fafb",
+                              border: `1px solid ${app.is_private ? "#fecaca" : "#f3f4f6"}` }}>
+                              {app.is_private && <p style={{ fontSize:10, fontWeight:800, color:"#ef4444", margin:"0 0 3px" }}>🔒 비공개 신청 — 관리자만 열람</p>}
+                              <p style={{ fontSize:13, color:"var(--text-muted)", margin:0, lineHeight:1.6, whiteSpace:"pre-wrap" }}>{app.reason}</p>
+                            </div>
+                          ) : (
+                            <p style={{ fontSize:12, color:"var(--text-subtle)", margin:"4px 0 0" }}>신청 사유 없음</p>
+                          )}
                         </div>
                         <span style={{ fontSize:11, color:"var(--text-subtle)", fontWeight:600, flexShrink:0 }}>{timeAgo(app.created_at)}</span>
                       </div>
@@ -475,8 +483,14 @@ export default function CounselingPage() {
                         </div>
                         <span style={{ fontSize:11, color:"var(--text-subtle)", fontWeight:600, flexShrink:0 }}>{timeAgo(w.created_at)}</span>
                       </div>
-                      {!w.is_private && <p style={{ fontSize:13, color:"var(--text-muted)", margin:"0 0 6px", lineHeight:1.6, whiteSpace:"pre-wrap" }}>{w.content}</p>}
-                      {w.is_private && <p style={{ fontSize:12, color:"var(--text-subtle)", margin:"0 0 6px" }}>🔒 비공개</p>}
+                      {w.content && (
+                        <div style={{ marginBottom:8, padding:"8px 12px", borderRadius:8,
+                          background: w.is_private ? "#fff5f5" : "#f9fafb",
+                          border: `1px solid ${w.is_private ? "#fecaca" : "#f3f4f6"}` }}>
+                          {w.is_private && <p style={{ fontSize:10, fontWeight:800, color:"#ef4444", margin:"0 0 3px" }}>🔒 비공개 신청 — 관리자만 열람</p>}
+                          <p style={{ fontSize:13, color:"var(--text-muted)", margin:0, lineHeight:1.6, whiteSpace:"pre-wrap" }}>{w.content}</p>
+                        </div>
+                      )}
                       {w.preferred_time && <p style={{ fontSize:12, color:"var(--primary)", fontWeight:700, margin:"0 0 8px" }}>⏰ 희망 시간: {w.preferred_time}</p>}
                       <button onClick={() => toggleChecked(w.id, w.is_checked)}
                         style={{ fontSize:11, padding:"4px 12px", borderRadius:999, border:"1.5px solid var(--border)", background:"#fff",
