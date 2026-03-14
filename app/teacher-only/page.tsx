@@ -21,11 +21,36 @@ type WallPost = { id: string; author_name: string; content: string; created_at: 
 type CounselingLog = {
   id: string; created_at: string; updated_at: string;
   student_no: string; name: string; date: string;
-  category: string; content: string; student_answer: string | null; followup: string | null; is_sensitive: boolean;
+  category: string; content: string; followup: string | null; is_sensitive: boolean;
   gb_jaeyul: string | null; gb_dongari: string | null; gb_bongsa: string | null; gb_jinro: string | null;
 };
 type TeacherNote = { id: string; student_no: string; name: string; content: string; };
 type AiSummary = { id: string; student_no: string; name: string; summary: string; raw_text: string; created_at: string; };
+
+// ── 교사 전용 추가 데이터 타입 ──
+type StudentExtra = {
+  id: string;
+  student_no: string;
+  // 생활정보
+  address: string;
+  commute: string;
+  shuttle: string;
+  sleep_time: string;
+  wake_time: string;
+  life_pattern: string;
+  // 가족 구성원 (JSON)
+  family_members: string;
+  // 성적 (JSON: {국어,수학,영어,사회국제,한국사,과학,문학})
+  grades: string;
+  // 학습 태도 목표
+  habit_goal_daily: string;
+  habit_goal_exam: string;
+  // 진로 계열
+  selected_field: string;
+  field_note: string;
+  // 학급 의견 (비공개)
+  class_opinion: string;
+};
 
 const STUDENTS: Student[] = [
   {student_no:"20201",name:"강지우"},{student_no:"20202",name:"김은솔"},
@@ -52,6 +77,27 @@ const CATS = [
   {key:"기타",emoji:"💬",color:"#94a3b8"},
 ];
 
+const FIELDS = [
+  {key:"사회과학", label:"사회과학", sub:"사회, 지리, 언론 등", color:"#22c55e", score:5,
+   tips:["사회·윤리 세특에서 사회문제 분석 역량 기록","시사 독서 기반 탐구보고서 (언론·미디어·젠더·환경)","사회참여 봉사활동 연계","토론·발표에서 근거 제시 능력 세특 반영"]},
+  {key:"사범", label:"사범", sub:"국어교육, 영어교육 등", color:"#3b82f6", score:4,
+   tips:["영어 세특 — 원서 독해, 에세이 작성 역량","문학 세특 — 작품 해석, 감상문","멘토링·튜터링 활동 기록 (공감 리더십)"]},
+  {key:"어문", label:"어문", sub:"언어, 영어 등", color:"#a855f7", score:4,
+   tips:["영어 에세이·발표·토론 세특 집중 기록","외국 문학 원서 독서 기록","영자 신문부, 모의유엔 연계"]},
+  {key:"인문", label:"인문", sub:"정치, 외교 등", color:"#06b6d4", score:4,
+   tips:["국제 이슈 분석 탐구 활동","모의유엔(MUN), 국제 토론 대회","영어 역량 연계 필수"]},
+  {key:"상경", label:"상경", sub:"경영, 경제 등", color:"#f59e0b", score:3,
+   tips:["수학 내신 집중 관리 필수","시사 경제 이슈 탐구 보고서"]},
+  {key:"생활과학", label:"생활과학", sub:"식품학, 의류학 등", color:"#f97316", score:2,
+   tips:["과학 내신 보완 선행 필요","식품·환경·지속가능성 탐구 활동"]},
+];
+
+const SUBJECTS = ["국어","수학","영어","사회/국제","한국사","과학","문학"];
+const SUBJECT_COLORS: Record<string,string> = {
+  "국어":"#a855f7","수학":"#a855f7","영어":"#22c55e",
+  "사회/국제":"#22c55e","한국사":"#f59e0b","과학":"#ef4444","문학":"#a855f7"
+};
+
 const TEACHER_PW = process.env.NEXT_PUBLIC_TEACHER_PW ?? "hyfl-teacher-2026!";
 
 function fmtDate(d: string) {
@@ -68,26 +114,43 @@ function parseWall(c: string) {
   try { const o=JSON.parse(c); return {mbti:o.mbti??"",like:o.likeBehaviors??"",dislike:o.dislikeBehaviors??"",goal:o.thisYearGoal??"",message:o.message??""}; }
   catch { return null; }
 }
-// ★ student_answer 추가
-const emptyForm = () => ({
-  student_no:"", name:"", date:toKSTDate(), category:"학업",
-  content:"", student_answer:"", followup:"", is_sensitive:false,
-  gb_jaeyul:"", gb_dongari:"", gb_bongsa:"", gb_jinro:"",
+const emptyForm = ()=>({student_no:"",name:"",date:toKSTDate(),category:"학업",content:"",followup:"",is_sensitive:false,gb_jaeyul:"",gb_dongari:"",gb_bongsa:"",gb_jinro:""});
+const emptyExtra = ():Omit<StudentExtra,"id"|"student_no"> => ({
+  address:"",commute:"",shuttle:"",sleep_time:"",wake_time:"",life_pattern:"",
+  family_members:"[]",grades:"{}",
+  habit_goal_daily:"",habit_goal_exam:"",
+  selected_field:"",field_note:"",
+  class_opinion:"",
 });
+
+// 성적 막대 색상
+function gradeColor(v: number) {
+  if(!v) return "#e5e7eb";
+  if(v<=2) return "#22c55e";
+  if(v===3) return "#f59e0b";
+  return "#ef4444";
+}
+function gradeBadgeStyle(v: number): React.CSSProperties {
+  if(!v) return {background:"#f3f4f6",color:"#9ca3af"};
+  if(v<=2) return {background:"#dcfce7",color:"#15803d"};
+  if(v===3) return {background:"#fef9c3",color:"#854d0e"};
+  return {background:"#fee2e2",color:"#991b1b"};
+}
 
 export default function TeacherOnlyPage() {
   const [authed,setAuthed]=useState(false);
   const [pw,setPw]=useState("");
   const [pwErr,setPwErr]=useState(false);
-  const [view,setView]=useState<"dash"|"student"|"form">("dash");
+  const [view,setView]=useState<"dash"|"student"|"form"|"class">("dash");
   const [logs,setLogs]=useState<CounselingLog[]>([]);
   const [subs,setSubs]=useState<Submission[]>([]);
   const [walls,setWalls]=useState<WallPost[]>([]);
   const [notes,setNotes]=useState<TeacherNote[]>([]);
   const [ais,setAis]=useState<AiSummary[]>([]);
+  const [extras,setExtras]=useState<StudentExtra[]>([]);
   const [loading,setLoading]=useState(false);
   const [sel,setSel]=useState<Student|null>(null);
-  const [tab,setTab]=useState<"overview"|"survey"|"log"|"gb"|"ai">("overview");
+  const [tab,setTab]=useState<"overview"|"survey"|"log"|"gb"|"ai"|"extra">("overview");
   const [form,setForm]=useState(emptyForm());
   const [selLog,setSelLog]=useState<CounselingLog|null>(null);
   const [saving,setSaving]=useState(false);
@@ -104,6 +167,23 @@ export default function TeacherOnlyPage() {
   const fileRef=useRef<HTMLInputElement>(null);
   const gbFileRef=useRef<HTMLInputElement>(null);
 
+  // extra 로컬 편집 상태
+  const [extraForm,setExtraForm]=useState(emptyExtra());
+  const [extraSaving,setExtraSaving]=useState(false);
+  // 성적 로컬 상태
+  const [grades,setGrades]=useState<Record<string,number>>({});
+  // 가족 구성원 로컬 상태
+  const [familyRows,setFamilyRows]=useState<{rel:string;name:string;job:string;note:string}[]>([
+    {rel:"아버지",name:"",job:"",note:""},{rel:"어머니",name:"",job:"",note:""}
+  ]);
+  // 학급 분위기 (class view)
+  const [classVibe,setClassVibe]=useState<string[]>([]);
+  const [classImprove,setClassImprove]=useState<string[]>([]);
+  const [classMemo,setClassMemo]=useState("");
+  const [classOpinions,setClassOpinions]=useState<Record<string,string>>({});
+  const [classOpinionOpen,setClassOpinionOpen]=useState<Record<string,boolean>>({});
+  const [classSaving,setClassSaving]=useState(false);
+
   function login(){
     if(pw===TEACHER_PW){setAuthed(true);loadAll();}
     else{setPwErr(true);setPw("");setTimeout(()=>setPwErr(false),1500);}
@@ -111,17 +191,19 @@ export default function TeacherOnlyPage() {
 
   async function loadAll(){
     setLoading(true);
-    const [a,b,c,d,e]=await Promise.all([
+    const [a,b,c,d,e,f]=await Promise.all([
       supabase.from("counseling_logs").select("*").order("date",{ascending:false}),
       supabase.from("counseling_submissions").select("*").order("created_at",{ascending:false}),
       supabase.from("wall_posts").select("id,author_name,content,created_at").order("created_at"),
       supabase.from("teacher_notes").select("*"),
       supabase.from("ai_summaries").select("*").order("created_at",{ascending:false}),
+      supabase.from("student_extras").select("*"),
     ]);
     setLogs((a.data as CounselingLog[])??[]);
     setWalls((c.data as WallPost[])??[]);
     setNotes((d.data as TeacherNote[])??[]);
     setAis((e.data as AiSummary[])??[]);
+    setExtras((f.data as StudentExtra[])??[]);
     const parsed=((b.data??[]) as any[]).map((r:any)=>({
       id:r.id, created_at:r.created_at,
       payload:{
@@ -161,21 +243,59 @@ export default function TeacherOnlyPage() {
   const logMap:Record<string,CounselingLog[]>={};
   logs.forEach(l=>{if(!logMap[l.student_no])logMap[l.student_no]=[];logMap[l.student_no].push(l);});
   const subMap:Record<string,Submission>={};
-  subs.forEach(s=>{if(s.payload?.studentNo) subMap[s.payload.studentNo]=s;});
+  subs.forEach(s=>{if(s.payload?.studentNo)subMap[s.payload.studentNo]=s;});
   const subByName:Record<string,Submission>={};
-  subs.forEach(s=>{if(s.payload?.name) subByName[s.payload.name]=s;});
+  subs.forEach(s=>{if(s.payload?.name)subByName[s.payload.name]=s;});
   const wallMap:Record<string,WallPost>={};
   walls.forEach(w=>{wallMap[w.author_name]=w;});
   const noteMap:Record<string,TeacherNote>={};
   notes.forEach(n=>{noteMap[n.student_no]=n;});
   const aiMap:Record<string,AiSummary>={};
   ais.forEach(a=>{aiMap[a.student_no]=a;});
+  const extraMap:Record<string,StudentExtra>={};
+  extras.forEach(e=>{extraMap[e.student_no]=e;});
 
   function openStu(s:Student){
     setSel(s);
     setNoteText(noteMap[s.student_no]?.content??"");
-    setTab("overview");setAiResult("");setQResult("");setGbParsed(null);setGbFile(null);
+    setTab("overview");
+    setAiResult("");setQResult("");setGbParsed(null);setGbFile(null);
+    // extra 로드
+    const ex=extraMap[s.student_no];
+    if(ex){
+      setExtraForm({
+        address:ex.address??"",commute:ex.commute??"",shuttle:ex.shuttle??"",
+        sleep_time:ex.sleep_time??"",wake_time:ex.wake_time??"",life_pattern:ex.life_pattern??"",
+        family_members:ex.family_members??"[]",grades:ex.grades??"{}",
+        habit_goal_daily:ex.habit_goal_daily??"",habit_goal_exam:ex.habit_goal_exam??"",
+        selected_field:ex.selected_field??"",field_note:ex.field_note??"",
+        class_opinion:ex.class_opinion??"",
+      });
+      try{setGrades(JSON.parse(ex.grades??"{}"));}catch{setGrades({});}
+      try{setFamilyRows(JSON.parse(ex.family_members??"[]"));}catch{setFamilyRows([{rel:"아버지",name:"",job:"",note:""},{rel:"어머니",name:"",job:"",note:""}]);}
+    } else {
+      setExtraForm(emptyExtra());
+      setGrades({});
+      setFamilyRows([{rel:"아버지",name:"",job:"",note:""},{rel:"어머니",name:"",job:"",note:""}]);
+    }
     setView("student");
+  }
+
+  async function saveExtra(){
+    if(!sel)return;
+    setExtraSaving(true);
+    const payload={
+      student_no:sel.student_no,
+      ...extraForm,
+      grades:JSON.stringify(grades),
+      family_members:JSON.stringify(familyRows),
+      updated_at:new Date().toISOString(),
+    };
+    const ex=extraMap[sel.student_no];
+    if(ex) await supabase.from("student_extras").update(payload).eq("id",ex.id);
+    else await supabase.from("student_extras").insert(payload);
+    await loadAll();
+    setExtraSaving(false);
   }
 
   async function saveNote(){
@@ -188,18 +308,10 @@ export default function TeacherOnlyPage() {
   }
 
   async function saveLog(){
-    if(!form.student_no||!form.content.trim()){alert("학생과 선생님 메모를 입력해주세요");return;}
+    if(!form.student_no||!form.content.trim()){alert("학생과 상담 내용을 입력해주세요");return;}
     setSaving(true);
-    const p={
-      student_no:form.student_no, name:form.name, date:form.date,
-      category:form.category, content:form.content.trim(),
-      student_answer:(form as any).student_answer?.trim()||null,
-      followup:form.followup?.trim()||null, is_sensitive:form.is_sensitive,
-      gb_jaeyul:form.gb_jaeyul?.trim()||null, gb_dongari:form.gb_dongari?.trim()||null,
-      gb_bongsa:form.gb_bongsa?.trim()||null, gb_jinro:form.gb_jinro?.trim()||null,
-      updated_at:new Date().toISOString(),
-    };
-    if(selLog) await supabase.from("counseling_logs").update(p).eq("id",selLog.id);
+    const p={student_no:form.student_no,name:form.name,date:form.date,category:form.category,content:form.content.trim(),followup:form.followup?.trim()||null,is_sensitive:form.is_sensitive,gb_jaeyul:form.gb_jaeyul?.trim()||null,gb_dongari:form.gb_dongari?.trim()||null,gb_bongsa:form.gb_bongsa?.trim()||null,gb_jinro:form.gb_jinro?.trim()||null,updated_at:new Date().toISOString()};
+    if(selLog)await supabase.from("counseling_logs").update(p).eq("id",selLog.id);
     else await supabase.from("counseling_logs").insert(p);
     setSaving(false);setSelLog(null);setForm(emptyForm());
     await loadAll();setView("student");setTab("log");
@@ -265,7 +377,7 @@ export default function TeacherOnlyPage() {
     const txt=`[설문]${sub?`MBTI:${sub.payload.mbti}, 친한친구:${sub.payload.closeFriends}, 취미:${sub.payload.hobby}, 좋아하는과목:${sub.payload.likeSubject}, 장점:${sub.payload.strengths}, 단점:${sub.payload.weaknesses}, 진로:${sub.payload.dream}, 고민의논:${sub.payload.talkWith}, 부모님스타일:${sub.payload.parentsStyle}, 선생님께:${sub.payload.messageToTeacher}, 알아줬으면:${sub.payload.teacherShouldKnow}`:"없음"}
 [자기소개]${wallP?`MBTI:${wallP.mbti}, 좋아하는것:${wallP.like}, 싫어하는것:${wallP.dislike}, 목표:${wallP.goal}, 선생님께:${wallP.message}`:"없음"}
 [생기부]${gbParsed?`자율:${gbParsed.jaeyul} / 동아리:${gbParsed.dongari} / 진로:${gbParsed.jinro} / 행동특성:${gbParsed.haengbal}`:(aiMap[sel.student_no]?.summary?aiMap[sel.student_no].summary:"없음")}
-[상담기록${myLogs.length}건]${myLogs.map(l=>`${l.date}[${l.category}]학생:${l.student_answer||""} 교사:${l.content}`).join(" / ")||"없음"}
+[상담기록${myLogs.length}건]${myLogs.map(l=>`${l.date}[${l.category}]${l.content}`).join(" / ")||"없음"}
 [교사메모]${note?.content||"없음"}`;
     try{
       const resp=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:600,messages:[{role:"user",content:`${sel.name} 학생 자료입니다. 상담 전 핵심만 4줄로 요약:\n- 성격/특성:\n- 관심사/진로:\n- 관계/고민:\n- 상담 포인트:\n\n${txt}`}]})});
@@ -291,388 +403,177 @@ export default function TeacherOnlyPage() {
           {pwErr&&<p style={{fontSize:12,color:"#ef4444",fontWeight:700,margin:0}}>비밀번호가 틀렸어요</p>}
           <button onClick={login} className="hy-btn hy-btn-primary" style={{fontSize:14}}>입장하기</button>
         </div>
-        <p style={{fontSize:11,color:"var(--text-subtle)",marginTop:20}}>Vercel 환경변수 <code>NEXT_PUBLIC_TEACHER_PW</code>로 변경 가능</p>
       </div>
       <style>{`@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}`}</style>
     </div>
   );
 
-  // ── 상담 기록 폼 (좌우 분할 + 분류 탭) ──
-  if(view==="form"&&sel){
-    const sub=subMap[sel.student_no]??subByName[sel.name];
-    const wall=wallMap[sel.name];
-    const wallP=wall?parseWall(wall.content):null;
-    const myLogs=logMap[sel.student_no]??[];
-
-    // 분류별 학생 응답 — 출처 구분 (survey=선생님께만, wall=친구 자기소개)
-    type SurveyItem = {label:string; value:string; source:"survey"|"wall"};
-    const surveyByCategory: Record<string, SurveyItem[]> = {
-      "가족관계":[
-        {label:"부모님 스타일",         value:sub?.payload.parentsStyle??"",           source:"survey"},
-        {label:"부모님은 어떤 분",       value:sub?.payload.parentsMeaning??"",         source:"survey"},
-        {label:"학부모 연락처",          value:sub?.payload.parentContact??"",          source:"survey"},
-        {label:"연락 선호 방법",         value:sub?.payload.preferredContactMethod??"", source:"survey"},
-      ],
-      "교우관계":[
-        {label:"친한 친구",              value:sub?.payload.closeFriends??"",           source:"survey"},
-        {label:"고민 의논 대상",         value:sub?.payload.talkWith??"",               source:"survey"},
-        {label:"나를 표현하는 형용사",   value:sub?.payload.adjectives??"",             source:"survey"},
-        {label:"좋아하는 것",            value:wallP?.like??"",                         source:"wall"},
-        {label:"싫어하는 것",            value:wallP?.dislike??"",                      source:"wall"},
-        {label:"올해 목표",              value:wallP?.goal??"",                         source:"wall"},
-      ],
-      "학업":[
-        {label:"좋아하는 과목 / 이유",   value:`${sub?.payload.likeSubject??""} — ${sub?.payload.likeReason??""}`, source:"survey"},
-        {label:"싫어하는 과목 / 이유",   value:`${sub?.payload.dislikeSubject??""} — ${sub?.payload.dislikeReason??""}`, source:"survey"},
-        {label:"발표 스타일",            value:sub?.payload.presentationStyle??"",      source:"survey"},
-        {label:"모를 때 대처",           value:sub?.payload.learningHelpStyle??"",      source:"survey"},
-      ],
-      "학원고민":[
-        {label:"좋아하는 과목",          value:sub?.payload.likeSubject??"",            source:"survey"},
-        {label:"싫어하는 과목",          value:sub?.payload.dislikeSubject??"",         source:"survey"},
-        {label:"고민 의논 대상",         value:sub?.payload.talkWith??"",               source:"survey"},
-      ],
-      "진로":[
-        {label:"진로 / 꿈",              value:sub?.payload.dream??"",                  source:"survey"},
-        {label:"되고 싶은 사람",         value:sub?.payload.wantToBe??"",               source:"survey"},
-        {label:"선생님이 알아줬으면",    value:sub?.payload.teacherShouldKnow??"",      source:"survey"},
-        {label:"올해 목표",              value:wallP?.goal??"",                         source:"wall"},
-      ],
-      "정서/심리":[
-        {label:"장점",                   value:sub?.payload.strengths??"",              source:"survey"},
-        {label:"단점",                   value:sub?.payload.weaknesses??"",             source:"survey"},
-        {label:"고치고 싶은 버릇",       value:sub?.payload.habitToFix??"",             source:"survey"},
-        {label:"나를 표현하는 형용사",   value:sub?.payload.adjectives??"",             source:"survey"},
-        {label:"좋아하는 것",            value:wallP?.like??"",                         source:"wall"},
-        {label:"싫어하는 것",            value:wallP?.dislike??"",                      source:"wall"},
-      ],
-      "기타":[
-        {label:"MBTI",                   value:sub?.payload.mbti??wallP?.mbti??"",      source:"survey"},
-        {label:"취미 / 관심",            value:sub?.payload.hobby??"",                  source:"survey"},
-        {label:"선생님께 한 말",         value:sub?.payload.messageToTeacher??"",       source:"survey"},
-        {label:"원하는 학급 활동",       value:sub?.payload.wantClassActivity??"",      source:"survey"},
-        {label:"선생님 첫인상",          value:sub?.payload.firstImpression??"",        source:"survey"},
-        {label:"친구들에게 — 좋아하는 것", value:wallP?.like??"",                       source:"wall"},
-        {label:"친구들에게 — 싫어하는 것", value:wallP?.dislike??"",                    source:"wall"},
-        {label:"친구들에게 — 올해 목표", value:wallP?.goal??"",                         source:"wall"},
-        {label:"친구들에게 — 한 말",     value:wallP?.message??"",                      source:"wall"},
-      ],
-    };
-
-    // 탭 전환: 해당 분류 기존 기록 있으면 불러오기
-    function switchCategory(cat: string) {
-      const found = myLogs.find(l => l.category === cat);
-      if(found){
-        setForm({
-          student_no:found.student_no, name:found.name, date:found.date,
-          category:found.category, content:found.content,
-          student_answer:found.student_answer??"",
-          followup:found.followup??"", is_sensitive:found.is_sensitive,
-          gb_jaeyul:found.gb_jaeyul??"", gb_dongari:found.gb_dongari??"",
-          gb_bongsa:found.gb_bongsa??"", gb_jinro:found.gb_jinro??"",
-        });
-        setSelLog(found);
-      } else {
-        setForm(f=>({
-          ...f, category:cat,
-          student_answer:"", content:"", followup:"", is_sensitive:false,
-          gb_jaeyul:"", gb_dongari:"", gb_bongsa:"", gb_jinro:"",
-        }));
-        setSelLog(null);
-      }
-    }
-
-    const allItems = (surveyByCategory[form.category]??[])
-      .filter(i => i.value.trim() && i.value.trim()!=="—" && i.value.trim()!==" — ");
-    const surveyItems = allItems.filter(i=>i.source==="survey");
-    const wallItems   = allItems.filter(i=>i.source==="wall");
-    const catInfo = CATS.find(c=>c.key===form.category);
-    const catLogs = myLogs.filter(l=>l.category===form.category);
-
-    // 공통 항목 렌더 함수
-    function renderItem(item:{label:string;value:string}, key: string){
-      return(
-        <div key={key} style={{marginBottom:10}}>
-          <p style={{fontSize:11,fontWeight:800,color:"var(--text-subtle)",margin:"0 0 3px"}}>{item.label}</p>
-          <p style={{fontSize:13,color:"var(--text)",margin:0,lineHeight:1.65,whiteSpace:"pre-wrap",
-            background:"rgba(255,255,255,0.85)",padding:"8px 11px",borderRadius:8,
-            border:"1px solid rgba(0,0,0,0.06)"}}>
-            {item.value}
-          </p>
-        </div>
-      );
-    }
-
-    return(
-      <div style={{display:"flex",flexDirection:"column",gap:14}}>
-        {/* 헤더 */}
-        <div style={{display:"flex",alignItems:"center",gap:12,flexWrap:"wrap"}}>
-          <button onClick={()=>{setView("student");setSelLog(null);setForm(emptyForm());}} className="hy-btn" style={{fontSize:13}}>← 돌아가기</button>
-          <h2 style={{fontSize:17,fontWeight:900,color:"var(--text)",margin:0}}>
-            ✏️ {sel.name} 상담 기록
-          </h2>
-          <span style={{fontSize:12,color:"var(--primary)",fontWeight:700,background:"#fdf2f8",padding:"4px 10px",borderRadius:999}}>
-            {sel.student_no}
-          </span>
-        </div>
-
-        {/* 분류 탭 */}
-        <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
-          {CATS.map(c=>{
-            const hasRecord = myLogs.some(l=>l.category===c.key);
-            const isActive = form.category===c.key;
-            return(
-              <button key={c.key} onClick={()=>switchCategory(c.key)}
-                style={{
-                  padding:"8px 16px", borderRadius:999, border:"2px solid",
-                  fontFamily:"inherit", cursor:"pointer", fontSize:13, fontWeight:800,
-                  borderColor: isActive ? c.color : "var(--border)",
-                  background: isActive ? c.color+"22" : "#fff",
-                  color: isActive ? c.color : "var(--text-muted)",
-                  position:"relative", transition:"all 0.15s",
-                }}>
-                {c.emoji} {c.key}
-                {hasRecord && (
-                  <span style={{position:"absolute",top:5,right:6,width:6,height:6,
-                    borderRadius:"50%",background:c.color,display:"inline-block"}}/>
-                )}
-              </button>
-            );
-          })}
-          <span style={{display:"flex",alignItems:"center",fontSize:11,color:"var(--text-subtle)",fontWeight:600,paddingLeft:4}}>
-            ● = 기록 있음
-          </span>
-        </div>
-
-        {/* 좌우 분할 */}
-        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14,alignItems:"start"}}>
-
-          {/* ── 왼쪽: 학생 응답 (두 소스 분리) ── */}
-          <div style={{position:"sticky",top:16,display:"flex",flexDirection:"column",gap:10}}>
-
-            {/* 🟦 선생님께만 보낸 설문 응답 */}
-            <div style={{
-              padding:"14px 16px", borderRadius:14,
-              background: catInfo ? catInfo.color+"0d" : "#f8f7ff",
-              border:`1.5px solid ${catInfo?.color??"var(--border)"}33`,
-            }}>
-              <div style={{display:"flex",alignItems:"center",gap:7,marginBottom:12}}>
-                <span style={{fontSize:12,fontWeight:900,color:catInfo?.color??"var(--primary)"}}>
-                  {catInfo?.emoji} {form.category}
-                </span>
-                <span style={{
-                  fontSize:10,fontWeight:800,padding:"2px 8px",borderRadius:999,
-                  background:"#ede9fe",color:"#5b21b6",
-                }}>
-                  📋 선생님께만 보낸 설문
-                </span>
-              </div>
-              {!sub ? (
-                <p style={{fontSize:12,color:"var(--text-subtle)",fontWeight:500,margin:0}}>설문 응답 없음</p>
-              ) : surveyItems.length === 0 ? (
-                <p style={{fontSize:12,color:"var(--text-subtle)",fontWeight:500,margin:0}}>이 분류 해당 항목 없음</p>
-              ) : surveyItems.map(item=>renderItem(item, "s-"+item.label))}
+  // ── 상담 기록 폼 ──
+  if(view==="form")return(
+    <div style={{display:"flex",flexDirection:"column",gap:20}}>
+      <div style={{display:"flex",alignItems:"center",gap:12}}>
+        <button onClick={()=>{setView("student");setSelLog(null);setForm(emptyForm());}} className="hy-btn" style={{fontSize:13}}>← 돌아가기</button>
+        <h2 style={{fontSize:17,fontWeight:900,color:"var(--text)",margin:0}}>{selLog?"✏️ 기록 수정":`✏️ ${sel?.name} 상담 기록`}</h2>
+      </div>
+      <div className="hy-card" style={{padding:"26px 28px"}}>
+        <div style={{display:"flex",flexDirection:"column",gap:14}}>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+            <div>
+              <label style={{fontSize:12,fontWeight:700,color:"var(--text-muted)",display:"block",marginBottom:5}}>학생 *</label>
+              <select value={form.student_no} onChange={e=>{const s=STUDENTS.find(s=>s.student_no===e.target.value);setForm(f=>({...f,student_no:e.target.value,name:s?.name??""}));}} className="hy-input" style={{cursor:"pointer"}}>
+                <option value="">선택</option>
+                {STUDENTS.map(s=><option key={s.student_no} value={s.student_no}>{s.name}</option>)}
+              </select>
             </div>
-
-            {/* 🌸 친구들에게 자기소개 (담벼락) */}
-            <div style={{
-              padding:"14px 16px", borderRadius:14,
-              background:"#fff8fe",
-              border:"1.5px solid #f3d6f8",
-            }}>
-              <div style={{display:"flex",alignItems:"center",gap:7,marginBottom:12}}>
-                <span style={{fontSize:12,fontWeight:900,color:"#9333ea"}}>🌸 자기소개</span>
-                <span style={{
-                  fontSize:10,fontWeight:800,padding:"2px 8px",borderRadius:999,
-                  background:"#fdf4ff",color:"#a21caf",
-                }}>
-                  👥 친구들에게 공개한 응답
-                </span>
-              </div>
-              {!wallP ? (
-                <p style={{fontSize:12,color:"var(--text-subtle)",fontWeight:500,margin:0}}>자기소개 담벼락 없음</p>
-              ) : wallItems.length === 0 ? (
-                // 분류에 wall 항목이 없어도 공통 항목은 항상 표시
-                <>
-                  {wallP.mbti&&renderItem({label:"MBTI",value:wallP.mbti},"w-mbti")}
-                  {wallP.like&&renderItem({label:"좋아하는 것",value:wallP.like},"w-like")}
-                  {wallP.dislike&&renderItem({label:"싫어하는 것",value:wallP.dislike},"w-dislike")}
-                  {wallP.goal&&renderItem({label:"올해 목표",value:wallP.goal},"w-goal")}
-                  {wallP.message&&renderItem({label:"선생님께 한 말",value:wallP.message},"w-msg")}
-                </>
-              ) : (
-                <>
-                  {wallItems.map(item=>renderItem(item,"w-"+item.label))}
-                  {/* 분류에 없는 담벼락 공통 항목도 항상 표시 */}
-                  {wallP.mbti&&!wallItems.find(i=>i.label==="MBTI")&&renderItem({label:"MBTI",value:wallP.mbti},"w-mbti")}
-                  {wallP.message&&renderItem({label:"선생님께 남긴 메시지",value:wallP.message},"w-msg")}
-                </>
-              )}
+            <div>
+              <label style={{fontSize:12,fontWeight:700,color:"var(--text-muted)",display:"block",marginBottom:5}}>날짜 *</label>
+              <input type="date" value={form.date} onChange={e=>setForm(f=>({...f,date:e.target.value}))} className="hy-input"/>
             </div>
-
-            {/* 이전 같은 분류 상담 기록 */}
-            {catLogs.length > 0 && (
-              <div style={{padding:"12px 14px",borderRadius:12,background:"#f9fafb",border:"1px solid var(--border)"}}>
-                <p style={{fontSize:11,fontWeight:800,color:"var(--text-muted)",margin:"0 0 10px"}}>
-                  이전 {form.category} 상담 기록 ({catLogs.length}건)
-                </p>
-                {catLogs.map(l=>(
-                  <div key={l.id} style={{
-                    padding:"10px 12px", borderRadius:10,
-                    background:"#fff", border:"1px solid var(--border)",
-                    borderLeft:`3px solid ${catInfo?.color??"var(--primary)"}`,
-                    marginBottom:7,
-                  }}>
-                    <p style={{fontSize:11,color:"var(--text-subtle)",fontWeight:700,margin:"0 0 5px"}}>{fmtDate(l.date)}</p>
-                    {!l.is_sensitive ? (
-                      <>
-                        {l.student_answer && (
-                          <div style={{marginBottom:5}}>
-                            <p style={{fontSize:10,fontWeight:800,color:"#7c3aed",margin:"0 0 2px"}}>🟣 학생이 한 말</p>
-                            <p style={{fontSize:12,color:"#4c1d95",margin:0,lineHeight:1.55,whiteSpace:"pre-wrap",
-                              overflow:"hidden",display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical" as any}}>
-                              {l.student_answer}
-                            </p>
-                          </div>
-                        )}
-                        <div>
-                          <p style={{fontSize:10,fontWeight:800,color:"#15803d",margin:"0 0 2px"}}>🟢 선생님 메모</p>
-                          <p style={{fontSize:12,color:"var(--text)",margin:0,lineHeight:1.55,
-                            overflow:"hidden",display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical" as any}}>
-                            {l.content}
-                          </p>
-                        </div>
-                      </>
-                    ) : (
-                      <p style={{fontSize:11,color:"#ef4444",fontWeight:700,margin:0}}>🔒 민감 기록</p>
-                    )}
-                  </div>
-                ))}
-              </div>
-            )}
           </div>
-
-          {/* ── 오른쪽: 상담 기록 폼 ── */}
-          <div className="hy-card" style={{padding:"20px 22px"}}>
-            <div style={{display:"flex",flexDirection:"column",gap:14}}>
-
-              {/* 날짜 + 수정 중 배지 */}
-              <div style={{display:"flex",alignItems:"center",gap:10}}>
-                <div style={{flex:1}}>
-                  <label style={{fontSize:11,fontWeight:700,color:"var(--text-muted)",display:"block",marginBottom:4}}>날짜 *</label>
-                  <input type="date" value={form.date}
-                    onChange={e=>setForm(f=>({...f,date:e.target.value}))}
-                    className="hy-input"/>
-                </div>
-                {selLog && (
-                  <div style={{padding:"6px 12px",borderRadius:8,background:"#fef3c7",border:"1px solid #fde68a",fontSize:11,fontWeight:800,color:"#92400e",flexShrink:0}}>
-                    ✏️ 기존 기록 수정 중
-                  </div>
-                )}
-              </div>
-
-              {/* 🟣 학생이 한 말 */}
-              <div style={{
-                padding:"14px 16px", borderRadius:12,
-                background:"#faf7ff", border:"1.5px solid #e0d9ff",
-              }}>
-                <label style={{
-                  fontSize:12, fontWeight:800, color:"#5b21b6",
-                  display:"flex", alignItems:"center", gap:6, marginBottom:8,
-                }}>
-                  🟣 학생이 한 말
-                  <span style={{fontSize:10,fontWeight:600,color:"#7c3aed",background:"#ede9fe",padding:"2px 8px",borderRadius:999}}>
-                    학생 직접 응답 / 상담 중 발화 내용
-                  </span>
-                </label>
-                <textarea
-                  placeholder={"상담 중 학생이 직접 말한 내용, 호소한 내용, 학생 입장 등\n왼쪽 설문 응답을 참고해서 입력하세요"}
-                  value={(form as any).student_answer??""}
-                  onChange={e=>setForm(f=>({...f,student_answer:e.target.value}))}
-                  className="hy-input"
-                  style={{minHeight:110,resize:"vertical",fontSize:13,background:"rgba(255,255,255,0.7)"}}
-                />
-              </div>
-
-              {/* 🟢 선생님 메모 */}
-              <div>
-                <label style={{
-                  fontSize:12, fontWeight:800, color:"#15803d",
-                  display:"flex", alignItems:"center", gap:6, marginBottom:8,
-                }}>
-                  🟢 선생님 관찰 / 메모 *
-                  <span style={{fontSize:10,fontWeight:600,color:"#166534",background:"#f0fdf4",padding:"2px 8px",borderRadius:999}}>
-                    느낀 점, 해석, 개입 방향
-                  </span>
-                </label>
-                <textarea
-                  placeholder={"선생님이 느낀 점, 관찰 내용, 해석, 개입 방향 등"}
-                  value={form.content}
-                  onChange={e=>setForm(f=>({...f,content:e.target.value}))}
-                  className="hy-input"
-                  style={{minHeight:130,resize:"vertical",fontSize:13}}
-                />
-              </div>
-
-              {/* 🟡 후속 조치 */}
-              <div>
-                <label style={{
-                  fontSize:12, fontWeight:800, color:"#b45309",
-                  display:"flex", alignItems:"center", gap:6, marginBottom:8,
-                }}>
-                  🟡 후속 조치
-                </label>
-                <textarea
-                  placeholder="다음에 확인할 것, 연락할 사항, 연계 계획 등"
-                  value={form.followup??""}
-                  onChange={e=>setForm(f=>({...f,followup:e.target.value}))}
-                  className="hy-input"
-                  style={{minHeight:60,resize:"vertical",fontSize:13}}
-                />
-              </div>
-
-              {/* 생기부 기재 참고 */}
-              <div style={{padding:"12px 14px",borderRadius:12,background:"#f8f7ff",border:"1.5px solid #e0d9ff"}}>
-                <p style={{fontSize:12,fontWeight:900,color:"#5b21b6",margin:"0 0 10px"}}>📝 생기부 기재 참고</p>
-                <div style={{display:"flex",flexDirection:"column",gap:8}}>
-                  {([{key:"gb_jaeyul",label:"자율활동"},{key:"gb_dongari",label:"동아리"},{key:"gb_bongsa",label:"봉사"},{key:"gb_jinro",label:"진로"}] as const).map(item=>(
-                    <div key={item.key}>
-                      <label style={{fontSize:10,fontWeight:700,color:"#7c3aed",display:"block",marginBottom:3}}>{item.label}</label>
-                      <textarea
-                        value={(form as any)[item.key]??""}
-                        onChange={e=>setForm(f=>({...f,[item.key]:e.target.value}))}
-                        className="hy-input"
-                        style={{minHeight:40,resize:"vertical",fontSize:12}}
-                      />
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* 민감 기록 */}
-              <label style={{display:"flex",alignItems:"center",gap:8,padding:"10px 14px",borderRadius:10,background:"#fff5f5",border:"1.5px solid #fecaca",cursor:"pointer"}}>
-                <input type="checkbox" checked={form.is_sensitive}
-                  onChange={e=>setForm(f=>({...f,is_sensitive:e.target.checked}))}
-                  style={{width:15,height:15}}/>
-                <div>
-                  <p style={{fontSize:12,fontWeight:700,color:"#dc2626",margin:"0 0 1px"}}>🔒 민감 기록</p>
-                  <p style={{fontSize:10,color:"#ef4444",margin:0}}>특별히 주의가 필요한 내용</p>
-                </div>
-              </label>
-
-              {/* 저장 버튼 */}
-              <div style={{display:"flex",gap:8}}>
-                <button onClick={saveLog} disabled={saving} className="hy-btn hy-btn-primary" style={{flex:1,fontSize:14}}>
-                  {saving?"저장 중...":(selLog?`✏️ ${form.category} 수정 완료`:`💾 ${form.category} 상담 저장`)}
+          <div>
+            <label style={{fontSize:12,fontWeight:700,color:"var(--text-muted)",display:"block",marginBottom:8}}>상담 분류 *</label>
+            <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
+              {CATS.map(c=>(
+                <button key={c.key} onClick={()=>setForm(f=>({...f,category:c.key}))}
+                  style={{padding:"8px 14px",borderRadius:999,border:"1.5px solid",fontFamily:"inherit",cursor:"pointer",fontSize:13,fontWeight:700,
+                    borderColor:form.category===c.key?c.color:"var(--border)",
+                    background:form.category===c.key?c.color+"22":"#fff",
+                    color:form.category===c.key?c.color:"var(--text-muted)"}}>
+                  {c.emoji} {c.key}
                 </button>
-                <button onClick={()=>{setView("student");setSelLog(null);setForm(emptyForm());}} className="hy-btn" style={{fontSize:13}}>취소</button>
-              </div>
+              ))}
             </div>
+          </div>
+          <div>
+            <label style={{fontSize:12,fontWeight:700,color:"var(--text-muted)",display:"block",marginBottom:5}}>상담 내용 *</label>
+            <textarea placeholder="학생이 말한 내용, 선생님 반응, 느낀 점 등" value={form.content} onChange={e=>setForm(f=>({...f,content:e.target.value}))} className="hy-input" style={{minHeight:140,resize:"vertical"}}/>
+          </div>
+          <div>
+            <label style={{fontSize:12,fontWeight:700,color:"var(--text-muted)",display:"block",marginBottom:5}}>후속 조치</label>
+            <textarea placeholder="다음에 확인할 것, 연락할 사항 등" value={form.followup??""} onChange={e=>setForm(f=>({...f,followup:e.target.value}))} className="hy-input" style={{minHeight:70,resize:"vertical"}}/>
+          </div>
+          <div style={{padding:"16px 18px",borderRadius:16,background:"#f8f7ff",border:"1.5px solid #e0d9ff"}}>
+            <p style={{fontSize:13,fontWeight:900,color:"#5b21b6",margin:"0 0 12px"}}>📝 생기부 기재 참고</p>
+            <div style={{display:"flex",flexDirection:"column",gap:10}}>
+              {([{key:"gb_jaeyul",label:"자율활동"},{key:"gb_dongari",label:"동아리"},{key:"gb_bongsa",label:"봉사"},{key:"gb_jinro",label:"진로"}] as const).map(item=>(
+                <div key={item.key}>
+                  <label style={{fontSize:11,fontWeight:700,color:"#7c3aed",display:"block",marginBottom:4}}>{item.label}</label>
+                  <textarea value={(form as any)[item.key]??""} onChange={e=>setForm(f=>({...f,[item.key]:e.target.value}))} className="hy-input" style={{minHeight:52,resize:"vertical",fontSize:13}}/>
+                </div>
+              ))}
+            </div>
+          </div>
+          <label style={{display:"flex",alignItems:"center",gap:10,padding:"12px 16px",borderRadius:12,background:"#fff5f5",border:"1.5px solid #fecaca",cursor:"pointer"}}>
+            <input type="checkbox" checked={form.is_sensitive} onChange={e=>setForm(f=>({...f,is_sensitive:e.target.checked}))} style={{width:16,height:16}}/>
+            <div>
+              <p style={{fontSize:13,fontWeight:700,color:"#dc2626",margin:"0 0 1px"}}>🔒 민감 기록</p>
+              <p style={{fontSize:11,color:"#ef4444",margin:0}}>특별히 주의가 필요한 내용</p>
+            </div>
+          </label>
+          <div style={{display:"flex",gap:8}}>
+            <button onClick={saveLog} disabled={saving} className="hy-btn hy-btn-primary" style={{flex:1,fontSize:14}}>{saving?"저장 중...":selLog?"수정 완료":"💾 저장"}</button>
+            <button onClick={()=>{setView("student");setSelLog(null);setForm(emptyForm());}} className="hy-btn" style={{fontSize:13}}>취소</button>
           </div>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
+
+  // ── 학급 전체 뷰 ──
+  if(view==="class")return(
+    <div style={{display:"flex",flexDirection:"column",gap:16}}>
+      <div style={{display:"flex",alignItems:"center",gap:12}}>
+        <button onClick={()=>setView("dash")} className="hy-btn" style={{fontSize:13}}>← 대시보드</button>
+        <h2 style={{fontSize:18,fontWeight:900,color:"var(--text)",margin:0}}>🏫 2학년 2반 학급 현황</h2>
+      </div>
+
+      {/* 분위기 체크 */}
+      <div className="hy-card" style={{padding:"20px 22px"}}>
+        <p style={{fontSize:13,fontWeight:900,color:"var(--text)",margin:"0 0 12px"}}>🌡️ 학급 분위기 파악</p>
+        <p style={{fontSize:11,fontWeight:700,color:"var(--text-muted)",margin:"0 0 8px"}}>전반적인 분위기</p>
+        <div style={{display:"flex",flexWrap:"wrap",gap:6,marginBottom:14}}>
+          {["전반적으로 밝은 편","조용하고 차분함","시끄럽고 산만함","친한 무리끼리 나뉨","경쟁적 분위기","서로 잘 도와줌","소외되는 친구가 있는 것 같음","잘 모르겠음"].map(v=>(
+            <button key={v} onClick={()=>setClassVibe(p=>p.includes(v)?p.filter(x=>x!==v):[...p,v])}
+              style={{padding:"7px 13px",borderRadius:999,border:"1.5px solid",fontFamily:"inherit",cursor:"pointer",fontSize:12,fontWeight:700,
+                borderColor:classVibe.includes(v)?"#6366f1":"var(--border)",
+                background:classVibe.includes(v)?"#eef2ff":"#fafafa",
+                color:classVibe.includes(v)?"#4338ca":"var(--text-muted)"}}>
+              {v}
+            </button>
+          ))}
+        </div>
+        <p style={{fontSize:11,fontWeight:700,color:"var(--text-muted)",margin:"0 0 8px"}}>개선됐으면 하는 부분</p>
+        <div style={{display:"flex",flexWrap:"wrap",gap:6,marginBottom:14}}>
+          {["수업 중 집중도","서로 배려하는 분위기","청소·정리정돈","쉬는 시간 소란스러움","특정 친구 사이 갈등","없음 / 모르겠음"].map(v=>(
+            <button key={v} onClick={()=>setClassImprove(p=>p.includes(v)?p.filter(x=>x!==v):[...p,v])}
+              style={{padding:"7px 13px",borderRadius:999,border:"1.5px solid",fontFamily:"inherit",cursor:"pointer",fontSize:12,fontWeight:700,
+                borderColor:classImprove.includes(v)?"#f97316":"var(--border)",
+                background:classImprove.includes(v)?"#fff7ed":"#fafafa",
+                color:classImprove.includes(v)?"#c2410c":"var(--text-muted)"}}>
+              {v}
+            </button>
+          ))}
+        </div>
+        <p style={{fontSize:11,fontWeight:700,color:"var(--text-muted)",margin:"0 0 6px"}}>담임 종합 메모</p>
+        <textarea value={classMemo} onChange={e=>setClassMemo(e.target.value)} className="hy-input" style={{minHeight:80,resize:"vertical"}} placeholder="학급 분위기 전반, 특이 관계, 집단 역동, 개입 필요 사항..."/>
+        <button onClick={()=>setClassSaving(false)} className="hy-btn hy-btn-primary" style={{marginTop:8,fontSize:12}}>저장</button>
+      </div>
+
+      {/* 학생별 의견 — 비공개 */}
+      <div className="hy-card" style={{padding:"20px 22px"}}>
+        <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:12}}>
+          <p style={{fontSize:13,fontWeight:900,color:"var(--text)",margin:0}}>🔒 학생별 학급 의견</p>
+          <span style={{fontSize:10,padding:"2px 8px",borderRadius:999,background:"#fee2e2",color:"#991b1b",fontWeight:700,border:"1px solid #fecaca"}}>교사만 열람</span>
+        </div>
+        <p style={{fontSize:11,color:"var(--text-subtle)",fontWeight:600,margin:"0 0 12px"}}>상담 중 이 학생이 학급에 대해 말한 내용 — 이름을 누르면 펼쳐요</p>
+        {STUDENTS.map(s=>(
+          <div key={s.student_no} style={{border:"1px solid var(--border)",borderRadius:12,marginBottom:6,overflow:"hidden"}}>
+            <button onClick={()=>setClassOpinionOpen(p=>({...p,[s.student_no]:!p[s.student_no]}))}
+              style={{width:"100%",padding:"10px 14px",background:"#f9fafb",border:"none",cursor:"pointer",fontFamily:"inherit",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+              <span style={{fontSize:13,fontWeight:700,color:"var(--text)"}}>{s.name} <span style={{fontSize:11,color:"var(--text-subtle)",fontWeight:500}}>{s.student_no}</span></span>
+              <span style={{fontSize:11,color:"var(--text-subtle)"}}>{classOpinionOpen[s.student_no]?"접기 ▲":"펼치기 ▼"}</span>
+            </button>
+            {classOpinionOpen[s.student_no]&&(
+              <div style={{padding:"10px 14px"}}>
+                <textarea
+                  value={classOpinions[s.student_no]??""}
+                  onChange={e=>setClassOpinions(p=>({...p,[s.student_no]:e.target.value}))}
+                  className="hy-input"
+                  style={{minHeight:64,resize:"vertical",fontSize:13}}
+                  placeholder="이 학생이 학급에 대해 말한 내용, 분위기 체감, 건의사항..."/>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+
+      {/* 상담 현황 */}
+      <div className="hy-card" style={{padding:"20px 22px"}}>
+        <p style={{fontSize:13,fontWeight:900,color:"var(--text)",margin:"0 0 12px"}}>📋 상담 현황</p>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(108px,1fr))",gap:8}}>
+          {STUDENTS.map(s=>{
+            const cnt=logMap[s.student_no]?.length??0;
+            const latest=logMap[s.student_no]?.[0];
+            const lc=CATS.find(c=>c.key===latest?.category);
+            const hasSub=!!(subMap[s.student_no]??subByName[s.name]);
+            return(
+              <button key={s.student_no} onClick={()=>openStu(s)}
+                style={{padding:"12px 8px",borderRadius:12,border:"1.5px solid",
+                  borderColor:cnt>0?(lc?.color??"var(--primary)")+"55":"var(--border)",
+                  background:cnt>0?(lc?.color??"#a855f7")+"0d":"#fafafa",
+                  cursor:"pointer",fontFamily:"inherit",textAlign:"center"}}>
+                <p style={{fontSize:13,fontWeight:900,color:"var(--text)",margin:"0 0 3px"}}>{s.name}</p>
+                <p style={{fontSize:11,fontWeight:700,margin:0,color:cnt>0?(lc?.color??"var(--primary)"):"var(--text-subtle)"}}>
+                  {cnt>0?`상담 ${cnt}회`:"미상담"}
+                </p>
+                {hasSub&&<span style={{fontSize:10}}>📋</span>}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
 
   // ── 학생 상세 뷰 ──
   if(view==="student"&&sel){
@@ -681,6 +582,8 @@ export default function TeacherOnlyPage() {
     const wallP=wall?parseWall(wall.content):null;
     const myLogs=logMap[sel.student_no]??[];
     const selAi=aiMap[sel.student_no];
+    const selField=FIELDS.find(f=>f.key===extraForm.selected_field);
+
     return(
       <div style={{display:"flex",flexDirection:"column",gap:16}}>
         <div style={{display:"flex",alignItems:"center",gap:10,flexWrap:"wrap"}}>
@@ -693,8 +596,16 @@ export default function TeacherOnlyPage() {
             className="hy-btn hy-btn-primary" style={{fontSize:12,padding:"8px 16px",marginLeft:"auto"}}>✏️ 상담 기록 추가</button>
         </div>
 
+        {/* 탭 */}
         <div style={{display:"flex",background:"#f3f4f6",borderRadius:14,padding:4,gap:3,overflowX:"auto"}}>
-          {([{key:"overview",label:"⚡ 한눈에"},{key:"survey",label:"📋 학생 설문"},{key:"log",label:"💬 상담 기록"},{key:"gb",label:"📝 생기부"},{key:"ai",label:"🤖 AI 요약"}] as const).map(t=>(
+          {([
+            {key:"overview",label:"⚡ 한눈에"},
+            {key:"survey",label:"📋 학생 설문"},
+            {key:"extra",label:"📌 상담 입력"},
+            {key:"log",label:"💬 상담 기록"},
+            {key:"gb",label:"📝 생기부"},
+            {key:"ai",label:"🤖 AI 요약"},
+          ] as const).map(t=>(
             <button key={t.key} onClick={()=>setTab(t.key)}
               style={{flex:"0 0 auto",padding:"9px 14px",borderRadius:10,border:"none",cursor:"pointer",fontFamily:"inherit",
                 background:tab===t.key?"#fff":"transparent",
@@ -706,6 +617,7 @@ export default function TeacherOnlyPage() {
           ))}
         </div>
 
+        {/* ── 한눈에 ── */}
         {tab==="overview"&&(
           <div style={{display:"flex",flexDirection:"column",gap:12}}>
             <div style={{padding:"16px 20px",borderRadius:16,background:"linear-gradient(135deg,#f8f7ff,#ede9fe)",border:"1.5px solid #e0d9ff"}}>
@@ -753,33 +665,9 @@ export default function TeacherOnlyPage() {
                   <p style={{fontSize:13,color:"var(--text)",margin:0,lineHeight:1.6,whiteSpace:"pre-wrap"}}>{sub.payload.strengths}</p>
                 </div>}
                 {sub?.payload.weaknesses&&<div className="hy-card" style={{padding:"14px 16px",borderLeft:"3px solid #f97316"}}>
-                  <p style={{fontSize:11,fontWeight:800,color:"#c2410c",margin:"0 0 4px"}}>🌱 단점/개선점</p>
+                  <p style={{fontSize:11,fontWeight:800,color:"#c2410c",margin:"0 0 4px"}}>🌱 단점</p>
                   <p style={{fontSize:13,color:"var(--text)",margin:0,lineHeight:1.6,whiteSpace:"pre-wrap"}}>{sub.payload.weaknesses}</p>
                 </div>}
-              </div>
-            )}
-
-            {myLogs.length>0&&(
-              <div className="hy-card" style={{padding:"16px 20px"}}>
-                <p style={{fontSize:12,fontWeight:800,color:"var(--text-muted)",margin:"0 0 10px"}}>📋 최근 상담</p>
-                {myLogs.slice(0,3).map(log=>{
-                  const c=CATS.find(c=>c.key===log.category);
-                  return(
-                    <div key={log.id} style={{padding:"10px 14px",borderRadius:10,background:"#f9fafb",border:"1px solid var(--border)",borderLeft:`3px solid ${c?.color??"var(--primary)"}`,marginBottom:6}}>
-                      <div style={{display:"flex",gap:6,alignItems:"center",marginBottom:4}}>
-                        <span style={{fontSize:11,padding:"2px 8px",borderRadius:999,fontWeight:700,background:(c?.color??"#aaa")+"1a",color:c?.color??"#aaa"}}>{c?.emoji} {log.category}</span>
-                        <span style={{fontSize:11,color:"var(--text-subtle)"}}>{fmtDate(log.date)}</span>
-                      </div>
-                      {!log.is_sensitive&&(
-                        <>
-                          {log.student_answer&&<p style={{fontSize:12,color:"#7c3aed",margin:"0 0 3px",lineHeight:1.5,overflow:"hidden",display:"-webkit-box",WebkitLineClamp:1,WebkitBoxOrient:"vertical" as any}}>🟣 {log.student_answer}</p>}
-                          <p style={{fontSize:12,color:"var(--text)",margin:0,lineHeight:1.6,overflow:"hidden",display:"-webkit-box",WebkitLineClamp:1,WebkitBoxOrient:"vertical" as any}}>🟢 {log.content}</p>
-                        </>
-                      )}
-                      {log.is_sensitive&&<p style={{fontSize:12,color:"#ef4444",margin:0}}>🔒 민감 기록</p>}
-                    </div>
-                  );
-                })}
               </div>
             )}
 
@@ -791,6 +679,7 @@ export default function TeacherOnlyPage() {
           </div>
         )}
 
+        {/* ── 학생 설문 ── */}
         {tab==="survey"&&(
           <div style={{display:"flex",flexDirection:"column",gap:10}}>
             {!sub&&!wall?(
@@ -833,6 +722,167 @@ export default function TeacherOnlyPage() {
           </div>
         )}
 
+        {/* ── 📌 상담 입력 (교사 전용) ── */}
+        {tab==="extra"&&(
+          <div style={{display:"flex",flexDirection:"column",gap:12}}>
+
+            {/* 생활 정보 */}
+            <div className="hy-card" style={{padding:"20px 22px"}}>
+              <p style={{fontSize:13,fontWeight:900,color:"var(--text)",margin:"0 0 14px"}}>🏠 생활 정보</p>
+              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:10}}>
+                <div>
+                  <label style={{fontSize:11,fontWeight:700,color:"var(--text-muted)",display:"block",marginBottom:4}}>주소 / 거주지</label>
+                  <input value={extraForm.address} onChange={e=>setExtraForm(f=>({...f,address:e.target.value}))} className="hy-input" placeholder="예: 강남구 ○○동"/>
+                </div>
+                <div>
+                  <label style={{fontSize:11,fontWeight:700,color:"var(--text-muted)",display:"block",marginBottom:4}}>등교 방법</label>
+                  <select value={extraForm.commute} onChange={e=>setExtraForm(f=>({...f,commute:e.target.value}))} className="hy-input" style={{cursor:"pointer"}}>
+                    <option value="">선택</option>
+                    {["도보","자전거","대중교통","학교 셔틀","학원 셔틀 연계","부모님 차","기타"].map(v=><option key={v}>{v}</option>)}
+                  </select>
+                </div>
+                <div>
+                  <label style={{fontSize:11,fontWeight:700,color:"var(--text-muted)",display:"block",marginBottom:4}}>셔틀 이용</label>
+                  <select value={extraForm.shuttle} onChange={e=>setExtraForm(f=>({...f,shuttle:e.target.value}))} className="hy-input" style={{cursor:"pointer"}}>
+                    <option value="">선택</option>
+                    {["학교 셔틀 이용","학원 셔틀 이용","둘 다 이용","이용 안 함"].map(v=><option key={v}>{v}</option>)}
+                  </select>
+                </div>
+                <div>
+                  <label style={{fontSize:11,fontWeight:700,color:"var(--text-muted)",display:"block",marginBottom:4}}>취침 시간</label>
+                  <input value={extraForm.sleep_time} onChange={e=>setExtraForm(f=>({...f,sleep_time:e.target.value}))} className="hy-input" placeholder="예: 새벽 1~2시"/>
+                </div>
+                <div>
+                  <label style={{fontSize:11,fontWeight:700,color:"var(--text-muted)",display:"block",marginBottom:4}}>기상 시간</label>
+                  <input value={extraForm.wake_time} onChange={e=>setExtraForm(f=>({...f,wake_time:e.target.value}))} className="hy-input" placeholder="예: 오전 7시"/>
+                </div>
+                <div style={{gridColumn:"1/-1"}}>
+                  <label style={{fontSize:11,fontWeight:700,color:"var(--text-muted)",display:"block",marginBottom:4}}>기타 생활 패턴</label>
+                  <textarea value={extraForm.life_pattern} onChange={e=>setExtraForm(f=>({...f,life_pattern:e.target.value}))} className="hy-input" style={{minHeight:56,resize:"vertical"}} placeholder="방과 후 학원, 귀가 시간, 주말 루틴 등"/>
+                </div>
+              </div>
+            </div>
+
+            {/* 가족 구성원 */}
+            <div className="hy-card" style={{padding:"20px 22px"}}>
+              <p style={{fontSize:13,fontWeight:900,color:"var(--text)",margin:"0 0 12px"}}>👨‍👩‍👧 가족 구성원</p>
+              <div style={{overflowX:"auto"}}>
+                <table style={{width:"100%",borderCollapse:"collapse",fontSize:13}}>
+                  <thead>
+                    <tr>{["관계","이름 (선택)","직업/학교","특이사항"].map(h=>(
+                      <th key={h} style={{fontSize:11,fontWeight:700,color:"var(--text-muted)",textAlign:"left",padding:"4px 8px",borderBottom:"1px solid var(--border)"}}>{h}</th>
+                    ))}</tr>
+                  </thead>
+                  <tbody>
+                    {familyRows.map((row,i)=>(
+                      <tr key={i}>
+                        {(["rel","name","job","note"] as const).map(k=>(
+                          <td key={k} style={{padding:"4px 6px"}}>
+                            <input value={row[k]} onChange={e=>setFamilyRows(p=>p.map((r,j)=>j===i?{...r,[k]:e.target.value}:r))}
+                              className="hy-input" style={{fontSize:12,padding:"5px 8px"}} placeholder={k==="rel"?"관계":k==="name"?"이름":k==="job"?"직업 등":"메모"}/>
+                          </td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <button onClick={()=>setFamilyRows(p=>[...p,{rel:"",name:"",job:"",note:""}])}
+                style={{marginTop:8,fontSize:12,padding:"5px 12px",borderRadius:999,border:"1px solid var(--border)",background:"transparent",cursor:"pointer",fontFamily:"inherit",color:"var(--text-muted)"}}>
+                + 구성원 추가
+              </button>
+            </div>
+
+            {/* 성적 — 5등급제 */}
+            <div className="hy-card" style={{padding:"20px 22px"}}>
+              <p style={{fontSize:13,fontWeight:900,color:"var(--text)",margin:"0 0 4px"}}>📈 성적 (5등급제)</p>
+              <p style={{fontSize:11,color:"var(--text-subtle)",fontWeight:600,margin:"0 0 12px"}}>1~5 입력 · 1–2등급 초록 · 3등급 노랑 · 4–5등급 빨강</p>
+              {SUBJECTS.map(sub=>{
+                const v=grades[sub]??0;
+                const pct=v?Math.round((5-v)/4*100):0;
+                return(
+                  <div key={sub} style={{display:"flex",alignItems:"center",gap:10,padding:"6px 0",borderBottom:"1px solid #f3f4f6"}}>
+                    <span style={{minWidth:70,fontSize:13,color:"var(--text-muted)"}}>{sub}</span>
+                    <input type="number" min={1} max={5} value={v||""} placeholder="—"
+                      onChange={e=>{const n=parseInt(e.target.value);setGrades(p=>({...p,[sub]:isNaN(n)?0:Math.min(5,Math.max(1,n))}));}}
+                      style={{width:50,fontSize:13,padding:"4px 8px",borderRadius:8,border:"1.5px solid var(--border)",textAlign:"center",fontFamily:"inherit",background:"#fafafa"}}/>
+                    <div style={{flex:1,height:6,background:"#f3f4f6",borderRadius:3,overflow:"hidden"}}>
+                      <div style={{height:"100%",width:`${pct}%`,background:gradeColor(v),borderRadius:3,transition:"width 0.3s"}}/>
+                    </div>
+                    {v>0&&<span style={{fontSize:11,padding:"2px 8px",borderRadius:999,fontWeight:700,...gradeBadgeStyle(v)}}>{v}등급</span>}
+                  </div>
+                );
+              })}
+              {/* 자동 분석 */}
+              {Object.values(grades).some(v=>v>0)&&(
+                <div style={{marginTop:10,padding:"12px 14px",borderRadius:12,background:"#f8fffe",border:"1px solid #d1fae5"}}>
+                  {Object.entries(grades).filter(([,v])=>v>0&&v<=2).length>0&&(
+                    <p style={{fontSize:12,margin:"0 0 4px"}}><span style={{fontWeight:700,color:"#15803d"}}>강점 (1–2등급)</span> {Object.entries(grades).filter(([,v])=>v>0&&v<=2).map(([k])=>k).join(", ")} → 진로 연계 세특 집중 투자 권장</p>
+                  )}
+                  {Object.entries(grades).filter(([,v])=>v>=4).length>0&&(
+                    <p style={{fontSize:12,margin:0}}><span style={{fontWeight:700,color:"#991b1b"}}>관리 필요 (4–5등급)</span> {Object.entries(grades).filter(([,v])=>v>=4).map(([k])=>k).join(", ")} → 그날 수업 당일 복습 루틴부터</p>
+                  )}
+                </div>
+              )}
+            </div>
+
+            {/* 학습 태도 & 실천력 */}
+            <div className="hy-card" style={{padding:"20px 22px"}}>
+              <p style={{fontSize:13,fontWeight:900,color:"var(--text)",margin:"0 0 4px"}}>💪 학습 태도 & 실천력</p>
+              <div style={{padding:"10px 14px",borderRadius:12,background:"#eff6ff",border:"1px solid #bfdbfe",marginBottom:12}}>
+                <p style={{fontSize:12,fontWeight:700,color:"#1d4ed8",margin:"0 0 3px"}}>담임 관찰 포인트</p>
+                <p style={{fontSize:12,color:"#1e40af",margin:0,lineHeight:1.7}}>성적을 올리고 싶은 마음은 있으나 실천으로 연결이 약한 편. "어차피 다른 아이들과 나는 다르다"는 자기한계 인식 경향. <b>그날 수업 당일 소화 — 평소 습관과 태도</b>가 핵심.</p>
+              </div>
+              <div style={{display:"flex",flexDirection:"column",gap:8}}>
+                <div>
+                  <label style={{fontSize:11,fontWeight:700,color:"var(--text-muted)",display:"block",marginBottom:4}}>매일 할 수 있는 딱 하나 (학생이 직접 적음)</label>
+                  <input value={extraForm.habit_goal_daily} onChange={e=>setExtraForm(f=>({...f,habit_goal_daily:e.target.value}))} className="hy-input" placeholder="예: 수업 끝나고 10분 안에 필기 정리하기"/>
+                </div>
+                <div>
+                  <label style={{fontSize:11,fontWeight:700,color:"var(--text-muted)",display:"block",marginBottom:4}}>시험 기간에 추가로 할 것</label>
+                  <input value={extraForm.habit_goal_exam} onChange={e=>setExtraForm(f=>({...f,habit_goal_exam:e.target.value}))} className="hy-input" placeholder="예: 2주 전부터 단원별 문제 1회독"/>
+                </div>
+              </div>
+            </div>
+
+            {/* 진로 계열 분석 */}
+            <div className="hy-card" style={{padding:"20px 22px"}}>
+              <p style={{fontSize:13,fontWeight:900,color:"var(--text)",margin:"0 0 4px"}}>🎯 진로 계열 분석</p>
+              <p style={{fontSize:11,color:"var(--text-subtle)",fontWeight:600,margin:"0 0 12px"}}>계열 선택 시 생기부 강화 포인트가 나타납니다</p>
+              <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,marginBottom:12}}>
+                {FIELDS.map(f=>(
+                  <button key={f.key} onClick={()=>setExtraForm(p=>({...p,selected_field:p.selected_field===f.key?"":f.key}))}
+                    style={{padding:"10px 8px",borderRadius:12,border:"1.5px solid",fontFamily:"inherit",cursor:"pointer",textAlign:"left",
+                      borderColor:extraForm.selected_field===f.key?f.color:"var(--border)",
+                      background:extraForm.selected_field===f.key?f.color+"15":"#fafafa"}}>
+                    <p style={{fontSize:12,fontWeight:700,color:extraForm.selected_field===f.key?f.color:"var(--text)",margin:"0 0 2px"}}>{f.label}</p>
+                    <p style={{fontSize:10,color:"var(--text-subtle)",margin:"0 0 4px"}}>{f.sub}</p>
+                    <p style={{fontSize:12,margin:0,color:f.color}}>{"★".repeat(f.score)}{"☆".repeat(5-f.score)}</p>
+                  </button>
+                ))}
+              </div>
+              {selField&&(
+                <div style={{padding:"12px 14px",borderRadius:12,background:"#f9fafb",border:`1.5px solid ${selField.color}33`,marginBottom:10}}>
+                  <p style={{fontSize:12,fontWeight:900,color:selField.color,margin:"0 0 6px"}}>{selField.label} 계열 — 생기부 강화 포인트</p>
+                  <ul style={{paddingLeft:16,margin:0}}>
+                    {selField.tips.map((t,i)=><li key={i} style={{fontSize:12,color:"var(--text)",marginBottom:3,lineHeight:1.6}}>{t}</li>)}
+                  </ul>
+                </div>
+              )}
+              <div>
+                <label style={{fontSize:11,fontWeight:700,color:"var(--text-muted)",display:"block",marginBottom:4}}>계열 상담 메모</label>
+                <textarea value={extraForm.field_note} onChange={e=>setExtraForm(f=>({...f,field_note:e.target.value}))} className="hy-input" style={{minHeight:60,resize:"vertical"}} placeholder="학생이 관심 보인 계열, 반응, 탐색 방향..."/>
+              </div>
+            </div>
+
+            {/* 저장 버튼 */}
+            <button onClick={saveExtra} disabled={extraSaving} className="hy-btn hy-btn-primary" style={{fontSize:14,padding:"14px"}}>
+              {extraSaving?"저장 중...":"💾 전체 저장"}
+            </button>
+          </div>
+        )}
+
+        {/* ── 상담 기록 ── */}
         {tab==="log"&&(
           <div style={{display:"flex",flexDirection:"column",gap:10}}>
             {myLogs.length===0?(
@@ -850,24 +900,15 @@ export default function TeacherOnlyPage() {
                       <span style={{fontSize:12,color:"var(--text-subtle)"}}>{fmtDate(log.date)}</span>
                     </div>
                     <div style={{display:"flex",gap:5}}>
-                      <button onClick={()=>{setForm({student_no:log.student_no,name:log.name,date:log.date,category:log.category,content:log.content,student_answer:log.student_answer??"",followup:log.followup??"",is_sensitive:log.is_sensitive,gb_jaeyul:log.gb_jaeyul??"",gb_dongari:log.gb_dongari??"",gb_bongsa:log.gb_bongsa??"",gb_jinro:log.gb_jinro??""});setSelLog(log);setView("form");}} style={{fontSize:11,padding:"3px 10px",borderRadius:999,border:"1.5px solid var(--border)",background:"#fff",cursor:"pointer",fontFamily:"inherit",fontWeight:700,color:"var(--text-muted)"}}>수정</button>
+                      <button onClick={()=>{setForm({student_no:log.student_no,name:log.name,date:log.date,category:log.category,content:log.content,followup:log.followup??"",is_sensitive:log.is_sensitive,gb_jaeyul:log.gb_jaeyul??"",gb_dongari:log.gb_dongari??"",gb_bongsa:log.gb_bongsa??"",gb_jinro:log.gb_jinro??""});setSelLog(log);setView("form");}} style={{fontSize:11,padding:"3px 10px",borderRadius:999,border:"1.5px solid var(--border)",background:"#fff",cursor:"pointer",fontFamily:"inherit",fontWeight:700,color:"var(--text-muted)"}}>수정</button>
                       <button onClick={()=>delLog(log.id)} style={{fontSize:11,padding:"3px 10px",borderRadius:999,border:"1.5px solid #fecaca",background:"#fff5f5",cursor:"pointer",fontFamily:"inherit",fontWeight:700,color:"#ef4444"}}>삭제</button>
                     </div>
                   </div>
                   {log.is_sensitive?<p style={{fontSize:12,color:"#ef4444",fontWeight:700,margin:0}}>🔒 민감 기록</p>:(
                     <>
-                      {log.student_answer&&(
-                        <div style={{padding:"8px 12px",borderRadius:10,background:"#faf7ff",border:"1px solid #e0d9ff",marginBottom:8}}>
-                          <p style={{fontSize:11,fontWeight:800,color:"#5b21b6",margin:"0 0 3px"}}>🟣 학생이 한 말</p>
-                          <p style={{fontSize:13,color:"#4c1d95",lineHeight:1.7,margin:0,whiteSpace:"pre-wrap"}}>{log.student_answer}</p>
-                        </div>
-                      )}
-                      <div style={{marginBottom:log.followup?8:0}}>
-                        <p style={{fontSize:11,fontWeight:800,color:"#15803d",margin:"0 0 3px"}}>🟢 선생님 메모</p>
-                        <p style={{fontSize:13,color:"var(--text)",lineHeight:1.8,margin:0,whiteSpace:"pre-wrap"}}>{log.content}</p>
-                      </div>
+                      <p style={{fontSize:13,color:"var(--text)",lineHeight:1.8,margin:"0 0 6px",whiteSpace:"pre-wrap"}}>{log.content}</p>
                       {log.followup&&<div style={{padding:"8px 12px",borderRadius:10,background:"#f0fdf4",border:"1px solid #86efac"}}>
-                        <p style={{fontSize:11,fontWeight:700,color:"#15803d",margin:"0 0 2px"}}>🟡 후속</p>
+                        <p style={{fontSize:11,fontWeight:700,color:"#15803d",margin:"0 0 2px"}}>📌 후속</p>
                         <p style={{fontSize:12,color:"#166534",margin:0,whiteSpace:"pre-wrap"}}>{log.followup}</p>
                       </div>}
                     </>
@@ -878,6 +919,7 @@ export default function TeacherOnlyPage() {
           </div>
         )}
 
+        {/* ── 생기부 ── */}
         {tab==="gb"&&(
           <div style={{display:"flex",flexDirection:"column",gap:12}}>
             <div className="hy-card" style={{padding:"20px 22px"}}>
@@ -889,23 +931,14 @@ export default function TeacherOnlyPage() {
                   style={{flex:1,padding:"12px",borderRadius:12,border:"2px dashed var(--border)",background:"#f9fafb",cursor:"pointer",fontFamily:"inherit",fontSize:13,fontWeight:700,color:"var(--text-muted)"}}>
                   {gbFile?`📄 ${gbFile.name}`:"📁 생기부 PDF 선택"}
                 </button>
-                <button onClick={runGbParse} disabled={gbLoading||!gbFile}
-                  className="hy-btn hy-btn-primary" style={{fontSize:13,opacity:!gbFile?0.5:1,flexShrink:0}}>
+                <button onClick={runGbParse} disabled={gbLoading||!gbFile} className="hy-btn hy-btn-primary" style={{fontSize:13,opacity:!gbFile?0.5:1,flexShrink:0}}>
                   {gbLoading?"파싱 중... ✨":"분석하기"}
                 </button>
               </div>
             </div>
-
             {gbParsed&&(
               <div style={{display:"flex",flexDirection:"column",gap:10}}>
-                {[
-                  {key:"jaeyul",  label:"자율활동",            color:"#3b82f6",emoji:"🏫"},
-                  {key:"dongari", label:"동아리활동",           color:"#a855f7",emoji:"🎭"},
-                  {key:"bongsa",  label:"봉사활동",             color:"#22c55e",emoji:"🤲"},
-                  {key:"jinro",   label:"진로활동",             color:"#f97316",emoji:"🎯"},
-                  {key:"haengbal",label:"행동특성 및 종합의견", color:"#ec4899",emoji:"💎"},
-                  {key:"extra",   label:"교과세특 특이사항",    color:"#06b6d4",emoji:"📚"},
-                ].map(item=>{
+                {([{key:"jaeyul",label:"자율활동",color:"#3b82f6",emoji:"🏫"},{key:"dongari",label:"동아리활동",color:"#a855f7",emoji:"🎭"},{key:"bongsa",label:"봉사활동",color:"#22c55e",emoji:"🤲"},{key:"jinro",label:"진로활동",color:"#f97316",emoji:"🎯"},{key:"haengbal",label:"행동특성 및 종합의견",color:"#ec4899",emoji:"💎"},{key:"extra",label:"교과세특 특이사항",color:"#06b6d4",emoji:"📚"}] as const).map(item=>{
                   const val=(gbParsed as any)[item.key];
                   if(!val?.trim())return null;
                   return(
@@ -917,44 +950,21 @@ export default function TeacherOnlyPage() {
                 })}
               </div>
             )}
-
             {!gbParsed&&selAi&&(
               <div className="hy-card" style={{padding:"16px 20px",background:"#f8f7ff",border:"1.5px solid #e0d9ff"}}>
-                <p style={{fontSize:12,fontWeight:800,color:"#5b21b6",margin:"0 0 8px"}}>🤖 이전 저장된 AI 요약 {selAi.raw_text&&<span style={{fontSize:11,color:"var(--text-subtle)",fontWeight:500}}>({selAi.raw_text})</span>}</p>
+                <p style={{fontSize:12,fontWeight:800,color:"#5b21b6",margin:"0 0 8px"}}>🤖 이전 저장된 AI 요약</p>
                 <p style={{fontSize:13,color:"var(--text)",lineHeight:1.85,margin:0,whiteSpace:"pre-wrap"}}>{selAi.summary}</p>
               </div>
             )}
-
-            <div className="hy-card" style={{padding:"16px 20px"}}>
-              <p style={{fontSize:12,fontWeight:900,color:"var(--text-muted)",margin:"0 0 12px"}}>✏️ 상담 중 기록한 생기부 메모</p>
-              {([{key:"gb_jaeyul",label:"자율",color:"#3b82f6"},{key:"gb_dongari",label:"동아리",color:"#a855f7"},{key:"gb_bongsa",label:"봉사",color:"#22c55e"},{key:"gb_jinro",label:"진로",color:"#f97316"}] as const).map(item=>{
-                const rel=myLogs.filter(l=>(l as any)[item.key]);
-                return rel.length>0?(
-                  <div key={item.key} style={{marginBottom:12}}>
-                    <p style={{fontSize:12,fontWeight:900,color:item.color,margin:"0 0 6px"}}>{item.label}</p>
-                    {rel.map(l=>(
-                      <div key={l.id} style={{marginBottom:5,padding:"8px 12px",borderRadius:10,background:"#f9fafb",border:"1px solid var(--border)"}}>
-                        <p style={{fontSize:11,color:"var(--text-subtle)",fontWeight:600,margin:"0 0 2px"}}>{fmtDate(l.date)}</p>
-                        <p style={{fontSize:13,color:"var(--text)",margin:0,lineHeight:1.6,whiteSpace:"pre-wrap"}}>{(l as any)[item.key]}</p>
-                      </div>
-                    ))}
-                  </div>
-                ):null;
-              })}
-              {myLogs.every(l=>!l.gb_jaeyul&&!l.gb_dongari&&!l.gb_bongsa&&!l.gb_jinro)&&(
-                <p style={{fontSize:12,color:"var(--text-subtle)",fontWeight:500}}>상담 기록에 생기부 메모가 없어요</p>
-              )}
-            </div>
           </div>
         )}
 
+        {/* ── AI 요약 ── */}
         {tab==="ai"&&(
           <div style={{display:"flex",flexDirection:"column",gap:12}}>
             <div className="hy-card" style={{padding:"22px 24px"}}>
               <p style={{fontSize:13,fontWeight:900,color:"var(--text)",margin:"0 0 6px"}}>🤖 종합 AI 요약</p>
-              <p style={{fontSize:12,color:"var(--text-subtle)",fontWeight:600,margin:"0 0 14px"}}>
-                설문+상담기록+메모{gbParsed?" + 생기부(업로드됨 ✅)":""} 를 종합해서 요약해줘요
-              </p>
+              <p style={{fontSize:12,color:"var(--text-subtle)",fontWeight:600,margin:"0 0 14px"}}>설문+상담기록+메모{gbParsed?" + 생기부(업로드됨 ✅)":""} 를 종합 요약</p>
               <div style={{display:"flex",flexDirection:"column",gap:10}}>
                 <input ref={fileRef} type="file" accept=".pdf" onChange={e=>setAiFile(e.target.files?.[0]??null)} style={{display:"none"}}/>
                 <button onClick={()=>fileRef.current?.click()}
@@ -968,7 +978,7 @@ export default function TeacherOnlyPage() {
             </div>
             {(aiResult||selAi)&&(
               <div className="hy-card" style={{padding:"22px 24px",background:"#f8f7ff",border:"1.5px solid #e0d9ff"}}>
-                <p style={{fontSize:12,fontWeight:900,color:"#5b21b6",margin:"0 0 10px"}}>✨ AI 요약 결과 {selAi&&!aiResult&&<span style={{fontSize:11,color:"var(--text-subtle)",fontWeight:600}}>— 이전 저장</span>}</p>
+                <p style={{fontSize:12,fontWeight:900,color:"#5b21b6",margin:"0 0 10px"}}>✨ AI 요약 결과</p>
                 <p style={{fontSize:13,color:"var(--text)",lineHeight:1.9,margin:0,whiteSpace:"pre-wrap"}}>{aiResult||selAi?.summary}</p>
               </div>
             )}
@@ -995,7 +1005,16 @@ export default function TeacherOnlyPage() {
               ))}
             </div>
           </div>
-          <button onClick={()=>{setAuthed(false);setPw("");}} style={{padding:"8px 14px",borderRadius:999,border:"1.5px solid rgba(255,255,255,0.2)",background:"transparent",color:"rgba(255,255,255,0.5)",fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>나가기</button>
+          <div style={{display:"flex",gap:8,flexDirection:"column",alignItems:"flex-end"}}>
+            <button onClick={()=>setView("class")}
+              style={{padding:"8px 16px",borderRadius:999,border:"1.5px solid rgba(255,255,255,0.3)",background:"rgba(255,255,255,0.1)",color:"#fff",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>
+              🏫 학급 전체 보기
+            </button>
+            <button onClick={()=>{setAuthed(false);setPw("");}}
+              style={{padding:"8px 14px",borderRadius:999,border:"1.5px solid rgba(255,255,255,0.2)",background:"transparent",color:"rgba(255,255,255,0.5)",fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>
+              나가기
+            </button>
+          </div>
         </div>
       </div>
 
@@ -1010,6 +1029,7 @@ export default function TeacherOnlyPage() {
             const hasWall=!!wallMap[s.name];
             const hasNote=!!noteMap[s.student_no];
             const hasAi=!!aiMap[s.student_no];
+            const hasExtra=!!extraMap[s.student_no];
             return(
               <button key={s.student_no} onClick={()=>openStu(s)}
                 style={{padding:"14px 10px",borderRadius:14,border:"1.5px solid",
@@ -1025,6 +1045,7 @@ export default function TeacherOnlyPage() {
                   {hasWall&&<span title="자기소개" style={{fontSize:10}}>🌸</span>}
                   {hasNote&&<span title="메모" style={{fontSize:10}}>📌</span>}
                   {hasAi&&<span title="AI요약" style={{fontSize:10}}>🤖</span>}
+                  {hasExtra&&<span title="상담입력" style={{fontSize:10}}>✏️</span>}
                 </div>
               </button>
             );
@@ -1049,12 +1070,7 @@ export default function TeacherOnlyPage() {
                 </div>
                 {log.is_sensitive&&<span style={{fontSize:10,color:"#ef4444",fontWeight:800}}>🔒</span>}
               </div>
-              {!log.is_sensitive&&(
-                <>
-                  {log.student_answer&&<p style={{fontSize:12,color:"#7c3aed",margin:"5px 0 2px",lineHeight:1.5,overflow:"hidden",display:"-webkit-box",WebkitLineClamp:1,WebkitBoxOrient:"vertical" as any}}>🟣 {log.student_answer}</p>}
-                  <p style={{fontSize:12,color:"var(--text-muted)",margin:"3px 0 0",lineHeight:1.5,overflow:"hidden",display:"-webkit-box",WebkitLineClamp:1,WebkitBoxOrient:"vertical" as any}}>🟢 {log.content}</p>
-                </>
-              )}
+              {!log.is_sensitive&&<p style={{fontSize:12,color:"var(--text-muted)",margin:"5px 0 0",lineHeight:1.5,overflow:"hidden",display:"-webkit-box",WebkitLineClamp:1,WebkitBoxOrient:"vertical" as any}}>{log.content}</p>}
             </div>
           );
         })}
