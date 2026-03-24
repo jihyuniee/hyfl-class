@@ -5,17 +5,50 @@ import { supabase } from "@/components/lib/supabaseClient";
 
 type Item = {
   id: string;
-  type: "수행평가" | "고사" | "학급일정";
+  type: "수행평가" | "고사" | "학급일정" | "학교일정";
   date: string;
   title: string;
   subject?: string | null;
   created_by?: string | null;
 };
 
-const TYPE_STYLE: Record<string, { bg: string; color: string; dot: string }> = {
-  수행평가: { bg: "#fdf4ff", color: "#a855f7", dot: "#a855f7" },
-  고사:     { bg: "#fff1f2", color: "#f43f5e", dot: "#f43f5e" },
-  학급일정: { bg: "#eff6ff", color: "#3b82f6", dot: "#3b82f6" },
+const TYPE_STYLE: Record<string, { bg: string; color: string; dot: string; border: string; pill: string }> = {
+  수행평가: {
+    bg: "linear-gradient(135deg, #fdf4ff 0%, #fae8ff 100%)",
+    color: "#9333ea",
+    dot: "#9333ea",
+    border: "#e9d5ff",
+    pill: "#f3e8ff",
+  },
+  고사: {
+    bg: "linear-gradient(135deg, #fff1f2 0%, #ffe4e6 100%)",
+    color: "#e11d48",
+    dot: "#e11d48",
+    border: "#fecdd3",
+    pill: "#ffe4e6",
+  },
+  학급일정: {
+    bg: "linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%)",
+    color: "#2563eb",
+    dot: "#2563eb",
+    border: "#bfdbfe",
+    pill: "#dbeafe",
+  },
+  학교일정: {
+    bg: "linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)",
+    color: "#16a34a",
+    dot: "#16a34a",
+    border: "#bbf7d0",
+    pill: "#dcfce7",
+  },
+};
+
+// 달력에서 일정 태그 배경색 (불투명 단색)
+const TYPE_TAG_BG: Record<string, string> = {
+  수행평가: "#f3e8ff",
+  고사:     "#ffe4e6",
+  학급일정: "#dbeafe",
+  학교일정: "#dcfce7",
 };
 
 const MONTHS = ["1월","2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"];
@@ -35,12 +68,11 @@ export default function SchedulePage() {
   const nowKST = toKST(new Date());
 
   const [year,  setYear]  = useState(nowKST.getFullYear());
-  const [month, setMonth] = useState(nowKST.getMonth()); // 0-indexed
+  const [month, setMonth] = useState(nowKST.getMonth());
   const [items, setItems] = useState<Item[]>([]);
   const [filter, setFilter] = useState<string>("전체");
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
-  // 등록 폼
   const [formOpen, setFormOpen] = useState(false);
   const [fType,    setFType]    = useState<Item["type"]>("학급일정");
   const [fDate,    setFDate]    = useState(today);
@@ -59,7 +91,6 @@ export default function SchedulePage() {
 
   useEffect(() => { load(); }, []);
 
-  // 달력 계산
   const firstDay = new Date(year, month, 1).getDay();
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const cells: (number | null)[] = [
@@ -83,7 +114,6 @@ export default function SchedulePage() {
     ? items.filter(it => it.date === selectedDate && (filter === "전체" || it.type === filter))
     : [];
 
-  // 이번 달 이후 일정 (목록 탭)
   const upcomingItems = items
     .filter(it => it.date >= `${year}-${String(month+1).padStart(2,"0")}-01`)
     .filter(it => filter === "전체" || it.type === filter)
@@ -116,6 +146,16 @@ export default function SchedulePage() {
     setSelectedDate(null);
   }
 
+  const FILTER_OPTIONS = ["전체", "수행평가", "고사", "학급일정", "학교일정"];
+
+  const FILTER_ACTIVE_STYLE: Record<string, { bg: string; color: string; border: string }> = {
+    전체:     { bg: "var(--primary-light)", color: "var(--primary)", border: "var(--primary)" },
+    수행평가: { bg: "#f3e8ff", color: "#9333ea", border: "#9333ea" },
+    고사:     { bg: "#ffe4e6", color: "#e11d48", border: "#e11d48" },
+    학급일정: { bg: "#dbeafe", color: "#2563eb", border: "#2563eb" },
+    학교일정: { bg: "#dcfce7", color: "#16a34a", border: "#16a34a" },
+  };
+
   return (
     <div style={{ display:"flex", flexDirection:"column", gap:20 }}>
 
@@ -131,22 +171,36 @@ export default function SchedulePage() {
         </div>
       </div>
 
+      {/* 범례 */}
+      <div style={{ display:"flex", gap:12, flexWrap:"wrap", padding:"10px 14px", background:"#fafafa", borderRadius:12, border:"1px solid var(--border)" }}>
+        {Object.entries(TYPE_STYLE).map(([type, style]) => (
+          <div key={type} style={{ display:"flex", alignItems:"center", gap:6 }}>
+            <span style={{ width:10, height:10, borderRadius:"50%", background:style.dot, flexShrink:0 }} />
+            <span style={{ fontSize:12, fontWeight:700, color:"var(--text-muted)" }}>{type}</span>
+          </div>
+        ))}
+      </div>
+
       {/* 필터 + 등록 버튼 */}
       <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", flexWrap:"wrap", gap:10 }}>
         <div style={{ display:"flex", gap:6, flexWrap:"wrap" }}>
-          {["전체","수행평가","고사","학급일정"].map(f => (
-            <button key={f} onClick={() => setFilter(f)}
-              style={{
-                padding:"6px 14px", borderRadius:999, border:"1.5px solid",
-                borderColor: filter===f ? "var(--primary)" : "var(--border)",
-                background: filter===f ? "var(--primary-light)" : "#fff",
-                color: filter===f ? "var(--primary)" : "var(--text-muted)",
-                fontWeight:700, fontSize:13, cursor:"pointer", fontFamily:"inherit",
-                transition:"all 0.15s",
-              }}>
-              {f}
-            </button>
-          ))}
+          {FILTER_OPTIONS.map(f => {
+            const active = filter === f;
+            const st = FILTER_ACTIVE_STYLE[f];
+            return (
+              <button key={f} onClick={() => setFilter(f)}
+                style={{
+                  padding:"6px 14px", borderRadius:999, border:"1.5px solid",
+                  borderColor: active ? st.border : "var(--border)",
+                  background: active ? st.bg : "#fff",
+                  color: active ? st.color : "var(--text-muted)",
+                  fontWeight:700, fontSize:13, cursor:"pointer", fontFamily:"inherit",
+                  transition:"all 0.15s",
+                }}>
+                {f}
+              </button>
+            );
+          })}
         </div>
         <button onClick={() => setFormOpen(o => !o)}
           className="hy-btn hy-btn-primary"
@@ -165,6 +219,7 @@ export default function SchedulePage() {
             <select value={fType} onChange={e => setFType(e.target.value as Item["type"])}
               className="hy-input" style={{ cursor:"pointer" }}>
               <option value="학급일정">학급일정</option>
+              <option value="학교일정">학교일정</option>
               <option value="수행평가">수행평가</option>
               <option value="고사">고사</option>
             </select>
@@ -215,7 +270,7 @@ export default function SchedulePage() {
         </div>
 
         {/* 날짜 셀 */}
-        <div style={{ display:"grid", gridTemplateColumns:"repeat(7,1fr)", gap:2 }}>
+        <div style={{ display:"grid", gridTemplateColumns:"repeat(7,1fr)", gap:3 }}>
           {cells.map((day, idx) => {
             if (!day) return <div key={idx} />;
             const iso = isoOf(day);
@@ -226,10 +281,15 @@ export default function SchedulePage() {
             return (
               <div key={idx} onClick={() => setSelectedDate(isSel ? null : iso)}
                 style={{
-                  minHeight:56, padding:"4px 5px", borderRadius:10,
-                  background: isSel ? "var(--primary-light)" : isToday ? "#fdf4ff" : "transparent",
-                  border: isSel ? "1.5px solid var(--primary)" : isToday ? "1.5px solid #e9d5ff" : "1.5px solid transparent",
+                  minHeight:72, padding:"5px 6px", borderRadius:10,
+                  background: isSel ? "var(--primary-light)" : isToday ? "#fdf4ff" : "#fff",
+                  border: isSel
+                    ? "1.5px solid var(--primary)"
+                    : isToday
+                    ? "1.5px solid #e9d5ff"
+                    : "1.5px solid var(--border)",
                   cursor:"pointer", transition:"all 0.12s",
+                  boxShadow: isSel ? "0 2px 8px rgba(168,85,247,0.12)" : "none",
                 }}>
                 <div style={{
                   fontSize:13, fontWeight: isToday ? 900 : 600,
@@ -237,17 +297,18 @@ export default function SchedulePage() {
                   marginBottom:3,
                 }}>{day}</div>
                 <div style={{ display:"flex", flexDirection:"column", gap:2 }}>
-                  {dayItems.slice(0,2).map((it, i) => (
+                  {dayItems.slice(0,3).map((it, i) => (
                     <div key={i} style={{
-                      fontSize:10, fontWeight:700, padding:"1px 4px", borderRadius:4,
-                      background: TYPE_STYLE[it.type]?.bg,
-                      color: TYPE_STYLE[it.type]?.color,
+                      fontSize:10, fontWeight:700, padding:"2px 5px", borderRadius:4,
+                      background: TYPE_TAG_BG[it.type] ?? "#f3f4f6",
+                      color: TYPE_STYLE[it.type]?.color ?? "#374151",
                       overflow:"hidden", whiteSpace:"nowrap", textOverflow:"ellipsis",
+                      borderLeft: `2px solid ${TYPE_STYLE[it.type]?.dot ?? "#9ca3af"}`,
                     }}>{it.title}</div>
                   ))}
-                  {dayItems.length > 2 && (
-                    <div style={{ fontSize:10, color:"var(--text-subtle)", fontWeight:700 }}>
-                      +{dayItems.length-2}
+                  {dayItems.length > 3 && (
+                    <div style={{ fontSize:10, color:"var(--text-subtle)", fontWeight:700, paddingLeft:2 }}>
+                      +{dayItems.length-3}
                     </div>
                   )}
                 </div>
@@ -267,25 +328,34 @@ export default function SchedulePage() {
             <p style={{ fontSize:14, color:"var(--text-subtle)" }}>이 날에 일정이 없어요</p>
           ) : (
             <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
-              {selectedItems.map(it => (
-                <div key={it.id} style={{
-                  display:"flex", alignItems:"center", gap:12,
-                  padding:"12px 14px", borderRadius:12,
-                  background: TYPE_STYLE[it.type]?.bg,
-                  border:`1px solid ${TYPE_STYLE[it.type]?.color}22`,
-                }}>
-                  <span style={{
-                    width:8, height:8, borderRadius:"50%", flexShrink:0,
-                    background: TYPE_STYLE[it.type]?.dot,
-                  }}/>
-                  <div style={{ flex:1 }}>
-                    <div style={{ fontWeight:800, fontSize:14, color:"var(--text)" }}>{it.title}</div>
-                    <div style={{ fontSize:12, color:"var(--text-muted)", marginTop:2 }}>
-                      {it.type}{it.subject ? ` · ${it.subject}` : ""}{it.created_by ? ` · ${it.created_by}` : ""}
+              {selectedItems.map(it => {
+                const st = TYPE_STYLE[it.type];
+                return (
+                  <div key={it.id} style={{
+                    display:"flex", alignItems:"center", gap:12,
+                    padding:"12px 14px", borderRadius:12,
+                    background: st?.bg ?? "#f9fafb",
+                    border:`1px solid ${st?.border ?? "#e5e7eb"}`,
+                  }}>
+                    <span style={{
+                      width:8, height:8, borderRadius:"50%", flexShrink:0,
+                      background: st?.dot ?? "#9ca3af",
+                    }}/>
+                    <div style={{ flex:1 }}>
+                      <div style={{ fontWeight:800, fontSize:14, color:"var(--text)" }}>{it.title}</div>
+                      <div style={{ fontSize:12, color:"var(--text-muted)", marginTop:2 }}>
+                        <span style={{
+                          padding:"1px 8px", borderRadius:999, fontSize:11, fontWeight:700,
+                          background: st?.pill ?? "#f3f4f6",
+                          color: st?.color ?? "#374151",
+                        }}>{it.type}</span>
+                        {it.subject && <span style={{ marginLeft:6 }}>{it.subject}</span>}
+                        {it.created_by && <span style={{ marginLeft:6, color:"var(--text-subtle)" }}>· {it.created_by}</span>}
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>
@@ -300,40 +370,41 @@ export default function SchedulePage() {
           <p style={{ fontSize:14, color:"var(--text-subtle)" }}>등록된 일정이 없어요. 첫 일정을 등록해봐요!</p>
         ) : (
           <div style={{ display:"flex", flexDirection:"column", gap:8 }}>
-            {upcomingItems.map(it => (
-              <div key={it.id} style={{
-                display:"flex", alignItems:"center", gap:12,
-                padding:"12px 14px", borderRadius:12,
-                background: it.date === today ? "#fdf4ff" : "#fafafa",
-                border:`1.5px solid ${it.date === today ? "#e9d5ff" : "var(--border)"}`,
-              }}>
-                <div style={{
-                  width:42, textAlign:"center", flexShrink:0,
+            {upcomingItems.map(it => {
+              const st = TYPE_STYLE[it.type];
+              return (
+                <div key={it.id} style={{
+                  display:"flex", alignItems:"center", gap:12,
+                  padding:"12px 14px", borderRadius:12,
+                  background: it.date === today ? "#fdf4ff" : "#fafafa",
+                  border:`1.5px solid ${it.date === today ? "#e9d5ff" : "var(--border)"}`,
                 }}>
-                  <div style={{ fontSize:10, color:"var(--text-subtle)", fontWeight:700 }}>
-                    {it.date.slice(5,7)}월
+                  <div style={{ width:42, textAlign:"center", flexShrink:0 }}>
+                    <div style={{ fontSize:10, color:"var(--text-subtle)", fontWeight:700 }}>
+                      {it.date.slice(5,7)}월
+                    </div>
+                    <div style={{ fontSize:20, fontWeight:900, color:"var(--text)", lineHeight:1.1 }}>
+                      {it.date.slice(8,10)}
+                    </div>
                   </div>
-                  <div style={{ fontSize:20, fontWeight:900, color:"var(--text)", lineHeight:1.1 }}>
-                    {it.date.slice(8,10)}
+                  <div style={{
+                    width:3, height:36, borderRadius:2, flexShrink:0,
+                    background: st?.dot ?? "#9ca3af",
+                  }}/>
+                  <div style={{ flex:1 }}>
+                    <div style={{ fontWeight:800, fontSize:14, color:"var(--text)" }}>{it.title}</div>
+                    <div style={{ fontSize:12, color:"var(--text-muted)", marginTop:2 }}>
+                      <span style={{
+                        padding:"1px 8px", borderRadius:999, fontSize:11, fontWeight:700,
+                        background: st?.pill ?? "#f3f4f6",
+                        color: st?.color ?? "#374151",
+                      }}>{it.type}</span>
+                      {it.subject && <span style={{ marginLeft:6 }}>{it.subject}</span>}
+                    </div>
                   </div>
                 </div>
-                <div style={{
-                  width:3, height:36, borderRadius:2, flexShrink:0,
-                  background: TYPE_STYLE[it.type]?.dot,
-                }}/>
-                <div style={{ flex:1 }}>
-                  <div style={{ fontWeight:800, fontSize:14, color:"var(--text)" }}>{it.title}</div>
-                  <div style={{ fontSize:12, color:"var(--text-muted)", marginTop:2 }}>
-                    <span style={{
-                      padding:"1px 8px", borderRadius:999, fontSize:11, fontWeight:700,
-                      background: TYPE_STYLE[it.type]?.bg,
-                      color: TYPE_STYLE[it.type]?.color,
-                    }}>{it.type}</span>
-                    {it.subject && <span style={{ marginLeft:6 }}>{it.subject}</span>}
-                  </div>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>
