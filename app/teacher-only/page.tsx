@@ -569,7 +569,7 @@ export default function TeacherOnlyPage() {
 
                   {/* 분야 색상 도트 */}
                   {cnt > 0 && (
-                    <div style={{ display: "flex", gap: 2", flexShrink: 0 }}>
+                    <div style={{ display: "flex", gap: 2, flexShrink: 0 }}>
                       {FIELDS.filter(f => logMap[s.student_no]?.some(l => l.field === f.key))
                         .slice(0, 3).map(f => (
                         <div key={f.key} style={{
