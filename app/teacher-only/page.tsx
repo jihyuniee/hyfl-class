@@ -38,6 +38,11 @@ type TeacherNote = { id: string; student_no: string; content: string };
 
 type AiSummary = { id: string; student_no: string; summary: string; created_at: string };
 
+type HrRecord      = { id: string; student_no: string; days: string[] };
+type Role          = { id: string; name: string; dept: string; role_name: string; duties: string | null };
+type ResearchGroup = { id: string; name: string; topic: string; members: string };
+type MentorLog     = { id: string; student_no: string; [key: string]: any };
+
 // ── 상수 ──────────────────────────────────────────────────────
 const STUDENTS: Student[] = [
   { student_no: "20201", name: "강지우" }, { student_no: "20202", name: "김은솔" },
@@ -228,7 +233,12 @@ export default function TeacherOnlyPage() {
   const [pw,       setPw]       = useState("");
   const [pwErr,    setPwErr]    = useState(false);
 
-  const [logs,     setLogs]     = useState<CounselingEntry[]>([]);
+  const [logs,          setLogs]          = useState<CounselingEntry[]>([]);
+  const [hrRecords,     setHrRecords]     = useState<HrRecord[]>([]);
+  const [researchGroups,setResearchGroups]= useState<ResearchGroup[]>([]);
+  const [roleRecords,   setRoleRecords]   = useState<Role[]>([]);
+  const [mentorData,    setMentorData]    = useState<any[]>([]);
+  const [contacts,      setContacts]      = useState<any[]>([]);
   const [subs,     setSubs]     = useState<Submission[]>([]);
   const [walls,    setWalls]    = useState<{ author_name: string; content: string }[]>([]);
   const [notes,    setNotes]    = useState<TeacherNote[]>([]);
@@ -257,17 +267,27 @@ export default function TeacherOnlyPage() {
 
   async function loadAll() {
     setLoading(true);
-    const [a, b, c, d, e] = await Promise.all([
+    const [a, b, c, d, e, f, g, h, ii, j] = await Promise.all([
       supabase.from("counseling_logs").select("*").order("date", { ascending: false }),
       supabase.from("counseling_submissions").select("*"),
       supabase.from("wall_posts").select("author_name,content"),
       supabase.from("teacher_notes").select("*"),
       supabase.from("ai_summaries").select("*").order("created_at", { ascending: false }),
+      supabase.from("hr_records").select("id,student_no,days"),
+      supabase.from("research_groups").select("id,name,topic,members"),
+      supabase.from("roles").select("id,name,dept,role_name,duties"),
+      supabase.from("mentor_resources").select("*"),
+      supabase.from("student_contacts").select("student_no,name,birthday,student_phone"),
     ]);
     setLogs((a.data as CounselingEntry[]) ?? []);
     setWalls((c.data as any[]) ?? []);
     setNotes((d.data as TeacherNote[]) ?? []);
     setAis((e.data as AiSummary[]) ?? []);
+    setHrRecords((f.data as HrRecord[]) ?? []);
+    setResearchGroups((g.data as ResearchGroup[]) ?? []);
+    setRoleRecords((h.data as Role[]) ?? []);
+    setMentorData((ii.data as any[]) ?? []);
+    setContacts((j.data as any[]) ?? []);
 
     // 설문 파싱
     const parsed = ((b.data ?? []) as any[]).map((r: any) => ({
@@ -692,119 +712,228 @@ export default function TeacherOnlyPage() {
               )}
 
               {/* ── 탭: 한눈에 ── */}
-              {tab === "overview" && (
-                <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+              {tab === "overview" && (() => {
+                // 프로필 데이터 계산
+                const hrRec      = hrRecords.find(r => r.student_no === sel.student_no);
+                const yajadays   = hrRec?.days ?? [];
+                const selContact = contacts.find(c => c.student_no === sel.student_no);
+                const selRoles   = roleRecords.filter(r => r.name === sel.name);
+                const selResearch= researchGroups.find(g =>
+                  g.members?.split(/[,，、\s]+/).map((s:string)=>s.trim()).some((m:string) => m.includes(sel.name) || sel.name.includes(m))
+                );
+                // 멘토링: mentor_resources의 각 row에서 이름 포함 여부 확인
+                const selMentor  = mentorData.filter(m => {
+                  const vals = Object.values(m).join(" ");
+                  return vals.includes(sel.name);
+                });
 
-                  {/* 핵심 정보 카드 */}
-                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(140px,1fr))", gap: 8 }}>
-                    {[
-                      { label: "MBTI",    value: selSub?.payload.mbti || selWall?.mbti || "-" },
-                      { label: "진로/꿈", value: selSub?.payload.dream || "-" },
-                      { label: "친한 친구", value: selSub?.payload.closeFriends || "-" },
-                      { label: "취미",    value: selSub?.payload.hobby || "-" },
-                    ].map(item => (
-                      <div key={item.label} style={{
-                        padding: "12px 14px", borderRadius: 12,
-                        background: "#f8fafc", border: "1px solid var(--border)",
-                      }}>
-                        <p style={{ fontSize: 10, fontWeight: 700, color: "var(--text-muted)", margin: "0 0 4px" }}>{item.label}</p>
-                        <p style={{ fontSize: 13, fontWeight: 700, color: "var(--text)", margin: 0, lineHeight: 1.4 }}>{item.value}</p>
-                      </div>
-                    ))}
-                  </div>
+                return (
+                  <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
 
-                  {/* 선생님께 한 말 */}
-                  {(selSub?.payload.messageToTeacher || selSub?.payload.teacherShouldKnow) && (
-                    <div style={{
-                      padding: "14px 16px", borderRadius: 12,
-                      background: "#fdf4ff", border: "1.5px solid #e9d5ff",
-                      borderLeft: "4px solid var(--primary)",
-                    }}>
-                      <p style={{ fontSize: 11, fontWeight: 800, color: "var(--primary)", margin: "0 0 8px" }}>
-                        💬 선생님께 한 말
+                    {/* ── 섹션 1: 학급 활동 정보 (한눈에) ── */}
+                    <div style={{ padding: "16px 18px", borderRadius: 14, background: "linear-gradient(135deg,#f8f7ff,#eff6ff)", border: "1.5px solid #e0d9ff" }}>
+                      <p style={{ fontSize: 12, fontWeight: 800, color: "#5b21b6", margin: "0 0 12px" }}>
+                        🏫 학급 활동 한눈에
                       </p>
-                      {selSub?.payload.messageToTeacher && (
-                        <p style={{ fontSize: 13, color: "var(--text)", margin: "0 0 4px", lineHeight: 1.7, whiteSpace: "pre-wrap" }}>
-                          {selSub.payload.messageToTeacher}
-                        </p>
-                      )}
-                      {selSub?.payload.teacherShouldKnow && (
-                        <p style={{ fontSize: 13, color: "var(--text)", margin: 0, lineHeight: 1.7, whiteSpace: "pre-wrap" }}>
-                          {selSub.payload.teacherShouldKnow}
-                        </p>
-                      )}
-                    </div>
-                  )}
+                      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(150px,1fr))", gap: 8 }}>
 
-                  {/* 장단점 */}
-                  {(selSub?.payload.strengths || selSub?.payload.weaknesses) && (
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
-                      {selSub?.payload.strengths && (
-                        <div style={{ padding: "12px 14px", borderRadius: 12, background: "#f0fdf4", borderLeft: "3px solid #16a34a" }}>
-                          <p style={{ fontSize: 10, fontWeight: 800, color: "#15803d", margin: "0 0 4px" }}>💪 장점</p>
-                          <p style={{ fontSize: 12, color: "var(--text)", margin: 0, lineHeight: 1.6, whiteSpace: "pre-wrap" }}>{selSub.payload.strengths}</p>
-                        </div>
-                      )}
-                      {selSub?.payload.weaknesses && (
-                        <div style={{ padding: "12px 14px", borderRadius: 12, background: "#fff7ed", borderLeft: "3px solid #f97316" }}>
-                          <p style={{ fontSize: 10, fontWeight: 800, color: "#c2410c", margin: "0 0 4px" }}>🌱 단점/고칠 점</p>
-                          <p style={{ fontSize: 12, color: "var(--text)", margin: 0, lineHeight: 1.6, whiteSpace: "pre-wrap" }}>{selSub.payload.weaknesses}</p>
-                        </div>
-                      )}
-                    </div>
-                  )}
-
-                  {/* 최근 상담 요약 */}
-                  {selLogs.length > 0 && (
-                    <div style={{ padding: "14px 16px", borderRadius: 12, background: "#f8fafc", border: "1px solid var(--border)" }}>
-                      <p style={{ fontSize: 11, fontWeight: 800, color: "var(--text-muted)", margin: "0 0 10px" }}>
-                        최근 상담 기록
-                      </p>
-                      <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                        {selLogs.slice(0, 3).map(log => {
-                          const f = FIELDS.find(f => f.key === log.field);
-                          return (
-                            <div key={log.id} style={{
-                              display: "flex", gap: 10, alignItems: "flex-start",
-                              padding: "8px 10px", borderRadius: 8, background: f?.bg ?? "#fff",
-                            }}>
-                              <span style={{ fontSize: 11, fontWeight: 700, color: f?.color, minWidth: 50, flexShrink: 0 }}>
-                                {f?.emoji} {log.field}
-                              </span>
-                              <span style={{ fontSize: 11, color: "var(--text-muted)", minWidth: 50, flexShrink: 0 }}>
-                                {fmtDate(log.date)}
-                              </span>
-                              {log.is_sensitive ? (
-                                <span style={{ fontSize: 11, color: "#ef4444", fontWeight: 700 }}>🔒 민감 기록</span>
-                              ) : (
-                                <span style={{ fontSize: 12, color: "var(--text)", lineHeight: 1.5,
-                                  overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 1, WebkitBoxOrient: "vertical" as any }}>
-                                  {log.content}
-                                </span>
-                              )}
+                        {/* 야자 요일 */}
+                        <div style={{ padding: "12px 14px", borderRadius: 10, background: "#fff", border: "1px solid #e0d9ff" }}>
+                          <p style={{ fontSize: 10, fontWeight: 700, color: "#7c3aed", margin: "0 0 6px" }}>🌙 야자 요일</p>
+                          {yajadays.length > 0 ? (
+                            <div style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
+                              {yajadays.map((d:string) => (
+                                <span key={d} style={{
+                                  fontSize: 12, fontWeight: 800, padding: "3px 9px", borderRadius: 999,
+                                  background: "#ede9fe", color: "#7c3aed",
+                                }}>{d}</span>
+                              ))}
                             </div>
-                          );
-                        })}
+                          ) : (
+                            <p style={{ fontSize: 12, color: "#94a3b8", margin: 0 }}>정보 없음</p>
+                          )}
+                        </div>
+
+                        {/* 학급 역할 */}
+                        <div style={{ padding: "12px 14px", borderRadius: 10, background: "#fff", border: "1px solid #bfdbfe" }}>
+                          <p style={{ fontSize: 10, fontWeight: 700, color: "#2563eb", margin: "0 0 6px" }}>🎖 학급 역할</p>
+                          {selRoles.length > 0 ? (
+                            <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
+                              {selRoles.map((r, i) => (
+                                <div key={i}>
+                                  <span style={{ fontSize: 11, fontWeight: 700, color: "#2563eb" }}>{r.role_name}</span>
+                                  {r.dept && <span style={{ fontSize: 10, color: "#94a3b8", marginLeft: 5 }}>{r.dept}</span>}
+                                  {r.duties && <p style={{ fontSize: 10, color: "#64748b", margin: "2px 0 0", lineHeight: 1.4 }}>{r.duties}</p>}
+                                </div>
+                              ))}
+                            </div>
+                          ) : (
+                            <p style={{ fontSize: 12, color: "#94a3b8", margin: 0 }}>정보 없음</p>
+                          )}
+                        </div>
+
+                        {/* 심화탐구 조 */}
+                        <div style={{ padding: "12px 14px", borderRadius: 10, background: "#fff", border: "1px solid #bbf7d0" }}>
+                          <p style={{ fontSize: 10, fontWeight: 700, color: "#16a34a", margin: "0 0 6px" }}>🔬 심화탐구</p>
+                          {selResearch ? (
+                            <div>
+                              <p style={{ fontSize: 12, fontWeight: 800, color: "#16a34a", margin: "0 0 2px" }}>{selResearch.name}</p>
+                              <p style={{ fontSize: 11, color: "#64748b", margin: "0 0 4px" }}>{selResearch.topic}</p>
+                              <p style={{ fontSize: 10, color: "#94a3b8", margin: 0 }}>
+                                {selResearch.members?.split(/[,，、]+/).map((m:string)=>m.trim()).join(" · ")}
+                              </p>
+                            </div>
+                          ) : (
+                            <p style={{ fontSize: 12, color: "#94a3b8", margin: 0 }}>정보 없음</p>
+                          )}
+                        </div>
+
+                        {/* 멘토링 */}
+                        <div style={{ padding: "12px 14px", borderRadius: 10, background: "#fff", border: "1px solid #fed7aa" }}>
+                          <p style={{ fontSize: 10, fontWeight: 700, color: "#ea580c", margin: "0 0 6px" }}>🤝 멘토링</p>
+                          {selMentor.length > 0 ? (
+                            <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
+                              {selMentor.map((m: any, i: number) => (
+                                <div key={i}>
+                                  <span style={{ fontSize: 11, fontWeight: 700, color: "#ea580c" }}>
+                                    {m.subject ?? m.name ?? "멘토"}
+                                  </span>
+                                  {m.role && <span style={{ fontSize: 10, color: "#94a3b8", marginLeft: 4 }}>{m.role}</span>}
+                                </div>
+                              ))}
+                            </div>
+                          ) : (
+                            <p style={{ fontSize: 12, color: "#94a3b8", margin: 0 }}>정보 없음</p>
+                          )}
+                        </div>
+
+                        {/* 생일 */}
+                        <div style={{ padding: "12px 14px", borderRadius: 10, background: "#fff", border: "1px solid #fecdd3" }}>
+                          <p style={{ fontSize: 10, fontWeight: 700, color: "#e11d48", margin: "0 0 6px" }}>🎂 생일</p>
+                          {selContact?.birthday ? (
+                            <p style={{ fontSize: 13, fontWeight: 800, color: "#e11d48", margin: 0 }}>{selContact.birthday}</p>
+                          ) : (
+                            <p style={{ fontSize: 12, color: "#94a3b8", margin: 0 }}>정보 없음</p>
+                          )}
+                          {selContact?.student_phone && (
+                            <p style={{ fontSize: 10, color: "#94a3b8", margin: "4px 0 0" }}>
+                              📱 {selContact.student_phone}
+                            </p>
+                          )}
+                        </div>
+
+                        {/* MBTI */}
+                        <div style={{ padding: "12px 14px", borderRadius: 10, background: "#fff", border: "1px solid var(--border)" }}>
+                          <p style={{ fontSize: 10, fontWeight: 700, color: "var(--text-muted)", margin: "0 0 6px" }}>🧠 MBTI</p>
+                          <p style={{ fontSize: 16, fontWeight: 900, color: "var(--primary)", margin: "0 0 2px" }}>
+                            {selSub?.payload.mbti || selWall?.mbti || "-"}
+                          </p>
+                          {selSub?.payload.dream && (
+                            <p style={{ fontSize: 10, color: "#64748b", margin: 0 }}>🎯 {selSub.payload.dream}</p>
+                          )}
+                        </div>
                       </div>
-                      {selLogs.length > 3 && (
-                        <button onClick={() => setTab("log")}
-                          style={{ marginTop: 8, fontSize: 11, color: "var(--primary)", background: "none",
-                            border: "none", cursor: "pointer", fontWeight: 700, padding: 0 }}>
-                          전체 {selLogs.length}건 보기 →
-                        </button>
+                    </div>
+
+                    {/* ── 섹션 2: 2단 — 선생님께 한 말 + 장단점 ── */}
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+                      {(selSub?.payload.messageToTeacher || selSub?.payload.teacherShouldKnow) && (
+                        <div style={{ padding: "14px 16px", borderRadius: 12, background: "#fdf4ff", border: "1.5px solid #e9d5ff", borderLeft: "4px solid var(--primary)" }}>
+                          <p style={{ fontSize: 11, fontWeight: 800, color: "var(--primary)", margin: "0 0 7px" }}>💬 선생님께 한 말</p>
+                          {selSub?.payload.messageToTeacher && (
+                            <p style={{ fontSize: 12, color: "var(--text)", margin: "0 0 4px", lineHeight: 1.7, whiteSpace: "pre-wrap" }}>{selSub.payload.messageToTeacher}</p>
+                          )}
+                          {selSub?.payload.teacherShouldKnow && (
+                            <p style={{ fontSize: 12, color: "var(--text)", margin: 0, lineHeight: 1.7, whiteSpace: "pre-wrap" }}>{selSub.payload.teacherShouldKnow}</p>
+                          )}
+                        </div>
+                      )}
+                      {(selSub?.payload.strengths || selSub?.payload.weaknesses) && (
+                        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                          {selSub?.payload.strengths && (
+                            <div style={{ padding: "11px 14px", borderRadius: 10, background: "#f0fdf4", borderLeft: "3px solid #16a34a", flex: 1 }}>
+                              <p style={{ fontSize: 10, fontWeight: 800, color: "#15803d", margin: "0 0 4px" }}>💪 장점</p>
+                              <p style={{ fontSize: 12, color: "var(--text)", margin: 0, lineHeight: 1.6, whiteSpace: "pre-wrap" }}>{selSub.payload.strengths}</p>
+                            </div>
+                          )}
+                          {selSub?.payload.weaknesses && (
+                            <div style={{ padding: "11px 14px", borderRadius: 10, background: "#fff7ed", borderLeft: "3px solid #f97316", flex: 1 }}>
+                              <p style={{ fontSize: 10, fontWeight: 800, color: "#c2410c", margin: "0 0 4px" }}>🌱 단점/고칠 점</p>
+                              <p style={{ fontSize: 12, color: "var(--text)", margin: 0, lineHeight: 1.6, whiteSpace: "pre-wrap" }}>{selSub.payload.weaknesses}</p>
+                            </div>
+                          )}
+                        </div>
                       )}
                     </div>
-                  )}
 
-                  {/* AI 요약 */}
-                  {selAi && (
-                    <div style={{ padding: "14px 16px", borderRadius: 12, background: "#f8f7ff", border: "1.5px solid #e0d9ff" }}>
-                      <p style={{ fontSize: 11, fontWeight: 800, color: "#5b21b6", margin: "0 0 8px" }}>🤖 AI 생기부 요약</p>
-                      <p style={{ fontSize: 12, color: "var(--text)", lineHeight: 1.8, margin: 0, whiteSpace: "pre-wrap" }}>{selAi.summary}</p>
+                    {/* ── 섹션 3: 최근 상담 ── */}
+                    {selLogs.length > 0 && (
+                      <div style={{ padding: "14px 16px", borderRadius: 12, background: "#f8fafc", border: "1px solid var(--border)" }}>
+                        <p style={{ fontSize: 11, fontWeight: 800, color: "var(--text-muted)", margin: "0 0 10px" }}>
+                          최근 상담 기록
+                        </p>
+                        <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                          {selLogs.slice(0, 3).map(log => {
+                            const f = FIELDS.find(f => f.key === log.field);
+                            return (
+                              <div key={log.id} style={{
+                                display: "flex", gap: 10, alignItems: "flex-start",
+                                padding: "8px 10px", borderRadius: 8, background: f?.bg ?? "#fff",
+                              }}>
+                                <span style={{ fontSize: 11, fontWeight: 700, color: f?.color, minWidth: 50, flexShrink: 0 }}>
+                                  {f?.emoji} {log.field}
+                                </span>
+                                <span style={{ fontSize: 11, color: "var(--text-muted)", minWidth: 50, flexShrink: 0 }}>
+                                  {fmtDate(log.date)}
+                                </span>
+                                {log.is_sensitive ? (
+                                  <span style={{ fontSize: 11, color: "#ef4444", fontWeight: 700 }}>🔒 민감 기록</span>
+                                ) : (
+                                  <span style={{ fontSize: 12, color: "var(--text)", lineHeight: 1.5,
+                                    overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 1, WebkitBoxOrient: "vertical" as any }}>
+                                    {log.content}
+                                  </span>
+                                )}
+                              </div>
+                            );
+                          })}
+                        </div>
+                        {selLogs.length > 3 && (
+                          <button onClick={() => setTab("log")}
+                            style={{ marginTop: 8, fontSize: 11, color: "var(--primary)", background: "none",
+                              border: "none", cursor: "pointer", fontWeight: 700, padding: 0 }}>
+                            전체 {selLogs.length}건 보기 →
+                          </button>
+                        )}
+                      </div>
+                    )}
+
+                    {/* ── 섹션 4: AI 요약 ── */}
+                    {selAi && (
+                      <div style={{ padding: "14px 16px", borderRadius: 12, background: "#f8f7ff", border: "1.5px solid #e0d9ff" }}>
+                        <p style={{ fontSize: 11, fontWeight: 800, color: "#5b21b6", margin: "0 0 8px" }}>🤖 AI 생기부 요약</p>
+                        <p style={{ fontSize: 12, color: "var(--text)", lineHeight: 1.8, margin: 0, whiteSpace: "pre-wrap" }}>{selAi.summary}</p>
+                      </div>
+                    )}
+
+                    {/* ── 섹션 5: 교사 메모 (빠른 편집) ── */}
+                    <div style={{ padding: "14px 16px", borderRadius: 12, background: "#fff", border: "1px solid var(--border)" }}>
+                      <p style={{ fontSize: 11, fontWeight: 800, color: "var(--text-muted)", margin: "0 0 8px" }}>📌 교사 메모</p>
+                      <textarea
+                        placeholder="첫인상, 특이사항, 기억해 둘 것..."
+                        value={noteText}
+                        onChange={e => setNoteText(e.target.value)}
+                        className="hy-input"
+                        style={{ minHeight: 70, resize: "vertical", fontSize: 12, lineHeight: 1.6 }}
+                      />
+                      <button onClick={saveNote} disabled={noteSaving}
+                        className="hy-btn hy-btn-primary" style={{ marginTop: 7, fontSize: 11 }}>
+                        {noteSaving ? "저장 중..." : "저장"}
+                      </button>
                     </div>
-                  )}
-                </div>
-              )}
+                  </div>
+                );
+              })()}
 
               {/* ── 탭: 설문 ── */}
               {tab === "survey" && (
@@ -974,102 +1103,336 @@ export default function TeacherOnlyPage() {
                 </div>
               )}
 
-              {/* ── 탭: 분야별 누적 ── */}
-              {tab === "field" && (
-                <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-                  {/* 분야 탭 */}
-                  <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-                    {FIELDS.map(f => {
-                      const cnt = selLogs.filter(l => l.field === f.key).length;
-                      return (
-                        <button key={f.key} onClick={() => setFieldTab(f.key)}
-                          style={{
-                            padding: "7px 14px", borderRadius: 999, border: "1.5px solid",
-                            borderColor: fieldTab === f.key ? f.color : "var(--border)",
-                            background: fieldTab === f.key ? f.bg : "#fff",
-                            color: fieldTab === f.key ? f.color : "var(--text-muted)",
-                            fontSize: 12, fontWeight: 700, cursor: "pointer", fontFamily: "inherit",
-                          }}>
-                          {f.emoji} {f.key}
-                          {cnt > 0 && (
-                            <span style={{
-                              marginLeft: 5, fontSize: 10, padding: "1px 5px", borderRadius: 999,
-                              background: fieldTab === f.key ? f.color + "33" : "#f1f5f9",
-                              color: fieldTab === f.key ? f.color : "#94a3b8",
-                            }}>{cnt}</span>
-                          )}
-                        </button>
-                      );
-                    })}
-                  </div>
+              {/* ── 탭: 분야별 누적 (좌우 2단) ── */}
+              {tab === "field" && (() => {
+                const currentField = FIELDS.find(f => f.key === fieldTab)!;
+                const fieldLogs = selLogs
+                  .filter(l => l.field === fieldTab)
+                  .sort((a, b) => a.date.localeCompare(b.date));
 
-                  {/* 선택된 분야의 누적 기록 */}
-                  {(() => {
-                    const fieldLogs = selLogs.filter(l => l.field === fieldTab).sort((a, b) => a.date.localeCompare(b.date));
-                    const currentField = FIELDS.find(f => f.key === fieldTab)!;
-                    if (fieldLogs.length === 0) return (
-                      <div style={{
-                        padding: "32px", textAlign: "center",
-                        background: currentField.bg, borderRadius: 12, border: `1.5px dashed ${currentField.color}44`,
-                      }}>
-                        <p style={{ fontSize: 20, margin: "0 0 8px" }}>{currentField.emoji}</p>
-                        <p style={{ fontSize: 13, color: currentField.color, fontWeight: 700, margin: "0 0 4px" }}>
-                          {fieldTab} 관련 상담 기록이 없어요
-                        </p>
-                        <p style={{ fontSize: 11, color: "#94a3b8", margin: 0 }}>상담 기록 탭에서 추가할 수 있어요</p>
+                // 분야별 설문 참고 항목 매핑
+                const fieldSurveyItems: Record<string, { l: string; v: string }[]> = {
+                  학업: selSub ? [
+                    { l: "좋아하는 과목", v: selSub.payload.likeSubject },
+                    { l: "이유",         v: selSub.payload.likeReason },
+                    { l: "싫어하는 과목",v: selSub.payload.dislikeSubject },
+                    { l: "이유",         v: selSub.payload.dislikeReason },
+                    { l: "발표 스타일",  v: selSub.payload.presentationStyle },
+                    { l: "모를 때",      v: selSub.payload.learningHelpStyle },
+                    { l: "장점",         v: selSub.payload.strengths },
+                    { l: "단점",         v: selSub.payload.weaknesses },
+                  ].filter(i => i.v?.trim()) : [],
+                  교우관계: selSub ? [
+                    { l: "친한 친구",    v: selSub.payload.closeFriends },
+                    { l: "고민 의논 대상",v: selSub.payload.talkWith },
+                    { l: "취미/관심",   v: selSub.payload.hobby },
+                    { l: "첫인상",       v: selSub.payload.firstImpression },
+                  ].filter(i => i.v?.trim()) : [],
+                  진로: selSub ? [
+                    { l: "진로/꿈",      v: selSub.payload.dream },
+                    { l: "되고 싶은 사람",v: selSub.payload.wantToBe },
+                    { l: "형용사",       v: selSub.payload.adjectives },
+                    { l: "고치고 싶은 것",v: selSub.payload.habitToFix },
+                  ].filter(i => i.v?.trim()) : [],
+                  가족: selSub ? [
+                    { l: "부모님 스타일",v: selSub.payload.parentsStyle },
+                    { l: "부모님은",     v: selSub.payload.parentsMeaning },
+                    { l: "고민 의논 대상",v: selSub.payload.talkWith },
+                    { l: "학부모 연락",  v: selSub.payload.parentContact },
+                  ].filter(i => i.v?.trim()) : [],
+                  정서: selSub ? [
+                    { l: "장점",         v: selSub.payload.strengths },
+                    { l: "단점",         v: selSub.payload.weaknesses },
+                    { l: "고민 의논 대상",v: selSub.payload.talkWith },
+                    { l: "선생님께",     v: selSub.payload.messageToTeacher },
+                    { l: "알아줬으면",   v: selSub.payload.teacherShouldKnow },
+                  ].filter(i => i.v?.trim()) : [],
+                  기타: selSub ? [
+                    { l: "MBTI",         v: selSub.payload.mbti },
+                    { l: "취미/관심",   v: selSub.payload.hobby },
+                    { l: "선생님께",     v: selSub.payload.messageToTeacher },
+                  ].filter(i => i.v?.trim()) : [],
+                };
+                const surveyItems = fieldSurveyItems[fieldTab] ?? [];
+
+                return (
+                  <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+
+                    {/* 분야 탭 선택 */}
+                    <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+                      {FIELDS.map(f => {
+                        const cnt = selLogs.filter(l => l.field === f.key).length;
+                        return (
+                          <button key={f.key} onClick={() => setFieldTab(f.key)}
+                            style={{
+                              padding: "7px 14px", borderRadius: 999, border: "1.5px solid",
+                              borderColor: fieldTab === f.key ? f.color : "var(--border)",
+                              background: fieldTab === f.key ? f.bg : "#fff",
+                              color: fieldTab === f.key ? f.color : "var(--text-muted)",
+                              fontSize: 12, fontWeight: 700, cursor: "pointer", fontFamily: "inherit",
+                            }}>
+                            {f.emoji} {f.key}
+                            {cnt > 0 && (
+                              <span style={{
+                                marginLeft: 5, fontSize: 10, padding: "1px 5px", borderRadius: 999,
+                                background: fieldTab === f.key ? f.color + "33" : "#f1f5f9",
+                                color: fieldTab === f.key ? f.color : "#94a3b8",
+                              }}>{cnt}</span>
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
+
+                    {/* 좌우 2단 */}
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, alignItems: "start" }}>
+
+                      {/* ── 왼쪽: 참고자료 (설문 + 이전 기록) ── */}
+                      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+
+                        {/* 설문 참고 */}
+                        {surveyItems.length > 0 && (
+                          <div style={{
+                            borderRadius: 12, border: `1.5px solid ${currentField.color}33`,
+                            overflow: "hidden",
+                          }}>
+                            <div style={{
+                              padding: "10px 14px",
+                              background: currentField.bg,
+                              borderBottom: `1px solid ${currentField.color}22`,
+                            }}>
+                              <p style={{ fontSize: 11, fontWeight: 800, color: currentField.color, margin: 0 }}>
+                                📋 학생 설문 참고
+                              </p>
+                            </div>
+                            <div style={{ background: "#fff" }}>
+                              {surveyItems.map((item, idx) => (
+                                <div key={idx} style={{
+                                  display: "grid", gridTemplateColumns: "90px 1fr", gap: 8,
+                                  padding: "9px 14px",
+                                  borderBottom: idx < surveyItems.length - 1 ? "1px solid #f3f4f6" : "none",
+                                }}>
+                                  <p style={{ fontSize: 10, fontWeight: 700, color: "var(--text-muted)", margin: 0, paddingTop: 1 }}>
+                                    {item.l}
+                                  </p>
+                                  <p style={{ fontSize: 12, color: "var(--text)", margin: 0, lineHeight: 1.6, whiteSpace: "pre-wrap" }}>
+                                    {item.v}
+                                  </p>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+
+                        {/* 이전 상담 기록 타임라인 */}
+                        {fieldLogs.length > 0 ? (
+                          <div style={{
+                            borderRadius: 12, border: `1.5px solid ${currentField.color}33`,
+                            overflow: "hidden",
+                          }}>
+                            <div style={{
+                              padding: "10px 14px",
+                              background: currentField.bg,
+                              borderBottom: `1px solid ${currentField.color}22`,
+                              display: "flex", justifyContent: "space-between", alignItems: "center",
+                            }}>
+                              <p style={{ fontSize: 11, fontWeight: 800, color: currentField.color, margin: 0 }}>
+                                🗂 이전 상담 기록 ({fieldLogs.length}회)
+                              </p>
+                            </div>
+                            <div style={{ background: "#fff", padding: "12px 14px", display: "flex", flexDirection: "column", gap: 0 }}>
+                              {fieldLogs.map((log, idx) => (
+                                <div key={log.id} style={{
+                                  display: "flex", gap: 10,
+                                  paddingBottom: idx < fieldLogs.length - 1 ? 14 : 0,
+                                  marginBottom: idx < fieldLogs.length - 1 ? 14 : 0,
+                                  borderBottom: idx < fieldLogs.length - 1 ? `1px solid ${currentField.color}18` : "none",
+                                }}>
+                                  {/* 타임라인 도트 */}
+                                  <div style={{ display: "flex", flexDirection: "column", alignItems: "center", flexShrink: 0, paddingTop: 3 }}>
+                                    <div style={{ width: 7, height: 7, borderRadius: "50%", background: currentField.color }} />
+                                    {idx < fieldLogs.length - 1 && (
+                                      <div style={{ width: 1, flex: 1, background: currentField.color + "30", marginTop: 3 }} />
+                                    )}
+                                  </div>
+                                  <div style={{ flex: 1, minWidth: 0 }}>
+                                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 4 }}>
+                                      <p style={{ fontSize: 10, fontWeight: 700, color: currentField.color, margin: 0 }}>
+                                        {fmtDate(log.date)}
+                                      </p>
+                                      <div style={{ display: "flex", gap: 3 }}>
+                                        <button
+                                          onClick={() => { setEditLog(log); setShowForm(true); setTab("log"); }}
+                                          style={{ fontSize: 9, padding: "2px 7px", borderRadius: 999,
+                                            border: "1px solid var(--border)", background: "#fff",
+                                            cursor: "pointer", fontFamily: "inherit", fontWeight: 700, color: "var(--text-muted)" }}>
+                                          수정
+                                        </button>
+                                        <button
+                                          onClick={() => deleteLog(log.id)}
+                                          style={{ fontSize: 9, padding: "2px 7px", borderRadius: 999,
+                                            border: "1px solid #fecaca", background: "#fff5f5",
+                                            cursor: "pointer", fontFamily: "inherit", fontWeight: 700, color: "#ef4444" }}>
+                                          삭제
+                                        </button>
+                                      </div>
+                                    </div>
+                                    {log.is_sensitive ? (
+                                      <p style={{ fontSize: 11, color: "#ef4444", fontWeight: 700, margin: 0 }}>🔒 민감 기록</p>
+                                    ) : (
+                                      <>
+                                        <p style={{ fontSize: 12, color: "var(--text)", lineHeight: 1.7, margin: 0, whiteSpace: "pre-wrap" }}>
+                                          {log.content}
+                                        </p>
+                                        {log.followup && (
+                                          <div style={{ marginTop: 5, padding: "5px 9px", borderRadius: 6, background: "#f0fdf4", border: "1px solid #bbf7d0" }}>
+                                            <p style={{ fontSize: 10, color: "#166534", margin: 0 }}>📌 {log.followup}</p>
+                                          </div>
+                                        )}
+                                      </>
+                                    )}
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        ) : (
+                          surveyItems.length === 0 && (
+                            <div style={{
+                              padding: "24px", textAlign: "center",
+                              background: currentField.bg, borderRadius: 12,
+                              border: `1.5px dashed ${currentField.color}44`,
+                            }}>
+                              <p style={{ fontSize: 18, margin: "0 0 6px" }}>{currentField.emoji}</p>
+                              <p style={{ fontSize: 12, color: currentField.color, fontWeight: 700, margin: 0 }}>
+                                참고 자료가 없어요
+                              </p>
+                            </div>
+                          )
+                        )}
                       </div>
-                    );
-                    return (
+
+                      {/* ── 오른쪽: 새 내용 추가 ── */}
                       <div style={{
-                        background: currentField.bg, borderRadius: 14,
-                        border: `1.5px solid ${currentField.color}33`, overflow: "hidden",
+                        position: "sticky", top: 16,
+                        borderRadius: 12, border: `1.5px solid ${currentField.color}55`,
+                        background: currentField.bg, overflow: "hidden",
                       }}>
-                        <div style={{ padding: "14px 16px", borderBottom: `1px solid ${currentField.color}22` }}>
-                          <p style={{ fontSize: 13, fontWeight: 800, color: currentField.color, margin: 0 }}>
-                            {currentField.emoji} {sel.name}의 {fieldTab} 상담 기록 ({fieldLogs.length}회)
+                        <div style={{
+                          padding: "12px 16px",
+                          background: currentField.color + "18",
+                          borderBottom: `1px solid ${currentField.color}33`,
+                        }}>
+                          <p style={{ fontSize: 12, fontWeight: 800, color: currentField.color, margin: 0 }}>
+                            {currentField.emoji} {fieldTab} 내용 추가
+                          </p>
+                          <p style={{ fontSize: 10, color: currentField.color + "aa", margin: "2px 0 0" }}>
+                            왼쪽 자료를 참고하며 내용을 덧붙여요
                           </p>
                         </div>
-                        <div style={{ padding: "14px 16px", display: "flex", flexDirection: "column", gap: 0 }}>
-                          {fieldLogs.map((log, idx) => (
-                            <div key={log.id} style={{
-                              display: "flex", gap: 12, paddingBottom: idx < fieldLogs.length - 1 ? 16 : 0,
-                              marginBottom: idx < fieldLogs.length - 1 ? 16 : 0,
-                              borderBottom: idx < fieldLogs.length - 1 ? `1px solid ${currentField.color}22` : "none",
-                            }}>
-                              {/* 타임라인 선 */}
-                              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", flexShrink: 0 }}>
-                                <div style={{ width: 8, height: 8, borderRadius: "50%", background: currentField.color, marginTop: 4 }} />
-                                {idx < fieldLogs.length - 1 && (
-                                  <div style={{ width: 1, flex: 1, background: currentField.color + "33", marginTop: 4 }} />
-                                )}
-                              </div>
-                              <div style={{ flex: 1 }}>
-                                <p style={{ fontSize: 11, fontWeight: 700, color: currentField.color, margin: "0 0 5px" }}>
-                                  {fmtDate(log.date)}
-                                </p>
-                                {log.is_sensitive ? (
-                                  <p style={{ fontSize: 12, color: "#ef4444", fontWeight: 700, margin: 0 }}>🔒 민감 기록</p>
-                                ) : (
-                                  <>
-                                    <p style={{ fontSize: 13, color: "var(--text)", lineHeight: 1.8, margin: 0, whiteSpace: "pre-wrap" }}>
-                                      {log.content}
-                                    </p>
-                                    {log.followup && (
-                                      <div style={{ marginTop: 6, padding: "6px 10px", borderRadius: 7, background: "#f0fdf4", border: "1px solid #bbf7d0" }}>
-                                        <p style={{ fontSize: 11, color: "#166534", margin: 0 }}>📌 {log.followup}</p>
-                                      </div>
-                                    )}
-                                  </>
-                                )}
-                              </div>
-                            </div>
-                          ))}
+                        <div style={{ padding: "14px 16px", display: "flex", flexDirection: "column", gap: 10, background: "#fff" }}>
+                          {/* 날짜 */}
+                          <div>
+                            <label style={{ fontSize: 10, fontWeight: 700, color: "var(--text-muted)", display: "block", marginBottom: 4 }}>
+                              날짜
+                            </label>
+                            <input
+                              type="date"
+                              id={`field-date-${fieldTab}`}
+                              defaultValue={toKSTDate()}
+                              className="hy-input"
+                              style={{ fontSize: 12 }}
+                            />
+                          </div>
+                          {/* 내용 */}
+                          <div>
+                            <label style={{ fontSize: 10, fontWeight: 700, color: currentField.color, display: "block", marginBottom: 4 }}>
+                              상담 내용
+                            </label>
+                            <textarea
+                              id={`field-content-${fieldTab}`}
+                              placeholder={
+                                fieldTab === "학업" ? "수업 태도, 공부 방법, 성적 관련 이야기..." :
+                                fieldTab === "교우관계" ? "친구 관계, 갈등, 교우 상황..." :
+                                fieldTab === "진로" ? "희망 진로, 관심사, 진로 고민..." :
+                                fieldTab === "가족" ? "가족 상황, 가정환경, 부모님 관련..." :
+                                fieldTab === "정서" ? "감정 상태, 스트레스, 심리적 상황..." :
+                                "기타 상담 내용..."
+                              }
+                              className="hy-input"
+                              style={{
+                                minHeight: 140, resize: "vertical", fontSize: 12, lineHeight: 1.7,
+                                borderColor: currentField.color + "55",
+                              }}
+                            />
+                          </div>
+                          {/* 후속 조치 */}
+                          <div>
+                            <label style={{ fontSize: 10, fontWeight: 700, color: "var(--text-muted)", display: "block", marginBottom: 4 }}>
+                              후속 조치 (선택)
+                            </label>
+                            <textarea
+                              id={`field-followup-${fieldTab}`}
+                              placeholder="다음에 확인할 것, 연락할 사항..."
+                              className="hy-input"
+                              style={{ minHeight: 60, resize: "vertical", fontSize: 12 }}
+                            />
+                          </div>
+                          {/* 민감 여부 */}
+                          <label style={{
+                            display: "flex", alignItems: "center", gap: 7, cursor: "pointer",
+                            padding: "7px 10px", borderRadius: 8,
+                            background: "#f9fafb", border: "1px solid var(--border)",
+                          }}>
+                            <input
+                              type="checkbox"
+                              id={`field-sensitive-${fieldTab}`}
+                              style={{ width: 13, height: 13, accentColor: "#e11d48", cursor: "pointer" }}
+                            />
+                            <span style={{ fontSize: 11, fontWeight: 700, color: "var(--text-muted)" }}>
+                              🔒 민감 기록
+                            </span>
+                          </label>
+                          {/* 저장 버튼 */}
+                          <button
+                            onClick={async () => {
+                              const dateEl    = document.getElementById(`field-date-${fieldTab}`) as HTMLInputElement;
+                              const contentEl = document.getElementById(`field-content-${fieldTab}`) as HTMLTextAreaElement;
+                              const followupEl= document.getElementById(`field-followup-${fieldTab}`) as HTMLTextAreaElement;
+                              const sensitiveEl= document.getElementById(`field-sensitive-${fieldTab}`) as HTMLInputElement;
+                              const content = contentEl?.value?.trim();
+                              if (!content) { alert("내용을 입력해주세요"); return; }
+                              await supabase.from("counseling_logs").insert({
+                                student_no: sel.student_no, name: sel.name,
+                                date: dateEl?.value ?? toKSTDate(),
+                                field: fieldTab,
+                                content,
+                                followup: followupEl?.value?.trim() || null,
+                                is_sensitive: sensitiveEl?.checked ?? false,
+                                updated_at: new Date().toISOString(),
+                              });
+                              contentEl.value = "";
+                              followupEl.value = "";
+                              if (sensitiveEl) sensitiveEl.checked = false;
+                              await loadAll();
+                            }}
+                            style={{
+                              width: "100%", padding: "11px", borderRadius: 10,
+                              border: "none", cursor: "pointer", fontFamily: "inherit",
+                              background: currentField.color, color: "#fff",
+                              fontSize: 13, fontWeight: 800, transition: "opacity 0.15s",
+                            }}
+                            onMouseEnter={e => (e.currentTarget.style.opacity = "0.85")}
+                            onMouseLeave={e => (e.currentTarget.style.opacity = "1")}
+                          >
+                            💾 {fieldTab} 기록 저장
+                          </button>
                         </div>
                       </div>
-                    );
-                  })()}
-                </div>
-              )}
+                    </div>
+                  </div>
+                );
+              })()}
 
               {/* ── 탭: 메모 + AI ── */}
               {tab === "memo" && (
