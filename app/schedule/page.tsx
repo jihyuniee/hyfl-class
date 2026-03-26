@@ -175,8 +175,8 @@ export default function SchedulePage() {
       alert("삭제 권한이 없어요.\nSupabase 대시보드에서 DELETE 정책을 추가해주세요.\n\nSQL: CREATE POLICY \"allow delete\" ON schedule_items FOR DELETE USING (true);");
       return;
     }
-    setDeleteTarget(null);
     await load();
+    setDeleteTarget(null);
   }
 
   function prevMonth() {
