@@ -53,6 +53,9 @@ const TYPE_TAG_BG: Record<string, string> = {
 const MONTHS = ["1월","2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"];
 const DAYS   = ["일","월","화","수","목","금","토"];
 
+// ✅ 관리자 비밀번호 — .env에 NEXT_PUBLIC_ADMIN_PASSWORD 로 설정하세요
+const ADMIN_PASSWORD = process.env.NEXT_PUBLIC_ADMIN_PASSWORD ?? "1234";
+
 function toKST(d: Date) {
   return new Date(d.toLocaleString("en-US", { timeZone: "Asia/Seoul" }));
 }
@@ -79,6 +82,16 @@ export default function SchedulePage() {
   const [fSubject, setFSubject] = useState("");
   const [fName,    setFName]    = useState("");
   const [loading,  setLoading]  = useState(false);
+
+  // ✅ 관리자 모드 상태
+  const [isAdmin,       setIsAdmin]       = useState(false);
+  const [pwModalOpen,   setPwModalOpen]   = useState(false);
+  const [pwInput,       setPwInput]       = useState("");
+  const [pwError,       setPwError]       = useState(false);
+
+  // ✅ 삭제 확인 모달 상태
+  const [deleteTarget,  setDeleteTarget]  = useState<Item | null>(null);
+  const [deleteLoading, setDeleteLoading] = useState(false);
 
   async function load() {
     const { data } = await supabase
@@ -134,6 +147,33 @@ export default function SchedulePage() {
     await load();
   }
 
+  // ✅ 관리자 비밀번호 확인
+  function handleAdminLogin() {
+    if (pwInput === ADMIN_PASSWORD) {
+      setIsAdmin(true);
+      setPwModalOpen(false);
+      setPwInput("");
+      setPwError(false);
+    } else {
+      setPwError(true);
+      setPwInput("");
+    }
+  }
+
+  // ✅ 삭제 실행
+  async function handleDelete() {
+    if (!deleteTarget) return;
+    setDeleteLoading(true);
+    const { error } = await supabase
+      .from("schedule_items")
+      .delete()
+      .eq("id", deleteTarget.id);
+    setDeleteLoading(false);
+    if (error) { alert(error.message); return; }
+    setDeleteTarget(null);
+    await load();
+  }
+
   function prevMonth() {
     if (month === 0) { setYear(y => y-1); setMonth(11); }
     else setMonth(m => m-1);
@@ -158,6 +198,136 @@ export default function SchedulePage() {
   return (
     <div style={{ display:"flex", flexDirection:"column", gap:20 }}>
 
+      {/* ✅ 관리자 비밀번호 입력 모달 */}
+      {pwModalOpen && (
+        <div
+          onClick={() => { setPwModalOpen(false); setPwInput(""); setPwError(false); }}
+          style={{
+            position:"fixed", inset:0, background:"rgba(0,0,0,0.4)",
+            display:"flex", alignItems:"center", justifyContent:"center",
+            zIndex:1000,
+          }}>
+          <div
+            onClick={e => e.stopPropagation()}
+            style={{
+              background:"#fff", borderRadius:18, padding:"28px 28px 24px",
+              width:"100%", maxWidth:360, boxShadow:"0 8px 40px rgba(0,0,0,0.18)",
+            }}>
+            <div style={{ fontSize:22, textAlign:"center", marginBottom:6 }}>🔐</div>
+            <h3 style={{ fontSize:16, fontWeight:800, color:"var(--text)", margin:"0 0 4px", textAlign:"center" }}>
+              관리자 모드
+            </h3>
+            <p style={{ fontSize:13, color:"var(--text-muted)", margin:"0 0 18px", textAlign:"center" }}>
+              비밀번호를 입력하면 일정을 삭제할 수 있어요
+            </p>
+            <input
+              type="password"
+              placeholder="비밀번호"
+              value={pwInput}
+              onChange={e => { setPwInput(e.target.value); setPwError(false); }}
+              onKeyDown={e => e.key === "Enter" && handleAdminLogin()}
+              className="hy-input"
+              style={{
+                width:"100%", marginBottom: pwError ? 6 : 14,
+                border: pwError ? "1.5px solid #e11d48" : undefined,
+                outline: pwError ? "none" : undefined,
+              }}
+              autoFocus
+            />
+            {pwError && (
+              <p style={{ fontSize:12, color:"#e11d48", margin:"0 0 12px", fontWeight:600 }}>
+                비밀번호가 틀렸어요
+              </p>
+            )}
+            <div style={{ display:"flex", gap:8 }}>
+              <button
+                onClick={() => { setPwModalOpen(false); setPwInput(""); setPwError(false); }}
+                style={{
+                  flex:1, padding:"9px 0", borderRadius:10, border:"1.5px solid var(--border)",
+                  background:"#fff", color:"var(--text-muted)", fontWeight:700, fontSize:13,
+                  cursor:"pointer", fontFamily:"inherit",
+                }}>
+                취소
+              </button>
+              <button
+                onClick={handleAdminLogin}
+                className="hy-btn hy-btn-primary"
+                style={{ flex:1, padding:"9px 0", fontSize:13 }}>
+                확인
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ✅ 삭제 확인 모달 */}
+      {deleteTarget && (
+        <div
+          onClick={() => !deleteLoading && setDeleteTarget(null)}
+          style={{
+            position:"fixed", inset:0, background:"rgba(0,0,0,0.4)",
+            display:"flex", alignItems:"center", justifyContent:"center",
+            zIndex:1000,
+          }}>
+          <div
+            onClick={e => e.stopPropagation()}
+            style={{
+              background:"#fff", borderRadius:18, padding:"28px 28px 24px",
+              width:"100%", maxWidth:360, boxShadow:"0 8px 40px rgba(0,0,0,0.18)",
+            }}>
+            <div style={{ fontSize:22, textAlign:"center", marginBottom:6 }}>🗑️</div>
+            <h3 style={{ fontSize:16, fontWeight:800, color:"var(--text)", margin:"0 0 4px", textAlign:"center" }}>
+              일정을 삭제할까요?
+            </h3>
+            <p style={{ fontSize:13, color:"var(--text-muted)", margin:"0 0 16px", textAlign:"center" }}>
+              이 작업은 되돌릴 수 없어요
+            </p>
+            {/* 삭제 대상 미리보기 */}
+            <div style={{
+              padding:"12px 14px", borderRadius:12, marginBottom:18,
+              background: TYPE_STYLE[deleteTarget.type]?.bg ?? "#f9fafb",
+              border:`1px solid ${TYPE_STYLE[deleteTarget.type]?.border ?? "#e5e7eb"}`,
+            }}>
+              <div style={{ fontWeight:800, fontSize:14, color:"var(--text)" }}>
+                {deleteTarget.title}
+              </div>
+              <div style={{ fontSize:12, color:"var(--text-muted)", marginTop:4 }}>
+                <span style={{
+                  padding:"1px 8px", borderRadius:999, fontSize:11, fontWeight:700,
+                  background: TYPE_STYLE[deleteTarget.type]?.pill ?? "#f3f4f6",
+                  color: TYPE_STYLE[deleteTarget.type]?.color ?? "#374151",
+                }}>{deleteTarget.type}</span>
+                <span style={{ marginLeft:6 }}>{deleteTarget.date}</span>
+              </div>
+            </div>
+            <div style={{ display:"flex", gap:8 }}>
+              <button
+                onClick={() => setDeleteTarget(null)}
+                disabled={deleteLoading}
+                style={{
+                  flex:1, padding:"9px 0", borderRadius:10, border:"1.5px solid var(--border)",
+                  background:"#fff", color:"var(--text-muted)", fontWeight:700, fontSize:13,
+                  cursor:"pointer", fontFamily:"inherit",
+                }}>
+                취소
+              </button>
+              <button
+                onClick={handleDelete}
+                disabled={deleteLoading}
+                style={{
+                  flex:1, padding:"9px 0", borderRadius:10, border:"none",
+                  background: deleteLoading ? "#fca5a5" : "#e11d48",
+                  color:"#fff", fontWeight:700, fontSize:13,
+                  cursor: deleteLoading ? "not-allowed" : "pointer",
+                  fontFamily:"inherit", transition:"background 0.15s",
+                }}>
+                {deleteLoading ? "삭제 중..." : "삭제하기"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* 헤더 */}
       <div className="hy-hero">
         <div style={{ position:"relative" }}>
@@ -170,9 +340,7 @@ export default function SchedulePage() {
         </div>
       </div>
 
-      {/* ✅ 수정 1: 범례 제거 — 필터 버튼에 dot 통합으로 중복 제거 */}
-
-      {/* 필터 + 등록 버튼 */}
+      {/* 필터 + 버튼 영역 */}
       <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", flexWrap:"wrap", gap:10 }}>
         <div style={{ display:"flex", gap:6, flexWrap:"wrap" }}>
           {FILTER_OPTIONS.map(f => {
@@ -181,9 +349,7 @@ export default function SchedulePage() {
             return (
               <button key={f} onClick={() => setFilter(f)}
                 style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 5,
+                  display:"flex", alignItems:"center", gap:5,
                   padding:"6px 14px", borderRadius:999, border:"1.5px solid",
                   borderColor: active ? st.border : "var(--border)",
                   background: active ? st.bg : "#fff",
@@ -191,15 +357,11 @@ export default function SchedulePage() {
                   fontWeight:700, fontSize:13, cursor:"pointer", fontFamily:"inherit",
                   transition:"all 0.15s",
                 }}>
-                {/* ✅ 수정 1: 필터 버튼에 dot 표시 (전체 제외) */}
                 {f !== "전체" && (
                   <span style={{
-                    width: 7,
-                    height: 7,
-                    borderRadius: "50%",
+                    width:7, height:7, borderRadius:"50%", flexShrink:0,
                     background: active ? st.dot : "var(--text-muted)",
-                    flexShrink: 0,
-                    transition: "background 0.15s",
+                    transition:"background 0.15s",
                   }} />
                 )}
                 {f}
@@ -207,12 +369,50 @@ export default function SchedulePage() {
             );
           })}
         </div>
-        <button onClick={() => setFormOpen(o => !o)}
-          className="hy-btn hy-btn-primary"
-          style={{ fontSize:13, padding:"8px 18px" }}>
-          {formOpen ? "닫기" : "+ 일정 등록"}
-        </button>
+
+        {/* ✅ 우측: 관리자 버튼 + 일정 등록 */}
+        <div style={{ display:"flex", gap:8, alignItems:"center" }}>
+          {isAdmin ? (
+            <button
+              onClick={() => setIsAdmin(false)}
+              style={{
+                padding:"7px 14px", borderRadius:999, border:"1.5px solid #fecdd3",
+                background:"#fff1f2", color:"#e11d48", fontWeight:700, fontSize:13,
+                cursor:"pointer", fontFamily:"inherit", display:"flex", alignItems:"center", gap:5,
+              }}>
+              <span>🔓</span> 관리자 해제
+            </button>
+          ) : (
+            <button
+              onClick={() => setPwModalOpen(true)}
+              style={{
+                padding:"7px 14px", borderRadius:999, border:"1.5px solid var(--border)",
+                background:"#fff", color:"var(--text-muted)", fontWeight:700, fontSize:13,
+                cursor:"pointer", fontFamily:"inherit", display:"flex", alignItems:"center", gap:5,
+              }}>
+              <span>🔐</span> 관리자
+            </button>
+          )}
+          <button onClick={() => setFormOpen(o => !o)}
+            className="hy-btn hy-btn-primary"
+            style={{ fontSize:13, padding:"8px 18px" }}>
+            {formOpen ? "닫기" : "+ 일정 등록"}
+          </button>
+        </div>
       </div>
+
+      {/* ✅ 관리자 모드 안내 배너 */}
+      {isAdmin && (
+        <div style={{
+          padding:"10px 16px", borderRadius:12,
+          background:"#fff1f2", border:"1.5px solid #fecdd3",
+          display:"flex", alignItems:"center", gap:8,
+          fontSize:13, color:"#e11d48", fontWeight:600,
+        }}>
+          <span>🔓</span>
+          관리자 모드 — 각 일정의 🗑️ 버튼을 눌러 삭제할 수 있어요
+        </div>
+      )}
 
       {/* 등록 폼 */}
       {formOpen && (
@@ -247,7 +447,6 @@ export default function SchedulePage() {
 
       {/* 달력 */}
       <div className="hy-card" style={{ padding:"20px" }}>
-        {/* 달력 헤더 */}
         <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:16 }}>
           <button onClick={prevMonth} style={{
             width:34, height:34, borderRadius:10, border:"1.5px solid var(--border)",
@@ -264,7 +463,6 @@ export default function SchedulePage() {
           }}>›</button>
         </div>
 
-        {/* 요일 헤더 */}
         <div style={{ display:"grid", gridTemplateColumns:"repeat(7,1fr)", gap:2, marginBottom:4 }}>
           {DAYS.map((d, i) => (
             <div key={d} style={{
@@ -274,7 +472,6 @@ export default function SchedulePage() {
           ))}
         </div>
 
-        {/* ✅ 수정 4: gap 3 → 4 */}
         <div style={{ display:"grid", gridTemplateColumns:"repeat(7,1fr)", gap:4 }}>
           {cells.map((day, idx) => {
             if (!day) return <div key={idx} />;
@@ -286,9 +483,7 @@ export default function SchedulePage() {
             return (
               <div key={idx} onClick={() => setSelectedDate(isSel ? null : iso)}
                 style={{
-                  // ✅ 수정 2: minHeight → 고정 height + overflow hidden으로 셀 높이 균일하게
-                  height: 90,
-                  overflow: "hidden",
+                  height:90, overflow:"hidden",
                   padding:"5px 6px", borderRadius:10,
                   background: isSel ? "var(--primary-light)" : isToday ? "#fdf4ff" : "#fff",
                   border: isSel
@@ -307,14 +502,12 @@ export default function SchedulePage() {
                 <div style={{ display:"flex", flexDirection:"column", gap:2 }}>
                   {dayItems.slice(0,3).map((it, i) => (
                     <div key={i} style={{
-                      // ✅ 수정 3: fontSize 10 → 11, padding 살짝 키움
-                      fontSize:11, fontWeight:700, padding:"2px 6px", 
-                      // ✅ 수정 1: borderRadius를 "0 4px 4px 0"으로 — 왼쪽 border와 충돌 방지
-                      borderRadius: "0 4px 4px 0",
+                      fontSize:11, fontWeight:700, padding:"2px 6px",
+                      borderRadius:"0 4px 4px 0",
                       background: TYPE_TAG_BG[it.type] ?? "#f3f4f6",
                       color: TYPE_STYLE[it.type]?.color ?? "#374151",
                       overflow:"hidden", whiteSpace:"nowrap", textOverflow:"ellipsis",
-                      borderLeft: `2px solid ${TYPE_STYLE[it.type]?.dot ?? "#9ca3af"}`,
+                      borderLeft:`2px solid ${TYPE_STYLE[it.type]?.dot ?? "#9ca3af"}`,
                     }}>{it.title}</div>
                   ))}
                   {dayItems.length > 3 && (
@@ -364,6 +557,20 @@ export default function SchedulePage() {
                         {it.created_by && <span style={{ marginLeft:6, color:"var(--text-subtle)" }}>· {it.created_by}</span>}
                       </div>
                     </div>
+                    {/* ✅ 관리자 모드일 때만 삭제 버튼 노출 */}
+                    {isAdmin && (
+                      <button
+                        onClick={e => { e.stopPropagation(); setDeleteTarget(it); }}
+                        style={{
+                          width:32, height:32, borderRadius:8, border:"1.5px solid #fecdd3",
+                          background:"#fff1f2", color:"#e11d48", cursor:"pointer",
+                          display:"flex", alignItems:"center", justifyContent:"center",
+                          fontSize:15, flexShrink:0, transition:"all 0.15s",
+                        }}
+                        title="삭제">
+                        🗑️
+                      </button>
+                    )}
                   </div>
                 );
               })}
@@ -413,6 +620,20 @@ export default function SchedulePage() {
                       {it.subject && <span style={{ marginLeft:6 }}>{it.subject}</span>}
                     </div>
                   </div>
+                  {/* ✅ 다가오는 일정에도 관리자 모드 삭제 버튼 */}
+                  {isAdmin && (
+                    <button
+                      onClick={() => setDeleteTarget(it)}
+                      style={{
+                        width:32, height:32, borderRadius:8, border:"1.5px solid #fecdd3",
+                        background:"#fff1f2", color:"#e11d48", cursor:"pointer",
+                        display:"flex", alignItems:"center", justifyContent:"center",
+                        fontSize:15, flexShrink:0, transition:"all 0.15s",
+                      }}
+                      title="삭제">
+                      🗑️
+                    </button>
+                  )}
                 </div>
               );
             })}
