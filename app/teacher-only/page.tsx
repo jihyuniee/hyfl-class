@@ -115,24 +115,26 @@ function CounselingForm({
   const [sensitive, setSensitive] = useState(editing?.is_sensitive ?? false);
   const [saving, setSaving] = useState(false);
 
-  async function save() {
-    if (!content.trim()) { alert("내용을 입력해주세요"); return; }
-    setSaving(true);
-    const payload = {
-      student_no: studentNo, name,
-      date, field, content: content.trim(),
-      followup: followup.trim() || null,
-      is_sensitive: sensitive,
-      updated_at: new Date().toISOString(),
-    };
-    if (editing) {
-      await supabase.from("counseling_logs").update(payload).eq("id", editing.id);
-    } else {
-      await supabase.from("counseling_logs").insert(payload);
-    }
-    setSaving(false);
-    onSaved();
+async function save() {
+  if (!content.trim()) { alert("내용을 입력해주세요"); return; }
+  setSaving(true);
+  const payload = {
+    student_no: studentNo, name,
+    date, field, content: content.trim(),
+    followup: followup.trim() || null,
+    is_sensitive: sensitive,
+    updated_at: new Date().toISOString(),
+  };
+  if (editing) {
+    const { error } = await supabase.from("counseling_logs").update(payload).eq("id", editing.id);
+    if (error) { alert("수정 오류: " + error.message + "\n코드: " + error.code); setSaving(false); return; }
+  } else {
+    const { error } = await supabase.from("counseling_logs").insert(payload);
+    if (error) { alert("저장 오류: " + error.message + "\n코드: " + error.code); setSaving(false); return; }
   }
+  setSaving(false);
+  onSaved();
+}
 
   const selField = FIELDS.find(f => f.key === field)!;
 
