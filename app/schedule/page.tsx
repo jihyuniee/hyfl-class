@@ -164,12 +164,17 @@ export default function SchedulePage() {
   async function handleDelete() {
     if (!deleteTarget) return;
     setDeleteLoading(true);
-    const { error } = await supabase
+    const { error, count } = await supabase
       .from("schedule_items")
-      .delete()
+      .delete({ count: "exact" })
       .eq("id", deleteTarget.id);
     setDeleteLoading(false);
-    if (error) { alert(error.message); return; }
+    if (error) { alert("삭제 오류: " + error.message); return; }
+    // count === 0 이면 RLS가 막은 것
+    if (count === 0) {
+      alert("삭제 권한이 없어요.\nSupabase 대시보드에서 DELETE 정책을 추가해주세요.\n\nSQL: CREATE POLICY \"allow delete\" ON schedule_items FOR DELETE USING (true);");
+      return;
+    }
     setDeleteTarget(null);
     await load();
   }
