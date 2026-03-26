@@ -43,7 +43,6 @@ const TYPE_STYLE: Record<string, { bg: string; color: string; dot: string; borde
   },
 };
 
-// 달력에서 일정 태그 배경색 (불투명 단색)
 const TYPE_TAG_BG: Record<string, string> = {
   수행평가: "#f3e8ff",
   고사:     "#ffe4e6",
@@ -148,12 +147,12 @@ export default function SchedulePage() {
 
   const FILTER_OPTIONS = ["전체", "수행평가", "고사", "학급일정", "학교일정"];
 
-  const FILTER_ACTIVE_STYLE: Record<string, { bg: string; color: string; border: string }> = {
-    전체:     { bg: "var(--primary-light)", color: "var(--primary)", border: "var(--primary)" },
-    수행평가: { bg: "#f3e8ff", color: "#9333ea", border: "#9333ea" },
-    고사:     { bg: "#ffe4e6", color: "#e11d48", border: "#e11d48" },
-    학급일정: { bg: "#dbeafe", color: "#2563eb", border: "#2563eb" },
-    학교일정: { bg: "#dcfce7", color: "#16a34a", border: "#16a34a" },
+  const FILTER_ACTIVE_STYLE: Record<string, { bg: string; color: string; border: string; dot: string }> = {
+    전체:     { bg: "var(--primary-light)", color: "var(--primary)", border: "var(--primary)", dot: "var(--primary)" },
+    수행평가: { bg: "#f3e8ff", color: "#9333ea", border: "#9333ea", dot: "#9333ea" },
+    고사:     { bg: "#ffe4e6", color: "#e11d48", border: "#e11d48", dot: "#e11d48" },
+    학급일정: { bg: "#dbeafe", color: "#2563eb", border: "#2563eb", dot: "#2563eb" },
+    학교일정: { bg: "#dcfce7", color: "#16a34a", border: "#16a34a", dot: "#16a34a" },
   };
 
   return (
@@ -171,15 +170,7 @@ export default function SchedulePage() {
         </div>
       </div>
 
-      {/* 범례 */}
-      <div style={{ display:"flex", gap:12, flexWrap:"wrap", padding:"10px 14px", background:"#fafafa", borderRadius:12, border:"1px solid var(--border)" }}>
-        {Object.entries(TYPE_STYLE).map(([type, style]) => (
-          <div key={type} style={{ display:"flex", alignItems:"center", gap:6 }}>
-            <span style={{ width:10, height:10, borderRadius:"50%", background:style.dot, flexShrink:0 }} />
-            <span style={{ fontSize:12, fontWeight:700, color:"var(--text-muted)" }}>{type}</span>
-          </div>
-        ))}
-      </div>
+      {/* ✅ 수정 1: 범례 제거 — 필터 버튼에 dot 통합으로 중복 제거 */}
 
       {/* 필터 + 등록 버튼 */}
       <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", flexWrap:"wrap", gap:10 }}>
@@ -190,6 +181,9 @@ export default function SchedulePage() {
             return (
               <button key={f} onClick={() => setFilter(f)}
                 style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 5,
                   padding:"6px 14px", borderRadius:999, border:"1.5px solid",
                   borderColor: active ? st.border : "var(--border)",
                   background: active ? st.bg : "#fff",
@@ -197,6 +191,17 @@ export default function SchedulePage() {
                   fontWeight:700, fontSize:13, cursor:"pointer", fontFamily:"inherit",
                   transition:"all 0.15s",
                 }}>
+                {/* ✅ 수정 1: 필터 버튼에 dot 표시 (전체 제외) */}
+                {f !== "전체" && (
+                  <span style={{
+                    width: 7,
+                    height: 7,
+                    borderRadius: "50%",
+                    background: active ? st.dot : "var(--text-muted)",
+                    flexShrink: 0,
+                    transition: "background 0.15s",
+                  }} />
+                )}
                 {f}
               </button>
             );
@@ -269,8 +274,8 @@ export default function SchedulePage() {
           ))}
         </div>
 
-        {/* 날짜 셀 */}
-        <div style={{ display:"grid", gridTemplateColumns:"repeat(7,1fr)", gap:3 }}>
+        {/* ✅ 수정 4: gap 3 → 4 */}
+        <div style={{ display:"grid", gridTemplateColumns:"repeat(7,1fr)", gap:4 }}>
           {cells.map((day, idx) => {
             if (!day) return <div key={idx} />;
             const iso = isoOf(day);
@@ -281,7 +286,10 @@ export default function SchedulePage() {
             return (
               <div key={idx} onClick={() => setSelectedDate(isSel ? null : iso)}
                 style={{
-                  minHeight:72, padding:"5px 6px", borderRadius:10,
+                  // ✅ 수정 2: minHeight → 고정 height + overflow hidden으로 셀 높이 균일하게
+                  height: 90,
+                  overflow: "hidden",
+                  padding:"5px 6px", borderRadius:10,
                   background: isSel ? "var(--primary-light)" : isToday ? "#fdf4ff" : "#fff",
                   border: isSel
                     ? "1.5px solid var(--primary)"
@@ -299,7 +307,10 @@ export default function SchedulePage() {
                 <div style={{ display:"flex", flexDirection:"column", gap:2 }}>
                   {dayItems.slice(0,3).map((it, i) => (
                     <div key={i} style={{
-                      fontSize:10, fontWeight:700, padding:"2px 5px", borderRadius:4,
+                      // ✅ 수정 3: fontSize 10 → 11, padding 살짝 키움
+                      fontSize:11, fontWeight:700, padding:"2px 6px", 
+                      // ✅ 수정 1: borderRadius를 "0 4px 4px 0"으로 — 왼쪽 border와 충돌 방지
+                      borderRadius: "0 4px 4px 0",
                       background: TYPE_TAG_BG[it.type] ?? "#f3f4f6",
                       color: TYPE_STYLE[it.type]?.color ?? "#374151",
                       overflow:"hidden", whiteSpace:"nowrap", textOverflow:"ellipsis",
