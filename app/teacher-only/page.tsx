@@ -26,7 +26,7 @@ type CounselingEntry = {
   id: string;
   student_no: string;
   date: string;
-  field: "학업" | "교우관계" | "진로" | "가족" | "정서" | "기타";
+  category: "학업" | "교우관계" | "진로" | "가족" | "정서" | "기타";
   content: string;
   followup?: string | null;
   is_sensitive: boolean;
@@ -55,7 +55,7 @@ const STUDENTS: Student[] = [
   { student_no: "20223", name: "현서정" },
 ];
 
-const FIELDS: { key: CounselingEntry["field"]; emoji: string; color: string; bg: string }[] = [
+const FIELDS: { key: CounselingEntry["category"]; emoji: string; color: string; bg: string }[] = [
   { key: "학업",    emoji: "📚", color: "#2563eb", bg: "#eff6ff" },
   { key: "교우관계", emoji: "🤝", color: "#a855f7", bg: "#fdf4ff" },
   { key: "진로",    emoji: "🎯", color: "#16a34a", bg: "#f0fdf4" },
@@ -101,7 +101,7 @@ function CounselingForm({
   onSaved: () => void; onCancel: () => void;
   editing?: CounselingEntry | null;
 }) {
-  const [field, setField] = useState<CounselingEntry["field"]>(editing?.field ?? "학업");
+  const [field, setField] = useState<CounselingEntry["category"]>(editing?.category ?? "학업");
   const [date,  setDate]  = useState(editing?.date ?? toKSTDate());
   const [content, setContent] = useState(editing?.content ?? "");
   const [followup, setFollowup] = useState(editing?.followup ?? "");
@@ -113,7 +113,7 @@ function CounselingForm({
     setSaving(true);
     const payload = {
       student_no: studentNo, name,
-      date, field, content: content.trim(),
+      date, category: field, content: content.trim(),
       followup: followup.trim() || null,
       is_sensitive: sensitive,
       updated_at: new Date().toISOString(),
@@ -199,7 +199,7 @@ function FieldForm({
   studentNo, name, fieldTab, currentField, onSaved,
 }: {
   studentNo: string; name: string;
-  fieldTab: CounselingEntry["field"];
+  fieldTab: CounselingEntry["category"];
   currentField: typeof FIELDS[0];
   onSaved: () => void;
 }) {
@@ -222,7 +222,7 @@ function FieldForm({
     setSaving(true);
     const { error } = await supabase.from("counseling_logs").insert({
       student_no: studentNo, name,
-      date, field: fieldTab,
+      date, category: fieldTab,
       content: content.trim(),
       followup: followup.trim() || null,
       is_sensitive: sensitive,
@@ -321,7 +321,7 @@ export default function TeacherOnlyPage() {
   const fileRef = useRef<HTMLInputElement>(null);
   const [aiFile, setAiFile] = useState<File | null>(null);
 
-  const [fieldTab, setFieldTab] = useState<CounselingEntry["field"]>("학업");
+  const [fieldTab, setFieldTab] = useState<CounselingEntry["category"]>("학업");
 
   function login() {
     if (pw === TEACHER_PW) { setAuthed(true); loadAll(); }
@@ -579,7 +579,7 @@ export default function TeacherOnlyPage() {
               const isSelected = sel?.student_no === s.student_no;
               const hasSensitive = logMap[s.student_no]?.some(l => l.is_sensitive);
               const lastLog = logMap[s.student_no]?.[0];
-              const lastField = FIELDS.find(f => f.key === lastLog?.field);
+              const lastField = FIELDS.find(f => f.key === lastLog?.category);
               return (
                 <button key={s.student_no} onClick={() => openStudent(s)}
                   style={{ width: "100%", padding: "10px 10px", borderRadius: 10, border: "1px solid",
@@ -611,7 +611,7 @@ export default function TeacherOnlyPage() {
                   </div>
                   {cnt > 0 && (
                     <div style={{ display: "flex", gap: 2, flexShrink: 0 }}>
-                      {FIELDS.filter(f => logMap[s.student_no]?.some(l => l.field === f.key)).slice(0, 3).map(f => (
+                      {FIELDS.filter(f => logMap[s.student_no]?.some(l => l.category === f.key)).slice(0, 3).map(f => (
                         <div key={f.key} style={{ width: 6, height: 6, borderRadius: "50%", background: f.color }} />
                       ))}
                     </div>
@@ -623,7 +623,7 @@ export default function TeacherOnlyPage() {
           <div style={{ padding: "10px 12px", borderTop: "1px solid var(--border)", background: "#f1f5f9" }}>
             <p style={{ fontSize: 10, color: "#94a3b8", fontWeight: 700, margin: "0 0 4px" }}>분야별 상담 현황</p>
             {FIELDS.map(f => {
-              const cnt = logs.filter(l => l.field === f.key).length;
+              const cnt = logs.filter(l => l.category === f.key).length;
               if (cnt === 0) return null;
               return (
                 <div key={f.key} style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 2 }}>
@@ -797,10 +797,10 @@ export default function TeacherOnlyPage() {
                         <p style={{ fontSize: 11, fontWeight: 800, color: "var(--text-muted)", margin: "0 0 10px" }}>최근 상담 기록</p>
                         <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
                           {selLogs.slice(0, 3).map(log => {
-                            const f = FIELDS.find(f => f.key === log.field);
+                            const f = FIELDS.find(f => f.key === log.category);
                             return (
                               <div key={log.id} style={{ display: "flex", gap: 10, alignItems: "flex-start", padding: "8px 10px", borderRadius: 8, background: f?.bg ?? "#fff" }}>
-                                <span style={{ fontSize: 11, fontWeight: 700, color: f?.color, minWidth: 50, flexShrink: 0 }}>{f?.emoji} {log.field}</span>
+                                <span style={{ fontSize: 11, fontWeight: 700, color: f?.color, minWidth: 50, flexShrink: 0 }}>{f?.emoji} {log.category}</span>
                                 <span style={{ fontSize: 11, color: "var(--text-muted)", minWidth: 50, flexShrink: 0 }}>{fmtDate(log.date)}</span>
                                 {log.is_sensitive
                                   ? <span style={{ fontSize: 11, color: "#ef4444", fontWeight: 700 }}>🔒 민감 기록</span>
@@ -903,7 +903,7 @@ export default function TeacherOnlyPage() {
                     <div style={{ padding: "40px", textAlign: "center", color: "var(--text-subtle)", fontSize: 13 }}>아직 상담 기록이 없어요</div>
                   ) : (
                     selLogs.map(log => {
-                      const f = FIELDS.find(f => f.key === log.field);
+                      const f = FIELDS.find(f => f.key === log.category);
                       return (
                         <div key={log.id} style={{ padding: "14px 16px", borderRadius: 12,
                           background: log.is_sensitive ? "#fff8f8" : f?.bg ?? "#f9fafb",
@@ -912,7 +912,7 @@ export default function TeacherOnlyPage() {
                           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
                             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                               <span style={{ fontSize: 11, padding: "2px 9px", borderRadius: 999, background: (f?.color ?? "#94a3b8") + "22", color: f?.color ?? "#64748b", fontWeight: 800 }}>
-                                {f?.emoji} {log.field}
+                                {f?.emoji} {log.category}
                               </span>
                               {log.is_sensitive && <span style={{ fontSize: 10, color: "#ef4444", fontWeight: 800 }}>🔒</span>}
                               <span style={{ fontSize: 11, color: "var(--text-muted)" }}>{fmtDate(log.date)}</span>
@@ -945,7 +945,7 @@ export default function TeacherOnlyPage() {
               {/* ── 탭: 분야별 ── */}
               {tab === "field" && (() => {
                 const currentField = FIELDS.find(f => f.key === fieldTab)!;
-                const fieldLogs = selLogs.filter(l => l.field === fieldTab).sort((a, b) => a.date.localeCompare(b.date));
+                const fieldLogs = selLogs.filter(l => l.category === fieldTab).sort((a, b) => a.date.localeCompare(b.date));
 
                 const fieldSurveyItems: Record<string, { l: string; v: string }[]> = {
                   학업: selSub ? [
@@ -982,7 +982,7 @@ export default function TeacherOnlyPage() {
                   <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                     <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
                       {FIELDS.map(f => {
-                        const cnt = selLogs.filter(l => l.field === f.key).length;
+                        const cnt = selLogs.filter(l => l.category === f.key).length;
                         return (
                           <button key={f.key} onClick={() => setFieldTab(f.key)}
                             style={{ padding: "7px 14px", borderRadius: 999, border: "1.5px solid",
