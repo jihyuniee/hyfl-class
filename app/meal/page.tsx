@@ -38,14 +38,6 @@ export default function MealPage() {
   const [ratings, setRatings] = useState<MealRating[]>([]);
   const [today]               = useState(toKSTDate());
 
-  // 메뉴 등록 폼
-  const [fDate,   setFDate]   = useState(toKSTDate());
-  const [fType,   setFType]   = useState<"중식"|"석식">("중식");
-  const [fMenu,   setFMenu]   = useState("");
-  const [fAuthor, setFAuthor] = useState("");
-  const [posting, setPosting] = useState(false);
-  const [formOpen,setFormOpen]= useState(false);
-
   // 평점 폼
   const [ratingOpen, setRatingOpen] = useState<string|null>(null);
   const [rStar,   setRStar]   = useState(5);
@@ -61,17 +53,6 @@ export default function MealPage() {
   }
 
   useEffect(() => { load(); }, []);
-
-  async function submitMenu() {
-    if (!fMenu.trim()) { alert("메뉴를 입력해주세요"); return; }
-    setPosting(true);
-    await supabase.from("meal_posts").insert({
-      date: fDate, type: fType, menu: fMenu.trim(), author: fAuthor.trim() || null,
-    });
-    setPosting(false);
-    setFMenu(""); setFAuthor(""); setFormOpen(false);
-    await load();
-  }
 
   async function submitRating() {
     if (!ratingOpen) return;
@@ -132,42 +113,13 @@ export default function MealPage() {
         </div>
       )}
 
-      {/* 메뉴 등록 버튼 */}
-      <div style={{ display:"flex", justifyContent:"flex-end" }}>
-        <button onClick={() => setFormOpen(o=>!o)} className="hy-btn hy-btn-primary" style={{ fontSize:13 }}>
-          {formOpen ? "닫기" : "🍽️ 메뉴 등록"}
-        </button>
-      </div>
-
-      {/* 메뉴 등록 폼 */}
-      {formOpen && (
-        <div className="hy-card" style={{ padding:"22px 24px" }}>
-          <h3 style={{ fontSize:15, fontWeight:900, color:"var(--text)", margin:"0 0 14px" }}>🍽️ 오늘 메뉴 등록</h3>
-          <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
-            <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:10 }}>
-              <input type="date" value={fDate} onChange={e=>setFDate(e.target.value)} className="hy-input"/>
-              <select value={fType} onChange={e=>setFType(e.target.value as "중식"|"석식")} className="hy-input" style={{ cursor:"pointer" }}>
-                <option value="중식">☀️ 중식</option>
-                <option value="석식">🌙 석식</option>
-              </select>
-              <input placeholder="당번 이름 (선택)" value={fAuthor} onChange={e=>setFAuthor(e.target.value)} className="hy-input"/>
-            </div>
-            <textarea
-              placeholder={"메뉴를 입력해주세요\n예)\n쌀밥\n된장찌개\n닭갈비볶음\n깍두기\n우유"}
-              value={fMenu} onChange={e=>setFMenu(e.target.value)}
-              className="hy-input" style={{ minHeight:120, resize:"vertical" }}/>
-            <button onClick={submitMenu} disabled={posting} className="hy-btn hy-btn-primary" style={{ fontSize:13, alignSelf:"flex-start" }}>
-              {posting ? "등록 중..." : "등록하기"}
-            </button>
-          </div>
-        </div>
-      )}
-
       {/* 날짜별 급식 목록 */}
       {Object.keys(grouped).length === 0 ? (
         <div className="hy-card" style={{ padding:"40px", textAlign:"center" }}>
           <p style={{ fontSize:32, margin:"0 0 12px" }}>🍱</p>
-          <p style={{ fontSize:14, color:"var(--text-subtle)", fontWeight:600 }}>아직 등록된 급식이 없어요.<br/>오늘 당번이 메뉴를 올려줘요!</p>
+          <p style={{ fontSize:14, color:"var(--text-subtle)", fontWeight:600 }}>
+            오늘 급식 정보를 불러오는 중이에요.<br/>매일 오전 7시에 자동으로 업데이트돼요!
+          </p>
         </div>
       ) : (
         Object.entries(grouped).map(([date, dayMeals]) => (
@@ -186,7 +138,6 @@ export default function MealPage() {
                         background: meal.type==="중식" ? "#fffbeb" : "#f5f3ff", padding:"4px 12px", borderRadius:999 }}>
                         {meal.type==="중식" ? "☀️ 중식" : "🌙 석식"}
                       </span>
-                      {meal.author && <span style={{ fontSize:11, color:"var(--text-subtle)", fontWeight:600 }}>📝 {meal.author}</span>}
                     </div>
 
                     <p style={{ fontSize:13, color:"var(--text)", lineHeight:1.8, margin:"0 0 12px", whiteSpace:"pre-wrap", fontWeight:600 }}>{meal.menu}</p>
