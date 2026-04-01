@@ -10,7 +10,7 @@ function dday(target: string) {
 }
 
 const SUNEUNG = "2026-11-18";
-const EXAM    = "2026-04-29";
+const EXAM    = "2026-04-27";
 
 const QUICK_LINKS = [
   { href: "/schedule",   emoji: "📅", label: "일정/수행",  bg: "linear-gradient(135deg,#dbeafe,#e0f2fe)", accent: "#3b82f6", border: "#bfdbfe" },
