@@ -135,8 +135,8 @@ export default function MentorPage() {
 
     try {
       // 파일명 중복 방지: timestamp + 원본 파일명
-      const ext = rFile.name.split(".").pop();
-      const safeName = `mentor-files/${Date.now()}_${rFile.name.replace(/[^a-zA-Z0-9가-힣._-]/g, "_")}`;
+      const ext = rFile.name.split(".").pop() ?? "bin";
+      const safeName = `mentor-files/${Date.now()}.${ext}`;
 
       const { error: upErr } = await supabase.storage
         .from("uploads")
@@ -354,8 +354,13 @@ export default function MentorPage() {
                 <div style={{ display:"flex",flexDirection:"column",gap:10 }}>
                   {selectedSubjectResources.map(r=>{
                     const ts = FTYPE_STYLE[r.file_type];
+                    const openUrl = r.file_url || r.link || null;
                     return (
-                      <div key={r.id} style={{ padding:"14px 18px",borderRadius:14,background:"#fafafa",border:"1.5px solid var(--border)",display:"flex",alignItems:"center",gap:14,flexWrap:"wrap" }}>
+                      <div key={r.id}
+                        onClick={()=>openUrl && window.open(openUrl, "_blank")}
+                        style={{ padding:"14px 18px",borderRadius:14,background:"#fafafa",border:"1.5px solid var(--border)",display:"flex",alignItems:"center",gap:14,flexWrap:"wrap",cursor:openUrl?"pointer":"default",transition:"all 0.12s" }}
+                        onMouseEnter={e=>{ if(openUrl)(e.currentTarget as HTMLDivElement).style.background="#f0f4ff"; (e.currentTarget as HTMLDivElement).style.borderColor="#c7d2fe"; }}
+                        onMouseLeave={e=>{ (e.currentTarget as HTMLDivElement).style.background="#fafafa"; (e.currentTarget as HTMLDivElement).style.borderColor="var(--border)"; }}>
                         {/* 파일 아이콘 */}
                         <div style={{ width:44,height:44,borderRadius:12,background:"#eff6ff",display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,flexShrink:0 }}>
                           {getFileIcon(r.file_name)}
@@ -364,25 +369,18 @@ export default function MentorPage() {
                           <div style={{ display:"flex",alignItems:"center",gap:6,marginBottom:4,flexWrap:"wrap" }}>
                             <span style={{ fontSize:11,fontWeight:700,padding:"2px 8px",borderRadius:999,background:ts.bg,color:ts.color }}>{r.file_type}</span>
                             <span style={{ fontSize:11,color:"var(--text-subtle)",fontWeight:600 }}>{formatDate(r.created_at)}</span>
+                            {openUrl && <span style={{ fontSize:11,color:"#6366f1",fontWeight:700 }}>클릭해서 열기 →</span>}
                           </div>
                           <h4 style={{ fontSize:14,fontWeight:800,color:"var(--text)",margin:"0 0 2px",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap" }}>{r.title}</h4>
                           {r.description && <p style={{ fontSize:12,color:"var(--text-muted)",margin:0 }}>{r.description}</p>}
                           {r.file_name && <p style={{ fontSize:11,color:"var(--text-subtle)",margin:"2px 0 0",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap" }}>📎 {r.file_name}</p>}
                         </div>
-                        <div style={{ display:"flex",gap:8,flexShrink:0 }}>
-                          {r.file_url && (
-                            <a href={r.file_url} target="_blank" rel="noopener noreferrer" download
-                              style={{ display:"inline-flex",alignItems:"center",gap:4,fontSize:12,fontWeight:700,color:"#6366f1",textDecoration:"none",padding:"6px 14px",borderRadius:999,background:"#eff6ff",border:"1px solid #c7d2fe",whiteSpace:"nowrap" }}>
-                              ⬇ 다운로드
-                            </a>
-                          )}
-                          {isAdmin && (
-                            <button onClick={()=>deleteResource(r.id, r.file_url)}
-                              style={{ fontSize:11,padding:"6px 12px",borderRadius:999,border:"1px solid #fecaca",background:"#fff5f5",color:"#ef4444",cursor:"pointer",fontFamily:"inherit",fontWeight:700 }}>
-                              삭제
-                            </button>
-                          )}
-                        </div>
+                        {isAdmin && (
+                          <button onClick={e=>{e.stopPropagation();deleteResource(r.id, r.file_url);}}
+                            style={{ fontSize:11,padding:"6px 12px",borderRadius:999,border:"1px solid #fecaca",background:"#fff5f5",color:"#ef4444",cursor:"pointer",fontFamily:"inherit",fontWeight:700,flexShrink:0 }}>
+                            삭제
+                          </button>
+                        )}
                       </div>
                     );
                   })}
@@ -549,7 +547,11 @@ export default function MentorPage() {
                 const m = MENTORS.find(x=>x.subject===r.subject);
                 const ts = FTYPE_STYLE[r.file_type];
                 return (
-                  <div key={r.id} className="hy-card" style={{ padding:"14px 18px",display:"flex",alignItems:"center",gap:14,flexWrap:"wrap" }}>
+                  <div key={r.id} className="hy-card"
+                    onClick={()=>{ const u = r.file_url||r.link; if(u) window.open(u,"_blank"); }}
+                    style={{ padding:"14px 18px",display:"flex",alignItems:"center",gap:14,flexWrap:"wrap",cursor:(r.file_url||r.link)?"pointer":"default",transition:"box-shadow 0.12s" }}
+                    onMouseEnter={e=>{ if(r.file_url||r.link)(e.currentTarget as HTMLDivElement).style.boxShadow="0 4px 20px rgba(99,102,241,0.15)"; }}
+                    onMouseLeave={e=>{ (e.currentTarget as HTMLDivElement).style.boxShadow=""; }}>
                     <div style={{ width:44,height:44,borderRadius:12,background:"#eff6ff",display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,flexShrink:0 }}>
                       {getFileIcon(r.file_name)}
                     </div>
@@ -558,25 +560,18 @@ export default function MentorPage() {
                         <span style={{ fontSize:11,fontWeight:700,padding:"2px 8px",borderRadius:999,background:ts.bg,color:ts.color }}>{r.file_type}</span>
                         <span style={{ fontSize:12,fontWeight:700,color:"var(--text-muted)" }}>{m?.emoji} {r.subject}</span>
                         <span style={{ fontSize:11,color:"var(--text-subtle)" }}>{formatDate(r.created_at)}</span>
+                        {(r.file_url||r.link) && <span style={{ fontSize:11,color:"#6366f1",fontWeight:700 }}>클릭해서 열기 →</span>}
                       </div>
                       <h4 style={{ fontSize:14,fontWeight:800,color:"var(--text)",margin:"0 0 2px" }}>{r.title}</h4>
                       {r.description && <p style={{ fontSize:12,color:"var(--text-muted)",margin:0 }}>{r.description}</p>}
                       {r.file_name && <p style={{ fontSize:11,color:"var(--text-subtle)",margin:"2px 0 0" }}>📎 {r.file_name}</p>}
                     </div>
-                    <div style={{ display:"flex",gap:8,flexShrink:0 }}>
-                      {r.file_url && (
-                        <a href={r.file_url} target="_blank" rel="noopener noreferrer" download
-                          style={{ display:"inline-flex",alignItems:"center",gap:4,fontSize:12,fontWeight:700,color:"#6366f1",textDecoration:"none",padding:"6px 14px",borderRadius:999,background:"#eff6ff",border:"1px solid #c7d2fe",whiteSpace:"nowrap" }}>
-                          ⬇ 다운로드
-                        </a>
-                      )}
-                      {isAdmin && (
-                        <button onClick={()=>deleteResource(r.id, r.file_url)}
-                          style={{ fontSize:11,padding:"6px 12px",borderRadius:999,border:"1px solid #fecaca",background:"#fff5f5",color:"#ef4444",cursor:"pointer",fontFamily:"inherit",fontWeight:700 }}>
-                          삭제
-                        </button>
-                      )}
-                    </div>
+                    {isAdmin && (
+                      <button onClick={e=>{e.stopPropagation();deleteResource(r.id, r.file_url);}}
+                        style={{ fontSize:11,padding:"6px 12px",borderRadius:999,border:"1px solid #fecaca",background:"#fff5f5",color:"#ef4444",cursor:"pointer",fontFamily:"inherit",fontWeight:700,flexShrink:0 }}>
+                        삭제
+                      </button>
+                    )}
                   </div>
                 );
               })}
