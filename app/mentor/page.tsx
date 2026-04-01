@@ -356,31 +356,39 @@ export default function MentorPage() {
                     const ts = FTYPE_STYLE[r.file_type];
                     const openUrl = r.file_url || r.link || null;
                     return (
-                      <div key={r.id}
-                        onClick={()=>openUrl && window.open(openUrl, "_blank")}
-                        style={{ padding:"14px 18px",borderRadius:14,background:"#fafafa",border:"1.5px solid var(--border)",display:"flex",alignItems:"center",gap:14,flexWrap:"wrap",cursor:openUrl?"pointer":"default",transition:"all 0.12s" }}
-                        onMouseEnter={e=>{ if(openUrl)(e.currentTarget as HTMLDivElement).style.background="#f0f4ff"; (e.currentTarget as HTMLDivElement).style.borderColor="#c7d2fe"; }}
-                        onMouseLeave={e=>{ (e.currentTarget as HTMLDivElement).style.background="#fafafa"; (e.currentTarget as HTMLDivElement).style.borderColor="var(--border)"; }}>
-                        {/* 파일 아이콘 */}
-                        <div style={{ width:44,height:44,borderRadius:12,background:"#eff6ff",display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,flexShrink:0 }}>
-                          {getFileIcon(r.file_name)}
-                        </div>
-                        <div style={{ flex:1,minWidth:0 }}>
-                          <div style={{ display:"flex",alignItems:"center",gap:6,marginBottom:4,flexWrap:"wrap" }}>
-                            <span style={{ fontSize:11,fontWeight:700,padding:"2px 8px",borderRadius:999,background:ts.bg,color:ts.color }}>{r.file_type}</span>
-                            <span style={{ fontSize:11,color:"var(--text-subtle)",fontWeight:600 }}>{formatDate(r.created_at)}</span>
-                            {openUrl && <span style={{ fontSize:11,color:"#6366f1",fontWeight:700 }}>클릭해서 열기 →</span>}
+                      <div key={r.id} style={{ borderRadius:14,overflow:"hidden",border:"1.5px solid var(--border)" }}>
+                        {/* 상단: 아이콘 + 제목 + 삭제 */}
+                        <div style={{ padding:"14px 18px",display:"flex",alignItems:"center",gap:12,background:"#fafafa" }}>
+                          <div style={{ width:42,height:42,borderRadius:12,background:"#eff6ff",display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,flexShrink:0 }}>
+                            {getFileIcon(r.file_name)}
                           </div>
-                          <h4 style={{ fontSize:14,fontWeight:800,color:"var(--text)",margin:"0 0 2px",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap" }}>{r.title}</h4>
-                          {r.description && <p style={{ fontSize:12,color:"var(--text-muted)",margin:0 }}>{r.description}</p>}
-                          {r.file_name && <p style={{ fontSize:11,color:"var(--text-subtle)",margin:"2px 0 0",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap" }}>📎 {r.file_name}</p>}
+                          <div style={{ flex:1,minWidth:0 }}>
+                            <div style={{ display:"flex",alignItems:"center",gap:6,marginBottom:3,flexWrap:"wrap" }}>
+                              <span style={{ fontSize:11,fontWeight:700,padding:"2px 8px",borderRadius:999,background:ts.bg,color:ts.color }}>{r.file_type}</span>
+                              <span style={{ fontSize:11,color:"var(--text-subtle)",fontWeight:600 }}>{formatDate(r.created_at)}</span>
+                            </div>
+                            <h4 style={{ fontSize:14,fontWeight:800,color:"var(--text)",margin:0,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap" }}>{r.title}</h4>
+                          </div>
+                          {isAdmin && (
+                            <button onClick={()=>deleteResource(r.id, r.file_url)}
+                              style={{ fontSize:11,padding:"5px 12px",borderRadius:999,border:"1px solid #fecaca",background:"#fff5f5",color:"#ef4444",cursor:"pointer",fontFamily:"inherit",fontWeight:700,flexShrink:0 }}>
+                              삭제
+                            </button>
+                          )}
                         </div>
-                        {isAdmin && (
-                          <button onClick={e=>{e.stopPropagation();deleteResource(r.id, r.file_url);}}
-                            style={{ fontSize:11,padding:"6px 12px",borderRadius:999,border:"1px solid #fecaca",background:"#fff5f5",color:"#ef4444",cursor:"pointer",fontFamily:"inherit",fontWeight:700,flexShrink:0 }}>
-                            삭제
-                          </button>
-                        )}
+                        {/* 하단: 설명 + 파일 열기 버튼 */}
+                        <div style={{ padding:"14px 18px",borderTop:"1px solid var(--border)",background:"#fff" }}>
+                          {r.description
+                            ? <p style={{ fontSize:13,color:"var(--text)",lineHeight:1.7,margin:"0 0 14px",whiteSpace:"pre-wrap" }}>{r.description}</p>
+                            : <p style={{ fontSize:12,color:"var(--text-subtle)",margin:"0 0 14px",fontStyle:"italic" }}>설명 없음</p>
+                          }
+                          {openUrl && (
+                            <a href={openUrl} target="_blank" rel="noopener noreferrer"
+                              style={{ display:"inline-flex",alignItems:"center",gap:6,fontSize:13,fontWeight:700,color:"#6366f1",textDecoration:"none",padding:"8px 18px",borderRadius:999,background:"#eff6ff",border:"1.5px solid #c7d2fe" }}>
+                              {getFileIcon(r.file_name)} {r.file_name ? r.file_name : "자료 열기"} 보기 →
+                            </a>
+                          )}
+                        </div>
                       </div>
                     );
                   })}
@@ -547,31 +555,40 @@ export default function MentorPage() {
                 const m = MENTORS.find(x=>x.subject===r.subject);
                 const ts = FTYPE_STYLE[r.file_type];
                 return (
-                  <div key={r.id} className="hy-card"
-                    onClick={()=>{ const u = r.file_url||r.link; if(u) window.open(u,"_blank"); }}
-                    style={{ padding:"14px 18px",display:"flex",alignItems:"center",gap:14,flexWrap:"wrap",cursor:(r.file_url||r.link)?"pointer":"default",transition:"box-shadow 0.12s" }}
-                    onMouseEnter={e=>{ if(r.file_url||r.link)(e.currentTarget as HTMLDivElement).style.boxShadow="0 4px 20px rgba(99,102,241,0.15)"; }}
-                    onMouseLeave={e=>{ (e.currentTarget as HTMLDivElement).style.boxShadow=""; }}>
-                    <div style={{ width:44,height:44,borderRadius:12,background:"#eff6ff",display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,flexShrink:0 }}>
-                      {getFileIcon(r.file_name)}
-                    </div>
-                    <div style={{ flex:1,minWidth:0 }}>
-                      <div style={{ display:"flex",alignItems:"center",gap:6,marginBottom:4,flexWrap:"wrap" }}>
-                        <span style={{ fontSize:11,fontWeight:700,padding:"2px 8px",borderRadius:999,background:ts.bg,color:ts.color }}>{r.file_type}</span>
-                        <span style={{ fontSize:12,fontWeight:700,color:"var(--text-muted)" }}>{m?.emoji} {r.subject}</span>
-                        <span style={{ fontSize:11,color:"var(--text-subtle)" }}>{formatDate(r.created_at)}</span>
-                        {(r.file_url||r.link) && <span style={{ fontSize:11,color:"#6366f1",fontWeight:700 }}>클릭해서 열기 →</span>}
+                  <div key={r.id} style={{ borderRadius:14,overflow:"hidden",border:"1.5px solid var(--border)" }}>
+                    {/* 상단 */}
+                    <div style={{ padding:"14px 18px",display:"flex",alignItems:"center",gap:12,background:"#fafafa" }}>
+                      <div style={{ width:42,height:42,borderRadius:12,background:"#eff6ff",display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,flexShrink:0 }}>
+                        {getFileIcon(r.file_name)}
                       </div>
-                      <h4 style={{ fontSize:14,fontWeight:800,color:"var(--text)",margin:"0 0 2px" }}>{r.title}</h4>
-                      {r.description && <p style={{ fontSize:12,color:"var(--text-muted)",margin:0 }}>{r.description}</p>}
-                      {r.file_name && <p style={{ fontSize:11,color:"var(--text-subtle)",margin:"2px 0 0" }}>📎 {r.file_name}</p>}
+                      <div style={{ flex:1,minWidth:0 }}>
+                        <div style={{ display:"flex",alignItems:"center",gap:6,marginBottom:3,flexWrap:"wrap" }}>
+                          <span style={{ fontSize:11,fontWeight:700,padding:"2px 8px",borderRadius:999,background:ts.bg,color:ts.color }}>{r.file_type}</span>
+                          <span style={{ fontSize:12,fontWeight:700,color:"var(--text-muted)" }}>{m?.emoji} {r.subject}</span>
+                          <span style={{ fontSize:11,color:"var(--text-subtle)" }}>{formatDate(r.created_at)}</span>
+                        </div>
+                        <h4 style={{ fontSize:14,fontWeight:800,color:"var(--text)",margin:0,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap" }}>{r.title}</h4>
+                      </div>
+                      {isAdmin && (
+                        <button onClick={()=>deleteResource(r.id, r.file_url)}
+                          style={{ fontSize:11,padding:"5px 12px",borderRadius:999,border:"1px solid #fecaca",background:"#fff5f5",color:"#ef4444",cursor:"pointer",fontFamily:"inherit",fontWeight:700,flexShrink:0 }}>
+                          삭제
+                        </button>
+                      )}
                     </div>
-                    {isAdmin && (
-                      <button onClick={e=>{e.stopPropagation();deleteResource(r.id, r.file_url);}}
-                        style={{ fontSize:11,padding:"6px 12px",borderRadius:999,border:"1px solid #fecaca",background:"#fff5f5",color:"#ef4444",cursor:"pointer",fontFamily:"inherit",fontWeight:700,flexShrink:0 }}>
-                        삭제
-                      </button>
-                    )}
+                    {/* 하단: 설명 + 열기 버튼 */}
+                    <div style={{ padding:"14px 18px",borderTop:"1px solid var(--border)",background:"#fff" }}>
+                      {r.description
+                        ? <p style={{ fontSize:13,color:"var(--text)",lineHeight:1.7,margin:"0 0 14px",whiteSpace:"pre-wrap" }}>{r.description}</p>
+                        : <p style={{ fontSize:12,color:"var(--text-subtle)",margin:"0 0 14px",fontStyle:"italic" }}>설명 없음</p>
+                      }
+                      {(r.file_url||r.link) && (
+                        <a href={r.file_url||r.link||""} target="_blank" rel="noopener noreferrer"
+                          style={{ display:"inline-flex",alignItems:"center",gap:6,fontSize:13,fontWeight:700,color:"#6366f1",textDecoration:"none",padding:"8px 18px",borderRadius:999,background:"#eff6ff",border:"1.5px solid #c7d2fe" }}>
+                          {getFileIcon(r.file_name)} {r.file_name ? r.file_name : "자료 열기"} 보기 →
+                        </a>
+                      )}
+                    </div>
                   </div>
                 );
               })}
