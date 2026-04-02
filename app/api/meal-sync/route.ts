@@ -8,7 +8,7 @@ const supabase = createClient(
 
 const API_KEY     = "d0e1f3244a5247a19747ac74994fccfd";
 const EDU_CODE    = "B10";
-const SCHOOL_CODE = "B100000576";
+const SCHOOL_CODE = "7010259";
 
 function toYMD(date: Date) {
   return `${date.getFullYear()}${String(date.getMonth()+1).padStart(2,"0")}${String(date.getDate()).padStart(2,"0")}`;
