@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
+import { supabase } from "@/components/lib/supabaseClient";
 
 const NAV_GROUPS = [
   {
@@ -59,12 +60,22 @@ export default function NavBar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openGroup, setOpenGroup] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
+  const [newNoticeCount, setNewNoticeCount] = useState(0);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    const threeDaysAgo = new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString();
+    supabase
+      .from("notices")
+      .select("id", { count: "exact", head: true })
+      .gt("created_at", threeDaysAgo)
+      .then(({ count }) => setNewNoticeCount(count ?? 0));
   }, []);
 
   useEffect(() => {
@@ -147,7 +158,7 @@ export default function NavBar() {
                   }}>
                   {group.items.map((item) => (
                     <Link key={item.href} href={item.href} style={{
-                      display:"flex", alignItems:"center",
+                      display:"flex", alignItems:"center", gap:6,
                       padding:"9px 14px", borderRadius:10,
                       color: isActive(item.href) ? "var(--primary)" : "var(--text)",
                       background: isActive(item.href) ? "var(--primary-light)" : "transparent",
@@ -156,7 +167,17 @@ export default function NavBar() {
                     }}
                       onMouseEnter={e => !isActive(item.href) && (e.currentTarget.style.background="#fdf2f8")}
                       onMouseLeave={e => !isActive(item.href) && (e.currentTarget.style.background="transparent")}
-                    >{item.label}</Link>
+                    >
+                      {item.label}
+                      {item.href === "/notice" && newNoticeCount > 0 && (
+                        <span style={{
+                          display:"inline-flex", alignItems:"center", justifyContent:"center",
+                          minWidth:18, height:18, borderRadius:999, padding:"0 5px",
+                          background:"#ef4444", color:"#fff",
+                          fontSize:10, fontWeight:800, lineHeight:1,
+                        }}>{newNoticeCount}</span>
+                      )}
+                    </Link>
                   ))}
                 </div>
               )}
@@ -217,11 +238,22 @@ export default function NavBar() {
               <div style={{ display:"flex", flexWrap:"wrap", gap:6 }}>
                 {group.items.map((item) => (
                   <Link key={item.href} href={item.href} style={{
+                    display:"inline-flex", alignItems:"center", gap:5,
                     padding:"7px 16px", borderRadius:999,
                     background: isActive(item.href) ? "linear-gradient(135deg,#f472b6,#a78bfa)" : "#fdf2f8",
                     color: isActive(item.href) ? "#fff" : "var(--text-muted)",
                     fontSize:13, fontWeight:700, textDecoration:"none",
-                  }}>{item.label}</Link>
+                  }}>
+                    {item.label}
+                    {item.href === "/notice" && newNoticeCount > 0 && (
+                      <span style={{
+                        display:"inline-flex", alignItems:"center", justifyContent:"center",
+                        minWidth:16, height:16, borderRadius:999, padding:"0 4px",
+                        background: isActive(item.href) ? "rgba(255,255,255,0.35)" : "#ef4444",
+                        color:"#fff", fontSize:9, fontWeight:800, lineHeight:1,
+                      }}>{newNoticeCount}</span>
+                    )}
+                  </Link>
                 ))}
               </div>
             </div>

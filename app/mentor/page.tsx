@@ -268,11 +268,44 @@ export default function MentorPage() {
                         </span>
                       ))}
                     </div>
-                    <div style={{ padding:"8px 12px", borderRadius:10, background:"#fafafa", border:"1px solid var(--border)" }}>
+                    <div style={{ padding:"8px 12px", borderRadius:10, background:"#fafafa", border:"1px solid var(--border)", marginBottom: resCount > 0 ? 10 : 0 }}>
                       <p style={{ fontSize:11, color:"var(--text-subtle)", margin:0, fontWeight:600 }}>
                         활동 기록: {logCount}건 · 공유 자료: {resCount}개
                       </p>
                     </div>
+
+                    {/* ── 최근 자료 미리보기 ── */}
+                    {resources
+                      .filter(r => r.subject === m.subject)
+                      .slice(0, 2)
+                      .map(r => {
+                        const ts = FTYPE_STYLE[r.file_type];
+                        const openUrl = r.file_url || r.link || null;
+                        return (
+                          <div key={r.id}
+                            style={{ display:"flex", alignItems:"center", gap:8, padding:"7px 0", borderTop:"1px solid var(--border)" }}
+                            onClick={e => e.stopPropagation()}>
+                            <span style={{ fontSize:15, flexShrink:0 }}>{getFileIcon(r.file_name)}</span>
+                            <span style={{ fontSize:10, fontWeight:700, padding:"2px 7px", borderRadius:999, background:ts.bg, color:ts.color, flexShrink:0 }}>
+                              {r.file_type}
+                            </span>
+                            {openUrl ? (
+                              <a href={openUrl} target="_blank" rel="noopener noreferrer"
+                                style={{ fontSize:12, color:"var(--text)", fontWeight:600, flex:1, minWidth:0, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap", textDecoration:"none" }}>
+                                {r.title}
+                              </a>
+                            ) : (
+                              <span style={{ fontSize:12, color:"var(--text)", fontWeight:600, flex:1, minWidth:0, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>
+                                {r.title}
+                              </span>
+                            )}
+                            <span style={{ fontSize:10, color:"var(--text-subtle)", flexShrink:0 }}>
+                              {formatDate(r.created_at)}
+                            </span>
+                          </div>
+                        );
+                      })
+                    }
                   </div>
                 </div>
               );
