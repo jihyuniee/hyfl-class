@@ -171,7 +171,19 @@ export default function Home() {
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(145px,1fr))", gap: 12 }}>
           {QUICK_LINKS.map((item) => (
             <Link key={item.href} href={item.href} className="hy-quick-link"
-              style={{ background: item.bg, border: `1.5px solid ${item.border}` }}>
+              style={{ background: item.bg, border: `1.5px solid ${item.border}`, position: "relative" }}>
+              {item.href === "/notice" && newCount > 0 && (
+                <span style={{
+                  position: "absolute", top: 10, right: 10,
+                  minWidth: 20, height: 20, borderRadius: 999, padding: "0 6px",
+                  background: "linear-gradient(135deg,#ef4444,#f97316)",
+                  color: "#fff", fontSize: 11, fontWeight: 800,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  boxShadow: "0 2px 8px rgba(239,68,68,0.5)",
+                }}>
+                  {newCount}
+                </span>
+              )}
               <span style={{ fontSize: 26 }}>{item.emoji}</span>
               <span style={{ fontSize: 14, fontWeight: 800, color: "var(--text)", letterSpacing: "-0.3px" }}>
                 {item.label}
@@ -197,7 +209,7 @@ export default function Home() {
                   color: "#fff", fontSize: 11, fontWeight: 800,
                   boxShadow: "0 2px 8px rgba(239,68,68,0.4)",
                 }}>
-                  N {newCount}
+                  {newCount}
                 </span>
               )}
             </h3>
