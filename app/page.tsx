@@ -73,10 +73,10 @@ export default function Home() {
       <div style={{ borderRadius: 28, overflow: "hidden", position: "relative", boxShadow: "0 12px 40px rgba(0,0,0,0.18)" }}>
         <div style={{ position: "relative", width: "100%", height: "clamp(320px, 55vw, 580px)" }}>
           <Image
-            src="/class-photo.jpg"
+            src="/class-photo2.jpg"
             alt="2-2 우리반"
             fill
-            style={{ objectFit: "cover", objectPosition: "center 60%" }}
+            style={{ objectFit: "cover", objectPosition: "center center" }}
             priority
           />
           <div style={{
