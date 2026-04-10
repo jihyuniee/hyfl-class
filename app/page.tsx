@@ -72,12 +72,14 @@ export default function Home() {
       {/* ── 우리반 사진 히어로 ── */}
       <div style={{ borderRadius: 28, overflow: "hidden", position: "relative", boxShadow: "0 12px 40px rgba(0,0,0,0.18)" }}>
         <div style={{ position: "relative", width: "100%", height: "clamp(320px, 55vw, 580px)" }}>
+          {/* 사진 교체: class-photo2.jpg 파일을 public에 추가 후 아래 src 변경 */}
           <Image
             src="/class-photo2.jpg"
             alt="2-2 우리반"
             fill
-            style={{ objectFit: "cover", objectPosition: "center center" }}
+            style={{ objectFit: "cover", objectPosition: "center 30%" }}
             priority
+            onError={(e) => { (e.target as HTMLImageElement).src = "/class-photo.jpg"; }}
           />
           <div style={{
             position: "absolute", inset: 0,
