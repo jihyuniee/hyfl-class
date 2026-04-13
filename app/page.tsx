@@ -72,7 +72,7 @@ const TIMETABLE: Record<string, Period[]> = {
     { subject: "심작",    teacher: "신수진" },
     { subject: "중독",    teacher: "조홀매" },
     { subject: "체육",    teacher: "노재호" },
-    { subject: "고탐",    teacher: "김담이" },
+    { subject: "과탐",    teacher: "김담이" },
     { subject: "중문",    teacher: "박의경" },
     { subject: "사문",    teacher: "정욱군" },
   ],
@@ -98,7 +98,7 @@ const SUBJECT_COLOR: Record<string, { bg: string; color: string }> = {
   "중문":    { bg: "#fff7ed", color: "#c2410c" },
   "체육":    { bg: "#f0fdf4", color: "#16a34a" },
   "국제":    { bg: "#f0f9ff", color: "#0284c7" },
-  "고탐":    { bg: "#fdf4ff", color: "#a21caf" },
+  "과탐":    { bg: "#fdf4ff", color: "#a21caf" },
   "HR/CA":   { bg: "#f8fafc", color: "#64748b" },
 };
 
