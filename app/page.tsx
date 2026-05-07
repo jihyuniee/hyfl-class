@@ -93,8 +93,8 @@ export default function Home() {
   const todayName = dayNames[today.getDay()];
 
   const ddayData = [
-    { label: "중간고사", date: EXAM,    d: dday(EXAM),    accent: true  },
-    { label: "수능",     date: SUNEUNG, d: dday(SUNEUNG), accent: false },
+    { label: "중간고사", date: EXAM,    d: dday(EXAM)    },
+    { label: "수능",     date: SUNEUNG, d: dday(SUNEUNG) },
   ];
 
   useEffect(() => {
@@ -179,13 +179,13 @@ export default function Home() {
               <div>
                 <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.16em", textTransform: "uppercase", color: "#5A5160" }}>중간고사</div>
                 <div style={{ fontFamily: "'Inter',sans-serif", fontSize: 22, fontWeight: 700, letterSpacing: "-0.03em", marginTop: 2, color: "#16131A" }}>
-                  D-{ddayData[0].d}<small style={{ fontSize: 12, color: "#9C95A0", fontWeight: 500, marginLeft: 4 }}>· {ddayData[0].date}</small>
+                  D{ddayData[0].d >= 0 ? `-${ddayData[0].d}` : `+${-ddayData[0].d}`}<small style={{ fontSize: 12, color: "#9C95A0", fontWeight: 500, marginLeft: 4 }}>· {ddayData[0].date}</small>
                 </div>
               </div>
               <div>
                 <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.16em", textTransform: "uppercase", color: "#5A5160" }}>수능</div>
                 <div style={{ fontFamily: "'Inter',sans-serif", fontSize: 22, fontWeight: 700, letterSpacing: "-0.03em", marginTop: 2, color: "#16131A" }}>
-                  D-{ddayData[1].d}<small style={{ fontSize: 12, color: "#9C95A0", fontWeight: 500, marginLeft: 4 }}>· {ddayData[1].date}</small>
+                  D{ddayData[1].d >= 0 ? `-${ddayData[1].d}` : `+${-ddayData[1].d}`}<small style={{ fontSize: 12, color: "#9C95A0", fontWeight: 500, marginLeft: 4 }}>· {ddayData[1].date}</small>
                 </div>
               </div>
               <div>
@@ -206,55 +206,56 @@ export default function Home() {
         }}>
           <Image
             src={heroSrc} alt="2-2 우리반" fill priority
-            style={{ objectFit: "cover", objectPosition: "center 45%" }}
+            style={{ objectFit: "cover", objectPosition: "center 30%" }}
             onError={() => setHeroSrc("/class-photo.jpg")}
           />
-          {/* 좌상단 그라데이션 — 학생 얼굴 보호 */}
+          {/* 상단 그라데이션 — 라벨 가독성용 */}
           <div style={{
             position: "absolute", inset: 0,
-            background: "linear-gradient(135deg, rgba(8,3,28,0.55) 0%, rgba(8,3,28,0.20) 35%, rgba(0,0,0,0) 60%)",
+            background: "linear-gradient(180deg, rgba(0,0,0,0.30) 0%, rgba(0,0,0,0) 30%)",
             pointerEvents: "none",
           }}/>
 
+          {/* 좌측 상단 — 라벨 */}
           <div style={{
             position: "absolute", top: 18, left: 18, zIndex: 2,
-            background: "rgba(255,255,255,0.85)", backdropFilter: "blur(10px)",
-            padding: "6px 14px", borderRadius: 999,
-            fontSize: 11, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase",
-            color: "#16131A",
+            display: "flex", flexDirection: "column", gap: 8, alignItems: "flex-start",
           }}>
-            Class · Spring {today.getFullYear()}
+            <div style={{
+              background: "rgba(255,255,255,0.92)", backdropFilter: "blur(10px)",
+              padding: "6px 14px", borderRadius: 999,
+              fontSize: 11, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase",
+              color: "#16131A",
+            }}>
+              Class · Spring {today.getFullYear()}
+            </div>
+            <div style={{
+              background: "rgba(22,19,26,0.55)", backdropFilter: "blur(10px)",
+              padding: "6px 14px", borderRadius: 999,
+              fontSize: 11, fontWeight: 600, letterSpacing: "0.06em",
+              color: "#fff",
+            }}>
+              Oh, my God! 오 내 신!
+            </div>
           </div>
 
-          <div style={{
-            position: "absolute", left: 22, bottom: 22, right: 22, zIndex: 2,
-            display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 12,
-            color: "#fff",
+          {/* 우측 하단 — album 버튼 */}
+          <Link href="/album" style={{
+            position: "absolute", bottom: 18, right: 18, zIndex: 2,
+            background: "#fff", color: "#16131A",
+            borderRadius: 999, padding: "9px 16px",
+            fontFamily: "'Inter',sans-serif", fontWeight: 700, fontSize: 12,
+            letterSpacing: "0.04em", textDecoration: "none",
+            display: "inline-flex", alignItems: "center", gap: 8,
+            boxShadow: "0 8px 24px rgba(22,19,26,0.28)",
           }}>
-            <div>
-              <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.18em", textTransform: "uppercase", opacity: 0.85 }}>
-                Oh, my God! 오 내 신!
-              </div>
-              <div style={{ fontFamily: "'Inter',sans-serif", fontWeight: 700, fontSize: 22, letterSpacing: "-0.025em", marginTop: 4 }}>
-                우리반 단체사진
-              </div>
-            </div>
-            <Link href="/album" style={{
-              background: "#fff", color: "#16131A",
-              borderRadius: 999, padding: "9px 16px",
-              fontFamily: "'Inter',sans-serif", fontWeight: 700, fontSize: 12,
-              letterSpacing: "0.04em", textDecoration: "none",
-              display: "inline-flex", alignItems: "center", gap: 8,
-              boxShadow: "0 8px 24px rgba(22,19,26,0.18)",
-            }}>
-              album
-              <span style={{
-                width: 22, height: 22, borderRadius: "50%",
-                background: "#16131A", color: "#fff",
-                display: "grid", placeItems: "center", fontSize: 10,
-              }}>→</span>
-            </Link>
-          </div>
+            우리반 단체사진
+            <span style={{
+              width: 22, height: 22, borderRadius: "50%",
+              background: "#16131A", color: "#fff",
+              display: "grid", placeItems: "center", fontSize: 10,
+            }}>→</span>
+          </Link>
         </div>
       </div>
 
