@@ -34,7 +34,7 @@ function timeAgo(iso: string) {
 }
 
 const SUNEUNG = "2026-11-18";
-const EXAM    = "2026-04-27";
+const EXAM    = "2026-07-01";
 
 const TIMETABLE: Record<string, string[]> = {
   "월": ["중독", "심작", "사문", "문학", "고전읽기", "고전읽기", "대수"],
@@ -93,7 +93,7 @@ export default function Home() {
   const todayName = dayNames[today.getDay()];
 
   const ddayData = [
-    { label: "중간고사", date: EXAM,    d: dday(EXAM)    },
+    { label: "기말고사", date: EXAM,    d: dday(EXAM)    },
     { label: "수능",     date: SUNEUNG, d: dday(SUNEUNG) },
   ];
 
@@ -177,7 +177,7 @@ export default function Home() {
               borderTop: "1px solid rgba(22,19,26,0.12)",
             }}>
               <div>
-                <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.16em", textTransform: "uppercase", color: "#5A5160" }}>중간고사</div>
+                <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.16em", textTransform: "uppercase", color: "#5A5160" }}>기말고사</div>
                 <div style={{ fontFamily: "'Inter',sans-serif", fontSize: 22, fontWeight: 700, letterSpacing: "-0.03em", marginTop: 2, color: "#16131A" }}>
                   D{ddayData[0].d >= 0 ? `-${ddayData[0].d}` : `+${-ddayData[0].d}`}<small style={{ fontSize: 12, color: "#9C95A0", fontWeight: 500, marginLeft: 4 }}>· {ddayData[0].date}</small>
                 </div>
@@ -206,7 +206,7 @@ export default function Home() {
         }}>
           <Image
             src={heroSrc} alt="2-2 우리반" fill priority
-            style={{ objectFit: "cover", objectPosition: "center 30%" }}
+            style={{ objectFit: "contain", objectPosition: "center center" }}
             onError={() => setHeroSrc("/class-photo.jpg")}
           />
           {/* 상단 그라데이션 — 라벨 가독성용 */}
