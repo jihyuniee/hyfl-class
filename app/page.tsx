@@ -112,147 +112,129 @@ export default function Home() {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 22 }}>
 
-      {/* ════════ HERO — 단체사진 풀블리드 + 콜라주 오버레이 ════════ */}
+      {/* ════════ HERO — 2열 분리 레이아웃 (텍스트 | 사진) ════════ */}
       <section style={{
-        position: "relative", borderRadius: 28, overflow: "hidden",
-        minHeight: 580, isolation: "isolate",
-        background: "#FFE066",
-      }}>
-        {/* 배경 — 단체사진 */}
-        <Image
-          src={heroSrc} alt="2-2 우리반 단체사진" fill priority
-          style={{ objectFit: "cover", objectPosition: "center 35%", zIndex: 0 }}
-          onError={() => setHeroSrc("/class-photo.jpg")}
-        />
-        {/* 사진 살짝 밝히는 베일 */}
+        borderRadius: 28, overflow: "hidden",
+        minHeight: 520, display: "grid",
+        gridTemplateColumns: "1fr 1.15fr",
+        isolation: "isolate",
+      }} className="hero-grid">
+
+        {/* ─── 왼쪽 패널 — 텍스트 영역 ─── */}
         <div style={{
-          position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none",
-          background: "linear-gradient(180deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 28%, rgba(0,0,0,0.18) 100%)",
-        }}/>
-
-        {/* ─── 비비드 SVG 도형 콜라주 ─── */}
-        {/* 옐로우 블롭 — 좌측 상단 */}
-        <svg style={{ position: "absolute", left: -60, top: -40, width: 320, height: 320, zIndex: 2, pointerEvents: "none" }} viewBox="0 0 200 200">
-          <path fill="#FFD93D" d="M44.6,-58.4C57.5,-49.4,67,-35.7,71.7,-20.5C76.4,-5.4,76.3,11.2,69.7,24.6C63.1,38,50.1,48.2,36,57.2C21.9,66.2,6.7,74,-9.4,74C-25.5,74,-42.5,66.2,-54.5,53.5C-66.5,40.8,-73.5,23.2,-74.6,5.1C-75.7,-13,-70.9,-31.6,-59.9,-43.3C-48.9,-55,-31.7,-59.8,-15.6,-62.5C0.5,-65.2,15.5,-65.8,31.7,-67.4Z" transform="translate(100 100)" />
-        </svg>
-
-        {/* 시안 도넛 — 우측 상단 */}
-        <svg style={{ position: "absolute", right: 40, top: 50, width: 110, height: 110, zIndex: 4, pointerEvents: "none" }} viewBox="0 0 100 100">
-          <circle cx="50" cy="50" r="40" fill="none" stroke="#39C9E5" strokeWidth="14"/>
-        </svg>
-
-        {/* 마젠타 별 — 헤드라인 옆 */}
-        <svg style={{ position: "absolute", left: "44%", top: 60, width: 64, height: 64, zIndex: 4, pointerEvents: "none" }} viewBox="0 0 64 64">
-          <path d="M32 4 L37 25 L58 30 L37 35 L32 56 L27 35 L6 30 L27 25 Z" fill="#FF3D86"/>
-        </svg>
-
-        {/* 작은 별 — 우측 중간 */}
-        <svg style={{ position: "absolute", right: "8%", top: "42%", width: 38, height: 38, zIndex: 4, pointerEvents: "none" }} viewBox="0 0 64 64">
-          <path d="M32 4 L37 25 L58 30 L37 35 L32 56 L27 35 L6 30 L27 25 Z" fill="#FFD93D" stroke="#16131A" strokeWidth="2"/>
-        </svg>
-
-        {/* 시안 스크리블 — 헤드라인 위 */}
-        <svg style={{ position: "absolute", left: "38%", top: 32, width: 90, height: 36, zIndex: 4, pointerEvents: "none" }} viewBox="0 0 90 36" fill="none">
-          <path d="M4 22 C 14 6, 22 6, 28 22 S 46 38, 52 22 S 70 6, 86 22" stroke="#39C9E5" strokeWidth="3.5" strokeLinecap="round"/>
-        </svg>
-
-        {/* 오렌지 곡선 — 우측 하단 */}
-        <svg style={{ position: "absolute", right: 30, bottom: 90, width: 120, height: 80, zIndex: 4, pointerEvents: "none" }} viewBox="0 0 120 80" fill="none">
-          <path d="M8 60 Q 30 8, 60 40 T 112 20" stroke="#FF7A2E" strokeWidth="4" strokeLinecap="round"/>
-        </svg>
-
-        {/* 마젠타 점선 — 헤드라인 아래 */}
-        <svg style={{ position: "absolute", left: 60, bottom: 220, width: 200, height: 18, zIndex: 4, pointerEvents: "none" }} viewBox="0 0 200 18" fill="none">
-          <path d="M2 9 Q 20 -2, 40 9 T 80 9 T 120 9 T 160 9 T 198 9" stroke="#FF3D86" strokeWidth="2.5" strokeLinecap="round" strokeDasharray="2 6"/>
-        </svg>
-
-        {/* ─── 흰 카드 1 — 헤드라인 ─── */}
-        <div style={{
-          position: "absolute", left: 36, top: 56, zIndex: 5,
-          background: "#FFFFFF", borderRadius: 24,
-          padding: "32px 36px 30px", maxWidth: 540,
-          boxShadow: "0 24px 60px rgba(22,19,26,0.18)",
+          background: "#FFFFFF",
+          padding: "48px 40px 36px",
+          display: "flex", flexDirection: "column", justifyContent: "space-between",
+          position: "relative", overflow: "hidden",
         }}>
-          <div style={{
-            display: "inline-flex", alignItems: "center", gap: 8,
-            fontSize: 11, fontWeight: 700, letterSpacing: "0.18em",
-            textTransform: "uppercase", color: "#16131A",
-          }}>
-            <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#FF3D86" }}/>
-            {today.getFullYear()} · 한영외고 2학년 2반
+          {/* 옐로우 블롭 장식 */}
+          <svg style={{ position: "absolute", left: -80, bottom: -80, width: 300, height: 300, pointerEvents: "none", opacity: 0.55 }} viewBox="0 0 200 200">
+            <path fill="#FFD93D" d="M44.6,-58.4C57.5,-49.4,67,-35.7,71.7,-20.5C76.4,-5.4,76.3,11.2,69.7,24.6C63.1,38,50.1,48.2,36,57.2C21.9,66.2,6.7,74,-9.4,74C-25.5,74,-42.5,66.2,-54.5,53.5C-66.5,40.8,-73.5,23.2,-74.6,5.1C-75.7,-13,-70.9,-31.6,-59.9,-43.3C-48.9,-55,-31.7,-59.8,-15.6,-62.5C0.5,-65.2,15.5,-65.8,31.7,-67.4Z" transform="translate(100 100)" />
+          </svg>
+          {/* 마젠타 점선 장식 */}
+          <svg style={{ position: "absolute", right: 20, top: 40, width: 80, height: 30, pointerEvents: "none" }} viewBox="0 0 200 18" fill="none">
+            <path d="M2 9 Q 20 -2, 40 9 T 80 9 T 120 9 T 160 9 T 198 9" stroke="#FF3D86" strokeWidth="2.5" strokeLinecap="round" strokeDasharray="2 6"/>
+          </svg>
+
+          <div>
+            <div style={{
+              display: "inline-flex", alignItems: "center", gap: 8,
+              fontSize: 11, fontWeight: 700, letterSpacing: "0.18em",
+              textTransform: "uppercase", color: "#16131A",
+            }}>
+              <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#FF3D86" }}/>
+              {today.getFullYear()} · 한영외고 2학년 2반
+            </div>
+
+            <h1 style={{
+              fontFamily: "'Inter', sans-serif",
+              fontWeight: 800, fontSize: "clamp(34px, 3.8vw, 60px)",
+              lineHeight: 0.98, letterSpacing: "-0.045em",
+              margin: "18px 0 0", color: "#16131A",
+            }}>
+              New Day,<br/>
+              <span style={{ fontStyle: "italic", fontWeight: 500, color: "#FF3D86" }}>New Us.</span>
+            </h1>
+
+            <div style={{
+              marginTop: 16, maxWidth: 340,
+              fontSize: 14, color: "#5A5160", lineHeight: 1.6,
+            }}>
+              함께여서 더 빛나는 우리반 23명.<br/>오늘도 2-2의 하루가 시작됐어요.
+            </div>
+
+            <div style={{ marginTop: 24, display: "flex", gap: 10, flexWrap: "wrap" }}>
+              <Link href="/schedule" style={{
+                background: "#16131A", color: "#fff",
+                padding: "13px 24px", borderRadius: 999,
+                fontWeight: 600, fontSize: 13, textDecoration: "none",
+                display: "inline-flex", alignItems: "center", gap: 8,
+              }}>오늘 일정 보기 <span style={{ fontSize: 14 }}>→</span></Link>
+              <Link href="/wall" style={{
+                background: "#FFD93D", color: "#16131A",
+                padding: "13px 22px", borderRadius: 999,
+                fontWeight: 700, fontSize: 13, textDecoration: "none",
+                display: "inline-flex", alignItems: "center", gap: 8,
+              }}>학생 소개 23명</Link>
+            </div>
           </div>
 
-          <h1 style={{
-            fontFamily: "'Inter', sans-serif",
-            fontWeight: 800, fontSize: "clamp(36px, 4.6vw, 64px)",
-            lineHeight: 0.98, letterSpacing: "-0.045em",
-            margin: "16px 0 0", color: "#16131A",
-          }}>
-            New Day,<br/>
-            <span style={{ fontStyle: "italic", fontWeight: 500, color: "#FF3D86" }}>New Us.</span>
-          </h1>
-
+          {/* D-day 위젯 — 왼쪽 패널 하단 */}
           <div style={{
-            marginTop: 14, maxWidth: 380,
-            fontSize: 14, color: "#5A5160", lineHeight: 1.6,
+            marginTop: 32,
+            background: "#FAF6F2", borderRadius: 18,
+            padding: "16px 20px",
+            display: "flex", gap: 20, alignItems: "center",
           }}>
-            함께여서 더 빛나는 우리반 23명.<br/>오늘도 2-2의 하루가 시작됐어요.
+            <div>
+              <div style={{ fontSize: 9.5, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "#9C95A0" }}>기말고사</div>
+              <div style={{ fontFamily: "'Inter',sans-serif", fontSize: 24, fontWeight: 800, letterSpacing: "-0.03em", marginTop: 2, color: "#FF3D86" }}>
+                D{ddayData[0].d >= 0 ? `-${ddayData[0].d}` : `+${-ddayData[0].d}`}
+              </div>
+            </div>
+            <div style={{ width: 1, alignSelf: "stretch", background: "#ECE4DF" }}/>
+            <div>
+              <div style={{ fontSize: 9.5, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "#9C95A0" }}>수능</div>
+              <div style={{ fontFamily: "'Inter',sans-serif", fontSize: 24, fontWeight: 800, letterSpacing: "-0.03em", marginTop: 2, color: "#16131A" }}>
+                D{ddayData[1].d >= 0 ? `-${ddayData[1].d}` : `+${-ddayData[1].d}`}
+              </div>
+            </div>
+            <div style={{ width: 1, alignSelf: "stretch", background: "#ECE4DF" }}/>
+            <div>
+              <div style={{ fontSize: 9.5, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "#9C95A0" }}>오늘</div>
+              <div style={{ fontFamily: "'Inter',sans-serif", fontSize: 24, fontWeight: 800, letterSpacing: "-0.03em", marginTop: 2, color: "#16131A" }}>
+                {todayName}<small style={{ fontSize: 13, color: "#9C95A0", fontWeight: 500, marginLeft: 4 }}>요일</small>
+              </div>
+            </div>
           </div>
 
-          <div style={{ marginTop: 22, display: "flex", gap: 10, flexWrap: "wrap" }}>
-            <Link href="/schedule" style={{
-              background: "#16131A", color: "#fff",
-              padding: "13px 24px", borderRadius: 999,
-              fontWeight: 600, fontSize: 13, textDecoration: "none",
-              display: "inline-flex", alignItems: "center", gap: 8,
-            }}>오늘 일정 보기 <span style={{ fontSize: 14 }}>→</span></Link>
-            <Link href="/wall" style={{
-              background: "#FFD93D", color: "#16131A",
-              padding: "13px 22px", borderRadius: 999,
-              fontWeight: 700, fontSize: 13, textDecoration: "none",
-              display: "inline-flex", alignItems: "center", gap: 8,
-            }}>학생 소개 23명</Link>
+          {/* 급훈 라벨 */}
+          <div style={{
+            marginTop: 14,
+            background: "#16131A", color: "#fff",
+            padding: "10px 18px", borderRadius: 999,
+            fontSize: 11, fontWeight: 700, letterSpacing: "0.08em",
+            alignSelf: "flex-start",
+          }}>
+            ✦ Oh, my God! 오 내 신!
           </div>
         </div>
 
-        {/* ─── 흰 카드 2 — D-day 위젯 ─── */}
-        <div style={{
-          position: "absolute", right: 36, bottom: 36, zIndex: 5,
-          background: "#FFFFFF", borderRadius: 22,
-          padding: "20px 24px",
-          boxShadow: "0 16px 40px rgba(22,19,26,0.18)",
-          display: "flex", gap: 28, alignItems: "center",
-        }}>
-          <div>
-            <div style={{ fontSize: 9.5, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "#9C95A0" }}>기말고사</div>
-            <div style={{ fontFamily: "'Inter',sans-serif", fontSize: 26, fontWeight: 800, letterSpacing: "-0.03em", marginTop: 2, color: "#FF3D86" }}>
-              D{ddayData[0].d >= 0 ? `-${ddayData[0].d}` : `+${-ddayData[0].d}`}
-            </div>
-          </div>
-          <div style={{ width: 1, alignSelf: "stretch", background: "#ECE4DF" }}/>
-          <div>
-            <div style={{ fontSize: 9.5, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "#9C95A0" }}>수능</div>
-            <div style={{ fontFamily: "'Inter',sans-serif", fontSize: 26, fontWeight: 800, letterSpacing: "-0.03em", marginTop: 2, color: "#16131A" }}>
-              D{ddayData[1].d >= 0 ? `-${ddayData[1].d}` : `+${-ddayData[1].d}`}
-            </div>
-          </div>
-          <div style={{ width: 1, alignSelf: "stretch", background: "#ECE4DF" }}/>
-          <div>
-            <div style={{ fontSize: 9.5, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "#9C95A0" }}>오늘</div>
-            <div style={{ fontFamily: "'Inter',sans-serif", fontSize: 26, fontWeight: 800, letterSpacing: "-0.03em", marginTop: 2, color: "#16131A" }}>
-              {todayName}<small style={{ fontSize: 13, color: "#9C95A0", fontWeight: 500, marginLeft: 4 }}>요일</small>
-            </div>
-          </div>
-        </div>
-
-        {/* 좌하단 급훈 라벨 */}
-        <div style={{
-          position: "absolute", left: 36, bottom: 36, zIndex: 5,
-          background: "#16131A", color: "#fff",
-          padding: "10px 18px", borderRadius: 999,
-          fontSize: 11, fontWeight: 700, letterSpacing: "0.08em",
-        }}>
-          ✦ Oh, my God! 오 내 신!
+        {/* ─── 오른쪽 패널 — 단체사진 (텍스트 없음) ─── */}
+        <div style={{ position: "relative", minHeight: 520 }}>
+          <Image
+            src={heroSrc} alt="2-2 우리반 단체사진" fill priority
+            style={{ objectFit: "cover", objectPosition: "center 30%" }}
+            onError={() => setHeroSrc("/class-photo.jpg")}
+          />
+          {/* 시안 도넛 장식 */}
+          <svg style={{ position: "absolute", right: 32, top: 32, width: 100, height: 100, zIndex: 2, pointerEvents: "none" }} viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="40" fill="none" stroke="#39C9E5" strokeWidth="14"/>
+          </svg>
+          {/* 작은 별 장식 */}
+          <svg style={{ position: "absolute", right: "14%", bottom: "22%", width: 36, height: 36, zIndex: 2, pointerEvents: "none" }} viewBox="0 0 64 64">
+            <path d="M32 4 L37 25 L58 30 L37 35 L32 56 L27 35 L6 30 L27 25 Z" fill="#FFD93D" stroke="#16131A" strokeWidth="2"/>
+          </svg>
         </div>
       </section>
 
@@ -583,6 +565,7 @@ export default function Home() {
 
       <style jsx>{`
         @media (max-width: 880px) {
+          .hero-grid    { grid-template-columns: 1fr !important; }
           .block-grid   { grid-template-columns: 1fr !important; }
           .bottom-grid  { grid-template-columns: 1fr !important; }
           .quick-grid   { grid-template-columns: repeat(3,1fr) !important; }
