@@ -63,7 +63,8 @@ export default function CounselingPage() {
   const [addLoading,setAddLoading]= useState(false);
 
   async function load() {
-    const { data: sd } = await supabase.from("counseling_slots").select("*").order("date").order("time");
+    const today = new Date().toLocaleDateString("sv-SE", { timeZone: "Asia/Seoul" });
+    const { data: sd } = await supabase.from("counseling_slots").select("*").gte("date", today).order("date").order("time");
     const { data: ad } = await supabase.from("counseling_applications").select("*").order("created_at");
     const { data: wd } = await supabase.from("counseling_walkins").select("*").order("created_at", { ascending: false });
     setSlots((sd as Slot[]) ?? []);
