@@ -113,13 +113,12 @@ export default function Home() {
     <div style={{ display: "flex", flexDirection: "column", gap: 22 }}>
 
       {/* ════════ HERO — 풀너비 사진 + 텍스트 오버레이 ════════ */}
-      <section style={{ position: "relative", borderRadius: 28, overflow: "hidden" }}>
+      <section style={{ position: "relative", borderRadius: 28, overflow: "hidden", minHeight: 500, aspectRatio: "16/7" }}>
 
-        {/* 사진 — 전체 표시 (contain) */}
+        {/* 사진 — 왼쪽 기준 cover (오른쪽 주차금지 쪽만 잘림) */}
         <Image
-          src={heroSrc} alt="2-2 우리반 단체사진" priority
-          width={1600} height={900}
-          style={{ width: "100%", height: "auto", display: "block" }}
+          src={heroSrc} alt="2-2 우리반 단체사진" fill priority
+          style={{ objectFit: "cover", objectPosition: "left center" }}
           onError={() => setHeroSrc("/class-photo.jpg")}
         />
 
