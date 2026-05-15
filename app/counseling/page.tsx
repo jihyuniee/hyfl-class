@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/components/lib/supabaseClient";
 
 type Slot = { id: string; date: string; time: string; is_available: boolean; };
-type Application = { id: string; slot_id: string; student_no: string; name: string; reason: string | null; is_private: boolean; created_at: string; };
+type Application = { id: string; slot_id: string; student_no: string; name: string; reason: string | null; is_private: boolean; is_confirmed: boolean; created_at: string; };
 type WalkIn = { id: string; created_at: string; student_no: string; name: string; content: string; preferred_time: string | null; is_private: boolean; is_checked: boolean; };
 
 const ADMIN_PW = "hyfl2025";
@@ -163,11 +163,23 @@ export default function CounselingPage() {
     await load();
   }
 
+  async function toggleConfirmed(id: string, current: boolean) {
+    await supabase.from("counseling_applications").update({ is_confirmed: !current }).eq("id", id);
+    await load();
+  }
+
+  const todayKST = new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Seoul" });
+
   const allGroupedSlots: Record<string, Slot[]> = {};
   slots.forEach(s => {
     if (!allGroupedSlots[s.date]) allGroupedSlots[s.date] = [];
     allGroupedSlots[s.date].push(s);
   });
+
+  // 학생에게는 오늘 이후 날짜만 표시, 관리자는 전체 보기
+  const visibleGroupedSlots = isAdmin
+    ? allGroupedSlots
+    : Object.fromEntries(Object.entries(allGroupedSlots).filter(([date]) => date >= todayKST));
 
   return (
     <div style={{ display:"flex", flexDirection:"column", gap:20 }}>
@@ -221,10 +233,18 @@ export default function CounselingPage() {
                 {applications.map(app => {
                   const slot = slots.find(s => s.id === app.slot_id);
                   return (
-                    <div key={app.id} style={{ padding:"12px 16px", borderRadius:12, background:"#fff", border:"1.5px solid #f9a8d4" }}>
+                    <div key={app.id} style={{ padding:"12px 16px", borderRadius:12, background:"#fff",
+                      border:`1.5px solid ${app.is_confirmed ? "#86efac" : "#f9a8d4"}` }}>
                       <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", flexWrap:"wrap", gap:8 }}>
-                        <div>
-                          <p style={{ fontSize:14, fontWeight:900, color:"var(--text)", margin:"0 0 4px" }}>{app.student_no} {app.name}</p>
+                        <div style={{ flex:1 }}>
+                          <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:4 }}>
+                            <p style={{ fontSize:14, fontWeight:900, color:"var(--text)", margin:0 }}>{app.student_no} {app.name}</p>
+                            {app.is_confirmed && (
+                              <span style={{ fontSize:11, padding:"2px 8px", borderRadius:999, background:"#f0fdf4", color:"#16a34a", fontWeight:800 }}>
+                                ✅ 확인완료 (취소불가)
+                              </span>
+                            )}
+                          </div>
                           <p style={{ fontSize:12, color:"var(--primary)", fontWeight:700, margin:"0 0 4px" }}>
                             📅 {slot ? `${fmtDate(slot.date)} ${slot.time}` : "-"}
                           </p>
@@ -238,6 +258,13 @@ export default function CounselingPage() {
                           ) : (
                             <p style={{ fontSize:12, color:"var(--text-subtle)", margin:"4px 0 0" }}>신청 사유 없음</p>
                           )}
+                          <button onClick={() => toggleConfirmed(app.id, app.is_confirmed)}
+                            style={{ marginTop:10, fontSize:11, padding:"4px 12px", borderRadius:999, fontFamily:"inherit", fontWeight:700, cursor:"pointer",
+                              border: app.is_confirmed ? "1.5px solid #86efac" : "1.5px solid var(--border)",
+                              background: app.is_confirmed ? "#f0fdf4" : "#fff",
+                              color: app.is_confirmed ? "#16a34a" : "var(--text-muted)" }}>
+                            {app.is_confirmed ? "✅ 확인완료 → 되돌리기" : "확인 완료 (취소 잠금)"}
+                          </button>
                         </div>
                         <span style={{ fontSize:11, color:"var(--text-subtle)", fontWeight:600, flexShrink:0 }}>{timeAgo(app.created_at)}</span>
                       </div>
@@ -269,7 +296,7 @@ export default function CounselingPage() {
           )}
 
           {/* 슬롯 목록 */}
-          {Object.keys(allGroupedSlots).length === 0 ? (
+          {Object.keys(visibleGroupedSlots).length === 0 ? (
             <div className="hy-card" style={{ padding:"40px", textAlign:"center" }}>
               <p style={{ fontSize:28, margin:"0 0 10px" }}>📅</p>
               <p style={{ fontSize:14, color:"var(--text-subtle)", fontWeight:600 }}>
@@ -278,7 +305,7 @@ export default function CounselingPage() {
               </p>
             </div>
           ) : (
-            Object.entries(allGroupedSlots).map(([date, daySlots]) => (
+            Object.entries(visibleGroupedSlots).map(([date, daySlots]) => (
               <div key={date}>
                 <p style={{ fontSize:13, fontWeight:800, color:"var(--text-muted)", margin:"0 0 8px" }}>📅 {fmtDate(date)}</p>
                 <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(140px,1fr))", gap:8 }}>
@@ -394,11 +421,18 @@ export default function CounselingPage() {
                   <p style={{ fontSize:13, color:"var(--primary)", fontWeight:700, margin:"0 0 14px" }}>
                     📅 {slot ? `${fmtDate(slot.date)} ${slot.time}` : "-"}
                   </p>
-                  <button onClick={cancelApp} disabled={cancelling}
-                    style={{ fontSize:13, padding:"8px 18px", borderRadius:999, border:"1.5px solid #fecaca",
-                      background:"#fff5f5", color:"#ef4444", cursor:"pointer", fontFamily:"inherit", fontWeight:700 }}>
-                    {cancelling ? "취소 중..." : "🗑 상담 취소하기"}
-                  </button>
+                  {app.is_confirmed ? (
+                    <div style={{ padding:"10px 14px", borderRadius:12, background:"#fffbeb", border:"1.5px solid #fde68a" }}>
+                      <p style={{ fontSize:13, fontWeight:700, color:"#b45309", margin:"0 0 2px" }}>⚠️ 선생님이 확인한 신청이에요.</p>
+                      <p style={{ fontSize:12, fontWeight:600, color:"#92400e", margin:0 }}>취소가 필요하면 선생님께 직접 말씀해주세요.</p>
+                    </div>
+                  ) : (
+                    <button onClick={cancelApp} disabled={cancelling}
+                      style={{ fontSize:13, padding:"8px 18px", borderRadius:999, border:"1.5px solid #fecaca",
+                        background:"#fff5f5", color:"#ef4444", cursor:"pointer", fontFamily:"inherit", fontWeight:700 }}>
+                      {cancelling ? "취소 중..." : "🗑 상담 취소하기"}
+                    </button>
+                  )}
                 </div>
               );
             })()}
