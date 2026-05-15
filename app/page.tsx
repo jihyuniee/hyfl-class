@@ -224,7 +224,7 @@ export default function Home() {
         <div style={{ position: "relative", minHeight: 520 }}>
           <Image
             src={heroSrc} alt="2-2 우리반 단체사진" fill priority
-            style={{ objectFit: "cover", objectPosition: "center 30%" }}
+            style={{ objectFit: "cover", objectPosition: "left 30%" }}
             onError={() => setHeroSrc("/class-photo.jpg")}
           />
           {/* 시안 도넛 장식 */}
