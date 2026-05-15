@@ -122,27 +122,28 @@ export default function Home() {
           onError={() => setHeroSrc("/class-photo.jpg")}
         />
 
-        {/* 왼쪽 텍스트 영역 그라디언트 배경 */}
+        {/* 오른쪽 상단 텍스트 영역 그라디언트 배경 */}
         <div style={{
           position: "absolute", inset: 0,
-          background: "linear-gradient(to right, rgba(255,255,255,0.96) 0%, rgba(255,255,255,0.88) 38%, rgba(255,255,255,0.3) 60%, transparent 75%)",
+          background: "linear-gradient(to left, rgba(255,255,255,0.96) 0%, rgba(255,255,255,0.88) 38%, rgba(255,255,255,0.2) 60%, transparent 78%)",
           pointerEvents: "none",
         }}/>
 
-        {/* 텍스트 오버레이 */}
+        {/* 텍스트 오버레이 — 오른쪽 상단 */}
         <div style={{
-          position: "absolute", inset: 0,
-          display: "flex", flexDirection: "column", justifyContent: "center",
-          padding: "40px 44px",
-          maxWidth: 520,
+          position: "absolute", top: 0, right: 0,
+          display: "flex", flexDirection: "column", justifyContent: "flex-start", alignItems: "flex-end",
+          padding: "32px 36px",
+          maxWidth: 460,
+          textAlign: "right",
         }}>
           <div style={{
             display: "inline-flex", alignItems: "center", gap: 8,
             fontSize: 11, fontWeight: 700, letterSpacing: "0.18em",
             textTransform: "uppercase", color: "#16131A",
           }}>
-            <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#FF3D86" }}/>
             {today.getFullYear()} · 한영외고 2학년 2반
+            <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#FF3D86" }}/>
           </div>
 
           <h1 style={{
@@ -159,26 +160,27 @@ export default function Home() {
             함께여서 더 빛나는 우리반 23명.<br/>오늘도 2-2의 하루가 시작됐어요.
           </div>
 
-          <div style={{ marginTop: 22, display: "flex", gap: 10, flexWrap: "wrap" }}>
+          <div style={{ marginTop: 22, display: "flex", gap: 10, flexWrap: "wrap", justifyContent: "flex-end" }}>
+            <Link href="/wall" style={{
+              background: "#FFD93D", color: "#16131A",
+              padding: "12px 20px", borderRadius: 999,
+              fontWeight: 700, fontSize: 13, textDecoration: "none",
+            }}>학생 소개 23명</Link>
             <Link href="/schedule" style={{
               background: "#16131A", color: "#fff",
               padding: "12px 22px", borderRadius: 999,
               fontWeight: 600, fontSize: 13, textDecoration: "none",
               display: "inline-flex", alignItems: "center", gap: 8,
             }}>오늘 일정 보기 <span style={{ fontSize: 14 }}>→</span></Link>
-            <Link href="/wall" style={{
-              background: "#FFD93D", color: "#16131A",
-              padding: "12px 20px", borderRadius: 999,
-              fontWeight: 700, fontSize: 13, textDecoration: "none",
-            }}>학생 소개 23명</Link>
           </div>
 
           {/* D-day 위젯 */}
           <div style={{
-            marginTop: 24,
+            marginTop: 20,
             background: "rgba(250,246,242,0.92)", borderRadius: 18,
             padding: "14px 18px",
             display: "inline-flex", gap: 18, alignItems: "center",
+            alignSelf: "flex-end",
           }}>
             <div>
               <div style={{ fontSize: 9.5, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "#9C95A0" }}>기말고사</div>
@@ -204,11 +206,11 @@ export default function Home() {
 
           {/* 급훈 라벨 */}
           <div style={{
-            marginTop: 12,
+            marginTop: 10,
             background: "#16131A", color: "#fff",
             padding: "9px 16px", borderRadius: 999,
             fontSize: 11, fontWeight: 700, letterSpacing: "0.08em",
-            alignSelf: "flex-start",
+            alignSelf: "flex-end",
           }}>
             ✦ Oh, my God! 오 내 신!
           </div>
