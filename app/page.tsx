@@ -122,20 +122,22 @@ export default function Home() {
           onError={() => setHeroSrc("/class-photo.jpg")}
         />
 
-        {/* 오른쪽 상단 텍스트 영역 그라디언트 배경 */}
+        {/* 오른쪽 상단 코너에만 집중된 그라디언트 */}
         <div style={{
           position: "absolute", inset: 0,
-          background: "linear-gradient(to left, rgba(255,255,255,0.96) 0%, rgba(255,255,255,0.88) 38%, rgba(255,255,255,0.2) 60%, transparent 78%)",
+          background: "radial-gradient(ellipse 65% 70% at 100% 0%, rgba(255,255,255,0.97) 0%, rgba(255,255,255,0.88) 35%, rgba(255,255,255,0.4) 55%, transparent 72%)",
           pointerEvents: "none",
         }}/>
 
-        {/* 텍스트 오버레이 — 오른쪽 상단 */}
+        {/* 텍스트 오버레이 — 오른쪽 상단에만 */}
         <div style={{
           position: "absolute", top: 0, right: 0,
           display: "flex", flexDirection: "column", justifyContent: "flex-start", alignItems: "flex-end",
-          padding: "32px 36px",
+          padding: "28px 36px",
           maxWidth: 460,
+          maxHeight: "58%",
           textAlign: "right",
+          overflow: "hidden",
         }}>
           <div style={{
             display: "inline-flex", alignItems: "center", gap: 8,
@@ -174,43 +176,46 @@ export default function Home() {
             }}>오늘 일정 보기 <span style={{ fontSize: 14 }}>→</span></Link>
           </div>
 
-          {/* D-day 위젯 */}
+        </div>
+
+        {/* D-day 위젯 + 급훈 — 오른쪽 하단에 별도 배치 */}
+        <div style={{
+          position: "absolute", bottom: 24, right: 28,
+          display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 10,
+        }}>
           <div style={{
-            marginTop: 20,
-            background: "rgba(250,246,242,0.92)", borderRadius: 18,
-            padding: "14px 18px",
-            display: "inline-flex", gap: 18, alignItems: "center",
-            alignSelf: "flex-end",
+            background: "rgba(250,246,242,0.93)", borderRadius: 18,
+            padding: "12px 16px",
+            display: "inline-flex", gap: 16, alignItems: "center",
+            backdropFilter: "blur(8px)",
+            boxShadow: "0 2px 12px rgba(0,0,0,0.08)",
           }}>
             <div>
               <div style={{ fontSize: 9.5, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "#9C95A0" }}>기말고사</div>
-              <div style={{ fontFamily: "'Inter',sans-serif", fontSize: 22, fontWeight: 800, letterSpacing: "-0.03em", marginTop: 2, color: "#FF3D86" }}>
+              <div style={{ fontFamily: "'Inter',sans-serif", fontSize: 20, fontWeight: 800, letterSpacing: "-0.03em", marginTop: 2, color: "#FF3D86" }}>
                 D{ddayData[0].d >= 0 ? `-${ddayData[0].d}` : `+${-ddayData[0].d}`}
               </div>
             </div>
             <div style={{ width: 1, alignSelf: "stretch", background: "#ECE4DF" }}/>
             <div>
               <div style={{ fontSize: 9.5, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "#9C95A0" }}>수능</div>
-              <div style={{ fontFamily: "'Inter',sans-serif", fontSize: 22, fontWeight: 800, letterSpacing: "-0.03em", marginTop: 2, color: "#16131A" }}>
+              <div style={{ fontFamily: "'Inter',sans-serif", fontSize: 20, fontWeight: 800, letterSpacing: "-0.03em", marginTop: 2, color: "#16131A" }}>
                 D{ddayData[1].d >= 0 ? `-${ddayData[1].d}` : `+${-ddayData[1].d}`}
               </div>
             </div>
             <div style={{ width: 1, alignSelf: "stretch", background: "#ECE4DF" }}/>
             <div>
               <div style={{ fontSize: 9.5, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "#9C95A0" }}>오늘</div>
-              <div style={{ fontFamily: "'Inter',sans-serif", fontSize: 22, fontWeight: 800, letterSpacing: "-0.03em", marginTop: 2, color: "#16131A" }}>
-                {todayName}<small style={{ fontSize: 12, color: "#9C95A0", fontWeight: 500, marginLeft: 4 }}>요일</small>
+              <div style={{ fontFamily: "'Inter',sans-serif", fontSize: 20, fontWeight: 800, letterSpacing: "-0.03em", marginTop: 2, color: "#16131A" }}>
+                {todayName}<small style={{ fontSize: 11, color: "#9C95A0", fontWeight: 500, marginLeft: 3 }}>요일</small>
               </div>
             </div>
           </div>
-
-          {/* 급훈 라벨 */}
           <div style={{
-            marginTop: 10,
-            background: "#16131A", color: "#fff",
-            padding: "9px 16px", borderRadius: 999,
+            background: "rgba(22,19,26,0.88)", color: "#fff",
+            padding: "8px 16px", borderRadius: 999,
             fontSize: 11, fontWeight: 700, letterSpacing: "0.08em",
-            alignSelf: "flex-end",
+            backdropFilter: "blur(8px)",
           }}>
             ✦ Oh, my God! 오 내 신!
           </div>
