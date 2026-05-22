@@ -113,7 +113,7 @@ export default function Home() {
     <div style={{ display: "flex", flexDirection: "column", gap: 22 }}>
 
       {/* ════════ HERO — 풀너비 사진 + 상단 텍스트 바 ════════ */}
-      <section style={{ position: "relative", borderRadius: 28, overflow: "hidden", minHeight: 520, aspectRatio: "16/7.5" }}>
+      <section className="hero-section" style={{ position: "relative", borderRadius: 28, overflow: "hidden", minHeight: 520, aspectRatio: "16/7.5" }}>
 
         {/* 사진 — 그룹 중심 크롭 (양쪽 배경 자름) */}
         <Image
@@ -123,14 +123,13 @@ export default function Home() {
         />
 
         {/* 상단 그라디언트 — 위에서 아래로 페이드 */}
-        <div style={{
+        <div className="hero-gradient" style={{
           position: "absolute", inset: 0,
-          background: "linear-gradient(to bottom, rgba(255,255,255,0.97) 0%, rgba(255,255,255,0.9) 28%, rgba(255,255,255,0.4) 48%, transparent 62%)",
           pointerEvents: "none",
         }}/>
 
         {/* 텍스트 바 — 상단 전체 너비, 좌우로 배치 */}
-        <div style={{
+        <div className="hero-bar" style={{
           position: "absolute", top: 0, left: 0, right: 0,
           display: "flex", justifyContent: "space-between", alignItems: "flex-start",
           padding: "26px 36px",
@@ -161,9 +160,9 @@ export default function Home() {
           </div>
 
           {/* 오른쪽: D-day + 버튼 + 급훈 */}
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 10, flexShrink: 0 }}>
+          <div className="hero-right" style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 10, flexShrink: 0 }}>
             {/* D-day 위젯 */}
-            <div style={{
+            <div className="dday-widget" style={{
               background: "rgba(250,246,242,0.95)", borderRadius: 16,
               padding: "12px 18px",
               display: "inline-flex", gap: 16, alignItems: "center",
@@ -192,7 +191,7 @@ export default function Home() {
             </div>
 
             {/* 버튼 행 */}
-            <div style={{ display: "flex", gap: 10 }}>
+            <div className="hero-btns" style={{ display: "flex", gap: 10 }}>
               <Link href="/wall" style={{
                 background: "#FFD93D", color: "#16131A",
                 padding: "11px 18px", borderRadius: 999,
@@ -207,7 +206,7 @@ export default function Home() {
             </div>
 
             {/* 급훈 */}
-            <div style={{
+            <div className="hero-slogan" style={{
               background: "#16131A", color: "#fff",
               padding: "8px 16px", borderRadius: 999,
               fontSize: 11, fontWeight: 700, letterSpacing: "0.08em",
@@ -218,7 +217,7 @@ export default function Home() {
         </div>
 
         {/* 시안 도넛 장식 */}
-        <svg style={{ position: "absolute", right: 32, top: 26, width: 72, height: 72, pointerEvents: "none" }} viewBox="0 0 100 100">
+        <svg className="hero-svg-deco" style={{ position: "absolute", right: 32, top: 26, width: 72, height: 72, pointerEvents: "none" }} viewBox="0 0 100 100">
           <circle cx="50" cy="50" r="40" fill="none" stroke="#39C9E5" strokeWidth="14"/>
         </svg>
       </section>
@@ -549,13 +548,84 @@ export default function Home() {
       </div>
 
       <style jsx>{`
+        /* 기본 그라디언트 */
+        .hero-gradient {
+          background: linear-gradient(to bottom,
+            rgba(255,255,255,0.97) 0%,
+            rgba(255,255,255,0.90) 28%,
+            rgba(255,255,255,0.40) 48%,
+            transparent 62%);
+        }
+
+        /* ── 태블릿 ── */
         @media (max-width: 880px) {
           .block-grid   { grid-template-columns: 1fr !important; }
           .bottom-grid  { grid-template-columns: 1fr !important; }
           .quick-grid   { grid-template-columns: repeat(3,1fr) !important; }
         }
-        @media (max-width: 520px) {
+
+        /* ── 모바일 ── */
+        @media (max-width: 640px) {
+          /* 히어로 섹션 높이 유지, 가로 비율 해제 */
+          .hero-section {
+            aspect-ratio: unset !important;
+            border-radius: 20px !important;
+          }
+          /* 사진 중앙 기준으로 크롭 */
+          .hero-section img {
+            object-position: center center !important;
+          }
+          /* 그라디언트: 텍스트 전체 커버하도록 확장 */
+          .hero-gradient {
+            background: linear-gradient(to bottom,
+              rgba(255,255,255,0.98) 0%,
+              rgba(255,255,255,0.95) 30%,
+              rgba(255,255,255,0.80) 50%,
+              rgba(255,255,255,0.45) 68%,
+              transparent 82%) !important;
+          }
+          /* 텍스트 바: 세로 스택 */
+          .hero-bar {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            padding: 16px 18px !important;
+            gap: 10px !important;
+          }
+          /* 우측 컬럼: 왼쪽 정렬로 전환 */
+          .hero-right {
+            align-items: flex-start !important;
+            flex-shrink: 1 !important;
+          }
+          /* D-day 위젯: 간격 축소 */
+          .dday-widget {
+            gap: 10px !important;
+            padding: 8px 12px !important;
+          }
+          /* 버튼 줄바꿈 허용 */
+          .hero-btns {
+            flex-wrap: wrap !important;
+            gap: 8px !important;
+          }
+          /* 급훈 숨김 (공간 확보) */
+          .hero-slogan {
+            display: none !important;
+          }
+          /* 장식 SVG 숨김 */
+          .hero-svg-deco {
+            display: none !important;
+          }
+          /* 컬러 블록 1열 */
+          .block-grid   { grid-template-columns: 1fr !important; }
+          .bottom-grid  { grid-template-columns: 1fr !important; }
+          .quick-grid   { grid-template-columns: repeat(3,1fr) !important; }
+        }
+
+        @media (max-width: 480px) {
           .quick-grid   { grid-template-columns: repeat(2,1fr) !important; }
+          /* h1 줄바꿈 제거해 공간 절약 */
+          .hero-bar h1 br { display: none !important; }
+          /* D-day 숫자 크기 줄임 */
+          .dday-widget div > div:last-child { font-size: 16px !important; }
         }
       `}</style>
     </div>

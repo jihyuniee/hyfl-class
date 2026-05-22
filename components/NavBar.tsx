@@ -119,7 +119,7 @@ export default function NavBar() {
             boxShadow:"0 4px 12px rgba(244,114,182,0.4)",
             letterSpacing:"-0.5px", flexShrink:0,
           }}>2·2</div>
-          <span style={{ fontWeight:900, fontSize:16, color:"var(--text)", letterSpacing:"-0.4px" }}>
+          <span className="nav-logo-text" style={{ fontWeight:900, fontSize:16, color:"var(--text)", letterSpacing:"-0.4px" }}>
             우리반 🌸
           </span>
         </Link>
@@ -187,7 +187,7 @@ export default function NavBar() {
 
         {/* Right */}
         <div style={{ display:"flex", alignItems:"center", gap:8, flexShrink:0 }}>
-          <Link href="/schedule" style={{
+          <Link href="/schedule" className="nav-schedule-btn" style={{
             padding:"9px 18px", borderRadius:999,
             background:"linear-gradient(135deg,#f472b6,#a78bfa)",
             color:"#fff", fontWeight:800, fontSize:13,
@@ -267,6 +267,11 @@ export default function NavBar() {
         @media (max-width: 768px) {
           .desktop-only { display: none  !important; }
           .mobile-only  { display: flex  !important; }
+        }
+        /* 작은 화면에서 일정 버튼 텍스트 축약 */
+        @media (max-width: 400px) {
+          .nav-schedule-btn { padding: 8px 12px !important; font-size: 12px !important; }
+          .nav-logo-text { display: none !important; }
         }
         @keyframes dropIn {
           from { opacity:0; transform:translateX(-50%) translateY(-8px); }
