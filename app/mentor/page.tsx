@@ -34,6 +34,7 @@ type Resource = {
   file_name: string | null;
   file_type: "예상문제" | "학습자료" | "쪽지시험";
   uploader_name: string | null;
+  delete_code: string | null;
 };
 
 type Comment = {
@@ -54,6 +55,11 @@ function toISODateKST() {
 function formatDate(dateStr: string) {
   const d = new Date(dateStr);
   return `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,"0")}.${String(d.getDate()).padStart(2,"0")}`;
+}
+
+function formatDateTime(dateStr: string) {
+  const d = new Date(dateStr);
+  return `${String(d.getMonth()+1).padStart(2,"0")}.${String(d.getDate()).padStart(2,"0")} ${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}`;
 }
 
 function getFileIcon(fileName: string | null) {
@@ -103,6 +109,7 @@ export default function MentorPage() {
   const [rDesc,         setRDesc]         = useState("");
   const [rType,         setRType]         = useState<Resource["file_type"]>("학습자료");
   const [rUploaderName, setRUploaderName] = useState("");
+  const [rDeleteCode,   setRDeleteCode]   = useState("");
   const [rFile,         setRFile]         = useState<File | null>(null);
   const [rOpen,         setROpen]         = useState(false);
   const [uploading,     setUploading]     = useState(false);
@@ -116,6 +123,18 @@ export default function MentorPage() {
   const [expandedComments, setExpandedComments] = useState<Set<string>>(new Set());
   const [commentInputs, setCommentInputs] = useState<Record<string, { author: string; content: string }>>({});
   const [savingComment, setSavingComment] = useState<string | null>(null);
+
+  // 삭제 코드 입력
+  const [deletingResource, setDeletingResource] = useState<string | null>(null);
+  const [deleteCodeInput,  setDeleteCodeInput]  = useState("");
+
+  // 새글 추적 (localStorage 기반)
+  const [lastVisit] = useState<Date | null>(() => {
+    if (typeof window === "undefined") return null;
+    const stored = localStorage.getItem("mentor_last_visit");
+    localStorage.setItem("mentor_last_visit", new Date().toISOString());
+    return stored ? new Date(stored) : null;
+  });
 
   const subjectSectionRef = useRef<HTMLDivElement>(null);
 
@@ -137,6 +156,12 @@ export default function MentorPage() {
     setTimeout(() => {
       subjectSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
     }, 100);
+  }
+
+  // 새글 여부 판별
+  function isNew(dateStr: string) {
+    if (!lastVisit) return false;
+    return new Date(dateStr) > lastVisit;
   }
 
   async function addLog() {
@@ -181,9 +206,10 @@ export default function MentorPage() {
         file_name: rFile.name,
         file_type: rType,
         uploader_name: rUploaderName.trim(),
+        delete_code: rDeleteCode.trim() || null,
       });
 
-      setRTitle(""); setRDesc(""); setRFile(null); setRUploaderName("");
+      setRTitle(""); setRDesc(""); setRFile(null); setRUploaderName(""); setRDeleteCode("");
       if (fileRef.current) fileRef.current.value = "";
       setROpen(false);
       await load();
@@ -202,6 +228,26 @@ export default function MentorPage() {
     }
     await supabase.from("resource_comments").delete().eq("resource_id", id);
     await supabase.from("mentor_resources").delete().eq("id", id);
+    await load();
+  }
+
+  // 삭제 코드 검증 후 삭제
+  async function handleCodeDelete(r: Resource) {
+    if (!deleteCodeInput.trim()) { alert("삭제 코드를 입력하세요"); return; }
+    if (deleteCodeInput.trim() !== r.delete_code) {
+      alert("삭제 코드가 맞지 않아요 🔒");
+      setDeleteCodeInput("");
+      return;
+    }
+    setDeletingResource(null);
+    setDeleteCodeInput("");
+    // confirm 없이 바로 삭제 (코드 검증으로 충분)
+    if (r.file_url) {
+      const path = r.file_url.split("/uploads/")[1];
+      if (path) await supabase.storage.from("uploads").remove([path]);
+    }
+    await supabase.from("resource_comments").delete().eq("resource_id", r.id);
+    await supabase.from("mentor_resources").delete().eq("id", r.id);
     await load();
   }
 
@@ -248,6 +294,11 @@ export default function MentorPage() {
     : [];
   const selectedMentor = MENTORS.find(m => m.subject === selectedSubject);
 
+  // 새글 카운트 (탭 뱃지용)
+  const newResCount = resources.filter(r => isNew(r.created_at)).length;
+  const newLogCount = logs.filter(l => isNew(l.created_at)).length;
+
+  // ─── 자료 카드 렌더 ───
   const renderResourceCard = (r: Resource, showSubject = false) => {
     const m = MENTORS.find(x => x.subject === r.subject);
     const ts = FTYPE_STYLE[r.file_type];
@@ -256,33 +307,78 @@ export default function MentorPage() {
     const resComments = comments.filter(c => c.resource_id === r.id);
     const isExpanded = expandedComments.has(r.id);
     const cInput = commentInputs[r.id] ?? { author: "", content: "" };
+    const newItem = isNew(r.created_at);
+    const isBeingDeleted = deletingResource === r.id;
 
     return (
-      <div key={r.id} style={{ borderRadius:16, overflow:"hidden", border:"1.5px solid var(--border)", background:"#fff", boxShadow:"0 2px 10px rgba(0,0,0,0.06)" }}>
+      <div key={r.id} style={{ borderRadius:16, overflow:"hidden", border: newItem ? "2px solid #6366f1" : "1.5px solid var(--border)", background:"#fff", boxShadow: newItem ? "0 2px 16px rgba(99,102,241,0.15)" : "0 2px 10px rgba(0,0,0,0.06)" }}>
         {/* 헤더 */}
-        <div style={{ padding:"14px 18px", display:"flex", alignItems:"flex-start", gap:12, background:"#fafafa", borderBottom:"1px solid var(--border)" }}>
+        <div style={{ padding:"14px 18px", display:"flex", alignItems:"flex-start", gap:12, background: newItem ? "#f5f3ff" : "#fafafa", borderBottom:"1px solid var(--border)" }}>
           <div style={{ width:44, height:44, borderRadius:12, background:ts.bg, display:"flex", alignItems:"center", justifyContent:"center", fontSize:22, flexShrink:0 }}>
             {getFileIcon(r.file_name)}
           </div>
           <div style={{ flex:1, minWidth:0 }}>
-            <div style={{ display:"flex", alignItems:"center", gap:6, marginBottom:4, flexWrap:"wrap" }}>
+            <div style={{ display:"flex", alignItems:"center", gap:6, marginBottom:5, flexWrap:"wrap" }}>
+              {newItem && (
+                <span style={{ fontSize:10, fontWeight:800, padding:"2px 7px", borderRadius:999, background:"#6366f1", color:"#fff", letterSpacing:"0.5px" }}>NEW</span>
+              )}
               <span style={{ fontSize:11, fontWeight:700, padding:"2px 8px", borderRadius:999, background:ts.bg, color:ts.color }}>{r.file_type}</span>
               {showSubject && m && (
                 <span style={{ fontSize:11, fontWeight:700, padding:"2px 8px", borderRadius:999, background:"#f3f4f6", color:"var(--text-muted)" }}>{m.emoji} {r.subject}</span>
               )}
-              <span style={{ fontSize:11, color:"var(--text-subtle)" }}>{formatDate(r.created_at)}</span>
+              <span style={{ fontSize:11, color:"var(--text-subtle)" }}>{formatDateTime(r.created_at)}</span>
             </div>
-            <h4 style={{ fontSize:15, fontWeight:800, color:"var(--text)", margin:"0 0 4px", overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>{r.title}</h4>
-            {r.uploader_name && (
-              <span style={{ fontSize:12, color:"var(--text-subtle)", fontWeight:600 }}>👤 {r.uploader_name}</span>
-            )}
+            <h4 style={{ fontSize:15, fontWeight:800, color:"var(--text)", margin:"0 0 5px", overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>{r.title}</h4>
+            {/* 올린 사람 */}
+            <div style={{ display:"flex", alignItems:"center", gap:6 }}>
+              <div style={{ display:"inline-flex", alignItems:"center", gap:4, background:"#f0fdf4", border:"1px solid #bbf7d0", borderRadius:999, padding:"2px 10px" }}>
+                <span style={{ fontSize:11 }}>👤</span>
+                <span style={{ fontSize:12, fontWeight:700, color:"#16a34a" }}>{r.uploader_name ?? "익명"}</span>
+              </div>
+              {r.delete_code && (
+                <span style={{ fontSize:10, color:"var(--text-subtle)", fontWeight:600 }}>🔒 삭제 코드 있음</span>
+              )}
+            </div>
           </div>
-          {isAdmin && (
-            <button onClick={() => deleteResource(r.id, r.file_url)}
-              style={{ fontSize:11, padding:"4px 10px", borderRadius:999, border:"1px solid #fecaca", background:"#fff5f5", color:"#ef4444", cursor:"pointer", fontFamily:"inherit", fontWeight:700, flexShrink:0, alignSelf:"flex-start" }}>
-              삭제
-            </button>
-          )}
+
+          {/* 삭제 버튼 영역 */}
+          <div style={{ flexShrink:0, display:"flex", flexDirection:"column", alignItems:"flex-end", gap:4 }}>
+            {isAdmin ? (
+              <button onClick={() => deleteResource(r.id, r.file_url)}
+                style={{ fontSize:11, padding:"4px 10px", borderRadius:999, border:"1px solid #fecaca", background:"#fff5f5", color:"#ef4444", cursor:"pointer", fontFamily:"inherit", fontWeight:700 }}>
+                삭제
+              </button>
+            ) : r.delete_code ? (
+              isBeingDeleted ? (
+                <div style={{ display:"flex", flexDirection:"column", gap:4, alignItems:"flex-end" }}>
+                  <input
+                    placeholder="삭제 코드 입력"
+                    value={deleteCodeInput}
+                    onChange={e => setDeleteCodeInput(e.target.value)}
+                    onKeyDown={e => { if (e.key === "Enter") handleCodeDelete(r); }}
+                    className="hy-input"
+                    style={{ fontSize:12, width:110, padding:"4px 10px", textAlign:"center" }}
+                    autoFocus
+                  />
+                  <div style={{ display:"flex", gap:4 }}>
+                    <button onClick={() => handleCodeDelete(r)}
+                      style={{ fontSize:11, padding:"3px 8px", borderRadius:999, border:"1px solid #fecaca", background:"#fff5f5", color:"#ef4444", cursor:"pointer", fontFamily:"inherit", fontWeight:700 }}>
+                      확인
+                    </button>
+                    <button onClick={() => { setDeletingResource(null); setDeleteCodeInput(""); }}
+                      style={{ fontSize:11, padding:"3px 8px", borderRadius:999, border:"1px solid var(--border)", background:"#fff", color:"var(--text-muted)", cursor:"pointer", fontFamily:"inherit", fontWeight:700 }}>
+                      취소
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <button onClick={() => setDeletingResource(r.id)}
+                  style={{ fontSize:11, padding:"4px 10px", borderRadius:999, border:"1px solid #fecaca", background:"#fff5f5", color:"#ef4444", cursor:"pointer", fontFamily:"inherit", fontWeight:700 }}>
+                  삭제
+                </button>
+              )
+            ) : null}
+          </div>
         </div>
 
         {/* 이미지 미리보기 */}
@@ -335,7 +431,7 @@ export default function MentorPage() {
                         <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:4 }}>
                           <span style={{ fontSize:12, fontWeight:800, color:"var(--text)" }}>{c.author_name}</span>
                           <div style={{ display:"flex", gap:6, alignItems:"center" }}>
-                            <span style={{ fontSize:10, color:"var(--text-subtle)" }}>{formatDate(c.created_at)}</span>
+                            <span style={{ fontSize:10, color:"var(--text-subtle)" }}>{formatDateTime(c.created_at)}</span>
                             {isAdmin && (
                               <button onClick={() => deleteComment(c.id)}
                                 style={{ fontSize:10, color:"#ef4444", background:"none", border:"none", cursor:"pointer", fontFamily:"inherit", fontWeight:700, padding:0 }}>삭제</button>
@@ -348,7 +444,6 @@ export default function MentorPage() {
                   ))}
                 </div>
               )}
-              {/* 댓글 입력 */}
               <div style={{ display:"flex", gap:8 }}>
                 <input placeholder="이름" value={cInput.author}
                   onChange={e => setCommentInputs(prev => ({ ...prev, [r.id]: { ...prev[r.id] ?? { content:"" }, author: e.target.value } }))}
@@ -370,6 +465,7 @@ export default function MentorPage() {
     );
   };
 
+  // ─── 업로드 폼 렌더 ───
   const renderUploadForm = (subjectFixed?: string) => (
     <div style={{ padding:"18px 20px", background:"#f8faff", borderRadius:16, border:"1.5px solid #e0e7ff" }}>
       <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
@@ -388,6 +484,22 @@ export default function MentorPage() {
         </div>
         <input placeholder="자료 제목 *" value={rTitle} onChange={e => setRTitle(e.target.value)} className="hy-input"/>
         <input placeholder="설명 (선택)" value={rDesc} onChange={e => setRDesc(e.target.value)} className="hy-input"/>
+
+        {/* 삭제 코드 */}
+        <div style={{ display:"flex", alignItems:"center", gap:8, padding:"10px 14px", background:"#fffbeb", borderRadius:10, border:"1px solid #fde68a" }}>
+          <span style={{ fontSize:14 }}>🔑</span>
+          <div style={{ flex:1 }}>
+            <p style={{ fontSize:11, color:"#92400e", fontWeight:700, margin:"0 0 4px" }}>삭제 코드 (선택)</p>
+            <input
+              placeholder="나중에 삭제할 때 필요한 코드 (예: 1234)"
+              value={rDeleteCode}
+              onChange={e => setRDeleteCode(e.target.value)}
+              className="hy-input"
+              style={{ fontSize:12 }}
+            />
+            <p style={{ fontSize:10, color:"#92400e", margin:"4px 0 0", fontWeight:600 }}>코드 없이 올리면 관리자만 삭제할 수 있어요</p>
+          </div>
+        </div>
 
         <div style={{ border:"2px dashed #c7d2fe", borderRadius:12, padding:"16px", background:"#fff", textAlign:"center", cursor:"pointer" }}
           onClick={() => fileRef.current?.click()}>
@@ -421,12 +533,19 @@ export default function MentorPage() {
     </div>
   );
 
+  // ─── 탭 뱃지 컴포넌트 ───
+  const TabBadge = ({ count }: { count: number }) => count === 0 ? null : (
+    <span style={{ display:"inline-flex", alignItems:"center", justifyContent:"center", minWidth:16, height:16, borderRadius:999, background:"#ef4444", color:"#fff", fontSize:9, fontWeight:800, padding:"0 4px", marginLeft:4 }}>
+      {count > 9 ? "9+" : count}
+    </span>
+  );
+
   return (
     <div style={{ display:"flex", flexDirection:"column", gap:20 }}>
       {/* 헤더 */}
       <div style={{ background:"linear-gradient(135deg,#f59e0b 0%,#ef4444 50%,#ec4899 100%)", borderRadius:28, padding:"32px 28px", position:"relative", overflow:"hidden", boxShadow:"0 12px 40px rgba(245,158,11,0.3)" }}>
         {[{w:140,h:140,top:-40,right:-20,op:0.08},{w:70,h:70,bottom:-10,left:60,op:0.07}].map((b,i)=>(
-          <div key={i} style={{ position:"absolute",width:b.w,height:b.h,top:b.top,right:(b as {right?:number}).right,bottom:(b as {bottom?:number}).bottom,left:(b as {left?:number}).left,borderRadius:"50%",background:"#fff",opacity:b.op }}/>
+          <div key={i} style={{ position:"absolute",width:b.w,height:b.h,top:(b as {top?:number}).top,right:(b as {right?:number}).right,bottom:(b as {bottom?:number}).bottom,left:(b as {left?:number}).left,borderRadius:"50%",background:"#fff",opacity:b.op }}/>
         ))}
         <div style={{ position:"relative" }}>
           <div style={{ display:"inline-flex",alignItems:"center",background:"rgba(255,255,255,0.2)",backdropFilter:"blur(8px)",borderRadius:999,padding:"4px 14px",marginBottom:12,border:"1px solid rgba(255,255,255,0.3)" }}>
@@ -441,11 +560,16 @@ export default function MentorPage() {
 
       {/* 탭 */}
       <div style={{ display:"flex", gap:8, flexWrap:"wrap" }}>
-        {([["mentors","멘토 명단 👥"],["logs","활동 일지 📋"],["resources","자료 공유 📂"]] as const).map(([t,label])=>(
-          <button key={t} onClick={()=>{ setTab(t); setSelectedSubject(null); }}
+        {([
+          ["mentors", "멘토 명단 👥", 0],
+          ["logs",    "활동 일지 📋", newLogCount],
+          ["resources","자료 공유 📂", newResCount],
+        ] as const).map(([t, label, count]) => (
+          <button key={t} onClick={() => { setTab(t); setSelectedSubject(null); }}
             className={t===tab ? "hy-btn hy-btn-primary" : "hy-btn"}
-            style={{ fontSize:13, padding:"8px 18px" }}>
+            style={{ fontSize:13, padding:"8px 18px", display:"flex", alignItems:"center" }}>
             {label}
+            <TabBadge count={count}/>
           </button>
         ))}
       </div>
@@ -477,18 +601,22 @@ export default function MentorPage() {
               const resCount = resources.filter(r=>r.subject===m.subject).length;
               const logCount = logs.filter(l=>l.subject===m.subject).length;
               const recentRes = resources.filter(r=>r.subject===m.subject).slice(0,2);
+              const hasNew = resources.some(r=>r.subject===m.subject && isNew(r.created_at));
               return (
                 <div key={m.subject}
                   onClick={()=>handleMentorCardClick(m.subject)}
                   style={{ borderRadius:20, overflow:"hidden", cursor:"pointer",
                     boxShadow: isSelected ? "0 8px 30px rgba(99,102,241,0.3)" : "0 4px 16px rgba(0,0,0,0.08)",
-                    border: isSelected ? "2.5px solid #6366f1" : "2.5px solid transparent",
+                    border: isSelected ? "2.5px solid #6366f1" : hasNew ? "2.5px solid #f59e0b" : "2.5px solid transparent",
                     transition:"all 0.15s",
                   }}>
                   <div style={{ background:m.color, padding:"16px 20px", display:"flex", alignItems:"center", gap:10 }}>
                     <span style={{ fontSize:24 }}>{m.emoji}</span>
                     <div style={{ flex:1 }}>
-                      <h3 style={{ color:"#fff", fontSize:17, fontWeight:900, margin:0 }}>{m.subject}</h3>
+                      <h3 style={{ color:"#fff", fontSize:17, fontWeight:900, margin:0 }}>
+                        {m.subject}
+                        {hasNew && <span style={{ marginLeft:6, fontSize:10, fontWeight:800, background:"#ef4444", color:"#fff", padding:"1px 6px", borderRadius:999, verticalAlign:"middle" }}>NEW</span>}
+                      </h3>
                       <p style={{ color:"rgba(255,255,255,0.8)", fontSize:12, margin:0, fontWeight:600 }}>멘토 {m.mentors.length}명</p>
                     </div>
                     <span style={{ fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.9)",background:"rgba(255,255,255,0.2)",padding:"3px 10px",borderRadius:999 }}>
@@ -515,6 +643,7 @@ export default function MentorPage() {
                         <div key={r.id}
                           style={{ display:"flex", alignItems:"center", gap:8, padding:"7px 0", borderTop:"1px solid var(--border)" }}
                           onClick={e => e.stopPropagation()}>
+                          {isNew(r.created_at) && <span style={{ fontSize:9, fontWeight:800, padding:"1px 5px", borderRadius:999, background:"#6366f1", color:"#fff", flexShrink:0 }}>N</span>}
                           <span style={{ fontSize:14, flexShrink:0 }}>{getFileIcon(r.file_name)}</span>
                           <span style={{ fontSize:10, fontWeight:700, padding:"2px 7px", borderRadius:999, background:ts.bg, color:ts.color, flexShrink:0 }}>{r.file_type}</span>
                           {openUrl ? (
@@ -527,8 +656,8 @@ export default function MentorPage() {
                               {r.title}
                             </span>
                           )}
-                          <span style={{ fontSize:10, color:"var(--text-subtle)", flexShrink:0, whiteSpace:"nowrap" }}>
-                            {r.uploader_name ? `${r.uploader_name} · ` : ""}{formatDate(r.created_at)}
+                          <span style={{ fontSize:10, color:"#16a34a", flexShrink:0, whiteSpace:"nowrap", fontWeight:700 }}>
+                            {r.uploader_name ?? "익명"}
                           </span>
                         </div>
                       );
@@ -539,7 +668,7 @@ export default function MentorPage() {
             })}
           </div>
 
-          {/* 선택된 과목 자료 섹션 */}
+          {/* 선택된 과목 자료 */}
           {selectedSubject && (
             <div ref={subjectSectionRef} className="hy-card" style={{ padding:"24px 26px" }}>
               <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:20, flexWrap:"wrap", gap:10 }}>
@@ -623,19 +752,21 @@ export default function MentorPage() {
             <div style={{ display:"flex",flexDirection:"column",gap:12 }}>
               {filteredLogs.map(l=>{
                 const m = MENTORS.find(x=>x.subject===l.subject);
+                const newLog = isNew(l.created_at);
                 return (
-                  <div key={l.id} className="hy-card" style={{ padding:"18px 22px" }}>
+                  <div key={l.id} className="hy-card" style={{ padding:"18px 22px", border: newLog ? "2px solid #6366f1" : undefined, background: newLog ? "#fdfcff" : undefined }}>
                     <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:12 }}>
                       <div style={{ width:38, height:38, borderRadius:999, background:"var(--primary-light)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:15, fontWeight:900, color:"var(--primary)", flexShrink:0 }}>
                         {l.mentor_name.charAt(0)}
                       </div>
                       <div style={{ flex:1 }}>
                         <div style={{ display:"flex", alignItems:"center", gap:6, flexWrap:"wrap" }}>
+                          {newLog && <span style={{ fontSize:10, fontWeight:800, padding:"2px 7px", borderRadius:999, background:"#6366f1", color:"#fff" }}>NEW</span>}
                           <span style={{ fontSize:14, fontWeight:800, color:"var(--text)" }}>{l.mentor_name}</span>
                           <span style={{ fontSize:11, fontWeight:700, padding:"2px 8px", borderRadius:999, background:"var(--primary-light)", color:"var(--primary)" }}>{m?.emoji} {l.subject}</span>
                           <span style={{ fontSize:11, padding:"2px 8px", borderRadius:999, background:"#f3f4f6", color:"var(--text-muted)", fontWeight:600 }}>{l.activity}</span>
                         </div>
-                        <span style={{ fontSize:11, color:"var(--text-subtle)", fontWeight:500 }}>{l.date}</span>
+                        <span style={{ fontSize:11, color:"var(--text-subtle)", fontWeight:500 }}>{l.date} · {formatDateTime(l.created_at)} 작성</span>
                       </div>
                     </div>
                     <p style={{ fontSize:14, color:"var(--text)", lineHeight:1.8, margin:0, whiteSpace:"pre-wrap", paddingLeft:12, borderLeft:"3px solid var(--primary-light)" }}>
