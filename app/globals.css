@@ -149,6 +149,11 @@ body {
 /* ── 반응형 (모바일) ── */
 @media (max-width: 640px) {
 
+  .hy-expect-grid {
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+  }
+
   /* 페이지 전체 패딩 */
   main, [class*="container"] {
     padding-left: 14px !important;
