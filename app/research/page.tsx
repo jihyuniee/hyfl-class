@@ -47,12 +47,6 @@ const SKILLS = [
   { icon: "🏫", title: "공동체의식", desc: "학교를 더 좋은 공간으로 만들고자 하는 태도" },
 ];
 
-const BAD_EXAMPLES = [
-  { problem: "교복이 불편하다", action: "교장선생님께 건의하자" },
-  { problem: "도서관이 안 열린다", action: "도서부가 봉사하자" },
-  { problem: "급식 줄이 길다", action: "줄을 늘리자" },
-];
-
 const GOOD_EXAMPLES = [
   { problem: "교복 만족도 설문조사", steps: ["불편 요소 분석", "개선안 설계"] },
   { problem: "도서관 이용률 조사", steps: ["원인 분석", "이용 활성화 방안 제안"] },
@@ -190,28 +184,12 @@ export default function ResearchPage() {
       {/* ===================== 좋은 탐구 vs 아쉬운 탐구 ===================== */}
       <section>
         <h2 style={{ fontSize:"clamp(20px,3.5vw,26px)", fontWeight:900, color:"var(--text)", margin:"0 0 8px", letterSpacing:"-0.5px" }}>
-          좋은 탐구 vs 아쉬운 탐구
+          좋은 탐구의 예시
         </h2>
         <p style={{ fontSize:14, color:"var(--text-muted)", margin:"0 0 28px" }}>
-          같은 문제도 어떻게 접근하느냐에 따라 탐구의 깊이가 달라집니다.
+          단순한 불만이 아니라, 분석과 근거를 거쳐 해결 방안으로 이어지는 탐구를 지향합니다.
         </p>
-        <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(300px,1fr))", gap:20 }}>
-          {/* 아쉬운 탐구 */}
-          <div style={{ borderRadius:20, border:"1.5px solid #fecaca", background:"#fff", overflow:"hidden" }}>
-            <div style={{ padding:"16px 22px", background:"#fef2f2", borderBottom:"1.5px solid #fecaca" }}>
-              <span style={{ fontSize:13, fontWeight:800, color:"#dc2626" }}>✕ 아쉬운 탐구</span>
-            </div>
-            <div style={{ padding:"22px", display:"flex", flexDirection:"column", gap:18 }}>
-              {BAD_EXAMPLES.map((ex,i)=>(
-                <div key={i}>
-                  <p style={{ fontSize:14, fontWeight:700, color:"var(--text)", margin:"0 0 4px" }}>{ex.problem}</p>
-                  <p style={{ fontSize:13, color:"#dc2626", margin:0, fontWeight:600 }}>→ {ex.action}</p>
-                  {i < BAD_EXAMPLES.length-1 && <div style={{ height:1, background:"#fee2e2", marginTop:18 }}/>}
-                </div>
-              ))}
-            </div>
-          </div>
-          {/* 좋은 탐구 */}
+        <div style={{ maxWidth:520 }}>
           <div style={{ borderRadius:20, border:"1.5px solid #bbf7d0", background:"#fff", overflow:"hidden" }}>
             <div style={{ padding:"16px 22px", background:"#f0fdf4", borderBottom:"1.5px solid #bbf7d0" }}>
               <span style={{ fontSize:13, fontWeight:800, color:"#16a34a" }}>✓ 좋은 탐구</span>
