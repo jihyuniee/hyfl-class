@@ -187,7 +187,156 @@ export default function ResearchPage() {
         </div>
       </section>
 
-      {/* ===================== 핵심 메시지 ===================== */}
+      {/* ===================== 우리 모둠 활동 기록 ===================== */}
+      <section>
+        <h2 style={{ fontSize:"clamp(20px,3.5vw,26px)", fontWeight:900, color:"var(--text)", margin:"0 0 8px", letterSpacing:"-0.5px" }}>
+          우리 모둠 활동 기록
+        </h2>
+        <p style={{ fontSize:14, color:"var(--text-muted)", margin:"0 0 24px" }}>
+          우리 모둠이 어떤 주제를 탐구하고 있는지 확인하고, 활동일지·중간보고·최종보고를 기록·제출하세요.
+        </p>
+
+        {/* 관리자 */}
+        <div className="hy-card" style={{ padding:"16px 20px", marginBottom:20 }}>
+          <div style={{ display:"flex",alignItems:"center",gap:8,flexWrap:"wrap" }}>
+            {!isAdmin ? (
+              <>
+                <input type="password" placeholder="관리자 비밀번호" value={pw} onChange={e=>setPw(e.target.value)}
+                  onKeyDown={e=>e.key==="Enter"&&setIsAdmin(pw===ADMIN_PW)} className="hy-input" style={{ maxWidth:180 }}/>
+                <button onClick={()=>setIsAdmin(pw===ADMIN_PW)} className="hy-btn" style={{ fontSize:13 }}>확인</button>
+              </>
+            ) : (
+              <div style={{ display:"flex",gap:8,alignItems:"center" }}>
+                <span style={{ fontSize:13,color:"var(--primary)",fontWeight:800 }}>관리자 모드</span>
+                <button onClick={()=>setGOpen(o=>!o)} className="hy-btn hy-btn-primary" style={{ fontSize:13 }}>
+                  {gOpen ? "닫기" : "+ 모둠 추가"}
+                </button>
+              </div>
+            )}
+          </div>
+          {isAdmin && gOpen && (
+            <div style={{ marginTop:14,display:"flex",flexDirection:"column",gap:10 }}>
+              <div style={{ display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(180px,1fr))",gap:10 }}>
+                <input placeholder="모둠명 *" value={gName} onChange={e=>setGName(e.target.value)} className="hy-input"/>
+                <input placeholder="탐구 주제 *" value={gTopic} onChange={e=>setGTopic(e.target.value)} className="hy-input"/>
+                <input placeholder="선정 도서 (선택)" value={gBook} onChange={e=>setGBook(e.target.value)} className="hy-input"/>
+                <input placeholder="구성원 * (예: 홍길동, 김철수)" value={gMembers} onChange={e=>setGMembers(e.target.value)} className="hy-input"/>
+              </div>
+              <button onClick={addGroup} className="hy-btn hy-btn-primary" style={{ fontSize:13,alignSelf:"flex-start" }}>모둠 추가하기</button>
+            </div>
+          )}
+        </div>
+
+        {groups.length === 0 ? (
+          <div className="hy-card" style={{ padding:"40px",textAlign:"center" }}>
+            <p style={{ fontSize:15,color:"var(--text-subtle)",fontWeight:600 }}>아직 모둠이 없어요. 선생님이 곧 구성해주실 거예요.</p>
+          </div>
+        ) : (
+          <div style={{ display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(280px,1fr))",gap:14 }}>
+            {groups.map(g=>{
+              const gl = logs.filter(l=>l.group_id===g.id);
+              const stage = getStage(gl);
+              const lastDate = getLatestDate(gl);
+              const isSelected = selectedGroup?.id === g.id;
+              return (
+                <div key={g.id} onClick={()=>setSelectedGroup(isSelected?null:g)} className="hy-card hy-hover-card"
+                  style={{ padding:"18px 20px", cursor:"pointer",
+                    borderColor: isSelected ? "var(--primary)" : "var(--border)",
+                    boxShadow: isSelected ? "var(--shadow-md)" : "var(--shadow-sm)",
+                  }}>
+                  <div style={{ display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:6 }}>
+                    <h3 style={{ color:"var(--text)",fontSize:15,fontWeight:800,margin:0 }}>{g.name}</h3>
+                    {isAdmin && (
+                      <button onClick={e=>{e.stopPropagation();deleteGroup(g.id);}}
+                        style={{ fontSize:10,padding:"2px 8px",borderRadius:999,border:"1px solid var(--border)",background:"transparent",color:"var(--text-subtle)",cursor:"pointer",fontFamily:"inherit" }}>
+                        삭제
+                      </button>
+                    )}
+                  </div>
+                  <p style={{ color:"var(--text-muted)",fontSize:13,margin:"0 0 10px",fontWeight:600 }}>{g.topic}</p>
+                  {g.book && <p style={{ fontSize:12,color:"var(--text-subtle)",margin:"0 0 6px" }}>참고 도서 · {g.book}</p>}
+                  <p style={{ fontSize:12,color:"var(--text-subtle)",margin:"0 0 14px" }}>{g.members}</p>
+                  <div style={{ display:"flex",alignItems:"center",gap:6,marginBottom:8 }}>
+                    <span style={{ width:6,height:6,borderRadius:"50%",background:stage.color,flexShrink:0 }}/>
+                    <span style={{ fontSize:12,fontWeight:700,color:stage.color }}>{stage.label}</span>
+                  </div>
+                  <div style={{ display:"flex",justifyContent:"space-between",alignItems:"center" }}>
+                    <span style={{ fontSize:11,color:"var(--text-subtle)",fontWeight:600 }}>
+                      최근 활동 {lastDate ?? "없음"}
+                    </span>
+                    <span style={{ fontSize:11,fontWeight:700,color: isSelected ? "var(--primary)" : "var(--text-subtle)" }}>
+                      {isSelected ? "선택됨" : "기록 보기 →"}
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        {/* ----- 활동일지 ----- */}
+        {selectedGroup && (
+          <div className="hy-card" style={{ padding:"22px 24px", marginTop:14 }}>
+            <div style={{ display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16,flexWrap:"wrap",gap:8 }}>
+              <h3 style={{ fontSize:16,fontWeight:800,color:"var(--text)",margin:0 }}>
+                {selectedGroup.name} 활동 기록
+              </h3>
+              <button onClick={()=>setLOpen(o=>!o)} className="hy-btn hy-btn-primary" style={{ fontSize:13 }}>
+                {lOpen ? "닫기" : "기록 작성"}
+              </button>
+            </div>
+
+            {lOpen && (
+              <div style={{ marginBottom:20,padding:"18px",background:"#f8faff",borderRadius:16,border:"1.5px solid #e0e7ff" }}>
+                <div style={{ display:"flex",flexDirection:"column",gap:10 }}>
+                  <div style={{ display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(160px,1fr))",gap:10 }}>
+                    <select value={lType} onChange={e=>setLType(e.target.value as Log["log_type"])} className="hy-input" style={{ cursor:"pointer" }}>
+                      <option value="활동일지">활동일지</option>
+                      <option value="중간보고">중간보고</option>
+                      <option value="최종보고">최종보고</option>
+                    </select>
+                    <input type="date" value={lDate} onChange={e=>setLDate(e.target.value)} className="hy-input"/>
+                    <input placeholder="작성자 (선택)" value={lAuthor} onChange={e=>setLAuthor(e.target.value)} className="hy-input"/>
+                  </div>
+                  <textarea placeholder="활동 내용을 자유롭게 작성해요 *" value={lContent} onChange={e=>setLContent(e.target.value)}
+                    className="hy-input" style={{ minHeight:100,resize:"vertical" }}/>
+                  <input placeholder="보고물 링크 (Google Docs, PDF 등 선택)" value={lLink} onChange={e=>setLLink(e.target.value)} className="hy-input"/>
+                  <button onClick={addLog} disabled={saving} className="hy-btn hy-btn-primary" style={{ fontSize:13,alignSelf:"flex-start" }}>
+                    {saving ? "저장 중..." : "기록 저장"}
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {groupLogs.length === 0 ? (
+              <p style={{ fontSize:14,color:"var(--text-subtle)",textAlign:"center",padding:"24px 0" }}>아직 활동 기록이 없어요. 첫 기록을 남겨보세요.</p>
+            ) : (
+              <div style={{ display:"flex",flexDirection:"column",gap:10 }}>
+                {groupLogs.map(l=>(
+                  <div key={l.id} style={{ padding:"14px 16px",borderRadius:14,background:"#fafafa",border:"1.5px solid var(--border)" }}>
+                    <div style={{ display:"flex",alignItems:"center",gap:8,marginBottom:8,flexWrap:"wrap" }}>
+                      <span style={{ fontSize:11,fontWeight:700,padding:"2px 10px",borderRadius:999,background:TYPE_STYLE[l.log_type]?.bg,color:TYPE_STYLE[l.log_type]?.color }}>
+                        {l.log_type}
+                      </span>
+                      <span style={{ fontSize:12,color:"var(--text-subtle)",fontWeight:600 }}>{l.date}</span>
+                      {l.author && <span style={{ fontSize:12,color:"var(--text-subtle)" }}>· {l.author}</span>}
+                    </div>
+                    <p style={{ fontSize:14,color:"var(--text)",lineHeight:1.7,margin:0,whiteSpace:"pre-wrap" }}>{l.content}</p>
+                    {l.report_link && (
+                      <a href={l.report_link} target="_blank" rel="noopener noreferrer"
+                        style={{ display:"inline-flex",alignItems:"center",gap:4,marginTop:10,fontSize:12,fontWeight:700,color:"#6366f1",textDecoration:"none",padding:"5px 12px",borderRadius:999,background:"#eff6ff",border:"1px solid #c7d2fe" }}>
+                        보고물 보기 →
+                      </a>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+      </section>
+
+      {/* ===================== 좋은 탐구란? ===================== */}
       <Reveal>
         <section style={{ textAlign:"center", padding:"20px 12px" }}>
           <h2 style={{
@@ -347,32 +496,6 @@ export default function ResearchPage() {
         </div>
       </section>
 
-      {/* ===================== 전공분야별 심화탐구활동 ===================== */}
-      <Reveal>
-        <section className="hy-hover-card" style={{
-          borderRadius:24, padding:"36px 32px",
-          background:"linear-gradient(135deg,#ecfeff 0%,#f0fdfa 100%)",
-          border:"1.5px solid #cffafe",
-        }}>
-          <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:14 }}>
-            <h2 style={{ fontSize:"clamp(18px,3vw,22px)", fontWeight:900, color:"var(--text)", margin:0, letterSpacing:"-0.5px" }}>
-              전공분야별 심화탐구활동
-            </h2>
-            <span style={{ fontSize:11, fontWeight:800, color:"#06B6D4", border:"1px solid #a5f3fc", borderRadius:999, padding:"2px 10px" }}>선택</span>
-          </div>
-          <p style={{ fontSize:14, color:"var(--text-muted)", margin:"0 0 16px", lineHeight:1.9 }}>
-            기존에 안내했던 전공분야별 심화탐구활동은 계속 진행 가능합니다.<br/>
-            관심 분야나 진로 분야에 대해 개인적으로 깊이 탐구하고 싶은 학생은<br/>
-            자유롭게 진행 후 결과물을 제출할 수 있습니다.
-          </p>
-          <div style={{ display:"flex", flexWrap:"wrap", gap:8 }}>
-            {["독서 탐구","인터뷰","설문조사","논문 조사","보고서 작성","프로그램 제작"].map(t=>(
-              <span key={t} style={{ fontSize:12.5, fontWeight:700, color:"#0891b2", border:"1px solid #a5f3fc", borderRadius:999, padding:"5px 14px", background:"#fff" }}>{t}</span>
-            ))}
-          </div>
-        </section>
-      </Reveal>
-
       {/* ===================== 마지막 메시지 ===================== */}
       <Reveal>
         <section style={{ textAlign:"center", padding:"32px 12px" }}>
@@ -385,155 +508,6 @@ export default function ResearchPage() {
           </h2>
         </section>
       </Reveal>
-
-      {/* ===================== 모둠 현황 ===================== */}
-      <section>
-        <h2 style={{ fontSize:"clamp(20px,3.5vw,26px)", fontWeight:900, color:"var(--text)", margin:"0 0 8px", letterSpacing:"-0.5px" }}>
-          모둠 현황
-        </h2>
-        <p style={{ fontSize:14, color:"var(--text-muted)", margin:"0 0 24px" }}>
-          우리 반 모둠들이 어떤 주제를, 어느 단계까지 탐구하고 있는지 확인해보세요.
-        </p>
-
-        {/* 관리자 */}
-        <div className="hy-card" style={{ padding:"16px 20px", marginBottom:20 }}>
-          <div style={{ display:"flex",alignItems:"center",gap:8,flexWrap:"wrap" }}>
-            {!isAdmin ? (
-              <>
-                <input type="password" placeholder="관리자 비밀번호" value={pw} onChange={e=>setPw(e.target.value)}
-                  onKeyDown={e=>e.key==="Enter"&&setIsAdmin(pw===ADMIN_PW)} className="hy-input" style={{ maxWidth:180 }}/>
-                <button onClick={()=>setIsAdmin(pw===ADMIN_PW)} className="hy-btn" style={{ fontSize:13 }}>확인</button>
-              </>
-            ) : (
-              <div style={{ display:"flex",gap:8,alignItems:"center" }}>
-                <span style={{ fontSize:13,color:"var(--primary)",fontWeight:800 }}>관리자 모드</span>
-                <button onClick={()=>setGOpen(o=>!o)} className="hy-btn hy-btn-primary" style={{ fontSize:13 }}>
-                  {gOpen ? "닫기" : "+ 모둠 추가"}
-                </button>
-              </div>
-            )}
-          </div>
-          {isAdmin && gOpen && (
-            <div style={{ marginTop:14,display:"flex",flexDirection:"column",gap:10 }}>
-              <div style={{ display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(180px,1fr))",gap:10 }}>
-                <input placeholder="모둠명 *" value={gName} onChange={e=>setGName(e.target.value)} className="hy-input"/>
-                <input placeholder="탐구 주제 *" value={gTopic} onChange={e=>setGTopic(e.target.value)} className="hy-input"/>
-                <input placeholder="선정 도서 (선택)" value={gBook} onChange={e=>setGBook(e.target.value)} className="hy-input"/>
-                <input placeholder="구성원 * (예: 홍길동, 김철수)" value={gMembers} onChange={e=>setGMembers(e.target.value)} className="hy-input"/>
-              </div>
-              <button onClick={addGroup} className="hy-btn hy-btn-primary" style={{ fontSize:13,alignSelf:"flex-start" }}>모둠 추가하기</button>
-            </div>
-          )}
-        </div>
-
-        {groups.length === 0 ? (
-          <div className="hy-card" style={{ padding:"40px",textAlign:"center" }}>
-            <p style={{ fontSize:15,color:"var(--text-subtle)",fontWeight:600 }}>아직 모둠이 없어요. 선생님이 곧 구성해주실 거예요.</p>
-          </div>
-        ) : (
-          <div style={{ display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(280px,1fr))",gap:14 }}>
-            {groups.map(g=>{
-              const gl = logs.filter(l=>l.group_id===g.id);
-              const stage = getStage(gl);
-              const lastDate = getLatestDate(gl);
-              const isSelected = selectedGroup?.id === g.id;
-              return (
-                <div key={g.id} onClick={()=>setSelectedGroup(isSelected?null:g)} className="hy-card hy-hover-card"
-                  style={{ padding:"18px 20px", cursor:"pointer",
-                    borderColor: isSelected ? "var(--primary)" : "var(--border)",
-                    boxShadow: isSelected ? "var(--shadow-md)" : "var(--shadow-sm)",
-                  }}>
-                  <div style={{ display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:6 }}>
-                    <h3 style={{ color:"var(--text)",fontSize:15,fontWeight:800,margin:0 }}>{g.name}</h3>
-                    {isAdmin && (
-                      <button onClick={e=>{e.stopPropagation();deleteGroup(g.id);}}
-                        style={{ fontSize:10,padding:"2px 8px",borderRadius:999,border:"1px solid var(--border)",background:"transparent",color:"var(--text-subtle)",cursor:"pointer",fontFamily:"inherit" }}>
-                        삭제
-                      </button>
-                    )}
-                  </div>
-                  <p style={{ color:"var(--text-muted)",fontSize:13,margin:"0 0 10px",fontWeight:600 }}>{g.topic}</p>
-                  {g.book && <p style={{ fontSize:12,color:"var(--text-subtle)",margin:"0 0 6px" }}>참고 도서 · {g.book}</p>}
-                  <p style={{ fontSize:12,color:"var(--text-subtle)",margin:"0 0 14px" }}>{g.members}</p>
-                  <div style={{ display:"flex",alignItems:"center",gap:6,marginBottom:8 }}>
-                    <span style={{ width:6,height:6,borderRadius:"50%",background:stage.color,flexShrink:0 }}/>
-                    <span style={{ fontSize:12,fontWeight:700,color:stage.color }}>{stage.label}</span>
-                  </div>
-                  <div style={{ display:"flex",justifyContent:"space-between",alignItems:"center" }}>
-                    <span style={{ fontSize:11,color:"var(--text-subtle)",fontWeight:600 }}>
-                      최근 활동 {lastDate ?? "없음"}
-                    </span>
-                    <span style={{ fontSize:11,fontWeight:700,color: isSelected ? "var(--primary)" : "var(--text-subtle)" }}>
-                      {isSelected ? "선택됨" : "기록 보기 →"}
-                    </span>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        )}
-      </section>
-
-      {/* ===================== 활동일지 ===================== */}
-      {selectedGroup && (
-        <section className="hy-card" style={{ padding:"22px 24px" }}>
-          <div style={{ display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16,flexWrap:"wrap",gap:8 }}>
-            <h3 style={{ fontSize:16,fontWeight:800,color:"var(--text)",margin:0 }}>
-              {selectedGroup.name} 활동 기록
-            </h3>
-            <button onClick={()=>setLOpen(o=>!o)} className="hy-btn hy-btn-primary" style={{ fontSize:13 }}>
-              {lOpen ? "닫기" : "기록 작성"}
-            </button>
-          </div>
-
-          {lOpen && (
-            <div style={{ marginBottom:20,padding:"18px",background:"#f8faff",borderRadius:16,border:"1.5px solid #e0e7ff" }}>
-              <div style={{ display:"flex",flexDirection:"column",gap:10 }}>
-                <div style={{ display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(160px,1fr))",gap:10 }}>
-                  <select value={lType} onChange={e=>setLType(e.target.value as Log["log_type"])} className="hy-input" style={{ cursor:"pointer" }}>
-                    <option value="활동일지">활동일지</option>
-                    <option value="중간보고">중간보고</option>
-                    <option value="최종보고">최종보고</option>
-                  </select>
-                  <input type="date" value={lDate} onChange={e=>setLDate(e.target.value)} className="hy-input"/>
-                  <input placeholder="작성자 (선택)" value={lAuthor} onChange={e=>setLAuthor(e.target.value)} className="hy-input"/>
-                </div>
-                <textarea placeholder="활동 내용을 자유롭게 작성해요 *" value={lContent} onChange={e=>setLContent(e.target.value)}
-                  className="hy-input" style={{ minHeight:100,resize:"vertical" }}/>
-                <input placeholder="보고물 링크 (Google Docs, PDF 등 선택)" value={lLink} onChange={e=>setLLink(e.target.value)} className="hy-input"/>
-                <button onClick={addLog} disabled={saving} className="hy-btn hy-btn-primary" style={{ fontSize:13,alignSelf:"flex-start" }}>
-                  {saving ? "저장 중..." : "기록 저장"}
-                </button>
-              </div>
-            </div>
-          )}
-
-          {groupLogs.length === 0 ? (
-            <p style={{ fontSize:14,color:"var(--text-subtle)",textAlign:"center",padding:"24px 0" }}>아직 활동 기록이 없어요. 첫 기록을 남겨보세요.</p>
-          ) : (
-            <div style={{ display:"flex",flexDirection:"column",gap:10 }}>
-              {groupLogs.map(l=>(
-                <div key={l.id} style={{ padding:"14px 16px",borderRadius:14,background:"#fafafa",border:"1.5px solid var(--border)" }}>
-                  <div style={{ display:"flex",alignItems:"center",gap:8,marginBottom:8,flexWrap:"wrap" }}>
-                    <span style={{ fontSize:11,fontWeight:700,padding:"2px 10px",borderRadius:999,background:TYPE_STYLE[l.log_type]?.bg,color:TYPE_STYLE[l.log_type]?.color }}>
-                      {l.log_type}
-                    </span>
-                    <span style={{ fontSize:12,color:"var(--text-subtle)",fontWeight:600 }}>{l.date}</span>
-                    {l.author && <span style={{ fontSize:12,color:"var(--text-subtle)" }}>· {l.author}</span>}
-                  </div>
-                  <p style={{ fontSize:14,color:"var(--text)",lineHeight:1.7,margin:0,whiteSpace:"pre-wrap" }}>{l.content}</p>
-                  {l.report_link && (
-                    <a href={l.report_link} target="_blank" rel="noopener noreferrer"
-                      style={{ display:"inline-flex",alignItems:"center",gap:4,marginTop:10,fontSize:12,fontWeight:700,color:"#6366f1",textDecoration:"none",padding:"5px 12px",borderRadius:999,background:"#eff6ff",border:"1px solid #c7d2fe" }}>
-                      보고물 보기 →
-                    </a>
-                  )}
-                </div>
-              ))}
-            </div>
-          )}
-        </section>
-      )}
     </div>
   );
 }
