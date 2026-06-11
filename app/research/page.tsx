@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/components/lib/supabaseClient";
 
 type Group = {
@@ -31,41 +31,30 @@ const TYPE_STYLE: Record<string, { bg: string; color: string }> = {
 };
 
 const STEPS = [
-  { title: "문제 발견", desc: "학교생활 속에서 개선이 필요하다고 생각되는 문제를 찾습니다." },
-  { title: "원인 분석", desc: "왜 그런 문제가 발생하는지 생각합니다." },
-  { title: "근거 수집", desc: "설문조사, 인터뷰, 데이터 분석, 사례 조사를 진행합니다." },
+  { title: "문제 발견", desc: "학교생활 속에서 더 나아질 수 있는 점을 찾습니다." },
+  { title: "원인 분석", desc: "왜 그런 문제가 발생하는지 들여다봅니다." },
+  { title: "자료 조사", desc: "설문, 인터뷰, 데이터 등 근거를 수집합니다." },
   { title: "해결 방안 설계", desc: "실제로 적용 가능한 해결책을 고민합니다." },
-  { title: "결과물 제작", desc: "카드뉴스, 영상, 제안서, 프로그램 등 다양한 형태로 정리합니다." },
-  { title: "공유와 피드백", desc: "결과를 발표하고 다른 모둠과 의견을 나눕니다." },
+  { title: "결과물 제작", desc: "탐구 과정을 정리해 결과물로 만듭니다." },
+  { title: "공유 및 피드백", desc: "결과를 나누고 다른 모둠과 의견을 주고받습니다." },
 ];
 
-const EXPECTATIONS = [
-  "창의적으로 생각하는 힘",
-  "문제를 분석하는 힘",
-  "해결 방법을 설계하는 힘",
-  "함께 협력하는 힘",
-  "자신의 생각을 전달하는 힘",
-  "공동체를 생각하는 태도",
+const ABILITIES = [
+  { title: "창의적 사고", desc: "익숙한 문제를 새로운 시각으로 바라보고 독창적인 아이디어를 제안한다.", color: "#4F46E5" },
+  { title: "문제 해결", desc: "문제를 지적하는 데서 멈추지 않고 원인을 분석하고 해결 방안을 설계한다.", color: "#7C3AED" },
+  { title: "협업", desc: "팀원들과 역할을 나누고 의견을 조율하며 함께 해결책을 만들어 간다.", color: "#06B6D4" },
+  { title: "의사소통", desc: "설문, 인터뷰, 발표 등을 통해 생각을 설득력 있게 전달한다.", color: "#10B981" },
+  { title: "공동체 의식", desc: "나만의 불편함이 아니라 학교 구성원 모두를 위한 방향을 고민한다.", color: "#F59E0B" },
 ];
 
-const EXAMPLES = [
-  {
-    steps: [
-      { label: "문제 발견", text: "급식 줄이 길다" },
-      { label: "원인 분석", text: "특정 시간대에 학생이 집중된다" },
-      { label: "근거 수집", text: "시간대별 혼잡도 조사" },
-      { label: "해결 방안", text: "운영 개선안 제안" },
-    ],
-  },
-  {
-    steps: [
-      { label: "문제 발견", text: "도서관 이용률이 낮다" },
-      { label: "원인 분석", text: "이용 이유와 불편 요소 조사" },
-      { label: "근거 수집", text: "설문조사 및 인터뷰" },
-      { label: "해결 방안", text: "이용 활성화 프로그램 기획" },
-    ],
-  },
+const TRAITS = [
+  { num: "01", title: "질문한다", desc: "무엇이 문제인지 발견한다.", color: "#4F46E5" },
+  { num: "02", title: "분석한다", desc: "현상이 아닌 원인을 찾는다.", color: "#7C3AED" },
+  { num: "03", title: "확인한다", desc: "설문, 인터뷰, 데이터로 근거를 수집한다.", color: "#06B6D4" },
+  { num: "04", title: "제안한다", desc: "실행 가능한 해결 방안을 만든다.", color: "#10B981" },
 ];
+
+const FLOW = ["관찰", "질문", "조사", "분석", "아이디어", "실행", "공유"];
 
 function toISODateKST() {
   const k = new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Seoul" }));
@@ -76,12 +65,34 @@ function getStage(groupLogs: Log[]) {
   if (groupLogs.length === 0) return { label: "문제 발견 단계", color: "#94a3b8" };
   if (groupLogs.some(l => l.log_type === "최종보고")) return { label: "결과물 제작 · 공유", color: "#a855f7" };
   if (groupLogs.some(l => l.log_type === "중간보고")) return { label: "해결 방안 설계 중", color: "#f97316" };
-  return { label: "원인 분석 · 근거 수집 중", color: "#3b82f6" };
+  return { label: "원인 분석 · 자료 조사 중", color: "#3b82f6" };
 }
 
 function getLatestDate(groupLogs: Log[]) {
   if (groupLogs.length === 0) return null;
   return groupLogs.reduce((a, b) => (a.date > b.date ? a : b)).date;
+}
+
+function Reveal({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [inView, setInView] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setInView(true); obs.disconnect(); } },
+      { threshold: 0.15 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
+  return (
+    <div ref={ref} className={`hy-reveal${inView ? " hy-in" : ""}`} style={{ transitionDelay: `${delay}ms` }}>
+      {children}
+    </div>
+  );
 }
 
 export default function ResearchPage() {
@@ -146,172 +157,238 @@ export default function ResearchPage() {
   const groupLogs = selectedGroup ? logs.filter(l => l.group_id === selectedGroup.id) : [];
 
   return (
-    <div style={{ display:"flex", flexDirection:"column", gap:72, paddingBottom:40 }}>
+    <div style={{ display:"flex", flexDirection:"column", gap:64, paddingBottom:40 }}>
 
       {/* ===================== HERO ===================== */}
       <section style={{
-        background:"#1c1c1e", borderRadius:24, padding:"64px 36px",
+        background:"linear-gradient(135deg,#312e81 0%,#4F46E5 45%,#7C3AED 85%,#06B6D4 130%)",
+        borderRadius:28, padding:"64px 36px", position:"relative", overflow:"hidden",
+        boxShadow:"0 24px 60px rgba(79,70,229,0.35)",
       }}>
-        <div style={{ maxWidth:680 }}>
-          <div style={{ display:"inline-flex",alignItems:"center",border:"1px solid rgba(255,255,255,0.18)",borderRadius:999,padding:"5px 14px",marginBottom:24 }}>
-            <span style={{ fontSize:12,color:"rgba(255,255,255,0.7)",fontWeight:700,letterSpacing:"1px" }}>SCHOOL PROJECT</span>
+        {[{w:320,h:320,top:-120,right:-100,op:0.10},{w:180,h:180,bottom:-70,left:-50,op:0.10}].map((b,i)=>(
+          <div key={i} style={{ position:"absolute",width:b.w,height:b.h,top:b.top,right:b.right,bottom:b.bottom,left:b.left,borderRadius:"50%",background:"#fff",opacity:b.op,filter:"blur(2px)" }}/>
+        ))}
+        <div style={{ position:"relative", maxWidth:680 }}>
+          <div style={{ display:"inline-flex",alignItems:"center",background:"rgba(255,255,255,0.15)",backdropFilter:"blur(8px)",borderRadius:999,padding:"5px 16px",marginBottom:24,border:"1px solid rgba(255,255,255,0.25)" }}>
+            <span style={{ fontSize:12,color:"#fff",fontWeight:700,letterSpacing:"1.5px" }}>RESEARCH PROJECT</span>
           </div>
-          <h1 style={{ color:"#fff",fontSize:"clamp(26px,5vw,40px)",fontWeight:800,margin:"0 0 18px",letterSpacing:"-1px",lineHeight:1.3 }}>
+          <h1 style={{ color:"#fff",fontSize:"clamp(26px,5vw,42px)",fontWeight:900,margin:"0 0 18px",letterSpacing:"-1px",lineHeight:1.3 }}>
             우리 학교 좋은 학교 만들기 프로젝트
           </h1>
-          <p style={{ color:"rgba(255,255,255,0.85)",fontSize:"clamp(15px,2vw,18px)",fontWeight:600,margin:"0 0 28px",lineHeight:1.8 }}>
-            문제를 발견하고,<br/>해결책을 설계하는 탐구
+          <p style={{ color:"rgba(255,255,255,0.92)",fontSize:"clamp(15px,2.2vw,19px)",fontWeight:700,margin:"0 0 26px",lineHeight:1.9 }}>
+            문제를 발견하고,<br/>원인을 분석하고,<br/>해결 방안을 설계하는 탐구
           </p>
-          <div style={{ height:1, background:"rgba(255,255,255,0.12)", marginBottom:28 }}/>
-          <p style={{ color:"rgba(255,255,255,0.6)",fontSize:14.5,margin:0,lineHeight:2 }}>
-            이번 프로젝트의 목표는 단순히 학교의 불편한 점을 이야기하는 것이 아닙니다.<br/>
-            학교생활 속 문제를 발견하고, 왜 그런 문제가 발생하는지 탐구하며,<br/>
-            설문조사, 인터뷰, 데이터 분석 등을 통해 근거를 수집하고,<br/>
-            실제로 적용 가능한 해결 방안을 설계하는 것이 목표입니다.
+          <p style={{ color:"rgba(255,255,255,0.78)",fontSize:14.5,margin:0,lineHeight:2 }}>
+            학교생활 속에서 더 나아질 수 있는 점을 발견하고,<br/>
+            그 원인을 분석하며, 설문조사·인터뷰·데이터 분석 등을 통해<br/>
+            근거를 수집하고, 실제로 적용 가능한 해결 방안을<br/>
+            고민해 보는 프로젝트입니다.
           </p>
         </div>
       </section>
 
-      {/* ===================== 선생님이 기대하는 모습 ===================== */}
-      <section>
-        <h2 style={{ fontSize:"clamp(20px,3.5vw,26px)", fontWeight:800, color:"var(--text)", margin:"0 0 32px", letterSpacing:"-0.5px" }}>
-          이번 프로젝트를 통해 여러분에게 기대하는 것
-        </h2>
-        <div style={{ display:"grid", gridTemplateColumns:"1.1fr 1fr", gap:48, alignItems:"start" }} className="hy-expect-grid">
-          <p style={{ fontSize:15, color:"var(--text-muted)", lineHeight:2, margin:0 }}>
-            저는 여러분이 이번 활동을 통해 다음과 같은 힘을 기르기를 바랍니다.
-            <br/><br/>
-            이번 프로젝트에서 중요한 것은 결과물 자체가 아니라,<br/>
-            문제를 어떻게 발견했고, 어떻게 분석했고,<br/>
-            어떤 해결 방안을 고민했는가의 <strong style={{ color:"var(--text)" }}>과정</strong>입니다.
+      {/* ===================== 핵심 메시지 ===================== */}
+      <Reveal>
+        <section style={{ textAlign:"center", padding:"20px 12px" }}>
+          <h2 style={{
+            fontSize:"clamp(22px,4.2vw,34px)", fontWeight:900,
+            lineHeight:1.7, color:"var(--text)", margin:0, letterSpacing:"-0.5px",
+          }}>
+            좋은 탐구는<br/>
+            <span style={{ background:"linear-gradient(135deg,#4F46E5,#7C3AED)", WebkitBackgroundClip:"text", backgroundClip:"text", color:"transparent" }}>
+              문제를 발견하는 것에서 끝나지 않는다.
+            </span>
+          </h2>
+          <p style={{ fontSize:"clamp(14px,2vw,16px)", color:"var(--text-muted)", lineHeight:2, margin:"24px 0 0", fontWeight:600 }}>
+            왜 그런 문제가 발생했는지 질문하고,<br/>
+            근거를 찾고, 사람들의 의견을 듣고,<br/>
+            실현 가능한 해결 방법을 고민하는 과정이다.
           </p>
-          <ul style={{ margin:0, padding:0, listStyle:"none", display:"flex", flexDirection:"column", gap:14 }}>
-            {EXPECTATIONS.map(t=>(
-              <li key={t} style={{ display:"flex", gap:12, alignItems:"center", fontSize:14.5, fontWeight:600, color:"var(--text)" }}>
-                <span style={{
-                  width:20, height:20, borderRadius:"50%", flexShrink:0,
-                  border:"1.5px solid var(--primary)", color:"var(--primary)",
-                  display:"flex", alignItems:"center", justifyContent:"center", fontSize:12, fontWeight:800,
-                }}>✓</span>
-                {t}
-              </li>
+        </section>
+      </Reveal>
+
+      {/* ===================== 탐구를 통해 기를 수 있는 역량 ===================== */}
+      <section>
+        <Reveal>
+          <h2 style={{ fontSize:"clamp(20px,3.5vw,26px)", fontWeight:900, color:"var(--text)", margin:"0 0 8px", letterSpacing:"-0.5px" }}>
+            탐구를 통해 기를 수 있는 역량
+          </h2>
+          <p style={{ fontSize:14, color:"var(--text-muted)", margin:"0 0 28px" }}>
+            탐구의 각 과정은 자연스럽게 다음 역량과 연결됩니다.
+          </p>
+        </Reveal>
+        <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(220px,1fr))", gap:18 }}>
+          {ABILITIES.map((a,i)=>(
+            <Reveal key={a.title} delay={i*60}>
+              <div className="hy-hover-card" style={{
+                borderRadius:20, padding:"24px 22px", height:"100%",
+                background:"#fff", border:"1.5px solid var(--border)",
+                borderTop:`3px solid ${a.color}`,
+              }}>
+                <h3 style={{ fontSize:15.5, fontWeight:800, margin:"0 0 8px", color:a.color }}>{a.title}</h3>
+                <p style={{ fontSize:13.5, color:"var(--text-muted)", margin:0, lineHeight:1.8 }}>{a.desc}</p>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
+      {/* ===================== 좋은 탐구의 특징 ===================== */}
+      <section style={{
+        background:"linear-gradient(135deg,#eef2ff 0%,#f5f3ff 50%,#ecfeff 100%)",
+        borderRadius:28, padding:"44px 32px",
+      }}>
+        <Reveal>
+          <h2 style={{ fontSize:"clamp(20px,3.5vw,26px)", fontWeight:900, color:"var(--text)", margin:"0 0 28px", letterSpacing:"-0.5px", textAlign:"center" }}>
+            좋은 탐구의 특징
+          </h2>
+        </Reveal>
+        <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(200px,1fr))", gap:18 }}>
+          {TRAITS.map((t,i)=>(
+            <Reveal key={t.title} delay={i*70}>
+              <div className="hy-hover-card" style={{
+                borderRadius:20, padding:"26px 22px", height:"100%",
+                background:"#fff", boxShadow:"0 4px 20px rgba(79,70,229,0.08)",
+              }}>
+                <div style={{ fontSize:13, fontWeight:900, color:t.color, marginBottom:12, letterSpacing:"1px" }}>{t.num}</div>
+                <h3 style={{ fontSize:17, fontWeight:900, margin:"0 0 8px", color:"var(--text)" }}>{t.title}</h3>
+                <p style={{ fontSize:13.5, color:"var(--text-muted)", margin:0, lineHeight:1.7 }}>{t.desc}</p>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
+      {/* ===================== 탐구가 깊어지는 과정 ===================== */}
+      <section>
+        <Reveal>
+          <h2 style={{ fontSize:"clamp(20px,3.5vw,26px)", fontWeight:900, color:"var(--text)", margin:"0 0 8px", letterSpacing:"-0.5px", textAlign:"center" }}>
+            탐구가 깊어지는 과정
+          </h2>
+          <p style={{ fontSize:14, color:"var(--text-muted)", margin:"0 0 32px", textAlign:"center" }}>
+            하나의 관찰이 공유로 이어지기까지
+          </p>
+        </Reveal>
+        <Reveal>
+          <div className="hy-flow">
+            {FLOW.map((f,i)=>(
+              <div key={f} style={{ display:"flex", alignItems:"center" }}>
+                <div className="hy-flow-node">
+                  <div style={{
+                    width:64, height:64, borderRadius:"50%",
+                    background:`linear-gradient(135deg, ${["#4F46E5","#6D40E0","#7C3AED","#5B6FE0","#06B6D4","#10B981","#06B6D4"][i]}, ${["#7C3AED","#7C3AED","#06B6D4","#06B6D4","#10B981","#06B6D4","#4F46E5"][i]})`,
+                    display:"flex", alignItems:"center", justifyContent:"center",
+                    color:"#fff", fontSize:14, fontWeight:800, boxShadow:"0 8px 20px rgba(79,70,229,0.25)",
+                  }}>{f}</div>
+                </div>
+                {i < FLOW.length-1 && <span className="hy-flow-arrow">→</span>}
+              </div>
             ))}
-          </ul>
-        </div>
+          </div>
+        </Reveal>
       </section>
 
-      {/* ===================== 좋은 탐구의 과정 (타임라인) ===================== */}
+      {/* ===================== 우리가 지향하는 탐구 ===================== */}
+      <Reveal>
+        <section style={{
+          background:"linear-gradient(135deg,#312e81 0%,#1e1b4b 100%)",
+          borderRadius:24, padding:"40px 32px", color:"#fff",
+        }}>
+          <h2 style={{ fontSize:"clamp(18px,3vw,24px)", fontWeight:900, margin:"0 0 18px", letterSpacing:"-0.5px" }}>
+            우리가 지향하는 탐구
+          </h2>
+          <p style={{ fontSize:14.5, color:"rgba(255,255,255,0.7)", margin:"0 0 20px", lineHeight:1.9 }}>
+            좋은 탐구는 주제의 크기로 결정되지 않습니다.<br/>
+            거창한 문제를 선택했다고 좋은 탐구가 되는 것도 아닙니다.
+          </p>
+          <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(180px,1fr))", gap:14 }}>
+            {[
+              "얼마나 깊이 질문했는가",
+              "얼마나 다양한 관점에서 살펴보았는가",
+              "얼마나 근거를 수집했는가",
+              "얼마나 현실적인 해결 방안을 고민했는가",
+            ].map(t=>(
+              <div key={t} style={{
+                border:"1px solid rgba(255,255,255,0.15)", borderRadius:14, padding:"16px",
+                background:"rgba(255,255,255,0.05)", fontSize:13.5, fontWeight:700, lineHeight:1.7,
+              }}>
+                {t}
+              </div>
+            ))}
+          </div>
+        </section>
+      </Reveal>
+
+      {/* ===================== 프로젝트 진행 방법 ===================== */}
       <section>
-        <h2 style={{ fontSize:"clamp(20px,3.5vw,26px)", fontWeight:800, color:"var(--text)", margin:"0 0 8px", letterSpacing:"-0.5px" }}>
-          좋은 탐구의 과정
-        </h2>
-        <p style={{ fontSize:14, color:"var(--text-muted)", margin:"0 0 32px" }}>
-          탐구는 다음의 흐름을 따라 진행됩니다.
-        </p>
+        <Reveal>
+          <h2 style={{ fontSize:"clamp(20px,3.5vw,26px)", fontWeight:900, color:"var(--text)", margin:"0 0 32px", letterSpacing:"-0.5px" }}>
+            프로젝트 진행 방법
+          </h2>
+        </Reveal>
         <div style={{ display:"flex", flexDirection:"column" }}>
           {STEPS.map((s,i)=>(
-            <div key={s.title} style={{ display:"flex", gap:24, padding:"22px 0", borderTop: i===0 ? "1px solid var(--border)" : undefined, borderBottom:"1px solid var(--border)" }}>
-              <div style={{ flexShrink:0, width:44 }}>
-                <span style={{ fontSize:13, fontWeight:800, color:"var(--text-subtle)" }}>{String(i+1).padStart(2,"0")}</span>
-              </div>
-              <div>
-                <h3 style={{ fontSize:15, fontWeight:800, color:"var(--text)", margin:"0 0 4px" }}>{s.title}</h3>
-                <p style={{ fontSize:13.5, color:"var(--text-muted)", margin:0, lineHeight:1.7 }}>{s.desc}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ===================== 탐구의 예시 ===================== */}
-      <section>
-        <h2 style={{ fontSize:"clamp(20px,3.5vw,26px)", fontWeight:800, color:"var(--text)", margin:"0 0 8px", letterSpacing:"-0.5px" }}>
-          탐구는 이렇게 깊어질 수 있습니다
-        </h2>
-        <p style={{ fontSize:14, color:"var(--text-muted)", margin:"0 0 32px" }}>
-          같은 주제라도 분석과 근거를 거치면 탐구의 깊이가 달라집니다.
-        </p>
-        <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))", gap:20, marginBottom:28 }}>
-          {EXAMPLES.map((ex,i)=>(
-            <div key={i} className="hy-card" style={{ padding:"24px" }}>
-              {ex.steps.map((s,j)=>(
-                <div key={s.label}>
-                  <div style={{ display:"flex", gap:10, alignItems:"baseline" }}>
-                    <span style={{ fontSize:11, fontWeight:800, color:"var(--primary)", letterSpacing:"0.5px", flexShrink:0, width:60 }}>{s.label}</span>
-                    <span style={{ fontSize:14.5, fontWeight:700, color:"var(--text)" }}>{s.text}</span>
-                  </div>
-                  {j < ex.steps.length-1 && (
-                    <div style={{ padding:"6px 0 6px 70px", color:"var(--text-subtle)", fontSize:13 }}>↓</div>
-                  )}
+            <Reveal key={s.title} delay={i*40}>
+              <div style={{ display:"flex", gap:24, padding:"20px 0", borderTop: i===0 ? "1px solid var(--border)" : undefined, borderBottom:"1px solid var(--border)" }}>
+                <div style={{ flexShrink:0, width:48 }}>
+                  <span style={{
+                    display:"inline-flex", alignItems:"center", justifyContent:"center",
+                    width:36, height:36, borderRadius:"50%", fontSize:13, fontWeight:900, color:"#fff",
+                    background:`linear-gradient(135deg, #4F46E5, #06B6D4)`,
+                  }}>{i+1}</span>
                 </div>
-              ))}
-            </div>
+                <div>
+                  <h3 style={{ fontSize:15, fontWeight:800, color:"var(--text)", margin:"0 0 4px" }}>{s.title}</h3>
+                  <p style={{ fontSize:13.5, color:"var(--text-muted)", margin:0, lineHeight:1.7 }}>{s.desc}</p>
+                </div>
+              </div>
+            </Reveal>
           ))}
         </div>
-        <p style={{ fontSize:15.5, fontWeight:700, color:"var(--text)", textAlign:"center", lineHeight:1.8, margin:0 }}>
-          중요한 것은 문제 자체가 아니라,<br/>
-          그 문제를 <span style={{ color:"var(--primary-dark)" }}>어떻게 탐구했는가</span>입니다.
-        </p>
       </section>
 
-      {/* ===================== 생기부에 의미 있게 남는 활동 ===================== */}
-      <section style={{
-        background:"var(--surface)", border:"1.5px solid var(--border)", borderRadius:20,
-        padding:"36px 32px",
-      }}>
-        <h2 style={{ fontSize:"clamp(18px,3vw,24px)", fontWeight:800, color:"var(--text)", margin:"0 0 18px", letterSpacing:"-0.5px" }}>
-          좋은 활동은 과정이 기록됩니다
-        </h2>
-        <p style={{ fontSize:14.5, color:"var(--text-muted)", margin:"0 0 14px", lineHeight:1.9 }}>
-          생기부에는 “문제를 제기함”이 기록되는 것이 아니라,
-        </p>
-        <p style={{ fontSize:15, fontWeight:700, color:"var(--text)", margin:"0 0 14px", lineHeight:1.9 }}>
-          “문제를 발견하고, 자료를 조사하고, 원인을 분석하고,<br/>해결 방안을 설계한 과정”이 기록됩니다.
-        </p>
-        <p style={{ fontSize:14.5, color:"var(--text-muted)", margin:0, lineHeight:1.9 }}>
-          이번 프로젝트에서는 무엇을 만들었는가보다,<br/>
-          <strong style={{ color:"var(--text)" }}>어떻게 탐구했는가</strong>가 더 중요합니다.
-        </p>
-      </section>
-
-      {/* ===================== 개인 심화탐구 안내 ===================== */}
-      <section>
-        <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:8 }}>
-          <h2 style={{ fontSize:"clamp(18px,3vw,22px)", fontWeight:800, color:"var(--text)", margin:0, letterSpacing:"-0.5px" }}>
-            전공분야별 심화탐구활동
-          </h2>
-          <span style={{ fontSize:11, fontWeight:700, color:"var(--text-subtle)", border:"1px solid var(--border)", borderRadius:999, padding:"2px 10px" }}>선택</span>
-        </div>
-        <p style={{ fontSize:14, color:"var(--text-muted)", margin:"0 0 16px", lineHeight:1.9 }}>
-          기존에 안내했던 전공분야별 심화탐구활동은 계속 진행 가능합니다.<br/>
-          전공 또는 진로와 관련된 주제를 개인적으로 깊이 탐구하고 싶은 학생은 자유롭게 참여할 수 있습니다.
-        </p>
-        <div style={{ display:"flex", flexWrap:"wrap", gap:8, marginBottom:14 }}>
-          {["도서 탐구","설문조사","인터뷰","논문 조사","프로그램 제작","보고서 작성"].map(t=>(
-            <span key={t} style={{ fontSize:12.5, fontWeight:600, color:"var(--text-muted)", border:"1px solid var(--border)", borderRadius:999, padding:"5px 14px" }}>{t}</span>
-          ))}
-        </div>
-        <p style={{ fontSize:13.5, color:"var(--text-subtle)", margin:0 }}>
-          등 다양한 형태로 진행할 수 있으며, 원하는 학생은 개별 결과물을 제출할 수 있습니다.
-        </p>
-      </section>
+      {/* ===================== 전공분야별 심화탐구활동 ===================== */}
+      <Reveal>
+        <section className="hy-hover-card" style={{
+          borderRadius:24, padding:"36px 32px",
+          background:"linear-gradient(135deg,#ecfeff 0%,#f0fdfa 100%)",
+          border:"1.5px solid #cffafe",
+        }}>
+          <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:14 }}>
+            <h2 style={{ fontSize:"clamp(18px,3vw,22px)", fontWeight:900, color:"var(--text)", margin:0, letterSpacing:"-0.5px" }}>
+              전공분야별 심화탐구활동
+            </h2>
+            <span style={{ fontSize:11, fontWeight:800, color:"#06B6D4", border:"1px solid #a5f3fc", borderRadius:999, padding:"2px 10px" }}>선택</span>
+          </div>
+          <p style={{ fontSize:14, color:"var(--text-muted)", margin:"0 0 16px", lineHeight:1.9 }}>
+            기존에 안내했던 전공분야별 심화탐구활동은 계속 진행 가능합니다.<br/>
+            관심 분야나 진로 분야에 대해 개인적으로 깊이 탐구하고 싶은 학생은<br/>
+            자유롭게 진행 후 결과물을 제출할 수 있습니다.
+          </p>
+          <div style={{ display:"flex", flexWrap:"wrap", gap:8 }}>
+            {["독서 탐구","인터뷰","설문조사","논문 조사","보고서 작성","프로그램 제작"].map(t=>(
+              <span key={t} style={{ fontSize:12.5, fontWeight:700, color:"#0891b2", border:"1px solid #a5f3fc", borderRadius:999, padding:"5px 14px", background:"#fff" }}>{t}</span>
+            ))}
+          </div>
+        </section>
+      </Reveal>
 
       {/* ===================== 마지막 메시지 ===================== */}
-      <section style={{ textAlign:"center", padding:"24px 0" }}>
-        <h2 style={{ fontSize:"clamp(20px,4vw,30px)", fontWeight:800, color:"var(--text)", lineHeight:1.7, letterSpacing:"-0.5px", margin:"0 0 28px" }}>
-          좋은 탐구는 정답을 찾는 활동이 아니라,<br/>
-          더 나은 질문을 만들고<br/>
-          더 나은 해결책을 고민하는 활동입니다.
-        </h2>
-        <p style={{ fontSize:15, color:"var(--text-muted)", lineHeight:1.9, margin:0, fontWeight:600 }}>
-          여러분이 학교를 비판하는 사람이 아니라,<br/>
-          학교를 더 좋은 공간으로 만들기 위해 고민하고 행동하는 사람이 되기를 기대합니다.
-        </p>
-      </section>
+      <Reveal>
+        <section style={{ textAlign:"center", padding:"32px 12px" }}>
+          <h2 style={{ fontSize:"clamp(22px,4.5vw,34px)", fontWeight:900, lineHeight:1.8, letterSpacing:"-0.5px", margin:0, color:"var(--text)" }}>
+            좋은 탐구는<br/>
+            정답을 찾는 활동이 아니라<br/>
+            <span style={{ background:"linear-gradient(135deg,#4F46E5,#06B6D4)", WebkitBackgroundClip:"text", backgroundClip:"text", color:"transparent" }}>
+              더 좋은 질문을 만들고<br/>더 나은 해결책을 고민하는 활동
+            </span>이다.
+          </h2>
+        </section>
+      </Reveal>
 
       {/* ===================== 모둠 현황 ===================== */}
       <section>
-        <h2 style={{ fontSize:"clamp(20px,3.5vw,26px)", fontWeight:800, color:"var(--text)", margin:"0 0 8px", letterSpacing:"-0.5px" }}>
+        <h2 style={{ fontSize:"clamp(20px,3.5vw,26px)", fontWeight:900, color:"var(--text)", margin:"0 0 8px", letterSpacing:"-0.5px" }}>
           모둠 현황
         </h2>
         <p style={{ fontSize:14, color:"var(--text-muted)", margin:"0 0 24px" }}>
@@ -361,11 +438,10 @@ export default function ResearchPage() {
               const lastDate = getLatestDate(gl);
               const isSelected = selectedGroup?.id === g.id;
               return (
-                <div key={g.id} onClick={()=>setSelectedGroup(isSelected?null:g)} className="hy-card"
+                <div key={g.id} onClick={()=>setSelectedGroup(isSelected?null:g)} className="hy-card hy-hover-card"
                   style={{ padding:"18px 20px", cursor:"pointer",
                     borderColor: isSelected ? "var(--primary)" : "var(--border)",
                     boxShadow: isSelected ? "var(--shadow-md)" : "var(--shadow-sm)",
-                    transition:"all 0.15s",
                   }}>
                   <div style={{ display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:6 }}>
                     <h3 style={{ color:"var(--text)",fontSize:15,fontWeight:800,margin:0 }}>{g.name}</h3>
