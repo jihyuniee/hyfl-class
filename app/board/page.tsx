@@ -10,6 +10,7 @@ type Post = {
   content: string;
   author: string | null;
   is_anonymous: boolean;
+  password: string | null;
   comment_count?: number;
 };
 
@@ -53,7 +54,13 @@ export default function BoardPage() {
   const [fContent, setFContent] = useState("");
   const [fAuthor,  setFAuthor]  = useState("");
   const [fAnon,    setFAnon]    = useState(false);
+  const [fPassword, setFPassword] = useState("");
   const [loading,  setLoading]  = useState(false);
+
+  // 답변 확인 (비밀번호로 잠금 해제)
+  const [checkPw,    setCheckPw]    = useState("");
+  const [unlockedIds, setUnlockedIds] = useState<Set<string>>(new Set());
+  const [checkError, setCheckError] = useState("");
 
   // 댓글 작성
   const [cContent, setCContent] = useState<Record<string, string>>({});
@@ -76,7 +83,7 @@ export default function BoardPage() {
   useEffect(() => { load(); }, []);
 
   const filtered = posts.filter(p => {
-    if (p.category === "선생님께" && !isAdmin) return false;
+    if (p.category === "선생님께" && !isAdmin && !unlockedIds.has(p.id)) return false;
     return filter === "전체" || p.category === filter;
   });
 
@@ -86,17 +93,31 @@ export default function BoardPage() {
 
   async function submitPost() {
     if (!fContent.trim()) { alert("내용을 입력하세요"); return; }
+    if (fCat === "선생님께" && !fPassword.trim()) { alert("선생님 답변을 확인할 비밀번호를 입력하세요"); return; }
     setLoading(true);
     const { error } = await supabase.from("board_posts").insert({
       category: fCat,
       content: fContent.trim(),
       author: fAnon ? null : (fAuthor.trim() || "익명"),
       is_anonymous: fAnon,
+      password: fCat === "선생님께" ? fPassword.trim() : null,
     });
     setLoading(false);
     if (error) { alert(error.message); return; }
-    setFContent(""); setFAuthor(""); setFAnon(false); setFormOpen(false);
+    setFContent(""); setFAuthor(""); setFAnon(false); setFPassword(""); setFormOpen(false);
     await load();
+  }
+
+  function checkPassword() {
+    const pwInput = checkPw.trim();
+    if (!pwInput) { setCheckError("비밀번호를 입력하세요"); return; }
+    const matches = posts.filter(p => p.category === "선생님께" && p.password === pwInput);
+    if (matches.length === 0) { setCheckError("일치하는 글이 없어요"); return; }
+    setUnlockedIds(prev => new Set([...prev, ...matches.map(p => p.id)]));
+    setExpandedId(matches[0].id);
+    setFilter("선생님께");
+    setCheckError("");
+    setCheckPw("");
   }
 
   async function submitComment(postId: string) {
@@ -209,6 +230,16 @@ export default function BoardPage() {
                 익명으로 작성
               </label>
             </div>
+            {fCat === "선생님께" && (
+              <div>
+                <input type="password" placeholder="답변 확인용 비밀번호 (꼭 기억해두세요!)"
+                  value={fPassword} onChange={e => setFPassword(e.target.value)}
+                  className="hy-input" style={{ maxWidth:280 }} />
+                <p style={{ fontSize:12, color:"var(--text-subtle)", margin:"6px 0 0" }}>
+                  이 비밀번호로 선생님 답변을 확인할 수 있어요. 잊지 않게 적어두세요.
+                </p>
+              </div>
+            )}
             <button onClick={submitPost} disabled={loading}
               className="hy-btn hy-btn-primary" style={{ fontSize:13, alignSelf:"flex-start" }}>
               {loading ? "등록 중..." : "등록하기"}
@@ -217,13 +248,23 @@ export default function BoardPage() {
         </div>
       )}
 
-      {/* 선생님께 잠금 안내 */}
+      {/* 선생님께 잠금 안내 + 답변 확인 */}
       {(filter === "선생님께" || filter === "전체") && !isAdmin && (
-        <div style={{ padding:"14px 18px", borderRadius:14, background:"#f0fdf4", border:"1.5px solid #86efac", display:"flex", alignItems:"center", gap:10 }}>
-          <span style={{ fontSize:20 }}>🔒</span>
-          <p style={{ fontSize:13, color:"#16a34a", fontWeight:700, margin:0 }}>
-            선생님께 보내는 글은 선생님만 볼 수 있어요. 선생님 로그인 후 확인 가능해요.
-          </p>
+        <div style={{ padding:"14px 18px", borderRadius:14, background:"#f0fdf4", border:"1.5px solid #86efac", display:"flex", flexDirection:"column", gap:10 }}>
+          <div style={{ display:"flex", alignItems:"center", gap:10 }}>
+            <span style={{ fontSize:20 }}>🔒</span>
+            <p style={{ fontSize:13, color:"#16a34a", fontWeight:700, margin:0 }}>
+              선생님께 보내는 글은 선생님만 볼 수 있어요. 글 작성 시 설정한 비밀번호로 내 글과 답변을 확인할 수 있어요.
+            </p>
+          </div>
+          <div style={{ display:"flex", gap:8, alignItems:"center", flexWrap:"wrap" }}>
+            <input type="password" placeholder="내 글 비밀번호 입력"
+              value={checkPw} onChange={e => { setCheckPw(e.target.value); setCheckError(""); }}
+              onKeyDown={e => { if (e.key === "Enter") checkPassword(); }}
+              className="hy-input" style={{ maxWidth:200 }}/>
+            <button onClick={checkPassword} className="hy-btn hy-btn-primary" style={{ fontSize:13 }}>답변 확인</button>
+            {checkError && <span style={{ fontSize:12, color:"#dc2626", fontWeight:700 }}>{checkError}</span>}
+          </div>
         </div>
       )}
 
