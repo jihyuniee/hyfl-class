@@ -241,3 +241,48 @@ body {
     border-radius: 32px;
   }
 }
+
+/* ── 스크롤 reveal 애니메이션 ── */
+.hy-reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1);
+}
+.hy-reveal.hy-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── hover 효과 카드 ── */
+.hy-hover-card {
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.hy-hover-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 40px rgba(79,70,229,0.18);
+}
+
+/* ── 탐구 흐름 타임라인 ── */
+.hy-flow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+}
+.hy-flow-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+}
+.hy-flow-arrow {
+  font-size: 18px;
+  color: #c4b5fd;
+  font-weight: 700;
+}
+@media (max-width: 768px) {
+  .hy-flow { flex-direction: column; }
+  .hy-flow-arrow { transform: rotate(90deg); }
+}
