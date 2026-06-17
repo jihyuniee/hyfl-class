@@ -3,10 +3,13 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/components/lib/supabaseClient";
 
+const CATEGORIES = ["건의사항", "선생님께", "페이지 의견"] as const;
+type Category = typeof CATEGORIES[number];
+
 type Post = {
   id: string;
   created_at: string;
-  category: "건의사항" | "선생님께" | "페이지 의견";
+  category: Category;
   content: string;
   author: string | null;
   is_anonymous: boolean;
@@ -50,7 +53,7 @@ export default function BoardPage() {
 
   // 글 작성 폼
   const [formOpen, setFormOpen] = useState(false);
-  const [fCat,     setFCat]     = useState<Post["category"]>("건의사항");
+  const [fCat,     setFCat]     = useState<Category>(CATEGORIES[0]);
   const [fContent, setFContent] = useState("");
   const [fAuthor,  setFAuthor]  = useState("");
   const [fAnon,    setFAnon]    = useState(false);
@@ -91,17 +94,23 @@ export default function BoardPage() {
     return comments.filter(c => c.post_id === postId);
   }
 
-  async function submitPost() {
-    if (!fContent.trim()) { alert("내용을 입력하세요"); return; }
-    if (fCat === "선생님께" && !fPassword.trim()) { alert("선생님 답변을 확인할 비밀번호를 입력하세요"); return; }
-    setLoading(true);
-    const { error } = await supabase.from("board_posts").insert({
+  function buildPostPayload(): Omit<Post, "id" | "created_at" | "comment_count"> {
+    return {
       category: fCat,
       content: fContent.trim(),
       author: fAnon ? null : (fAuthor.trim() || "익명"),
       is_anonymous: fAnon,
       password: fCat === "선생님께" ? fPassword.trim() : null,
-    });
+    };
+  }
+
+  async function submitPost() {
+    if (!fContent.trim()) { alert("내용을 입력하세요"); return; }
+    if (fCat === "선생님께" && !fPassword.trim()) { alert("선생님 답변을 확인할 비밀번호를 입력하세요"); return; }
+    setLoading(true);
+    const payload = buildPostPayload();
+    console.log("[board] submitPost payload:", payload);
+    const { error } = await supabase.from("board_posts").insert(payload);
     setLoading(false);
     if (error) { alert(error.message); return; }
     setFContent(""); setFAuthor(""); setFAnon(false); setFPassword(""); setFormOpen(false);
@@ -153,7 +162,7 @@ export default function BoardPage() {
       {/* 필터 + 글쓰기 */}
       <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", flexWrap:"wrap", gap:10 }}>
         <div style={{ display:"flex", gap:6, flexWrap:"wrap" }}>
-          {["전체", "건의사항", "선생님께", "페이지 의견"].map(f => (
+          {["전체", ...CATEGORIES].map(f => (
             <button key={f} onClick={() => setFilter(f)}
               style={{
                 padding:"6px 14px", borderRadius:999, border:"1.5px solid",
@@ -207,11 +216,11 @@ export default function BoardPage() {
         <div className="hy-card" style={{ padding:"22px 24px" }}>
           <h3 style={{ fontSize:15, fontWeight:800, color:"var(--text)", margin:"0 0 16px" }}>글 작성하기</h3>
           <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
-            <select value={fCat} onChange={e => setFCat(e.target.value as Post["category"])}
+            <select value={fCat} onChange={e => setFCat(e.target.value as Category)}
               className="hy-input" style={{ cursor:"pointer" }}>
-              <option value="건의사항">📣 건의사항</option>
-              <option value="선생님께">💌 선생님께</option>
-              <option value="페이지 의견">💡 페이지 의견</option>
+              {CATEGORIES.map(c => (
+                <option key={c} value={c}>{CAT_STYLE[c].emoji} {c}</option>
+              ))}
             </select>
             <textarea
               placeholder="자유롭게 의견을 남겨줘요 🙂"
