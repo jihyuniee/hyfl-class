@@ -235,7 +235,12 @@ export default function MentorPage() {
       if (path) await supabase.storage.from("uploads").remove([path]);
     }
     await supabase.from("resource_comments").delete().eq("resource_id", id);
-    await supabase.from("mentor_resources").delete().eq("id", id);
+    const { error } = await supabase.from("mentor_resources").delete().eq("id", id);
+    if (error) {
+      console.error("deleteResource error:", error);
+      alert("삭제에 실패했습니다: " + error.message);
+      return;
+    }
     await load();
   }
 
