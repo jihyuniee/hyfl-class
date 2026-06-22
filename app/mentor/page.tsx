@@ -197,7 +197,7 @@ export default function MentorPage() {
 
       const { data: urlData } = supabase.storage.from("uploads").getPublicUrl(safeName);
 
-      await supabase.from("mentor_resources").insert({
+      const { error: insertErr } = await supabase.from("mentor_resources").insert({
         subject: subjectOverride ?? rSubject,
         title: rTitle.trim(),
         description: rDesc.trim() || null,
@@ -209,12 +209,20 @@ export default function MentorPage() {
         delete_code: rDeleteCode.trim() || null,
       });
 
+      if (insertErr) {
+        console.error("mentor_resources insert error:", insertErr);
+        alert("데이터베이스 저장 실패: " + insertErr.message);
+        setUploading(false);
+        return;
+      }
+
       setRTitle(""); setRDesc(""); setRFile(null); setRUploaderName(""); setRDeleteCode("");
       if (fileRef.current) fileRef.current.value = "";
       setROpen(false);
       await load();
-    } catch {
-      alert("오류가 발생했습니다");
+    } catch (err) {
+      console.error("addResource error:", err);
+      alert("오류가 발생했습니다: " + (err instanceof Error ? err.message : String(err)));
     } finally {
       setUploading(false);
     }
