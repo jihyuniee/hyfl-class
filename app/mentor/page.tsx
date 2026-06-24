@@ -230,15 +230,14 @@ export default function MentorPage() {
 
   async function deleteResource(id: string, fileUrl: string | null) {
     if (!confirm("자료를 삭제할까요?")) return;
-    if (fileUrl) {
-      const path = fileUrl.split("/uploads/")[1];
-      if (path) await supabase.storage.from("uploads").remove([path]);
-    }
-    await supabase.from("resource_comments").delete().eq("resource_id", id);
-    const { error } = await supabase.from("mentor_resources").delete().eq("id", id);
-    if (error) {
-      console.error("deleteResource error:", error);
-      alert("삭제에 실패했습니다: " + error.message);
+    const res = await fetch("/api/mentor-resources/delete", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id, adminPw: pw }),
+    });
+    if (!res.ok) {
+      const { error } = await res.json().catch(() => ({ error: "알 수 없는 오류" }));
+      alert("삭제에 실패했습니다: " + error);
       return;
     }
     await load();
@@ -247,20 +246,19 @@ export default function MentorPage() {
   // 삭제 코드 검증 후 삭제
   async function handleCodeDelete(r: Resource) {
     if (!deleteCodeInput.trim()) { alert("삭제 코드를 입력하세요"); return; }
-    if (deleteCodeInput.trim() !== r.delete_code) {
-      alert("삭제 코드가 맞지 않아요 🔒");
-      setDeleteCodeInput("");
-      return;
-    }
+    const code = deleteCodeInput.trim();
     setDeletingResource(null);
     setDeleteCodeInput("");
-    // confirm 없이 바로 삭제 (코드 검증으로 충분)
-    if (r.file_url) {
-      const path = r.file_url.split("/uploads/")[1];
-      if (path) await supabase.storage.from("uploads").remove([path]);
+    const res = await fetch("/api/mentor-resources/delete", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: r.id, code }),
+    });
+    if (!res.ok) {
+      const { error } = await res.json().catch(() => ({ error: "알 수 없는 오류" }));
+      alert(res.status === 403 ? "삭제 코드가 맞지 않아요 🔒" : "삭제에 실패했습니다: " + error);
+      return;
     }
-    await supabase.from("resource_comments").delete().eq("resource_id", r.id);
-    await supabase.from("mentor_resources").delete().eq("id", r.id);
     await load();
   }
 
