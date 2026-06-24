@@ -53,12 +53,12 @@ function toISODateKST() {
 }
 
 function formatDate(dateStr: string) {
-  const d = new Date(dateStr);
+  const d = new Date(new Date(dateStr).toLocaleString("en-US", { timeZone: "Asia/Seoul" }));
   return `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,"0")}.${String(d.getDate()).padStart(2,"0")}`;
 }
 
 function formatDateTime(dateStr: string) {
-  const d = new Date(dateStr);
+  const d = new Date(new Date(dateStr).toLocaleString("en-US", { timeZone: "Asia/Seoul" }));
   return `${String(d.getMonth()+1).padStart(2,"0")}.${String(d.getDate()).padStart(2,"0")} ${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}`;
 }
 
