@@ -24,6 +24,7 @@ type Log = {
 };
 
 const ADMIN_PW = "hyfl2025";
+const RECORD_PW = "202";
 const TYPE_STYLE: Record<string, { bg: string; color: string }> = {
   "활동일지": { bg: "#eff6ff", color: "#3b82f6" },
   "중간보고": { bg: "#fff7ed", color: "#f97316" },
@@ -129,6 +130,10 @@ export default function ResearchPage() {
   const [selectedGroup, setSelectedGroup] = useState<Group | null>(null);
   const [pw, setPw] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
+
+  // 학급 자율활동 기록 예시 (학생 열람용)
+  const [recordPw, setRecordPw] = useState("");
+  const [recordUnlocked, setRecordUnlocked] = useState(false);
 
   // 모둠 추가 폼
   const [gName,    setGName]    = useState("");
@@ -539,11 +544,11 @@ export default function ResearchPage() {
 
         <Reveal>
           <div className="hy-card" style={{ padding:"26px 24px" }}>
-            {!isAdmin ? (
+            {!recordUnlocked ? (
               <div style={{ display:"flex",alignItems:"center",gap:8,flexWrap:"wrap" }}>
-                <input type="password" placeholder="관리자 비밀번호" value={pw} onChange={e=>setPw(e.target.value)}
-                  onKeyDown={e=>e.key==="Enter"&&setIsAdmin(pw===ADMIN_PW)} className="hy-input" style={{ maxWidth:180 }}/>
-                <button onClick={()=>setIsAdmin(pw===ADMIN_PW)} className="hy-btn" style={{ fontSize:13 }}>확인</button>
+                <input type="password" placeholder="비밀번호" value={recordPw} onChange={e=>setRecordPw(e.target.value)}
+                  onKeyDown={e=>e.key==="Enter"&&setRecordUnlocked(recordPw===RECORD_PW)} className="hy-input" style={{ maxWidth:180 }}/>
+                <button onClick={()=>setRecordUnlocked(recordPw===RECORD_PW)} className="hy-btn" style={{ fontSize:13 }}>확인</button>
               </div>
             ) : (
               <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))", gap:18 }}>
