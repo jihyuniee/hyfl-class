@@ -56,6 +56,57 @@ const TRAITS = [
 
 const FLOW = ["관찰", "질문", "조사", "분석", "아이디어", "실행", "공유"];
 
+const RECORD_PW = "202";
+
+const RECORD_TIMELINE = [
+  "현재 상태",
+  "목표 상태",
+  "문제 정의",
+  "설문 · 인터뷰 · 데이터 분석",
+  "원인 분석",
+  "문제 재정의",
+  "해결방안 설계",
+  "학교 공동체에 적용",
+];
+
+type RecordExample = {
+  topic: string;
+  why: string;
+  research: string[];
+  record: string;
+};
+
+const RECORD_EXAMPLES: RecordExample[] = [
+  {
+    topic: "자습 시간 학생들의 학습 몰입도",
+    why: "학생들이 전자기기를 사용하는 것이 문제가 아니라 학생들이 스스로 몰입하기 어려운 학습 환경이 근본 원인일 수 있다는 문제의식을 가짐.",
+    research: ["학생 설문", "인터뷰", "시간대별 이용 실태 조사", "관찰"],
+    record:
+      "학급 자율활동(2026.04.14.~2026.12.31.) '좋은 학교 만들기 프로젝트'에 참여하여 자습 시간 학생들의 학습 몰입도 저하 현상에 주목함. 학생들의 전자기기 사용을 단순한 규칙 위반으로 바라보지 않고 학습 환경과 휴식 공간, 학습 동기 등 다양한 요인을 중심으로 문제를 재정의함. 학생 대상 설문조사와 인터뷰, 시간대별 이용 실태를 분석하여 학습 피로감과 자율학습 환경이 복합적으로 영향을 미친다는 점을 확인하고, 학생 참여형 캠페인과 학습 환경 개선 방안을 제안하며 공동체가 함께 만들어가는 학습 문화의 방향을 제시함.",
+  },
+  {
+    topic: "급식 잔반 문제",
+    why: "잔반이 많다는 결과보다 왜 학생들이 음식을 남기게 되는지에 관심을 가짐.",
+    research: ["메뉴별 잔반량", "학생 설문", "영양사 인터뷰", "급식 만족도 조사"],
+    record:
+      "학급 자율활동(2026.04.14.~2026.12.31.) '좋은 학교 만들기 프로젝트'에 참여하여 급식 잔반이 지속적으로 발생하는 원인을 탐구함. 학생 설문조사와 메뉴별 잔반량 관찰, 영양사 인터뷰를 통해 음식 기호도뿐 아니라 식사 시간과 배식 방식이 복합적으로 영향을 미친다는 점을 확인함. 조사 결과를 바탕으로 자율 배식 확대와 메뉴 만족도 조사 반영 등 현실적인 개선 방안을 제안하며 학교 구성원의 의견을 반영한 급식 문화 개선 방향을 제시함.",
+  },
+  {
+    topic: "학교 도서관 이용률",
+    why: "학생들이 도서관을 이용하지 않는 이유가 무엇인지 질문함.",
+    research: ["학생 설문", "인터뷰", "공간 활용 분석", "이용 시간 조사"],
+    record:
+      "학급 자율활동(2026.04.14.~2026.12.31.) '좋은 학교 만들기 프로젝트'에 참여하여 학교 도서관 이용률이 낮은 원인을 탐구함. 학생 대상 설문과 인터뷰를 통해 이용 목적과 공간 활용 실태를 조사하고, 신간 정보 접근성과 학습 공간 구성에 개선이 필요함을 분석함. 조사 결과를 바탕으로 추천 도서 안내와 이용 목적에 맞는 공간 구성 방안을 제안하며 학교 구성원의 학습 문화를 활성화하기 위한 개선 방향을 제시함.",
+  },
+  {
+    topic: "학교 앞 교통 혼잡",
+    why: "단순히 차량이 많다는 것이 아니라 학생들의 안전한 등굣길을 만드는 것이 목표라고 정의함.",
+    research: ["학생 설문", "학부모 인터뷰", "시간대별 차량 흐름", "보행 동선 조사"],
+    record:
+      "학급 자율활동(2026.04.14.~2026.12.31.) '좋은 학교 만들기 프로젝트'에 참여하여 등교 시간 학교 주변 교통 혼잡 문제를 탐구함. 학생과 학부모를 대상으로 이동 수단과 등교 시간을 조사하고 차량 흐름과 보행 동선을 분석하여 특정 시간대 차량 집중이 안전에 미치는 영향을 확인함. 조사 결과를 바탕으로 등교 시간 분산과 승하차 동선 개선 방안을 제안하며 학교 구성원의 안전을 고려한 교통 환경 개선 방향을 제시함.",
+  },
+];
+
 function toISODateKST() {
   const k = new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Seoul" }));
   return `${k.getFullYear()}-${String(k.getMonth()+1).padStart(2,"0")}-${String(k.getDate()).padStart(2,"0")}`;
@@ -101,6 +152,11 @@ export default function ResearchPage() {
   const [selectedGroup, setSelectedGroup] = useState<Group | null>(null);
   const [pw, setPw] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
+
+  // 학급 자율활동 기록 예시 잠금
+  const [recordPw, setRecordPw] = useState("");
+  const [recordUnlocked, setRecordUnlocked] = useState(false);
+  const [recordError, setRecordError] = useState(false);
 
   // 모둠 추가 폼
   const [gName,    setGName]    = useState("");
@@ -155,6 +211,15 @@ export default function ResearchPage() {
   }
 
   const groupLogs = selectedGroup ? logs.filter(l => l.group_id === selectedGroup.id) : [];
+
+  function checkRecordPw() {
+    if (recordPw === RECORD_PW) {
+      setRecordUnlocked(true);
+      setRecordError(false);
+    } else {
+      setRecordError(true);
+    }
+  }
 
   return (
     <div style={{ display:"flex", flexDirection:"column", gap:64, paddingBottom:40 }}>
@@ -495,6 +560,148 @@ export default function ResearchPage() {
           ))}
         </div>
       </section>
+
+      {/* ===================== 이런 탐구는 이렇게 기록됩니다 ===================== */}
+      <section>
+        <Reveal>
+          <h2 style={{ fontSize:"clamp(20px,3.5vw,26px)", fontWeight:900, color:"var(--text)", margin:"0 0 8px", letterSpacing:"-0.5px" }}>
+            📖 이런 탐구는 이렇게 기록됩니다
+          </h2>
+          <p style={{ fontSize:14, color:"var(--text-muted)", margin:"0 0 10px", lineHeight:1.9 }}>
+            여러분의 탐구 과정은 학기 말 담임교사가 학급 자율활동으로 기록하게 됩니다.
+          </p>
+          <p style={{ fontSize:14, color:"var(--text-muted)", margin:"0 0 28px", lineHeight:2 }}>
+            좋은 기록은 결과물이 아니라<br/>
+            ✔ 어떤 문제를 발견했는지 · ✔ 왜 그 문제가 발생한다고 생각했는지<br/>
+            ✔ 어떤 근거를 수집했는지 · ✔ 문제를 어떻게 새롭게 정의했는지<br/>
+            ✔ 공동체를 위해 어떤 해결방안을 고민했는지<br/>
+            에서 만들어집니다.
+          </p>
+        </Reveal>
+
+        {/* 좋은 탐구 과정 타임라인 */}
+        <Reveal>
+          <div className="hy-card" style={{ padding:"28px 24px", marginBottom:28 }}>
+            <div style={{ display:"flex", flexDirection:"column" }}>
+              {RECORD_TIMELINE.map((step, i) => (
+                <div key={step} style={{ display:"flex", gap:18 }}>
+                  <div style={{ display:"flex", flexDirection:"column", alignItems:"center", flexShrink:0 }}>
+                    <span style={{
+                      width:30, height:30, borderRadius:"50%", flexShrink:0,
+                      display:"flex", alignItems:"center", justifyContent:"center",
+                      fontSize:12, fontWeight:900, color:"#fff",
+                      background:`linear-gradient(135deg, #4F46E5, #06B6D4)`,
+                    }}>{i+1}</span>
+                    {i < RECORD_TIMELINE.length-1 && (
+                      <span style={{ width:2, flex:1, minHeight:22, background:"var(--border)", margin:"2px 0" }}/>
+                    )}
+                  </div>
+                  <div style={{ paddingBottom: i < RECORD_TIMELINE.length-1 ? 22 : 0 }}>
+                    <span style={{ fontSize:14.5, fontWeight:800, color:"var(--text)" }}>{step}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </Reveal>
+
+        {/* 학급 자율활동 기록 예시 (비밀번호 잠금) */}
+        <Reveal>
+          <div className="hy-card" style={{ padding:"26px 24px" }}>
+            <h3 style={{ fontSize:17, fontWeight:900, color:"var(--text)", margin:"0 0 8px" }}>
+              🔒 학급 자율활동 기록 예시
+            </h3>
+            <p style={{ fontSize:13.5, color:"var(--text-muted)", margin:"0 0 20px", lineHeight:1.8 }}>
+              아래 예시는 학생이 작성하는 것이 아닙니다.<br/>
+              여러분의 탐구 활동이 학기 말에 어떤 형태의 기록으로 이어질 수 있는지를 보여주는 참고 자료입니다.
+            </p>
+
+            {!recordUnlocked ? (
+              <div style={{ display:"flex", flexDirection:"column", gap:8, maxWidth:280 }}>
+                <div style={{ display:"flex", gap:8, flexWrap:"wrap" }}>
+                  <input
+                    type="password"
+                    placeholder="관리자 비밀번호"
+                    value={recordPw}
+                    onChange={e => { setRecordPw(e.target.value); setRecordError(false); }}
+                    onKeyDown={e => e.key === "Enter" && checkRecordPw()}
+                    className="hy-input"
+                    style={{ maxWidth:180 }}
+                  />
+                  <button onClick={checkRecordPw} className="hy-btn" style={{ fontSize:13 }}>확인</button>
+                </div>
+                {recordError && (
+                  <span style={{ fontSize:12.5, color:"#ef4444", fontWeight:700 }}>비밀번호가 올바르지 않습니다.</span>
+                )}
+              </div>
+            ) : (
+              <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))", gap:16, marginTop:6 }}>
+                {RECORD_EXAMPLES.map((ex, i) => (
+                  <Reveal key={ex.topic} delay={i*60}>
+                    <div className="hy-hover-card" style={{
+                      borderRadius:18, padding:"20px 20px", height:"100%",
+                      background:"#fafbff", border:"1.5px solid var(--border)",
+                    }}>
+                      <div style={{ fontSize:10.5, fontWeight:800, color:"#6366f1", letterSpacing:"0.5px", marginBottom:6 }}>탐구 주제</div>
+                      <h4 style={{ fontSize:15.5, fontWeight:900, color:"var(--text)", margin:"0 0 14px" }}>{ex.topic}</h4>
+
+                      <div style={{ fontSize:10.5, fontWeight:800, color:"#7C3AED", letterSpacing:"0.5px", marginBottom:6 }}>왜 이 문제가 중요하다고 생각했는가?</div>
+                      <p style={{ fontSize:13, color:"var(--text-muted)", margin:"0 0 14px", lineHeight:1.75 }}>{ex.why}</p>
+
+                      <div style={{ fontSize:10.5, fontWeight:800, color:"#06B6D4", letterSpacing:"0.5px", marginBottom:8 }}>어떤 조사를 했는가?</div>
+                      <div style={{ display:"flex", flexWrap:"wrap", gap:6, marginBottom:16 }}>
+                        {ex.research.map(r => (
+                          <span key={r} style={{
+                            fontSize:11.5, fontWeight:700, color:"#0891b2",
+                            background:"#ecfeff", border:"1px solid #cffafe",
+                            borderRadius:999, padding:"3px 10px",
+                          }}>{r}</span>
+                        ))}
+                      </div>
+
+                      <div style={{ fontSize:10.5, fontWeight:800, color:"var(--text-subtle)", letterSpacing:"0.5px", marginBottom:8 }}>학급 자율활동 기록 예시</div>
+                      <div style={{
+                        fontSize:12.5, color:"var(--text)", lineHeight:1.85,
+                        background:"#fff", border:"1px solid var(--border)",
+                        borderRadius:12, padding:"14px 14px",
+                      }}>
+                        {ex.record}
+                      </div>
+                    </div>
+                  </Reveal>
+                ))}
+              </div>
+            )}
+          </div>
+        </Reveal>
+      </section>
+
+      {/* ===================== 좋은 탐구자가 되는 방법 ===================== */}
+      <Reveal>
+        <section style={{
+          background:"linear-gradient(135deg,#065f46 0%,#0f766e 45%,#4F46E5 100%)",
+          borderRadius:28, padding:"44px 34px", color:"#fff",
+          boxShadow:"0 24px 60px rgba(6,95,70,0.3)",
+          position:"relative", overflow:"hidden",
+        }}>
+          <div style={{ position:"absolute", width:260, height:260, top:-100, right:-80, borderRadius:"50%", background:"#fff", opacity:0.08, filter:"blur(2px)" }}/>
+          <div style={{ position:"relative" }}>
+            <h2 style={{ fontSize:"clamp(19px,3.2vw,25px)", fontWeight:900, margin:"0 0 18px", letterSpacing:"-0.5px" }}>
+              🌱 좋은 탐구자가 되는 방법
+            </h2>
+            <p style={{ fontSize:14.5, color:"rgba(255,255,255,0.92)", margin:0, lineHeight:2 }}>
+              좋은 탐구는 답을 빨리 찾는 활동이 아닙니다.<br/>
+              더 좋은 질문을 만드는 활동입니다.<br/><br/>
+              문제를 정확하게 정의하고,<br/>
+              다양한 관점에서 원인을 분석하며,<br/>
+              근거를 수집하고,<br/>
+              학교 공동체를 위한 현실적인 해결방안을 고민하는 과정이<br/>
+              좋은 탐구이며,<br/>
+              이러한 과정이 학급 자율활동 기록으로 이어집니다.
+            </p>
+          </div>
+        </section>
+      </Reveal>
 
       {/* ===================== 마지막 메시지 ===================== */}
       <Reveal>
