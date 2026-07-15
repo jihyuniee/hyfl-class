@@ -13,37 +13,36 @@ type PrepSurvey = {
   hardest_subject: string | null; least_effort_subject: string | null;
   proud: string | null; regret: string | null; subject_balance: string | null;
   subject_korean: string | null; subject_math: string | null; subject_english: string | null;
-  subject_simyoungdok: string | null; subject_gukje: string | null; subject_culture: string | null;
+  subject_gukje: string | null; subject_culture: string | null;
   improve_method: string | null; improve_habit: string | null;
   vacation_plan: string | null; psych_state: string | null;
-  emotional_concern: string | null; record_concern: string | null; goal_plan: string | null;
+  emotional_concern: string | null; record_concern: string | null;
 };
 
 type PrepFormState = {
   feeling: string; effort_score: string; hardest_subject: string; least_effort_subject: string;
   proud: string; regret: string; subject_balance: string;
   subject_korean: string; subject_math: string; subject_english: string;
-  subject_simyoungdok: string; subject_gukje: string; subject_culture: string;
+  subject_gukje: string; subject_culture: string;
   improve_method: string; improve_habit: string;
-  vacation_plan: string; psych_state: string; emotional_concern: string; record_concern: string; goal_plan: string;
+  vacation_plan: string; psych_state: string; emotional_concern: string; record_concern: string;
 };
 
 const EMPTY_PREP_FORM: PrepFormState = {
   feeling: "", effort_score: "", hardest_subject: "", least_effort_subject: "",
   proud: "", regret: "", subject_balance: "",
   subject_korean: "", subject_math: "", subject_english: "",
-  subject_simyoungdok: "", subject_gukje: "", subject_culture: "",
+  subject_gukje: "", subject_culture: "",
   improve_method: "", improve_habit: "",
-  vacation_plan: "", psych_state: "", emotional_concern: "", record_concern: "", goal_plan: "",
+  vacation_plan: "", psych_state: "", emotional_concern: "", record_concern: "",
 };
 
 const PREP_SUBJECTS: { key: keyof PrepFormState; label: string }[] = [
-  { key: "subject_korean",     label: "국어" },
-  { key: "subject_math",       label: "수학" },
-  { key: "subject_english",    label: "영어" },
-  { key: "subject_simyoungdok",label: "심영독" },
-  { key: "subject_gukje",      label: "국제" },
-  { key: "subject_culture",    label: "사회와 문화" },
+  { key: "subject_korean",  label: "국어" },
+  { key: "subject_math",    label: "수학" },
+  { key: "subject_english", label: "영어" },
+  { key: "subject_gukje",   label: "국제" },
+  { key: "subject_culture", label: "사회와 문화" },
 ];
 
 const ADMIN_PW = "hyfl2025";
@@ -93,7 +92,6 @@ function PrepSurveyView({ prep }: { prep: PrepSurvey }) {
       <PrepRow label="8. 국어" value={prep.subject_korean} />
       <PrepRow label="8. 수학" value={prep.subject_math} />
       <PrepRow label="8. 영어" value={prep.subject_english} />
-      <PrepRow label="8. 심영독" value={prep.subject_simyoungdok} />
       <PrepRow label="8. 국제" value={prep.subject_gukje} />
       <PrepRow label="8. 사회와 문화" value={prep.subject_culture} />
       <PrepRow label="9. 보완할 점 - 학습 방법" value={prep.improve_method} />
@@ -102,7 +100,6 @@ function PrepSurveyView({ prep }: { prep: PrepSurvey }) {
       <PrepRow label="11. 현재 심리 상태" value={prep.psych_state} />
       <PrepRow label="12. 정서/심리 고민" value={prep.emotional_concern} />
       <PrepRow label="13. 생기부 관련 고민" value={prep.record_concern} />
-      <PrepRow label="14. TO. 여름방학의 나 (목표와 계획)" value={prep.goal_plan} />
     </div>
   );
 }
@@ -216,7 +213,6 @@ export default function CounselingPage() {
       subject_korean: prepForm.subject_korean.trim() || null,
       subject_math: prepForm.subject_math.trim() || null,
       subject_english: prepForm.subject_english.trim() || null,
-      subject_simyoungdok: prepForm.subject_simyoungdok.trim() || null,
       subject_gukje: prepForm.subject_gukje.trim() || null,
       subject_culture: prepForm.subject_culture.trim() || null,
       improve_method: prepForm.improve_method.trim() || null,
@@ -225,7 +221,6 @@ export default function CounselingPage() {
       psych_state: prepForm.psych_state.trim() || null,
       emotional_concern: prepForm.emotional_concern.trim() || null,
       record_concern: prepForm.record_concern.trim() || null,
-      goal_plan: prepForm.goal_plan.trim() || null,
     });
     setPrepSubmitting(false);
     if (error) { alert("설문 제출 실패: " + error.message); return; }
@@ -534,7 +529,6 @@ export default function CounselingPage() {
                   <PrepField label="11. 현재 나의 심리 상태" value={prepForm.psych_state} onChange={v=>setPrepForm(p=>({...p, psych_state:v}))}/>
                   <PrepField label="12. 정서/심리 고민" value={prepForm.emotional_concern} onChange={v=>setPrepForm(p=>({...p, emotional_concern:v}))}/>
                   <PrepField label="13. 생기부 관련 고민" value={prepForm.record_concern} onChange={v=>setPrepForm(p=>({...p, record_concern:v}))}/>
-                  <PrepField label="14. TO. 여름방학의 나 (목표와 계획)" value={prepForm.goal_plan} onChange={v=>setPrepForm(p=>({...p, goal_plan:v}))}/>
 
                   <button onClick={submitPrep} disabled={prepSubmitting} className="hy-btn hy-btn-primary" style={{ fontSize:14 }}>
                     {prepSubmitting ? "제출 중..." : "설문 제출하고 상담 신청하러 가기"}
