@@ -330,6 +330,7 @@ export default function CounselingPage() {
     if (!allGroupedSlots[s.date]) allGroupedSlots[s.date] = [];
     allGroupedSlots[s.date].push(s);
   });
+  const availableSlotCount = slots.filter(s => s.is_available).length;
 
   return (
     <div style={{ display:"flex", flexDirection:"column", gap:20 }}>
@@ -458,13 +459,26 @@ export default function CounselingPage() {
             </div>
           )}
 
-          {/* 사전 설문 게이트 */}
-          {!isAdmin && gateStatus !== "checked-exists" && (
+          {/* 사전 설문 게이트: 신청 가능한 슬롯이 있을 때만 설문을 받는다 (슬롯 없이 설문만 쓰는 헛수고 방지) */}
+          {!isAdmin && gateStatus !== "checked-exists" && availableSlotCount === 0 && (
+            <div className="hy-card" style={{ padding:"40px", textAlign:"center" }}>
+              <p style={{ fontSize:28, margin:"0 0 10px" }}>😢</p>
+              <p style={{ fontSize:14, color:"var(--text-subtle)", fontWeight:600 }}>
+                지금은 신청 가능한 상담 슬롯이 없어요.<br/>
+                <span style={{ fontSize:13 }}>선생님이 슬롯을 열면 여기서 설문 작성 후 바로 신청할 수 있어요.</span>
+              </p>
+            </div>
+          )}
+
+          {!isAdmin && gateStatus !== "checked-exists" && availableSlotCount > 0 && (
             <div className="hy-card" style={{ padding:"22px 24px", border:"2px solid var(--primary)" }}>
               <h3 style={{ fontSize:15, fontWeight:900, color:"var(--text)", margin:"0 0 4px" }}>📝 1학기 마무리 설문 (상담 전 필수)</h3>
-              <p style={{ fontSize:13, color:"var(--text-muted)", margin:"0 0 16px", lineHeight:1.7 }}>
+              <p style={{ fontSize:13, color:"var(--text-muted)", margin:"0 0 8px", lineHeight:1.7 }}>
                 이 설문을 작성해야 상담 시간을 선택할 수 있어요.<br/>
                 선생님이 상담할 때 이 내용을 함께 보면서 이야기 나눌 거예요 🙂
+              </p>
+              <p style={{ fontSize:12, color:"var(--primary)", fontWeight:800, margin:"0 0 16px" }}>
+                🎟 지금 신청 가능한 슬롯 {availableSlotCount}개 남음 — 서두르세요!
               </p>
 
               <div style={{ position:"relative", marginBottom:10 }}>
