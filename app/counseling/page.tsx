@@ -471,14 +471,38 @@ export default function CounselingPage() {
           )}
 
           {!isAdmin && gateStatus !== "checked-exists" && availableSlotCount > 0 && (
+            <div className="hy-card" style={{ padding:"18px 20px" }}>
+              <h3 style={{ fontSize:14, fontWeight:900, color:"var(--text)", margin:"0 0 10px" }}>🕐 지금 신청 가능한 시간 ({availableSlotCount}개)</h3>
+              <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
+                {Object.entries(allGroupedSlots).map(([date, daySlots]) => {
+                  const openSlots = daySlots.filter(s => s.is_available);
+                  if (openSlots.length === 0) return null;
+                  return (
+                    <div key={date}>
+                      <p style={{ fontSize:12, fontWeight:800, color:"var(--text-muted)", margin:"0 0 6px" }}>📅 {fmtDate(date)}</p>
+                      <div style={{ display:"flex", flexWrap:"wrap", gap:6 }}>
+                        {openSlots.map(s => (
+                          <span key={s.id} style={{ fontSize:12, fontWeight:700, padding:"6px 12px", borderRadius:999, background:"#f0fdf4", border:"1.5px solid #86efac", color:"#15803d" }}>
+                            {s.time}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+              <p style={{ fontSize:11, color:"var(--text-subtle)", fontWeight:600, margin:"12px 0 0" }}>
+                이 중에 가능한 시간이 있으면 아래 설문을 작성해주세요. 없다면 굳이 안 써도 돼요 🙂
+              </p>
+            </div>
+          )}
+
+          {!isAdmin && gateStatus !== "checked-exists" && availableSlotCount > 0 && (
             <div className="hy-card" style={{ padding:"22px 24px", border:"2px solid var(--primary)" }}>
               <h3 style={{ fontSize:15, fontWeight:900, color:"var(--text)", margin:"0 0 4px" }}>📝 1학기 마무리 설문 (상담 전 필수)</h3>
-              <p style={{ fontSize:13, color:"var(--text-muted)", margin:"0 0 8px", lineHeight:1.7 }}>
+              <p style={{ fontSize:13, color:"var(--text-muted)", margin:"0 0 16px", lineHeight:1.7 }}>
                 이 설문을 작성해야 상담 시간을 선택할 수 있어요.<br/>
                 선생님이 상담할 때 이 내용을 함께 보면서 이야기 나눌 거예요 🙂
-              </p>
-              <p style={{ fontSize:12, color:"var(--primary)", fontWeight:800, margin:"0 0 16px" }}>
-                🎟 지금 신청 가능한 슬롯 {availableSlotCount}개 남음 — 서두르세요!
               </p>
 
               <div style={{ position:"relative", marginBottom:10 }}>
