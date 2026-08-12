@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { supabase } from "@/components/lib/supabaseClient";
+import { MIDTERM_EXAM_START, examDdayLabel, examStatusText } from "@/components/lib/semester";
 
 type Notice = {
   id: string;
@@ -11,14 +12,6 @@ type Notice = {
   title: string;
   is_pinned: boolean;
 };
-
-function dday(target: string) {
-  const today = new Date();
-  const t = new Date(target);
-  today.setHours(0, 0, 0, 0);
-  t.setHours(0, 0, 0, 0);
-  return Math.ceil((t.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
-}
 
 function isNew(dateStr: string) {
   return Date.now() - new Date(dateStr).getTime() < 3 * 24 * 60 * 60 * 1000;
@@ -34,7 +27,6 @@ function timeAgo(iso: string) {
 }
 
 const SUNEUNG = "2026-11-18";
-const EXAM    = "2026-07-01";
 
 const TIMETABLE: Record<string, string[]> = {
   "월": ["중독", "심작", "사문", "문학", "고전읽기", "고전읽기", "대수"],
@@ -93,8 +85,8 @@ export default function Home() {
   const todayName = dayNames[today.getDay()];
 
   const ddayData = [
-    { label: "기말고사", date: EXAM,    d: dday(EXAM)    },
-    { label: "수능",     date: SUNEUNG, d: dday(SUNEUNG) },
+    { label: "중간고사", date: MIDTERM_EXAM_START, dLabel: examDdayLabel(MIDTERM_EXAM_START) },
+    { label: "수능",     date: SUNEUNG,            dLabel: examDdayLabel(SUNEUNG) },
   ];
 
   useEffect(() => {
@@ -143,7 +135,7 @@ export default function Home() {
               fontSize: 11, fontWeight: 700, letterSpacing: "0.18em",
               textTransform: "uppercase", color: "#16131A",
             }}>
-              {today.getFullYear()} · 한영외고 2학년 2반
+              {today.getFullYear()} 2학기 · 한영외고 2학년 2반
               <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#FF3D86" }}/>
             </div>
             <h1 style={{
@@ -156,7 +148,8 @@ export default function Home() {
               <span style={{ fontStyle: "italic", fontWeight: 500, color: "#FF3D86" }}>New Us.</span>
             </h1>
             <div style={{ marginTop: 10, fontSize: 13, color: "#5A5160", lineHeight: 1.6 }}>
-              함께여서 더 빛나는 우리반 23명.<br/>오늘도 2-2의 하루가 시작됐어요.
+              <b style={{ color: "#16131A" }}>2학기, 다시 함께 시작합니다 🍂</b><br/>
+              함께여서 더 빛나는 우리반 23명. 오늘도 2-2의 하루가 시작됐어요.
             </div>
           </div>
 
@@ -170,16 +163,16 @@ export default function Home() {
               boxShadow: "0 2px 10px rgba(0,0,0,0.06)",
             }}>
               <div>
-                <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "#9C95A0" }}>기말고사</div>
+                <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "#9C95A0" }}>{ddayData[0].label}</div>
                 <div style={{ fontFamily: "'Inter',sans-serif", fontSize: 20, fontWeight: 800, letterSpacing: "-0.03em", marginTop: 2, color: "#FF3D86" }}>
-                  D{ddayData[0].d >= 0 ? `-${ddayData[0].d}` : `+${-ddayData[0].d}`}
+                  {ddayData[0].dLabel}
                 </div>
               </div>
               <div style={{ width: 1, alignSelf: "stretch", background: "#ECE4DF" }}/>
               <div>
-                <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "#9C95A0" }}>수능</div>
+                <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "#9C95A0" }}>{ddayData[1].label}</div>
                 <div style={{ fontFamily: "'Inter',sans-serif", fontSize: 20, fontWeight: 800, letterSpacing: "-0.03em", marginTop: 2, color: "#16131A" }}>
-                  D{ddayData[1].d >= 0 ? `-${ddayData[1].d}` : `+${-ddayData[1].d}`}
+                  {ddayData[1].dLabel}
                 </div>
               </div>
               <div style={{ width: 1, alignSelf: "stretch", background: "#ECE4DF" }}/>
@@ -222,6 +215,19 @@ export default function Home() {
           <circle cx="50" cy="50" r="40" fill="none" stroke="#39C9E5" strokeWidth="14"/>
         </svg>
       </section>
+
+      {/* ════════ 중간고사 상태 배너 ════════ */}
+      <div className="hy-soft" style={{
+        padding: "12px 20px", display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap",
+      }}>
+        <span style={{ fontSize: 16 }}>📅</span>
+        <span style={{ fontSize: 13, fontWeight: 700, color: "#16131A" }}>
+          {examStatusText(MIDTERM_EXAM_START)}
+        </span>
+        <span style={{ fontSize: 12, color: "#9C95A0", fontWeight: 600 }}>
+          · 중간고사 시작일 9월 29일
+        </span>
+      </div>
 
       {/* ════════ 컬러 블록 3-up ════════ */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 16 }} className="block-grid">
