@@ -2,6 +2,8 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/components/lib/supabaseClient";
+import SemesterTabs from "@/components/SemesterTabs";
+import { CURRENT_SEMESTER, HABIT_PROJECT_START, semesterLabel, type SemesterId } from "@/components/lib/semester";
 
 type HabitItem = {
   id: string;
@@ -10,6 +12,7 @@ type HabitItem = {
   name: string;
   title: string;
   note: string | null;
+  semester: string;
 };
 
 type HabitCheck = {
@@ -19,7 +22,6 @@ type HabitCheck = {
   is_done: boolean;
 };
 
-const PROJECT_START = "2026-03-09";
 const TARGET_DAYS   = 90;
 
 const EXAMPLES = [
@@ -58,6 +60,7 @@ export default function Habit90Page() {
   const today = toKST();
   const todayIsWeekday = isWeekday(today);
 
+  const [semester,  setSemester]  = useState<SemesterId>(CURRENT_SEMESTER);
   const [studentNo, setStudentNo] = useState("");
   const [name,      setName]      = useState("");
   const [tab,       setTab]       = useState<"today" | "dashboard">("today");
@@ -68,34 +71,36 @@ export default function Habit90Page() {
   const [myHabit, setMyHabit] = useState<HabitItem | null>(null);
   const [habits,  setHabits]  = useState<HabitItem[]>([]);
   const [checks,  setChecks]  = useState<HabitCheck[]>([]);
-  const [loading,  setLoading]  = useState(false);
+  const [loading,   setLoading]   = useState(false);
+  const [dataLoading, setDataLoading] = useState(true);
   const [creating, setCreating] = useState(false);
   const [infoOpen, setInfoOpen] = useState(false);
 
   const weekdays90 = useMemo(() => {
     const arr: string[] = [];
-    let cursor = PROJECT_START;
+    let cursor = HABIT_PROJECT_START[semester];
     while (arr.length < TARGET_DAYS) {
       if (isWeekday(cursor)) arr.push(cursor);
       cursor = addDays(cursor, 1);
     }
     return arr;
-  }, []);
+  }, [semester]);
 
   const todayIndex = useMemo(() => {
     const idx = weekdays90.indexOf(today);
     return idx >= 0 ? idx + 1 : null;
   }, [weekdays90, today]);
 
-  async function loadAll() {
-    const { data: hd } = await supabase.from("habit_items").select("*");
+  async function loadAll(sem: SemesterId) {
+    setDataLoading(true);
+    const { data: hd } = await supabase.from("habit_items").select("*").eq("semester", sem);
     const { data: cd } = await supabase.from("habit_checks").select("*");
     setHabits((hd as HabitItem[]) ?? []);
     setChecks((cd as HabitCheck[]) ?? []);
+    setDataLoading(false);
   }
 
   async function loadMine() {
-    console.log("loadMine called", { studentNo, name });
     if (!studentNo.trim() || !name.trim()) {
       alert("학번과 이름을 모두 입력해주세요!");
       return;
@@ -104,18 +109,21 @@ export default function Habit90Page() {
       .from("habit_items").select("*")
       .eq("student_no", studentNo.trim())
       .eq("name", name.trim())
+      .eq("semester", semester)
       .limit(1);
-    console.log("result", data, error);
     if (error) { alert("오류: " + error.message); return; }
     if (data && data.length > 0) {
       setMyHabit(data[0] as HabitItem);
     } else {
-      alert('Not found. studentNo=' + studentNo.trim() + ' name=' + name.trim());
+      alert(`${semesterLabel(semester)}에 등록된 습관을 찾을 수 없어요. 학번/이름을 확인하거나, 아직 등록 전이라면 아래에서 새로 등록해줘요!`);
       setMyHabit(null);
     }
   }
 
-  useEffect(() => { loadAll(); }, []);
+  useEffect(() => {
+    setMyHabit(null);
+    loadAll(semester);
+  }, [semester]);
 
   const checksByHabitId = useMemo(() => {
     const map = new Map<string, HabitCheck[]>();
@@ -139,10 +147,12 @@ export default function Habit90Page() {
     setCreating(true);
     const { data: existing } = await supabase
       .from("habit_items").select("id")
-      .eq("student_no", studentNo.trim()).limit(1);
+      .eq("student_no", studentNo.trim())
+      .eq("semester", semester)
+      .limit(1);
     if (existing && existing.length > 0) {
       setCreating(false);
-      alert("이미 습관이 등록되어 있어 🙂 습관은 딱 한 번만 등록할 수 있어!");
+      alert(`이미 ${semesterLabel(semester)}에 습관이 등록되어 있어 🙂 습관은 학기당 딱 한 번만 등록할 수 있어!`);
       return;
     }
     const { error } = await supabase.from("habit_items").insert({
@@ -150,11 +160,12 @@ export default function Habit90Page() {
       name: name.trim(),
       title: habitTitle.trim(),
       note: habitNote.trim() || null,
+      semester,
     });
     setCreating(false);
-    if (error) { alert(error.message); return; }
-    await loadAll(); await loadMine();
-    alert("습관 등록 완료! 내일부터 매일 체크하러 와줘 🌱");
+    if (error) { alert("등록에 실패했어요: " + error.message); return; }
+    await loadAll(semester); await loadMine();
+    alert(`${semesterLabel(semester)} 습관 등록 완료! 내일부터 매일 체크하러 와줘 🌱`);
   }
 
   async function checkToday(is_done: boolean) {
@@ -166,9 +177,11 @@ export default function Habit90Page() {
       { onConflict: "habit_id,check_date" }
     );
     setLoading(false);
-    if (error) { alert(error.message); return; }
-    await loadAll();
+    if (error) { alert("저장에 실패했어요: " + error.message); return; }
+    await loadAll(semester);
   }
+
+  const isCurrentSemesterTab = semester === CURRENT_SEMESTER;
 
   const myChecks   = myHabit ? (checksByHabitId.get(myHabit.id) ?? []) : [];
   const myDone     = myChecks.filter(c => c.is_done).length;
@@ -252,7 +265,17 @@ export default function Habit90Page() {
         </div>
       )}
 
-      {/* ── 탭 ── */}
+      {/* ── 학기 탭 ── */}
+      <div style={{ display:"flex",flexDirection:"column",gap:8 }}>
+        <SemesterTabs value={semester} onChange={setSemester} />
+        <p style={{ fontSize:12,color:"var(--text-subtle)",fontWeight:600,margin:0 }}>
+          {semester === CURRENT_SEMESTER
+            ? "2학기 습관은 여기서 새로 등록하고 실천 기록을 쌓아요. 1학기 기록은 탭을 옮겨 확인할 수 있어요."
+            : "1학기 기록이에요. 이 학기 데이터는 그대로 보존되며 새로 수정할 수 없어요."}
+        </p>
+      </div>
+
+      {/* ── 오늘/전체 탭 ── */}
       <div style={{ display:"flex",gap:8 }}>
         {([["today","오늘 체크 ✅"],["dashboard","전체 현황 📊"]] as const).map(([t,label])=>(
           <button key={t} onClick={()=>setTab(t)}
@@ -295,7 +318,20 @@ export default function Habit90Page() {
       {/* ── 오늘 체크 탭 ── */}
       {tab==="today" && (
         <div style={{ display:"flex",flexDirection:"column",gap:14 }}>
-          {!myHabit ? (
+          {dataLoading ? (
+            <div className="hy-card" style={{ padding:"40px",textAlign:"center" }}>
+              <p style={{ fontSize:14,color:"var(--text-subtle)",fontWeight:700 }}>불러오는 중... ⏳</p>
+            </div>
+          ) : !myHabit && !isCurrentSemesterTab ? (
+            <div className="hy-card" style={{ padding:"26px 24px",textAlign:"center" }}>
+              <div style={{ fontSize:32,marginBottom:8 }}>📦</div>
+              <h3 style={{ fontSize:16,fontWeight:900,color:"var(--text)",margin:"0 0 6px" }}>1학기는 보관 전용이에요</h3>
+              <p style={{ fontSize:13,color:"var(--text-muted)",margin:0,lineHeight:1.8 }}>
+                1학기에 등록한 습관이 있다면 학번/이름으로 조회해서 기록을 볼 수 있어요.<br/>
+                새로운 습관은 <b>2학기</b> 탭에서 등록해줘요 🌱
+              </p>
+            </div>
+          ) : !myHabit ? (
             <div className="hy-card" style={{ padding:"26px 24px" }}>
               <h3 style={{ fontSize:17,fontWeight:900,color:"var(--text)",margin:"0 0 6px" }}>나의 습관 등록 🌱</h3>
               <p style={{ fontSize:13,color:"var(--text-muted)",margin:"0 0 20px",lineHeight:1.8 }}>
@@ -362,7 +398,12 @@ export default function Habit90Page() {
               </div>
 
               {/* 오늘 체크 */}
-              {!todayIsWeekday ? (
+              {!isCurrentSemesterTab ? (
+                <div style={{ background:"#f9fafb",borderRadius:16,padding:"20px",textAlign:"center",border:"1.5px solid var(--border)" }}>
+                  <div style={{ fontSize:28,marginBottom:8 }}>📦</div>
+                  <p style={{ fontSize:13,color:"var(--text-muted)",margin:0,fontWeight:700 }}>1학기 기록은 보관용이라 더 체크할 수 없어요</p>
+                </div>
+              ) : !todayIsWeekday ? (
                 <div style={{ background:"#f9fafb",borderRadius:16,padding:"20px",textAlign:"center",border:"1.5px solid var(--border)" }}>
                   <div style={{ fontSize:32,marginBottom:8 }}>😊</div>
                   <p style={{ fontSize:14,color:"var(--text-muted)",margin:0,fontWeight:700 }}>오늘은 주말이에요! 푹 쉬어요~</p>
@@ -389,7 +430,7 @@ export default function Habit90Page() {
                     {todayIndex ? `오늘 ${todayIndex}일째!` : "오늘 습관 체크!"}
                   </p>
                   <p style={{ fontSize:13,color:"var(--text-muted)",margin:"0 0 16px",fontWeight:600 }}>
-                    학교 도착하자마자 "{myHabit.title}" 했나요?
+                    학교 도착하자마자 “{myHabit.title}” 했나요?
                   </p>
                   <div style={{ display:"flex",gap:10,justifyContent:"center" }}>
                     <button onClick={()=>checkToday(true)}  disabled={loading} className="hy-btn hy-btn-primary" style={{ fontSize:15,padding:"12px 32px" }}>✅ 했어요!</button>

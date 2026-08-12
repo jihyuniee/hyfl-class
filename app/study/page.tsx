@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "@/components/lib/supabaseClient";
+import SemesterTabs from "@/components/SemesterTabs";
+import { CURRENT_SEMESTER, type SemesterId } from "@/components/lib/semester";
 
 const STUDENTS = [
   { no: "20201", name: "강지우" },
@@ -36,28 +38,38 @@ type StudyRecord = {
   id: string;
   student_no: string;
   days: Day[];
+  semester: string;
 };
 
 const ADMIN_PW = "hyfl2025";
 
 export default function StudyPage() {
+  const [semester, setSemester] = useState<SemesterId>(CURRENT_SEMESTER);
   const [records, setRecords]   = useState<StudyRecord[]>([]);
   const [myRecord, setMyRecord] = useState<StudyRecord | null>(null);
   const [selected, setSelected] = useState<Day[]>([]);
   const [saving,   setSaving]   = useState(false);
+  const [loading,  setLoading]  = useState(true);
   const [pw,       setPw]       = useState("");
   const [isAdmin,  setIsAdmin]  = useState(false);
   const [tab,      setTab]      = useState<"apply"|"board">("apply");
 
+  const isCurrentSemesterTab = semester === CURRENT_SEMESTER;
+
   // 내 학생 선택
   const [myNo, setMyNo] = useState("");
 
-  async function load() {
-    const { data } = await supabase.from("study_applications").select("*");
+  async function load(sem: SemesterId) {
+    setLoading(true);
+    const { data } = await supabase.from("study_applications").select("*").eq("semester", sem);
     setRecords((data as StudyRecord[]) ?? []);
+    setLoading(false);
   }
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => {
+    setMyNo("");
+    load(semester);
+  }, [semester]);
 
   useEffect(() => {
     if (!myNo) { setMyRecord(null); setSelected([]); return; }
@@ -79,17 +91,18 @@ export default function StudyPage() {
     const { error } = await supabase.from("study_applications").insert({
       student_no: myNo,
       days: selected,
+      semester,
     });
     setSaving(false);
-    if (error) { alert(error.message); return; }
-    await load();
+    if (error) { alert("신청에 실패했어요: " + error.message); return; }
+    await load(semester);
     alert("야자 신청 완료! 변경이 불가능하니 참고해요 📚");
   }
 
   async function adminDelete(id: string, name: string) {
     if (!confirm(`${name} 신청을 삭제할까요?`)) return;
     await supabase.from("study_applications").delete().eq("id", id);
-    await load();
+    await load(semester);
   }
 
   // 통계
@@ -128,8 +141,17 @@ export default function StudyPage() {
           <p style={{ color:"rgba(255,255,255,0.8)",fontSize:13,margin:0,fontWeight:500 }}>
             요일별로 신청해요. <span style={{ color:"#fbbf24",fontWeight:700 }}>한번 신청하면 변경이 불가능</span>하니 신중하게!
           </p>
+          <div style={{ marginTop:16 }}>
+            <SemesterTabs value={semester} onChange={setSemester} />
+          </div>
         </div>
       </div>
+
+      <p style={{ fontSize:12,color:"var(--text-subtle)",fontWeight:600,margin:0 }}>
+        {isCurrentSemesterTab
+          ? "2학기 야자 신청은 여기서 새로 진행해요. 1학기 신청 내역은 탭을 옮겨 조회할 수 있어요."
+          : "1학기 신청 내역이에요. 조회만 가능하며 새 신청은 2학기 탭에서 진행해요."}
+      </p>
 
       {/* 탭 */}
       <div style={{ display:"flex", gap:8 }}>
@@ -142,8 +164,14 @@ export default function StudyPage() {
         ))}
       </div>
 
+      {loading && (
+        <div className="hy-card" style={{ padding:"32px", textAlign:"center" }}>
+          <p style={{ fontSize:14,color:"var(--text-subtle)",fontWeight:700 }}>불러오는 중... ⏳</p>
+        </div>
+      )}
+
       {/* 야자 신청 탭 */}
-      {tab==="apply" && (
+      {!loading && tab==="apply" && (
         <div style={{ display:"flex", flexDirection:"column", gap:14 }}>
 
           {/* 학생 선택 */}
@@ -201,6 +229,14 @@ export default function StudyPage() {
                     주 {myRecord.days.length}회 야자 신청
                   </p>
                 </>
+              ) : !isCurrentSemesterTab ? (
+                <div style={{ textAlign:"center", padding:"12px 0" }}>
+                  <div style={{ fontSize:28, marginBottom:8 }}>📦</div>
+                  <p style={{ fontSize:13, color:"var(--text-muted)", fontWeight:700, margin:0 }}>
+                    {STUDENTS.find(s=>s.no===myNo)?.name}님은 1학기 신청 기록이 없어요.<br/>
+                    새 신청은 <b>2학기</b> 탭에서 해줘요.
+                  </p>
+                </div>
               ) : (
                 <>
                   <p style={{ fontSize:14,fontWeight:800,color:"var(--text)",margin:"0 0 6px" }}>
@@ -248,7 +284,7 @@ export default function StudyPage() {
       )}
 
       {/* 전체 현황 탭 */}
-      {tab==="board" && (
+      {!loading && tab==="board" && (
         <div style={{ display:"flex", flexDirection:"column", gap:14 }}>
 
           {/* 요일별 통계 */}
