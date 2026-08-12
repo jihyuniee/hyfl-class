@@ -28,6 +28,54 @@ export const HABIT_PROJECT_START: Record<SemesterId, string> = {
   "2026-2": "2026-08-18",
 };
 
+// 2학기 습관 프로젝트 기간(2026.08 ~ 2027.01) 중의 대한민국 공휴일.
+// 실천일(평일이면서 공휴일이 아닌 날) 계산에 사용된다. 1학기 기간(2026.03~07)과는
+// 겹치지 않으므로 1학기 기록/집계에는 영향이 없다.
+export const KR_HOLIDAYS: string[] = [
+  "2026-08-17", // 광복절 대체공휴일
+  "2026-09-24", // 추석 연휴
+  "2026-09-25", // 추석
+  "2026-09-26", // 추석 연휴
+  "2026-10-03", // 개천절
+  "2026-10-05", // 개천절 대체공휴일
+  "2026-10-09", // 한글날
+  "2026-12-25", // 크리스마스
+  "2027-01-01", // 신정
+];
+
+export function isKoreanHoliday(dateStr: string): boolean {
+  return KR_HOLIDAYS.includes(dateStr);
+}
+
+/** 오늘 날짜를 한국시간(Asia/Seoul) 기준 YYYY-MM-DD 문자열로 반환한다. */
+export function toKSTDateStr(d: Date = new Date()): string {
+  const k = new Date(d.toLocaleString("en-US", { timeZone: "Asia/Seoul" }));
+  return `${k.getFullYear()}-${String(k.getMonth() + 1).padStart(2, "0")}-${String(k.getDate()).padStart(2, "0")}`;
+}
+
+// dateStr(YYYY-MM-DD)은 이미 한국 달력 기준 날짜다. 요일/날짜 연산이 실행 환경의
+// 로컬 시간대(서버·브라우저 설정)에 좌우되지 않도록, 로컬 타임존을 전혀 거치지 않는
+// UTC 고정 앵커로 파싱해 순수하게 달력 연산만 한다.
+function parseCalendarDate(dateStr: string): Date {
+  return new Date(`${dateStr}T00:00:00Z`);
+}
+
+export function isWeekend(dateStr: string): boolean {
+  const day = parseCalendarDate(dateStr).getUTCDay();
+  return day === 0 || day === 6;
+}
+
+export function addDaysKST(dateStr: string, n: number): string {
+  const d = parseCalendarDate(dateStr);
+  d.setUTCDate(d.getUTCDate() + n);
+  return `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, "0")}-${String(d.getUTCDate()).padStart(2, "0")}`;
+}
+
+/** 주말도 공휴일도 아닌, 습관을 실천/체크할 수 있는 날인지 여부. */
+export function isPracticeDay(dateStr: string): boolean {
+  return !isWeekend(dateStr) && !isKoreanHoliday(dateStr);
+}
+
 /** 오늘부터 target까지 남은 일수 (자정 기준, 음수 가능). */
 export function ddayNumber(target: string, today: Date = new Date()): number {
   const t = new Date(`${target}T00:00:00`);
