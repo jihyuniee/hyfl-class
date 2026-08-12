@@ -319,7 +319,7 @@ function RolesSecondSemester() {
         return;
       }
       setSubmitting(true);
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from("class_roles")
         .update({
           dept: dept.trim() || null,
@@ -327,10 +327,15 @@ function RolesSecondSemester() {
           description: description.trim() || null,
         })
         .eq("id", editingId)
-        .eq("password", managePw.trim());
+        .eq("password", managePw.trim())
+        .select("id");
       setSubmitting(false);
       if (error) {
         setMessage({ type: "error", text: "수정에 실패했어요: " + error.message });
+        return;
+      }
+      if (!data || data.length === 0) {
+        setMessage({ type: "error", text: "비밀번호가 맞지 않아 수정하지 못했어요." });
         return;
       }
       setMessage({ type: "success", text: "역할 정보를 수정했어요 ✅" });
@@ -376,13 +381,18 @@ function RolesSecondSemester() {
 
   async function deleteRole(r: ClassRole) {
     if (!confirm(`"${r.role}" 역할을 삭제할까요?`)) return;
-    const { error } = await supabase
+    const { data, error } = await supabase
       .from("class_roles")
       .delete()
       .eq("id", r.id)
-      .eq("password", managePw.trim());
+      .eq("password", managePw.trim())
+      .select("id");
     if (error) {
       setMessage({ type: "error", text: "삭제에 실패했어요: " + error.message });
+      return;
+    }
+    if (!data || data.length === 0) {
+      setMessage({ type: "error", text: "비밀번호가 맞지 않거나 이미 삭제된 역할이에요." });
       return;
     }
     setMessage({ type: "success", text: "역할을 삭제했어요." });

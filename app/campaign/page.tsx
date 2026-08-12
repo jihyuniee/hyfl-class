@@ -233,13 +233,18 @@ function PledgeList({ semester }: { semester: SemesterId }) {
       setActionMessage("제목과 내용을 모두 입력해줘요.");
       return;
     }
-    const { error } = await supabase
+    const { data, error } = await supabase
       .from("campaign_pledges")
       .update({ title: editTitle.trim(), pledges: editPledges.trim() })
       .eq("id", p.id)
-      .eq("password", managePw.trim());
+      .eq("password", managePw.trim())
+      .select("id");
     if (error) {
       setActionMessage("수정에 실패했어요: " + error.message);
+      return;
+    }
+    if (!data || data.length === 0) {
+      setActionMessage("비밀번호가 맞지 않아 수정하지 못했어요.");
       return;
     }
     setActionMessage("공약을 수정했어요 ✅");
@@ -249,13 +254,18 @@ function PledgeList({ semester }: { semester: SemesterId }) {
 
   async function remove(p: PledgeRow) {
     if (!confirm(`"${p.title}" 공약을 삭제할까요?`)) return;
-    const { error } = await supabase
+    const { data, error } = await supabase
       .from("campaign_pledges")
       .delete()
       .eq("id", p.id)
-      .eq("password", managePw.trim());
+      .eq("password", managePw.trim())
+      .select("id");
     if (error) {
       setActionMessage("삭제에 실패했어요: " + error.message);
+      return;
+    }
+    if (!data || data.length === 0) {
+      setActionMessage("비밀번호가 맞지 않거나 이미 삭제된 공약이에요.");
       return;
     }
     setActionMessage("공약을 삭제했어요.");
