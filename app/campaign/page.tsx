@@ -15,6 +15,7 @@ type PledgeRow = {
   pledges: string;
   is_public: boolean;
   semester: string;
+  password: string | null;
 };
 
 const POSITION_ORDER = ["회장", "부회장A", "부회장B"];
@@ -61,6 +62,7 @@ function PledgeForm() {
   const [position, setPosition] = useState("회장");
   const [title, setTitle] = useState("");
   const [pledges, setPledges] = useState("");
+  const [password, setPassword] = useState("");
   const [isPublic, setIsPublic] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
@@ -79,6 +81,10 @@ function PledgeForm() {
       setMessage({ type: "error", text: "공약 내용을 입력해줘요." });
       return;
     }
+    if (!password.trim()) {
+      setMessage({ type: "error", text: "수정·삭제할 때 필요한 비밀번호를 입력해줘요." });
+      return;
+    }
     setSubmitting(true);
     const { error } = await supabase.from("campaign_pledges").insert({
       student_no: studentNo.trim(),
@@ -88,6 +94,7 @@ function PledgeForm() {
       pledges: pledges.trim(),
       is_public: isPublic,
       semester: CURRENT_SEMESTER,
+      password: password.trim(),
     });
     setSubmitting(false);
     if (error) {
@@ -95,7 +102,7 @@ function PledgeForm() {
       return;
     }
     setMessage({ type: "success", text: "공약을 등록했어요! 목록에서 확인해봐요 🎉" });
-    setTitle(""); setPledges("");
+    setTitle(""); setPledges(""); setPassword("");
     window.dispatchEvent(new CustomEvent("campaign-pledge-created"));
   }
 
@@ -105,7 +112,7 @@ function PledgeForm() {
         2학기 공약 등록 📝
       </h3>
       <p style={{ fontSize: 12, color: "var(--text-muted)", margin: "0 0 16px" }}>
-        학번/이름/직책/제목/내용을 입력하면 아래 목록에 바로 반영돼요.
+        학번/이름/직책/제목/내용을 입력하면 아래 목록에 바로 반영돼요. 비밀번호는 나중에 수정·삭제할 때 필요하니 꼭 기억해두세요!
       </p>
       <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginBottom: 10 }}>
         <input placeholder="학번 *" value={studentNo} onChange={e => setStudentNo(e.target.value)} className="hy-input" style={{ maxWidth: 140 }} />
@@ -136,6 +143,14 @@ function PledgeForm() {
         rows={4}
         style={{ width: "100%", resize: "vertical", marginBottom: 10 }}
       />
+      <input
+        type="password"
+        placeholder="관리용 비밀번호 * (수정·삭제 시 필요, 꼭 기억해두세요!)"
+        value={password}
+        onChange={e => setPassword(e.target.value)}
+        className="hy-input"
+        style={{ maxWidth: 320, marginBottom: 10 }}
+      />
       <label style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 13, color: "var(--text-muted)", fontWeight: 600, marginBottom: 14 }}>
         <input type="checkbox" checked={isPublic} onChange={e => setIsPublic(e.target.checked)} />
         공개 (반 전체에게 바로 공개돼요)
@@ -158,8 +173,7 @@ function PledgeList({ semester }: { semester: SemesterId }) {
   const [list, setList] = useState<PledgeRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [manageNo, setManageNo] = useState("");
-  const [manageName, setManageName] = useState("");
+  const [managePw, setManagePw] = useState("");
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editTitle, setEditTitle] = useState("");
   const [editPledges, setEditPledges] = useState("");
@@ -205,8 +219,8 @@ function PledgeList({ semester }: { semester: SemesterId }) {
 
   const isMine = (p: PledgeRow) =>
     semester === CURRENT_SEMESTER &&
-    manageNo.trim() && manageName.trim() &&
-    p.student_no === manageNo.trim() && p.name === manageName.trim();
+    managePw.trim().length > 0 &&
+    p.password === managePw.trim();
 
   function startEdit(p: PledgeRow) {
     setEditingId(p.id);
@@ -223,8 +237,7 @@ function PledgeList({ semester }: { semester: SemesterId }) {
       .from("campaign_pledges")
       .update({ title: editTitle.trim(), pledges: editPledges.trim() })
       .eq("id", p.id)
-      .eq("student_no", manageNo.trim())
-      .eq("name", manageName.trim());
+      .eq("password", managePw.trim());
     if (error) {
       setActionMessage("수정에 실패했어요: " + error.message);
       return;
@@ -240,8 +253,7 @@ function PledgeList({ semester }: { semester: SemesterId }) {
       .from("campaign_pledges")
       .delete()
       .eq("id", p.id)
-      .eq("student_no", manageNo.trim())
-      .eq("name", manageName.trim());
+      .eq("password", managePw.trim());
     if (error) {
       setActionMessage("삭제에 실패했어요: " + error.message);
       return;
@@ -257,9 +269,18 @@ function PledgeList({ semester }: { semester: SemesterId }) {
           <p style={{ fontSize: 12, fontWeight: 800, color: "var(--text-muted)", margin: "0 0 8px" }}>
             내가 등록한 공약 수정·삭제하기
           </p>
+          <p style={{ fontSize: 12, color: "var(--text-subtle)", margin: "0 0 10px" }}>
+            등록할 때 입력한 비밀번호를 넣으면, 그 비밀번호로 작성한 내 공약에 수정·삭제 버튼이 나타나요.
+          </p>
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }}>
-            <input placeholder="학번" value={manageNo} onChange={e => setManageNo(e.target.value)} className="hy-input" style={{ maxWidth: 130 }} />
-            <input placeholder="이름" value={manageName} onChange={e => setManageName(e.target.value)} className="hy-input" style={{ maxWidth: 130 }} />
+            <input
+              type="password"
+              placeholder="공약 등록 시 입력한 비밀번호"
+              value={managePw}
+              onChange={e => setManagePw(e.target.value)}
+              className="hy-input"
+              style={{ maxWidth: 240 }}
+            />
           </div>
           {actionMessage && (
             <p role="status" style={{ marginTop: 8, fontSize: 12, fontWeight: 700, color: "var(--primary)" }}>{actionMessage}</p>
