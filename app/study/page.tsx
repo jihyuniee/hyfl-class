@@ -94,7 +94,14 @@ export default function StudyPage() {
       semester,
     });
     setSaving(false);
-    if (error) { alert("신청에 실패했어요: " + error.message); return; }
+    if (error) {
+      alert(
+        error.message.includes("duplicate")
+          ? "이미 이 학기에 신청되어 있어요. 새로고침 후 확인해줘요."
+          : "신청에 실패했어요: " + error.message
+      );
+      return;
+    }
     await load(semester);
     alert("야자 신청 완료! 변경이 불가능하니 참고해요 📚");
   }
