@@ -14,6 +14,7 @@ type ClassRole = {
   dept: string | null;
   role: string;
   description: string | null;
+  password: string | null;
 };
 
 const SECTIONS_1ST = [
@@ -254,6 +255,8 @@ function RolesSecondSemester() {
   const [dept, setDept] = useState("");
   const [role, setRole] = useState("");
   const [description, setDescription] = useState("");
+  const [password, setPassword] = useState("");
+  const [managePw, setManagePw] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -289,12 +292,12 @@ function RolesSecondSemester() {
   }, [roles]);
 
   const myRoles = useMemo(() => {
-    if (!studentNo.trim() || !name.trim()) return [];
-    return roles.filter(r => r.student_no === studentNo.trim() && r.name === name.trim());
-  }, [roles, studentNo, name]);
+    if (!managePw.trim()) return [];
+    return roles.filter(r => r.password === managePw.trim());
+  }, [roles, managePw]);
 
   function resetForm() {
-    setDept(""); setRole(""); setDescription(""); setEditingId(null);
+    setDept(""); setRole(""); setDescription(""); setPassword(""); setEditingId(null);
   }
 
   function startEdit(r: ClassRole) {
@@ -306,16 +309,16 @@ function RolesSecondSemester() {
 
   async function submitRole() {
     setMessage(null);
-    if (!studentNo.trim() || !name.trim()) {
-      setMessage({ type: "error", text: "학번과 이름을 먼저 입력해줘요." });
-      return;
-    }
-    if (!role.trim()) {
-      setMessage({ type: "error", text: "역할 이름을 입력해줘요." });
-      return;
-    }
-    setSubmitting(true);
     if (editingId) {
+      if (!managePw.trim()) {
+        setMessage({ type: "error", text: "비밀번호를 먼저 입력해줘요." });
+        return;
+      }
+      if (!role.trim()) {
+        setMessage({ type: "error", text: "역할 이름을 입력해줘요." });
+        return;
+      }
+      setSubmitting(true);
       const { error } = await supabase
         .from("class_roles")
         .update({
@@ -324,8 +327,7 @@ function RolesSecondSemester() {
           description: description.trim() || null,
         })
         .eq("id", editingId)
-        .eq("student_no", studentNo.trim())
-        .eq("name", name.trim());
+        .eq("password", managePw.trim());
       setSubmitting(false);
       if (error) {
         setMessage({ type: "error", text: "수정에 실패했어요: " + error.message });
@@ -333,6 +335,19 @@ function RolesSecondSemester() {
       }
       setMessage({ type: "success", text: "역할 정보를 수정했어요 ✅" });
     } else {
+      if (!studentNo.trim() || !name.trim()) {
+        setMessage({ type: "error", text: "학번과 이름을 입력해줘요." });
+        return;
+      }
+      if (!role.trim()) {
+        setMessage({ type: "error", text: "역할 이름을 입력해줘요." });
+        return;
+      }
+      if (!password.trim()) {
+        setMessage({ type: "error", text: "수정·삭제할 때 필요한 비밀번호를 입력해줘요." });
+        return;
+      }
+      setSubmitting(true);
       const { error } = await supabase.from("class_roles").insert({
         semester: CURRENT_SEMESTER,
         student_no: studentNo.trim(),
@@ -340,6 +355,7 @@ function RolesSecondSemester() {
         dept: dept.trim() || null,
         role: role.trim(),
         description: description.trim() || null,
+        password: password.trim(),
       });
       setSubmitting(false);
       if (error) {
@@ -351,7 +367,8 @@ function RolesSecondSemester() {
         });
         return;
       }
-      setMessage({ type: "success", text: "2학기 역할을 등록했어요 🎉" });
+      setMessage({ type: "success", text: "2학기 역할을 등록했어요 🎉 아래 비밀번호란에 같은 비밀번호를 입력하면 내 역할을 관리할 수 있어요." });
+      setManagePw(password.trim());
     }
     resetForm();
     await load();
@@ -363,8 +380,7 @@ function RolesSecondSemester() {
       .from("class_roles")
       .delete()
       .eq("id", r.id)
-      .eq("student_no", studentNo.trim())
-      .eq("name", name.trim());
+      .eq("password", managePw.trim());
     if (error) {
       setMessage({ type: "error", text: "삭제에 실패했어요: " + error.message });
       return;
@@ -376,113 +392,133 @@ function RolesSecondSemester() {
   return (
     <div className="space-y-6">
       <section className="hy-card p-6">
-        <p className="hy-section-label mb-1">본인 확인</p>
+        <p className="hy-section-label mb-1">{editingId ? "내 역할 수정" : "새 역할 등록"}</p>
         <p className="mb-3 text-sm text-gray-600">
-          학번과 이름을 입력하면 새 역할을 등록하거나, 내가 등록한 역할을 수정·삭제할 수 있어요.
+          {editingId
+            ? "부서/역할/설명을 수정하고 저장해요. 학번·이름은 바꿀 수 없어요."
+            : "학번/이름/부서/역할/설명과 비밀번호를 입력하면 등록돼요. 비밀번호는 나중에 수정·삭제할 때 필요하니 꼭 기억해두세요!"}
         </p>
-        <div className="flex flex-wrap items-center gap-2">
+
+        {!editingId && (
+          <div className="mb-2 flex flex-wrap items-center gap-2">
+            <input
+              placeholder="학번 * (예: 20201)"
+              value={studentNo}
+              onChange={e => setStudentNo(e.target.value)}
+              className="hy-input"
+              style={{ maxWidth: 160 }}
+            />
+            <input
+              placeholder="이름 *"
+              value={name}
+              onChange={e => setName(e.target.value)}
+              className="hy-input"
+              style={{ maxWidth: 140 }}
+            />
+          </div>
+        )}
+
+        <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap">
           <input
-            placeholder="학번 (예: 20201)"
-            value={studentNo}
-            onChange={e => setStudentNo(e.target.value)}
+            placeholder="부서 (예: 자치기획부, 선택)"
+            value={dept}
+            onChange={e => setDept(e.target.value)}
             className="hy-input"
-            style={{ maxWidth: 160 }}
+            style={{ maxWidth: 220 }}
           />
           <input
-            placeholder="이름"
-            value={name}
-            onChange={e => setName(e.target.value)}
+            placeholder="역할 이름 * (예: 게시판 관리자)"
+            value={role}
+            onChange={e => setRole(e.target.value)}
             className="hy-input"
-            style={{ maxWidth: 140 }}
+            style={{ maxWidth: 240 }}
           />
         </div>
+        <textarea
+          placeholder="역할 설명 (선택)"
+          value={description}
+          onChange={e => setDescription(e.target.value)}
+          className="hy-input mt-2"
+          rows={2}
+          style={{ width: "100%", resize: "vertical" }}
+        />
+        {!editingId && (
+          <input
+            type="password"
+            placeholder="관리용 비밀번호 * (수정·삭제 시 필요, 꼭 기억해두세요!)"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+            className="hy-input mt-2"
+            style={{ maxWidth: 320 }}
+          />
+        )}
+        <div className="mt-3 flex items-center gap-2">
+          <button
+            onClick={submitRole}
+            disabled={submitting}
+            className="hy-btn hy-btn-primary"
+            style={{ fontSize: 13 }}
+          >
+            {submitting ? "저장 중..." : editingId ? "수정 완료" : "역할 등록하기"}
+          </button>
+          {editingId && (
+            <button onClick={resetForm} className="hy-btn" style={{ fontSize: 13 }}>
+              취소
+            </button>
+          )}
+        </div>
 
-        {studentNo.trim() && name.trim() && (
-          <div className="mt-5 border-t border-[var(--border)] pt-5">
-            <p className="mb-3 text-sm font-bold text-gray-900">
-              {editingId ? "내 역할 수정" : "새 역할 등록"}
-            </p>
-            <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap">
-              <input
-                placeholder="부서 (예: 자치기획부, 선택)"
-                value={dept}
-                onChange={e => setDept(e.target.value)}
-                className="hy-input"
-                style={{ maxWidth: 220 }}
-              />
-              <input
-                placeholder="역할 이름 * (예: 게시판 관리자)"
-                value={role}
-                onChange={e => setRole(e.target.value)}
-                className="hy-input"
-                style={{ maxWidth: 240 }}
-              />
-            </div>
-            <textarea
-              placeholder="역할 설명 (선택)"
-              value={description}
-              onChange={e => setDescription(e.target.value)}
-              className="hy-input mt-2"
-              rows={2}
-              style={{ width: "100%", resize: "vertical" }}
-            />
-            <div className="mt-3 flex items-center gap-2">
-              <button
-                onClick={submitRole}
-                disabled={submitting}
-                className="hy-btn hy-btn-primary"
-                style={{ fontSize: 13 }}
+        {message && (
+          <p
+            className="mt-3 text-sm font-semibold"
+            style={{ color: message.type === "success" ? "#22c55e" : "#ef4444" }}
+            role="status"
+          >
+            {message.type === "success" ? "✅ " : "⚠️ "}
+            {message.text}
+          </p>
+        )}
+      </section>
+
+      <section className="hy-soft p-4">
+        <p className="mb-1 text-xs font-extrabold text-[var(--text-muted)]">내 역할 수정·삭제하기</p>
+        <p className="mb-3 text-xs text-[var(--text-subtle)]">
+          등록할 때 입력한 비밀번호를 넣으면, 그 비밀번호로 등록한 역할에 수정·삭제 버튼이 나타나요.
+        </p>
+        <input
+          type="password"
+          placeholder="역할 등록 시 입력한 비밀번호"
+          value={managePw}
+          onChange={e => setManagePw(e.target.value)}
+          className="hy-input"
+          style={{ maxWidth: 240 }}
+        />
+
+        {myRoles.length > 0 && (
+          <div className="mt-4 flex flex-col gap-2">
+            {myRoles.map(r => (
+              <div
+                key={r.id}
+                className="flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-[var(--border)] bg-white px-4 py-3"
               >
-                {submitting ? "저장 중..." : editingId ? "수정 완료" : "역할 등록하기"}
-              </button>
-              {editingId && (
-                <button onClick={resetForm} className="hy-btn" style={{ fontSize: 13 }}>
-                  취소
-                </button>
-              )}
-            </div>
-
-            {message && (
-              <p
-                className="mt-3 text-sm font-semibold"
-                style={{ color: message.type === "success" ? "#22c55e" : "#ef4444" }}
-                role="status"
-              >
-                {message.type === "success" ? "✅ " : "⚠️ "}
-                {message.text}
-              </p>
-            )}
-
-            {myRoles.length > 0 && (
-              <div className="mt-5">
-                <p className="hy-section-label mb-2">내가 등록한 역할</p>
-                <div className="flex flex-col gap-2">
-                  {myRoles.map(r => (
-                    <div
-                      key={r.id}
-                      className="flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-[var(--border)] bg-[var(--primary-light)] px-4 py-3"
-                    >
-                      <div>
-                        <span className="text-sm font-bold text-gray-900">{r.role}</span>
-                        {r.dept && <span className="ml-2 text-xs text-gray-500">{r.dept}</span>}
-                      </div>
-                      <div className="flex gap-2">
-                        <button onClick={() => startEdit(r)} className="hy-btn" style={{ fontSize: 12, padding: "6px 14px" }}>
-                          수정
-                        </button>
-                        <button
-                          onClick={() => deleteRole(r)}
-                          className="hy-btn"
-                          style={{ fontSize: 12, padding: "6px 14px", color: "#ef4444", borderColor: "#fecaca" }}
-                        >
-                          삭제
-                        </button>
-                      </div>
-                    </div>
-                  ))}
+                <div>
+                  <span className="text-sm font-bold text-gray-900">{r.role}</span>
+                  {r.dept && <span className="ml-2 text-xs text-gray-500">{r.dept}</span>}
+                </div>
+                <div className="flex gap-2">
+                  <button onClick={() => startEdit(r)} className="hy-btn" style={{ fontSize: 12, padding: "6px 14px" }}>
+                    수정
+                  </button>
+                  <button
+                    onClick={() => deleteRole(r)}
+                    className="hy-btn"
+                    style={{ fontSize: 12, padding: "6px 14px", color: "#ef4444", borderColor: "#fecaca" }}
+                  >
+                    삭제
+                  </button>
                 </div>
               </div>
-            )}
+            ))}
           </div>
         )}
       </section>
