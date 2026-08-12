@@ -497,8 +497,16 @@ function RolesSecondSemester() {
         </div>
       ) : roles.length === 0 ? (
         <div className="hy-card p-10 text-center">
-          <p className="text-sm font-semibold text-[var(--text-subtle)]">
-            아직 등록된 2학기 역할이 없어요. 위에서 가장 먼저 등록해봐요! 🙋
+          <div
+            className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full text-3xl"
+            style={{ background: "linear-gradient(135deg, var(--primary-light), var(--accent-light))" }}
+          >
+            🌱
+          </div>
+          <p className="text-base font-extrabold text-gray-900">2학기 역할, 아직 정하는 중이에요</p>
+          <p className="mt-2 text-sm leading-6 text-[var(--text-subtle)]">
+            역할이 정해지는 대로 하나씩 채워질 예정이에요.<br />
+            위 &quot;본인 확인&quot;에 학번과 이름을 입력하면 가장 먼저 등록할 수 있어요 🙋
           </p>
         </div>
       ) : (
