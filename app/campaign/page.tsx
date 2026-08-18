@@ -334,6 +334,9 @@ function PledgeList({ semester }: { semester: SemesterId }) {
                 <div key={p.id} className="hy-card" style={{ padding: "22px 24px" }}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12, marginBottom: 14, flexWrap: "wrap" }}>
                     <div>
+                      <span style={{ display: "inline-block", fontSize: 11, fontWeight: 800, color: "var(--primary)", background: "rgba(124,58,237,0.1)", borderRadius: 999, padding: "2px 10px", marginBottom: 6 }}>
+                        {(semester === CURRENT_SEMESTER ? POSITION_LABEL_CANDIDATE : POSITION_LABEL_ELECTED)[p.position] ?? p.position}
+                      </span>
                       {editingId === p.id ? (
                         <input value={editTitle} onChange={e => setEditTitle(e.target.value)} className="hy-input" style={{ marginBottom: 6 }} />
                       ) : (
