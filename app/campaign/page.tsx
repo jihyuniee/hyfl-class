@@ -19,10 +19,17 @@ type PledgeRow = {
 };
 
 const POSITION_ORDER = ["회장", "부회장A", "부회장B"];
-const POSITION_LABEL: Record<string, string> = {
+// 선거가 끝난 학기(과거 공약)는 당선 결과이므로 메달 아이콘 사용
+const POSITION_LABEL_ELECTED: Record<string, string> = {
   "회장": "🏅 회장",
   "부회장A": "🥈 부회장 A",
   "부회장B": "🥈 부회장 B",
+};
+// 진행 중인 학기는 아직 당선되지 않은 후보 등록 상태이므로 "후보"로만 표시
+const POSITION_LABEL_CANDIDATE: Record<string, string> = {
+  "회장": "🙋 회장 후보",
+  "부회장A": "🙋 부회장 A 후보",
+  "부회장B": "🙋 부회장 B 후보",
 };
 
 export default function CampaignPage() {
@@ -313,10 +320,14 @@ function PledgeList({ semester }: { semester: SemesterId }) {
           </p>
         </div>
       ) : (
-        POSITION_ORDER.filter(pos => byPosition[pos]?.length > 0).map(pos => (
+        POSITION_ORDER.filter(pos => byPosition[pos]?.length > 0).map(pos => {
+          const label = semester === CURRENT_SEMESTER
+            ? POSITION_LABEL_CANDIDATE[pos] ?? pos
+            : POSITION_LABEL_ELECTED[pos] ?? pos;
+          return (
           <div key={pos}>
             <p style={{ fontSize: 14, fontWeight: 900, color: "var(--text-muted)", margin: "0 0 10px" }}>
-              {POSITION_LABEL[pos] ?? pos}
+              {label}
             </p>
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
               {byPosition[pos].map(p => (
@@ -361,7 +372,8 @@ function PledgeList({ semester }: { semester: SemesterId }) {
               ))}
             </div>
           </div>
-        ))
+          );
+        })
       )}
     </div>
   );
