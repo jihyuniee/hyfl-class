@@ -51,7 +51,7 @@ const STUDENTS: Student[] = [
   { student_no: "20215", name: "이승지" }, { student_no: "20216", name: "이시원" },
   { student_no: "20217", name: "이조은" }, { student_no: "20218", name: "장지현" },
   { student_no: "20219", name: "전주하" }, { student_no: "20220", name: "정은지" },
-  { student_no: "20221", name: "주보민" }, { student_no: "20222", name: "최안아" },
+  { student_no: "20221", name: "주보민" }, { student_no: "20222", name: "최인아" },
   { student_no: "20223", name: "현서정" },
 ];
 

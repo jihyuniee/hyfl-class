@@ -20,7 +20,7 @@ const SUMMARY_1ST = {
     { zone: "AI교실", name: "이조은" },
   ],
   classroomFront: ["김하연", "성연준", "양효승"],
-  classroomBack: ["장지현", "정은지", "최안아", "전주하"],
+  classroomBack: ["장지현", "정은지", "최인아", "전주하"],
 };
 
 const WEEKLY_NAMES_2ND = new Set([
@@ -30,7 +30,7 @@ const WEEKLY_NAMES_2ND = new Set([
   "주보민",
   "이시원",
   "성연준",
-  "최안아",
+  "최인아",
   "유다현",
   "전주하",
   "손정연",
@@ -475,7 +475,7 @@ function CleaningFirstSemester() {
               <tr className="align-top">
                 <td className="px-4 py-4 text-sm font-semibold text-gray-900">교실 청소</td>
                 <td className="px-4 py-4 text-sm text-gray-800">
-                  김하연, 성연준, 양효승, 장지현, 정은지, 최안아, 전주하
+                  김하연, 성연준, 양효승, 장지현, 정은지, 최인아, 전주하
                 </td>
                 <td className="px-4 py-4 text-sm text-gray-700">월/목 쓸기·닦기 교대</td>
               </tr>
