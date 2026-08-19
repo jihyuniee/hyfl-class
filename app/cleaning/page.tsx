@@ -40,6 +40,11 @@ const WEEKLY_NAMES_2ND = new Set([
 // 우리반 학번 순서(components/lib/students.ts)대로 정렬한 주번 명단.
 const WEEKLY_2ND = STUDENTS.filter((s) => WEEKLY_NAMES_2ND.has(s.name));
 
+const SPECIAL_ZONE_NAMES_2ND = new Set(["김은솔", "김태현", "김혜민", "심지안", "이조은", "정은지"]);
+
+// 우리반 학번 순서(components/lib/students.ts)대로 정렬한 특별구역 명단.
+const SPECIAL_ZONES_2ND = STUDENTS.filter((s) => SPECIAL_ZONE_NAMES_2ND.has(s.name));
+
 // 학번(예: 20201)의 마지막 두 자리가 본인 번호(1번)다. 앞자리 "202"는 2학년 2반을 뜻한다.
 function classNo(studentNo: string): number {
   return parseInt(studentNo.slice(-2), 10);
@@ -49,7 +54,7 @@ const SUMMARY_2ND = {
   managers: ["장지현(회장)", "박우진(부회장)", "현서정(부회장)"],
   chalkboard: ["박민석", "송민주"],
   trash: ["이승지", "김하연", "윤혜림", "양효승"],
-  specialZones: ["김은솔", "김태현", "김혜민", "심지안", "이조은", "정은지"],
+  specialZones: SPECIAL_ZONES_2ND,
   weekly: WEEKLY_2ND,
   weeklyTasks: ["매일 아침 교실 빗자루로 쓸기", "교탁 닦기"],
 };
@@ -138,12 +143,12 @@ function CleaningSecondSemester() {
         </div>
 
         <div className="flex flex-wrap gap-2">
-          {s.specialZones.map((name) => (
+          {s.specialZones.map((student) => (
             <span
-              key={name}
+              key={student.no}
               className="rounded-full bg-emerald-50 px-4 py-2 text-sm font-medium text-gray-800"
             >
-              {name}
+              {classNo(student.no)}번 {student.name}
             </span>
           ))}
         </div>
@@ -230,7 +235,7 @@ function CleaningSecondSemester() {
                   특별구역
                 </td>
                 <td className="border-b px-4 py-4 text-sm text-gray-800">
-                  김은솔, 김태현, 김혜민, 심지안, 이조은, 정은지
+                  {s.specialZones.map((student) => `${classNo(student.no)}번 ${student.name}`).join(", ")}
                 </td>
                 <td className="border-b px-4 py-4 text-sm text-gray-700">주번 대신 매번 특별구역 청소 · 6인</td>
               </tr>
