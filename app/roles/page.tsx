@@ -120,23 +120,99 @@ const EXTRA_ROLES_1ST = [
   },
 ];
 
-const LEADERSHIP_2ND = [
-  { role: "학급 회장", students: ["장지현"] },
-  { role: "부회장", students: ["박우진", "현서정"] },
+const SECTIONS_2ND = [
+  {
+    dept: "자치기획부",
+    emoji: "👑",
+    roles: [
+      {
+        role: "학급 회장",
+        students: ["장지현"],
+        desc: "배려와 열정이 가득한 학급이 될 수 있도록 노력하고, 학급 일을 총괄 관리",
+      },
+      {
+        role: "부회장",
+        students: ["박우진", "현서정"],
+        desc: "회장과 함께 학급 의견을 수합하고, 담임 및 교과 선생님과 학급 친구들 사이를 연결",
+      },
+    ],
+  },
+  {
+    dept: "행정안전부",
+    emoji: "🗂️",
+    roles: [
+      {
+        role: "독서 관리자",
+        students: ["김태현"],
+        desc: "추천 도서 관리 및 독서 활동 운영",
+      },
+      {
+        role: "게시판 관리자",
+        students: ["이조은"],
+        desc: "학급 게시판 관리 / 칠판 메모 / 동기부여 글귀 정리",
+      },
+      {
+        role: "기록물 관리자",
+        students: ["김혜민"],
+        desc: "출석부 관리 / 학급 문서 수합 / 학급 회의 시 서기 역할",
+      },
+      {
+        role: "핸드폰 관리자",
+        students: ["정은지", "송민주"],
+        desc: "수업 중 휴대폰 수거함 관리",
+      },
+    ],
+  },
+  {
+    dept: "소통환경부",
+    emoji: "🌿",
+    roles: [
+      {
+        role: "배치 관리자",
+        students: ["주보민", "김은솔"],
+        desc: "자리 배치 및 조 편성 관리",
+      },
+      {
+        role: "교실환경 관리자",
+        students: ["이시원", "성연준"],
+        desc: "청소 및 교실 환경 점검",
+      },
+      {
+        role: "이벤트 관리자",
+        students: ["최인아", "유다현"],
+        desc: "학급 분위기 조성 캠페인 기획",
+      },
+    ],
+  },
+  {
+    dept: "교육성장부",
+    emoji: "📘",
+    roles: [
+      {
+        role: "쪽지시험 관리자",
+        students: ["전주하", "손정연"],
+        desc: "조회 시간 단어시험 및 학급 쪽지시험 운영",
+      },
+      {
+        role: "멀티미디어 관리자",
+        students: ["강지우"],
+        desc: "컴퓨터 및 정보기기 관리 / 학급 멀티미디어 운영",
+      },
+    ],
+  },
 ];
 
-const ROLES_2ND = [
-  { role: "독서 관리자", students: ["김태현"] },
-  { role: "게시판 관리자", students: ["이조은"] },
-  { role: "기록물 관리자", students: ["김혜민"] },
-  { role: "배치 관리자", students: ["주보민", "김은솔"] },
-  { role: "교실환경 관리자", students: ["이시원", "성연준"] },
-  { role: "이벤트 관리자", students: ["최인아", "유다현"] },
-  { role: "쪽지시험 관리자", students: ["전주하", "손정연"] },
-  { role: "멀티미디어 관리자", students: ["강지우"] },
-  { role: "핸드폰 관리자", students: ["정은지", "송민주"] },
-  { role: "쓰레기 관리자", students: ["이승지", "김하연", "윤혜림", "양효승"] },
-  { role: "칠판", students: ["박민석", "심지안"] },
+const EXTRA_ROLES_2ND = [
+  {
+    role: "쓰레기 관리자",
+    students: ["이승지", "김하연", "윤혜림", "양효승"],
+    desc: "분리수거 및 쓰레기 정리 담당",
+  },
+  {
+    role: "칠판",
+    students: ["박민석"],
+    desc: "칠판 정리 및 수업 전후 환경 정돈",
+  },
 ];
 
 export default function RolesPage() {
@@ -162,74 +238,21 @@ export default function RolesPage() {
   );
 }
 
-function RoleTable({
-  title,
-  emoji,
-  items,
+type RoleItem = { role: string; students: string[]; desc: string };
+type Section = { dept: string; emoji: string; roles: RoleItem[] };
+
+function DeptSections({
+  sections,
+  extraTitle,
+  extraRoles,
 }: {
-  title: string;
-  emoji: string;
-  items: { role: string; students: string[] }[];
+  sections: Section[];
+  extraTitle: string;
+  extraRoles: RoleItem[];
 }) {
   return (
-    <section className="rounded-[24px] border border-gray-200 bg-white p-6 shadow-sm">
-      <div className="mb-4 flex items-center gap-2">
-        <span className="text-2xl">{emoji}</span>
-        <h2 className="text-xl font-bold text-gray-900">{title}</h2>
-      </div>
-
-      <div className="overflow-x-auto">
-        <table className="w-full min-w-[480px] border-collapse">
-          <thead>
-            <tr className="bg-gray-50 text-left">
-              <th className="rounded-l-2xl border-b px-4 py-3 text-sm font-semibold text-gray-700">
-                역할
-              </th>
-              <th className="rounded-r-2xl border-b px-4 py-3 text-sm font-semibold text-gray-700">
-                담당자
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {items.map((item) => (
-              <tr key={item.role} className="align-top">
-                <td className="border-b px-4 py-4 text-sm font-semibold text-gray-900">
-                  {item.role}
-                </td>
-                <td className="border-b px-4 py-4 text-sm text-gray-800">
-                  <div className="flex flex-wrap gap-2">
-                    {item.students.map((student) => (
-                      <span
-                        key={student}
-                        className="rounded-full bg-rose-100 px-3 py-1 text-xs font-medium text-rose-700"
-                      >
-                        {student}
-                      </span>
-                    ))}
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </section>
-  );
-}
-
-function RolesSecondSemester() {
-  return (
     <>
-      <RoleTable title="학급 임원" emoji="👑" items={LEADERSHIP_2ND} />
-      <RoleTable title="1인 1역할" emoji="🗂️" items={ROLES_2ND} />
-    </>
-  );
-}
-
-function RolesFirstSemester() {
-  return (
-    <>
-      {SECTIONS_1ST.map((section) => (
+      {sections.map((section) => (
         <section
           key={section.dept}
           className="rounded-[24px] border border-gray-200 bg-white p-6 shadow-sm"
@@ -286,11 +309,11 @@ function RolesFirstSemester() {
       <section className="rounded-[24px] border border-amber-200 bg-amber-50 p-6 shadow-sm">
         <div className="mb-4 flex items-center gap-2">
           <span className="text-2xl">✨</span>
-          <h2 className="text-xl font-bold text-gray-900">추가 운영 역할</h2>
+          <h2 className="text-xl font-bold text-gray-900">{extraTitle}</h2>
         </div>
 
         <div className="grid gap-4 md:grid-cols-3">
-          {EXTRA_ROLES_1ST.map((item) => (
+          {extraRoles.map((item) => (
             <div
               key={item.role}
               className="rounded-2xl border border-amber-200 bg-white p-5 shadow-sm"
@@ -312,5 +335,17 @@ function RolesFirstSemester() {
         </div>
       </section>
     </>
+  );
+}
+
+function RolesSecondSemester() {
+  return (
+    <DeptSections sections={SECTIONS_2ND} extraTitle="추가 운영 역할" extraRoles={EXTRA_ROLES_2ND} />
+  );
+}
+
+function RolesFirstSemester() {
+  return (
+    <DeptSections sections={SECTIONS_1ST} extraTitle="추가 운영 역할" extraRoles={EXTRA_ROLES_1ST} />
   );
 }
