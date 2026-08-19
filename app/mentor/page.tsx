@@ -2,14 +2,30 @@
 
 import { useEffect, useState, useRef } from "react";
 import { supabase } from "@/components/lib/supabaseClient";
+import SemesterTabs from "@/components/SemesterTabs";
+import { CURRENT_SEMESTER, LEGACY_SEMESTER, type SemesterId } from "@/components/lib/semester";
 
-const MENTORS = [
+// 1학기 멘토 명단 — 그대로 동결, 수정하지 않는다.
+const MENTORS_1ST = [
   { subject: "국어",  emoji: "📝", mentors: ["박민석", "성연준"],  color: "linear-gradient(135deg,#f472b6,#fb923c)" },
   { subject: "수학",  emoji: "🧮", mentors: ["박우진", "손정연"],  color: "linear-gradient(135deg,#3b82f6,#6366f1)" },
   { subject: "영어",  emoji: "📖", mentors: ["유다현", "이시원"],  color: "linear-gradient(135deg,#34d399,#0ea5e9)" },
   { subject: "중국어",emoji: "🀄", mentors: ["강지우", "송민주"],  color: "linear-gradient(135deg,#f97316,#ef4444)" },
   { subject: "사문",  emoji: "🏛️", mentors: ["최안아", "현서정"],  color: "linear-gradient(135deg,#a855f7,#6366f1)" },
   { subject: "국제",  emoji: "🌏", mentors: ["윤혜림", "장지현"],  color: "linear-gradient(135deg,#06b6d4,#3b82f6)" },
+];
+
+// 2학기 멘토 명단.
+const MENTORS_2ND = [
+  { subject: "국어",   emoji: "📝", mentors: ["이승지", "주보민"],  color: "linear-gradient(135deg,#f472b6,#fb923c)" },
+  { subject: "영어",   emoji: "📖", mentors: ["김하연", "김은솔"],  color: "linear-gradient(135deg,#34d399,#0ea5e9)" },
+  { subject: "수학",   emoji: "🧮", mentors: ["심지안", "송민주"],  color: "linear-gradient(135deg,#3b82f6,#6366f1)" },
+  { subject: "세지",   emoji: "🌍", mentors: ["현서정", "박우진"],  color: "linear-gradient(135deg,#14b8a6,#0ea5e9)" },
+  { subject: "세미",   emoji: "🧭", mentors: ["최안아", "윤혜림"],  color: "linear-gradient(135deg,#a855f7,#ec4899)" },
+  { subject: "중입",   emoji: "🀄", mentors: ["김혜민", "강지우"],  color: "linear-gradient(135deg,#f97316,#ef4444)" },
+  { subject: "중독",   emoji: "📕", mentors: ["전주하", "양효승"],  color: "linear-gradient(135deg,#ef4444,#f43f5e)" },
+  { subject: "홍매T",  emoji: "🌸", mentors: ["장지현", "손정연"],  color: "linear-gradient(135deg,#ec4899,#f472b6)" },
+  { subject: "과학",   emoji: "🔬", mentors: ["이시원", "박우진"],  color: "linear-gradient(135deg,#10b981,#14b8a6)" },
 ];
 
 type MentorLog = {
@@ -21,6 +37,7 @@ type MentorLog = {
   activity: string;
   content: string;
   resource_link: string | null;
+  semester: string;
 };
 
 type Resource = {
@@ -35,6 +52,7 @@ type Resource = {
   file_type: "예상문제" | "학습자료" | "쪽지시험";
   uploader_name: string | null;
   delete_code: string | null;
+  semester: string;
 };
 
 type Comment = {
@@ -86,6 +104,10 @@ const FTYPE_STYLE: Record<string, { bg: string; color: string }> = {
 };
 
 export default function MentorPage() {
+  const [semester, setSemester] = useState<SemesterId>(CURRENT_SEMESTER);
+  const MENTORS = semester === CURRENT_SEMESTER ? MENTORS_2ND : MENTORS_1ST;
+  const isFrozen = semester === LEGACY_SEMESTER;
+
   const [logs, setLogs]           = useState<MentorLog[]>([]);
   const [resources, setResources] = useState<Resource[]>([]);
   const [comments, setComments]   = useState<Comment[]>([]);
@@ -151,6 +173,19 @@ export default function MentorPage() {
 
   useEffect(() => { load(); }, []);
 
+  useEffect(() => {
+    setFilterSubject("전체");
+    setSelectedSubject(null);
+    setLSubject(MENTORS[0].subject);
+    setRSubject(MENTORS[0].subject);
+    setLOpen(false);
+    setROpen(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [semester]);
+
+  const scopedLogs = logs.filter(l => l.semester === semester);
+  const scopedResources = resources.filter(r => r.semester === semester);
+
   function handleMentorCardClick(subject: string) {
     setSelectedSubject(prev => prev === subject ? null : subject);
     setTimeout(() => {
@@ -173,6 +208,7 @@ export default function MentorPage() {
     await supabase.from("mentor_logs").insert({
       subject: lSubject, mentor_name: lMentor.trim(), date: lDate,
       activity: lActivity.trim(), content: lContent.trim(), resource_link: lLink.trim() || null,
+      semester,
     });
     setSaving(false);
     setLContent(""); setLActivity(""); setLLink(""); setLMentor(""); setLOpen(false);
@@ -207,6 +243,7 @@ export default function MentorPage() {
         file_type: rType,
         uploader_name: rUploaderName.trim(),
         delete_code: rDeleteCode.trim() || null,
+        semester,
       });
 
       if (insertErr) {
@@ -297,17 +334,17 @@ export default function MentorPage() {
     });
   }
 
-  const filteredLogs = logs.filter(l => filterSubject === "전체" || l.subject === filterSubject);
-  const filteredRes  = resources.filter(r => filterSubject === "전체" || r.subject === filterSubject);
+  const filteredLogs = scopedLogs.filter(l => filterSubject === "전체" || l.subject === filterSubject);
+  const filteredRes  = scopedResources.filter(r => filterSubject === "전체" || r.subject === filterSubject);
 
   const selectedSubjectResources = selectedSubject
-    ? resources.filter(r => r.subject === selectedSubject).sort((a, b) => b.created_at.localeCompare(a.created_at))
+    ? scopedResources.filter(r => r.subject === selectedSubject).sort((a, b) => b.created_at.localeCompare(a.created_at))
     : [];
   const selectedMentor = MENTORS.find(m => m.subject === selectedSubject);
 
   // 새글 카운트 (탭 뱃지용)
-  const newResCount = resources.filter(r => isNew(r.created_at)).length;
-  const newLogCount = logs.filter(l => isNew(l.created_at)).length;
+  const newResCount = scopedResources.filter(r => isNew(r.created_at)).length;
+  const newLogCount = scopedLogs.filter(l => isNew(l.created_at)).length;
 
   // ─── 자료 카드 렌더 ───
   const renderResourceCard = (r: Resource, showSubject = false) => {
@@ -455,20 +492,22 @@ export default function MentorPage() {
                   ))}
                 </div>
               )}
-              <div style={{ display:"flex", gap:8 }}>
-                <input placeholder="이름" value={cInput.author}
-                  onChange={e => setCommentInputs(prev => ({ ...prev, [r.id]: { ...prev[r.id] ?? { content:"" }, author: e.target.value } }))}
-                  className="hy-input" style={{ maxWidth:100, fontSize:12 }}/>
-                <input placeholder="댓글 입력 (Enter로 등록)"
-                  value={cInput.content}
-                  onChange={e => setCommentInputs(prev => ({ ...prev, [r.id]: { ...prev[r.id] ?? { author:"" }, content: e.target.value } }))}
-                  onKeyDown={e => { if (e.key==="Enter" && !e.shiftKey) { e.preventDefault(); addComment(r.id); } }}
-                  className="hy-input" style={{ flex:1, fontSize:12 }}/>
-                <button onClick={() => addComment(r.id)} disabled={savingComment === r.id}
-                  className="hy-btn hy-btn-primary" style={{ fontSize:12, padding:"8px 14px", flexShrink:0, minWidth:52 }}>
-                  {savingComment === r.id ? "..." : "등록"}
-                </button>
-              </div>
+              {!isFrozen && (
+                <div style={{ display:"flex", gap:8 }}>
+                  <input placeholder="이름" value={cInput.author}
+                    onChange={e => setCommentInputs(prev => ({ ...prev, [r.id]: { ...prev[r.id] ?? { content:"" }, author: e.target.value } }))}
+                    className="hy-input" style={{ maxWidth:100, fontSize:12 }}/>
+                  <input placeholder="댓글 입력 (Enter로 등록)"
+                    value={cInput.content}
+                    onChange={e => setCommentInputs(prev => ({ ...prev, [r.id]: { ...prev[r.id] ?? { author:"" }, content: e.target.value } }))}
+                    onKeyDown={e => { if (e.key==="Enter" && !e.shiftKey) { e.preventDefault(); addComment(r.id); } }}
+                    className="hy-input" style={{ flex:1, fontSize:12 }}/>
+                  <button onClick={() => addComment(r.id)} disabled={savingComment === r.id}
+                    className="hy-btn hy-btn-primary" style={{ fontSize:12, padding:"8px 14px", flexShrink:0, minWidth:52 }}>
+                    {savingComment === r.id ? "..." : "등록"}
+                  </button>
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -563,9 +602,14 @@ export default function MentorPage() {
             <span style={{ fontSize:12,color:"#fff",fontWeight:700 }}>🤝 학급자율활동</span>
           </div>
           <h1 style={{ color:"#fff",fontSize:"clamp(20px,4vw,30px)",fontWeight:900,margin:"0 0 8px",letterSpacing:"-0.5px" }}>교과 멘토·멘티 협력학습</h1>
-          <p style={{ color:"rgba(255,255,255,0.85)",fontSize:13,margin:0,lineHeight:1.7,fontWeight:500 }}>
-            멘토가 질문에 답변하고 예상 문제와 자료를 공유해요.<br/>시험 기간 전 적극적으로 활용해봐요!
+          <p style={{ color:"rgba(255,255,255,0.85)",fontSize:13,margin:"0 0 14px",lineHeight:1.7,fontWeight:500 }}>
+            {isFrozen
+              ? "1학기 최종 기록이에요. 자료는 그대로 보존됩니다."
+              : <>멘토가 질문에 답변하고 예상 문제와 자료를 공유해요.<br/>시험 기간 전 적극적으로 활용해봐요!</>}
           </p>
+          <div style={{ background:"rgba(255,255,255,0.15)", borderRadius:14, padding:6, display:"inline-flex" }}>
+            <SemesterTabs value={semester} onChange={setSemester} />
+          </div>
         </div>
       </div>
 
@@ -609,10 +653,10 @@ export default function MentorPage() {
           <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(260px,1fr))", gap:14 }}>
             {MENTORS.map(m=>{
               const isSelected = selectedSubject === m.subject;
-              const resCount = resources.filter(r=>r.subject===m.subject).length;
-              const logCount = logs.filter(l=>l.subject===m.subject).length;
-              const recentRes = resources.filter(r=>r.subject===m.subject).slice(0,2);
-              const hasNew = resources.some(r=>r.subject===m.subject && isNew(r.created_at));
+              const resCount = scopedResources.filter(r=>r.subject===m.subject).length;
+              const logCount = scopedLogs.filter(l=>l.subject===m.subject).length;
+              const recentRes = scopedResources.filter(r=>r.subject===m.subject).slice(0,2);
+              const hasNew = scopedResources.some(r=>r.subject===m.subject && isNew(r.created_at));
               return (
                 <div key={m.subject}
                   onClick={()=>handleMentorCardClick(m.subject)}
@@ -692,16 +736,20 @@ export default function MentorPage() {
                     <p style={{ fontSize:12,color:"var(--text-subtle)",margin:0 }}>멘토: {selectedMentor?.mentors.join(", ")}</p>
                   </div>
                 </div>
-                <button onClick={()=>setROpen(o=>!o)} className="hy-btn hy-btn-primary" style={{ fontSize:13 }}>
-                  {rOpen ? "닫기" : "📤 자료 올리기"}
-                </button>
+                {!isFrozen && (
+                  <button onClick={()=>setROpen(o=>!o)} className="hy-btn hy-btn-primary" style={{ fontSize:13 }}>
+                    {rOpen ? "닫기" : "📤 자료 올리기"}
+                  </button>
+                )}
               </div>
 
-              {rOpen && <div style={{ marginBottom:20 }}>{renderUploadForm(selectedSubject)}</div>}
+              {!isFrozen && rOpen && <div style={{ marginBottom:20 }}>{renderUploadForm(selectedSubject)}</div>}
 
               {selectedSubjectResources.length === 0 ? (
                 <div style={{ textAlign:"center",padding:"32px 0" }}>
-                  <p style={{ fontSize:14,color:"var(--text-subtle)",fontWeight:600 }}>아직 공유된 자료가 없어요. 첫 자료를 올려봐요! 📂</p>
+                  <p style={{ fontSize:14,color:"var(--text-subtle)",fontWeight:600 }}>
+                    {isFrozen ? "공유된 자료가 없어요." : "아직 공유된 자료가 없어요. 첫 자료를 올려봐요! 📂"}
+                  </p>
                 </div>
               ) : (
                 <div style={{ display:"flex",flexDirection:"column",gap:12 }}>
@@ -728,12 +776,14 @@ export default function MentorPage() {
                   }}>{s}</button>
               ))}
             </div>
-            <button onClick={()=>setLOpen(o=>!o)} className="hy-btn hy-btn-primary" style={{ fontSize:13 }}>
-              {lOpen ? "닫기" : "✏️ 일지 쓰기"}
-            </button>
+            {!isFrozen && (
+              <button onClick={()=>setLOpen(o=>!o)} className="hy-btn hy-btn-primary" style={{ fontSize:13 }}>
+                {lOpen ? "닫기" : "✏️ 일지 쓰기"}
+              </button>
+            )}
           </div>
 
-          {lOpen && (
+          {!isFrozen && lOpen && (
             <div className="hy-card" style={{ padding:"20px 22px" }}>
               <h3 style={{ fontSize:15,fontWeight:800,color:"var(--text)",margin:"0 0 14px" }}>활동 일지 작성</h3>
               <div style={{ display:"flex",flexDirection:"column",gap:10 }}>
@@ -812,12 +862,14 @@ export default function MentorPage() {
                   }}>{s}</button>
               ))}
             </div>
-            <button onClick={()=>setROpen(o=>!o)} className="hy-btn hy-btn-primary" style={{ fontSize:13 }}>
-              {rOpen ? "닫기" : "📤 자료 공유"}
-            </button>
+            {!isFrozen && (
+              <button onClick={()=>setROpen(o=>!o)} className="hy-btn hy-btn-primary" style={{ fontSize:13 }}>
+                {rOpen ? "닫기" : "📤 자료 공유"}
+              </button>
+            )}
           </div>
 
-          {rOpen && (
+          {!isFrozen && rOpen && (
             <div className="hy-card" style={{ padding:"20px 22px" }}>
               <h3 style={{ fontSize:15,fontWeight:800,color:"var(--text)",margin:"0 0 14px" }}>자료 공유하기</h3>
               {renderUploadForm()}
