@@ -41,6 +41,11 @@ const WEEKLY_NAMES_2ND = new Set([
 // 우리반 학번 순서(components/lib/students.ts)대로 정렬한 주번 명단.
 const WEEKLY_2ND = STUDENTS.filter((s) => WEEKLY_NAMES_2ND.has(s.name));
 
+// 학번(예: 20201)의 마지막 두 자리가 본인 번호(1번)다. 앞자리 "202"는 2학년 2반을 뜻한다.
+function classNo(studentNo: string): number {
+  return parseInt(studentNo.slice(-2), 10);
+}
+
 const SUMMARY_2ND = {
   managers: ["장지현(회장)", "박우진(부회장)", "현서정(부회장)"],
   chalkboard: ["박민석"],
@@ -156,12 +161,12 @@ function CleaningSecondSemester() {
         </p>
 
         <div className="mb-5 flex flex-wrap gap-2">
-          {s.weekly.map((student, i) => (
+          {s.weekly.map((student) => (
             <span
               key={student.no}
               className="rounded-full bg-sky-50 px-3 py-1 text-sm font-medium text-gray-800"
             >
-              {i + 1}. {student.name}
+              {classNo(student.no)}번 {student.name}
             </span>
           ))}
         </div>
@@ -234,7 +239,7 @@ function CleaningSecondSemester() {
               <tr className="align-top">
                 <td className="px-4 py-4 text-sm font-semibold text-gray-900">주번</td>
                 <td className="px-4 py-4 text-sm text-gray-800">
-                  {s.weekly.map((student) => student.name).join(", ")}
+                  {s.weekly.map((student) => `${classNo(student.no)}번 ${student.name}`).join(", ")}
                 </td>
                 <td className="px-4 py-4 text-sm text-gray-700">
                   매일 아침 교실 빗자루로 쓸기 · 교탁 닦기, 학번 순서대로 매주 순환
