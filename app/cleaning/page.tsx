@@ -35,7 +35,6 @@ const WEEKLY_NAMES_2ND = new Set([
   "전주하",
   "손정연",
   "강지우",
-  "송민주",
 ]);
 
 // 우리반 학번 순서(components/lib/students.ts)대로 정렬한 주번 명단.
@@ -48,7 +47,7 @@ function classNo(studentNo: string): number {
 
 const SUMMARY_2ND = {
   managers: ["장지현(회장)", "박우진(부회장)", "현서정(부회장)"],
-  chalkboard: ["박민석"],
+  chalkboard: ["박민석", "송민주"],
   trash: ["이승지", "김하연", "윤혜림", "양효승"],
   specialZones: ["김은솔", "김태현", "김혜민", "심지안", "이조은", "정은지"],
   weekly: WEEKLY_2ND,
@@ -212,7 +211,7 @@ function CleaningSecondSemester() {
                 <td className="border-b px-4 py-4 text-sm font-semibold text-gray-900">
                   칠판 담당
                 </td>
-                <td className="border-b px-4 py-4 text-sm text-gray-800">박민석</td>
+                <td className="border-b px-4 py-4 text-sm text-gray-800">{s.chalkboard.join(", ")}</td>
                 <td className="border-b px-4 py-4 text-sm text-gray-700">주번 대신 매번 칠판 정리</td>
               </tr>
 
