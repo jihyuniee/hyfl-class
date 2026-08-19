@@ -3,6 +3,7 @@
 import { useState } from "react";
 import SemesterTabs from "@/components/SemesterTabs";
 import { CURRENT_SEMESTER, type SemesterId } from "@/components/lib/semester";
+import { STUDENTS } from "@/components/lib/students";
 
 const SUMMARY_1ST = {
   managers: ["주보민(회장)", "강지우(부회장)", "이시원(부회장)"],
@@ -19,28 +20,33 @@ const SUMMARY_1ST = {
     { zone: "AI교실", name: "이조은" },
   ],
   classroomFront: ["김하연", "성연준", "양효승"],
-  classroomBack: ["장지현", "정은지", "최인아", "전주하"],
+  classroomBack: ["장지현", "정은지", "최안아", "전주하"],
 };
+
+const WEEKLY_NAMES_2ND = new Set([
+  "장지현",
+  "박우진",
+  "현서정",
+  "주보민",
+  "이시원",
+  "성연준",
+  "최안아",
+  "유다현",
+  "전주하",
+  "손정연",
+  "강지우",
+  "송민주",
+]);
+
+// 우리반 학번 순서(components/lib/students.ts)대로 정렬한 주번 명단.
+const WEEKLY_2ND = STUDENTS.filter((s) => WEEKLY_NAMES_2ND.has(s.name));
 
 const SUMMARY_2ND = {
   managers: ["장지현(회장)", "박우진(부회장)", "현서정(부회장)"],
   chalkboard: ["박민석"],
   trash: ["이승지", "김하연", "윤혜림", "양효승"],
   specialZones: ["김은솔", "김태현", "김혜민", "심지안", "이조은", "정은지"],
-  weekly: [
-    "장지현",
-    "박우진",
-    "현서정",
-    "주보민",
-    "이시원",
-    "성연준",
-    "최인아",
-    "유다현",
-    "전주하",
-    "손정연",
-    "강지우",
-    "송민주",
-  ],
+  weekly: WEEKLY_2ND,
   weeklyTasks: ["매일 아침 교실 빗자루로 쓸기", "교탁 닦기"],
 };
 
@@ -145,17 +151,17 @@ function CleaningSecondSemester() {
           <h2 className="text-xl font-bold text-gray-900">주번 (매주 순환)</h2>
         </div>
         <p className="mb-4 text-sm leading-6 text-gray-700">
-          칠판·쓰레기·특별구역 담당을 제외한 나머지 {s.weekly.length}명이 아래 순서대로 매주
-          돌아가며 주번을 맡아요.
+          칠판·쓰레기·특별구역 담당을 제외한 나머지 {s.weekly.length}명이 학번 순서대로 아래
+          순서대로 매주 돌아가며 주번을 맡아요.
         </p>
 
         <div className="mb-5 flex flex-wrap gap-2">
-          {s.weekly.map((name, i) => (
+          {s.weekly.map((student, i) => (
             <span
-              key={name}
+              key={student.no}
               className="rounded-full bg-sky-50 px-3 py-1 text-sm font-medium text-gray-800"
             >
-              {i + 1}. {name}
+              {i + 1}. {student.name} ({student.no})
             </span>
           ))}
         </div>
@@ -228,11 +234,10 @@ function CleaningSecondSemester() {
               <tr className="align-top">
                 <td className="px-4 py-4 text-sm font-semibold text-gray-900">주번</td>
                 <td className="px-4 py-4 text-sm text-gray-800">
-                  장지현, 박우진, 현서정, 주보민, 이시원, 성연준, 최인아, 유다현, 전주하, 손정연,
-                  강지우, 송민주
+                  {s.weekly.map((student) => `${student.name}(${student.no})`).join(", ")}
                 </td>
                 <td className="px-4 py-4 text-sm text-gray-700">
-                  매일 아침 교실 빗자루로 쓸기 · 교탁 닦기, 매주 순환
+                  매일 아침 교실 빗자루로 쓸기 · 교탁 닦기, 학번 순서대로 매주 순환
                 </td>
               </tr>
             </tbody>
@@ -461,7 +466,7 @@ function CleaningFirstSemester() {
               <tr className="align-top">
                 <td className="px-4 py-4 text-sm font-semibold text-gray-900">교실 청소</td>
                 <td className="px-4 py-4 text-sm text-gray-800">
-                  김하연, 성연준, 양효승, 장지현, 정은지, 최인아, 전주하
+                  김하연, 성연준, 양효승, 장지현, 정은지, 최안아, 전주하
                 </td>
                 <td className="px-4 py-4 text-sm text-gray-700">월/목 쓸기·닦기 교대</td>
               </tr>
