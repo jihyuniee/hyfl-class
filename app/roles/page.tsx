@@ -37,7 +37,7 @@ const SECTIONS_1ST = [
       },
       {
         role: "게시판 관리자",
-        students: ["최인아"],
+        students: ["최안아"],
         desc: "학급 게시판 관리 / 칠판 메모 / 동기부여 글귀 정리",
       },
       {
@@ -179,7 +179,7 @@ const SECTIONS_2ND = [
       },
       {
         role: "이벤트 관리자",
-        students: ["최인아", "유다현"],
+        students: ["최안아", "유다현"],
         desc: "학급 분위기 조성 캠페인 기획",
       },
     ],
