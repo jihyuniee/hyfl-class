@@ -11,7 +11,7 @@ const MENTORS_1ST = [
   { subject: "수학",  emoji: "🧮", mentors: ["박우진", "손정연"],  color: "linear-gradient(135deg,#3b82f6,#6366f1)" },
   { subject: "영어",  emoji: "📖", mentors: ["유다현", "이시원"],  color: "linear-gradient(135deg,#34d399,#0ea5e9)" },
   { subject: "중국어",emoji: "🀄", mentors: ["강지우", "송민주"],  color: "linear-gradient(135deg,#f97316,#ef4444)" },
-  { subject: "사문",  emoji: "🏛️", mentors: ["최안아", "현서정"],  color: "linear-gradient(135deg,#a855f7,#6366f1)" },
+  { subject: "사문",  emoji: "🏛️", mentors: ["최인아", "현서정"],  color: "linear-gradient(135deg,#a855f7,#6366f1)" },
   { subject: "국제",  emoji: "🌏", mentors: ["윤혜림", "장지현"],  color: "linear-gradient(135deg,#06b6d4,#3b82f6)" },
 ];
 
@@ -21,7 +21,7 @@ const MENTORS_2ND = [
   { subject: "영어",   emoji: "📖", mentors: ["김하연", "김은솔"],  color: "linear-gradient(135deg,#34d399,#0ea5e9)" },
   { subject: "수학",   emoji: "🧮", mentors: ["심지안", "송민주"],  color: "linear-gradient(135deg,#3b82f6,#6366f1)" },
   { subject: "세지",   emoji: "🌍", mentors: ["현서정", "박우진"],  color: "linear-gradient(135deg,#14b8a6,#0ea5e9)" },
-  { subject: "세미",   emoji: "🧭", mentors: ["최안아", "윤혜림"],  color: "linear-gradient(135deg,#a855f7,#ec4899)" },
+  { subject: "세미",   emoji: "🧭", mentors: ["최인아", "윤혜림"],  color: "linear-gradient(135deg,#a855f7,#ec4899)" },
   { subject: "중입",   emoji: "🀄", mentors: ["김혜민", "강지우"],  color: "linear-gradient(135deg,#f97316,#ef4444)" },
   { subject: "중독",   emoji: "📕", mentors: ["전주하", "양효승"],  color: "linear-gradient(135deg,#ef4444,#f43f5e)" },
   { subject: "홍매T",  emoji: "🌸", mentors: ["장지현", "손정연"],  color: "linear-gradient(135deg,#ec4899,#f472b6)" },

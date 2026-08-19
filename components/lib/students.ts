@@ -23,7 +23,7 @@ export const STUDENTS: Student[] = [
   { no: "20219", name: "전주하" },
   { no: "20220", name: "정은지" },
   { no: "20221", name: "주보민" },
-  { no: "20222", name: "최안아" },
+  { no: "20222", name: "최인아" },
   { no: "20223", name: "현서정" },
   { no: "T1", name: "지현샘" },
 ];
