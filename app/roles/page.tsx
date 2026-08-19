@@ -202,19 +202,6 @@ const SECTIONS_2ND = [
   },
 ];
 
-const EXTRA_ROLES_2ND = [
-  {
-    role: "쓰레기 관리자",
-    students: ["이승지", "김하연", "윤혜림", "양효승"],
-    desc: "분리수거 및 쓰레기 정리 담당",
-  },
-  {
-    role: "칠판",
-    students: ["박민석"],
-    desc: "칠판 정리 및 수업 전후 환경 정돈",
-  },
-];
-
 export default function RolesPage() {
   const [semester, setSemester] = useState<SemesterId>(CURRENT_SEMESTER);
 
@@ -247,8 +234,8 @@ function DeptSections({
   extraRoles,
 }: {
   sections: Section[];
-  extraTitle: string;
-  extraRoles: RoleItem[];
+  extraTitle?: string;
+  extraRoles?: RoleItem[];
 }) {
   return (
     <>
@@ -306,42 +293,42 @@ function DeptSections({
         </section>
       ))}
 
-      <section className="rounded-[24px] border border-amber-200 bg-amber-50 p-6 shadow-sm">
-        <div className="mb-4 flex items-center gap-2">
-          <span className="text-2xl">✨</span>
-          <h2 className="text-xl font-bold text-gray-900">{extraTitle}</h2>
-        </div>
+      {extraRoles && extraRoles.length > 0 && (
+        <section className="rounded-[24px] border border-amber-200 bg-amber-50 p-6 shadow-sm">
+          <div className="mb-4 flex items-center gap-2">
+            <span className="text-2xl">✨</span>
+            <h2 className="text-xl font-bold text-gray-900">{extraTitle}</h2>
+          </div>
 
-        <div className="grid gap-4 md:grid-cols-3">
-          {extraRoles.map((item) => (
-            <div
-              key={item.role}
-              className="rounded-2xl border border-amber-200 bg-white p-5 shadow-sm"
-            >
-              <div className="text-base font-bold text-gray-900">{item.role}</div>
-              <div className="mt-3 flex flex-wrap gap-2">
-                {item.students.map((student) => (
-                  <span
-                    key={student}
-                    className="rounded-full bg-sky-100 px-3 py-1 text-xs font-medium text-sky-700"
-                  >
-                    {student}
-                  </span>
-                ))}
+          <div className="grid gap-4 md:grid-cols-3">
+            {extraRoles.map((item) => (
+              <div
+                key={item.role}
+                className="rounded-2xl border border-amber-200 bg-white p-5 shadow-sm"
+              >
+                <div className="text-base font-bold text-gray-900">{item.role}</div>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {item.students.map((student) => (
+                    <span
+                      key={student}
+                      className="rounded-full bg-sky-100 px-3 py-1 text-xs font-medium text-sky-700"
+                    >
+                      {student}
+                    </span>
+                  ))}
+                </div>
+                <div className="mt-3 text-sm leading-6 text-gray-700">{item.desc}</div>
               </div>
-              <div className="mt-3 text-sm leading-6 text-gray-700">{item.desc}</div>
-            </div>
-          ))}
-        </div>
-      </section>
+            ))}
+          </div>
+        </section>
+      )}
     </>
   );
 }
 
 function RolesSecondSemester() {
-  return (
-    <DeptSections sections={SECTIONS_2ND} extraTitle="추가 운영 역할" extraRoles={EXTRA_ROLES_2ND} />
-  );
+  return <DeptSections sections={SECTIONS_2ND} />;
 }
 
 function RolesFirstSemester() {

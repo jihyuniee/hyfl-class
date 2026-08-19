@@ -62,7 +62,7 @@ export default function CleaningPage() {
         </h1>
         <p className="mt-3 text-sm leading-6 text-gray-700">
           {semester === CURRENT_SEMESTER
-            ? "칠판 담당, 쓰레기 담당, 특별구역 담당을 제외한 나머지 학생은 주번으로 매주 순환하며 교실 청소를 맡아요."
+            ? "칠판 담당, 쓰레기 담당, 특별구역 담당은 주번 대신 매번 자기 몫을 맡고, 나머지 학생은 주번으로 매주 순환하며 교실 청소를 맡아요."
             : "월요일, 목요일 청소 기준 역할표예요. 자료는 그대로 보존됩니다."}
         </p>
         <div className="mt-5">
@@ -99,7 +99,7 @@ function CleaningSecondSemester() {
         </div>
 
         <div className="rounded-2xl border border-amber-200 bg-amber-50 p-5 shadow-sm">
-          <div className="text-sm font-semibold text-amber-700">청소 제외 · 칠판 담당</div>
+          <div className="text-sm font-semibold text-amber-700">주번 대신 · 칠판 담당</div>
           <div className="mt-3 flex flex-wrap gap-2">
             {s.chalkboard.map((name) => (
               <span
@@ -113,7 +113,7 @@ function CleaningSecondSemester() {
         </div>
 
         <div className="rounded-2xl border border-violet-200 bg-violet-50 p-5 shadow-sm">
-          <div className="text-sm font-semibold text-violet-700">청소 제외 · 쓰레기 담당</div>
+          <div className="text-sm font-semibold text-violet-700">주번 대신 · 쓰레기 담당</div>
           <div className="mt-3 flex flex-wrap gap-2">
             {s.trash.map((name) => (
               <span
@@ -130,7 +130,7 @@ function CleaningSecondSemester() {
       <section className="rounded-[24px] border border-emerald-200 bg-white p-6 shadow-sm">
         <div className="mb-4 flex items-center gap-2">
           <span className="text-2xl">🌿</span>
-          <h2 className="text-xl font-bold text-gray-900">특별구역 담당 (청소 제외)</h2>
+          <h2 className="text-xl font-bold text-gray-900">주번 대신 · 특별구역 담당</h2>
         </div>
 
         <div className="flex flex-wrap gap-2">
@@ -152,7 +152,7 @@ function CleaningSecondSemester() {
         </div>
         <p className="mb-4 text-sm leading-6 text-gray-700">
           칠판·쓰레기·특별구역 담당을 제외한 나머지 {s.weekly.length}명이 학번 순서대로 아래
-          순서대로 매주 돌아가며 주번을 맡아요.
+          번호대로 매주 돌아가며 주번을 맡아요.
         </p>
 
         <div className="mb-5 flex flex-wrap gap-2">
@@ -161,7 +161,7 @@ function CleaningSecondSemester() {
               key={student.no}
               className="rounded-full bg-sky-50 px-3 py-1 text-sm font-medium text-gray-800"
             >
-              {i + 1}. {student.name} ({student.no})
+              {i + 1}. {student.name}
             </span>
           ))}
         </div>
@@ -208,7 +208,7 @@ function CleaningSecondSemester() {
                   칠판 담당
                 </td>
                 <td className="border-b px-4 py-4 text-sm text-gray-800">박민석</td>
-                <td className="border-b px-4 py-4 text-sm text-gray-700">청소(주번) 제외</td>
+                <td className="border-b px-4 py-4 text-sm text-gray-700">주번 대신 매번 칠판 정리</td>
               </tr>
 
               <tr className="align-top">
@@ -218,7 +218,7 @@ function CleaningSecondSemester() {
                 <td className="border-b px-4 py-4 text-sm text-gray-800">
                   이승지, 김하연, 윤혜림, 양효승
                 </td>
-                <td className="border-b px-4 py-4 text-sm text-gray-700">청소(주번) 제외</td>
+                <td className="border-b px-4 py-4 text-sm text-gray-700">주번 대신 매번 쓰레기 배출</td>
               </tr>
 
               <tr className="align-top">
@@ -228,13 +228,13 @@ function CleaningSecondSemester() {
                 <td className="border-b px-4 py-4 text-sm text-gray-800">
                   김은솔, 김태현, 김혜민, 심지안, 이조은, 정은지
                 </td>
-                <td className="border-b px-4 py-4 text-sm text-gray-700">청소(주번) 제외 · 6인</td>
+                <td className="border-b px-4 py-4 text-sm text-gray-700">주번 대신 매번 특별구역 청소 · 6인</td>
               </tr>
 
               <tr className="align-top">
                 <td className="px-4 py-4 text-sm font-semibold text-gray-900">주번</td>
                 <td className="px-4 py-4 text-sm text-gray-800">
-                  {s.weekly.map((student) => `${student.name}(${student.no})`).join(", ")}
+                  {s.weekly.map((student) => student.name).join(", ")}
                 </td>
                 <td className="px-4 py-4 text-sm text-gray-700">
                   매일 아침 교실 빗자루로 쓸기 · 교탁 닦기, 학번 순서대로 매주 순환
