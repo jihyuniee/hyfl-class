@@ -97,6 +97,7 @@ export default function MentorPage() {
   const [tab, setTab]             = useState<"mentors"|"resources">("mentors");
   const [filterSubject, setFilterSubject] = useState("전체");
   const [selectedSubject, setSelectedSubject] = useState<string | null>(null);
+  const [viewMode, setViewMode] = useState<"grid"|"list">("grid");
 
   // 자료 공유
   const [rSubject,      setRSubject]      = useState(MENTORS[0].subject);
@@ -360,6 +361,81 @@ export default function MentorPage() {
       </button>
     );
   };
+
+  // ─── 드라이브식 목록 줄 ───
+  const renderResourceRow = (r: Resource, showSubject = false) => {
+    const m = MENTORS.find(x => x.subject === r.subject);
+    const ts = FTYPE_STYLE[r.file_type] ?? { bg:"#f3f4f6", color:"var(--text-muted)" };
+    const openUrl = r.file_url || r.link || null;
+    const isImg = isImageFile(r.file_name);
+    const newItem = isNew(r.created_at);
+
+    return (
+      <div
+        key={r.id}
+        style={{
+          display:"flex", alignItems:"center", gap:12, padding:"9px 12px", borderRadius:14,
+          border: newItem ? "1.5px solid #6366f1" : "1px solid var(--border)",
+          background: newItem ? "#f5f3ff" : "#fff",
+        }}
+      >
+        <button onClick={() => setDetailId(r.id)}
+          style={{ width:44, height:44, borderRadius:10, overflow:"hidden", flexShrink:0, border:"1px solid var(--border)", padding:0, cursor:"pointer", background:ts.bg }}>
+          {isImg && openUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={openUrl} alt={r.title} style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>
+          ) : (
+            <span style={{ display:"flex", alignItems:"center", justifyContent:"center", width:"100%", height:"100%", fontSize:18 }}>
+              {getFileIcon(r.file_name)}
+            </span>
+          )}
+        </button>
+
+        <button onClick={() => setDetailId(r.id)}
+          style={{ flex:1, minWidth:0, textAlign:"left", background:"none", border:"none", cursor:"pointer", padding:0, fontFamily:"inherit" }}>
+          <div style={{ display:"flex", alignItems:"center", gap:6, flexWrap:"wrap" }}>
+            {newItem && (
+              <span style={{ fontSize:9, fontWeight:800, padding:"1px 6px", borderRadius:999, background:"#6366f1", color:"#fff" }}>NEW</span>
+            )}
+            <span style={{ fontSize:13, fontWeight:800, color:"var(--text)", overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap", maxWidth:"100%" }}>
+              {r.title}
+            </span>
+          </div>
+          <div style={{ display:"flex", alignItems:"center", gap:6, marginTop:3, flexWrap:"wrap" }}>
+            <span style={{ fontSize:10, fontWeight:700, padding:"1px 7px", borderRadius:999, background:ts.bg, color:ts.color }}>{r.file_type}</span>
+            {showSubject && m && (
+              <span style={{ fontSize:10, color:"var(--text-muted)", fontWeight:600 }}>{m.emoji} {r.subject}</span>
+            )}
+            <span style={{ fontSize:10, color:"#16a34a", fontWeight:700 }}>👤 {r.uploader_name ?? "익명"}</span>
+            <span style={{ fontSize:10, color:"var(--text-subtle)" }}>{formatDateTime(r.created_at)}</span>
+          </div>
+        </button>
+
+        {openUrl && (
+          <a href={openUrl} target="_blank" rel="noopener noreferrer"
+            style={{ flexShrink:0, fontSize:11, fontWeight:700, color:"#6366f1", textDecoration:"none", padding:"6px 12px", borderRadius:999, background:"#eff6ff", border:"1px solid #c7d2fe", whiteSpace:"nowrap" }}>
+            {isImg ? "보기" : "열기"} ↗
+          </a>
+        )}
+      </div>
+    );
+  };
+
+  // ─── 그리드/목록 보기 전환 버튼 ───
+  const ViewToggle = () => (
+    <div style={{ display:"inline-flex", borderRadius:999, border:"1.5px solid var(--border)", padding:2, gap:2, flexShrink:0 }}>
+      <button onClick={() => setViewMode("grid")}
+        style={{ padding:"5px 12px", borderRadius:999, border:"none", cursor:"pointer", fontFamily:"inherit", fontSize:12, fontWeight:700,
+          background: viewMode==="grid" ? "var(--primary-light)" : "transparent", color: viewMode==="grid" ? "var(--primary)" : "var(--text-muted)" }}>
+        🖼️ 그리드
+      </button>
+      <button onClick={() => setViewMode("list")}
+        style={{ padding:"5px 12px", borderRadius:999, border:"none", cursor:"pointer", fontFamily:"inherit", fontSize:12, fontWeight:700,
+          background: viewMode==="list" ? "var(--primary-light)" : "transparent", color: viewMode==="list" ? "var(--primary)" : "var(--text-muted)" }}>
+        📋 목록
+      </button>
+    </div>
+  );
 
   // ─── 상세 보기 모달 ───
   const renderDetailModal = () => {
@@ -726,11 +802,14 @@ export default function MentorPage() {
                     <p style={{ fontSize:12,color:"var(--text-subtle)",margin:0 }}>멘토: {selectedMentor?.mentors.join(", ")}</p>
                   </div>
                 </div>
-                {!isFrozen && (
-                  <button onClick={()=>setROpen(o=>!o)} className="hy-btn hy-btn-primary" style={{ fontSize:13 }}>
-                    {rOpen ? "닫기" : "📸 필기 올리기"}
-                  </button>
-                )}
+                <div style={{ display:"flex", alignItems:"center", gap:8 }}>
+                  <ViewToggle />
+                  {!isFrozen && (
+                    <button onClick={()=>setROpen(o=>!o)} className="hy-btn hy-btn-primary" style={{ fontSize:13 }}>
+                      {rOpen ? "닫기" : "📸 필기 올리기"}
+                    </button>
+                  )}
+                </div>
               </div>
 
               {!isFrozen && rOpen && <div style={{ marginBottom:20 }}>{renderUploadForm(selectedSubject)}</div>}
@@ -741,9 +820,13 @@ export default function MentorPage() {
                     {isFrozen ? "공유된 자료가 없어요." : "아직 공유된 자료가 없어요. 첫 필기를 올려봐요! 📸"}
                   </p>
                 </div>
-              ) : (
+              ) : viewMode === "grid" ? (
                 <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
                   {selectedSubjectResources.map(r => renderResourceTile(r))}
+                </div>
+              ) : (
+                <div style={{ display:"flex", flexDirection:"column", gap:8 }}>
+                  {selectedSubjectResources.map(r => renderResourceRow(r))}
                 </div>
               )}
             </div>
@@ -766,11 +849,14 @@ export default function MentorPage() {
                   }}>{s}</button>
               ))}
             </div>
-            {!isFrozen && (
-              <button onClick={()=>setROpen(o=>!o)} className="hy-btn hy-btn-primary" style={{ fontSize:13 }}>
-                {rOpen ? "닫기" : "📸 필기/자료 올리기"}
-              </button>
-            )}
+            <div style={{ display:"flex", alignItems:"center", gap:8 }}>
+              <ViewToggle />
+              {!isFrozen && (
+                <button onClick={()=>setROpen(o=>!o)} className="hy-btn hy-btn-primary" style={{ fontSize:13 }}>
+                  {rOpen ? "닫기" : "📸 필기/자료 올리기"}
+                </button>
+              )}
+            </div>
           </div>
 
           {!isFrozen && rOpen && (
@@ -784,9 +870,13 @@ export default function MentorPage() {
             <div className="hy-card" style={{ padding:"40px",textAlign:"center" }}>
               <p style={{ fontSize:14,color:"var(--text-subtle)",fontWeight:600 }}>공유된 자료가 없어요 📂</p>
             </div>
-          ) : (
+          ) : viewMode === "grid" ? (
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
               {filteredRes.map(r => renderResourceTile(r, true))}
+            </div>
+          ) : (
+            <div style={{ display:"flex", flexDirection:"column", gap:8 }}>
+              {filteredRes.map(r => renderResourceRow(r, true))}
             </div>
           )}
         </div>
