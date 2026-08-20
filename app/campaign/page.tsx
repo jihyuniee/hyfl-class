@@ -18,6 +18,9 @@ type PledgeRow = {
   password: string | null;
 };
 
+// 2학기 회장단 선거가 마감됐다. 다시 선거를 진행하게 되면 true로 바꾸면 된다.
+const ELECTION_OPEN = false;
+
 const POSITION_ORDER = ["회장", "부회장A", "부회장B"];
 // 선거가 끝난 학기(과거 공약)는 당선 결과이므로 메달 아이콘 사용
 const POSITION_LABEL_ELECTED: Record<string, string> = {
@@ -40,14 +43,14 @@ export default function CampaignPage() {
       <div className="hy-hero">
         <div style={{ display: "inline-flex", alignItems: "center", background: "rgba(255,255,255,0.2)", backdropFilter: "blur(8px)", borderRadius: 999, padding: "4px 14px", marginBottom: 12, border: "1px solid rgba(255,255,255,0.3)" }}>
           <span style={{ fontSize: 12, color: "#fff", fontWeight: 700 }}>
-            {semester === CURRENT_SEMESTER ? "🗳️ 2학기 공약 등록" : "✅ 선거 완료"}
+            {semester === CURRENT_SEMESTER && ELECTION_OPEN ? "🗳️ 2학기 공약 등록" : "✅ 선거 완료"}
           </span>
         </div>
         <h1 style={{ color: "#fff", fontSize: "clamp(22px,4vw,32px)", fontWeight: 900, margin: "0 0 8px" }}>
           🌷 회장/부회장 공약
         </h1>
         <p style={{ color: "rgba(255,255,255,0.85)", fontSize: 13, margin: 0, fontWeight: 500, lineHeight: 1.7 }}>
-          {semester === CURRENT_SEMESTER
+          {semester === CURRENT_SEMESTER && ELECTION_OPEN
             ? "2학기 후보의 공약을 직접 등록하고 함께 확인해요."
             : "선거에서 약속한 공약들이에요. 잘 이행되고 있는지 함께 지켜봐요 🙂"}
         </p>
@@ -56,7 +59,7 @@ export default function CampaignPage() {
         </div>
       </div>
 
-      {semester === CURRENT_SEMESTER && <PledgeForm />}
+      {semester === CURRENT_SEMESTER && ELECTION_OPEN && <PledgeForm />}
 
       <PledgeList semester={semester} />
     </div>
@@ -316,12 +319,12 @@ function PledgeList({ semester }: { semester: SemesterId }) {
       ) : list.length === 0 ? (
         <div className="hy-card" style={{ padding: "40px", textAlign: "center" }}>
           <p style={{ fontSize: 15, color: "var(--text-subtle)", fontWeight: 600 }}>
-            {semester === CURRENT_SEMESTER ? "아직 등록된 2학기 공약이 없어요. 위에서 가장 먼저 등록해봐요!" : "등록된 공약이 없어요"}
+            {semester === CURRENT_SEMESTER && ELECTION_OPEN ? "아직 등록된 2학기 공약이 없어요. 위에서 가장 먼저 등록해봐요!" : "등록된 공약이 없어요"}
           </p>
         </div>
       ) : (
         POSITION_ORDER.filter(pos => byPosition[pos]?.length > 0).map(pos => {
-          const label = semester === CURRENT_SEMESTER
+          const label = semester === CURRENT_SEMESTER && ELECTION_OPEN
             ? POSITION_LABEL_CANDIDATE[pos] ?? pos
             : POSITION_LABEL_ELECTED[pos] ?? pos;
           return (
@@ -335,7 +338,7 @@ function PledgeList({ semester }: { semester: SemesterId }) {
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12, marginBottom: 14, flexWrap: "wrap" }}>
                     <div>
                       <span style={{ display: "inline-block", fontSize: 11, fontWeight: 800, color: "var(--primary)", background: "rgba(124,58,237,0.1)", borderRadius: 999, padding: "2px 10px", marginBottom: 6 }}>
-                        {(semester === CURRENT_SEMESTER ? POSITION_LABEL_CANDIDATE : POSITION_LABEL_ELECTED)[p.position] ?? p.position}
+                        {(semester === CURRENT_SEMESTER && ELECTION_OPEN ? POSITION_LABEL_CANDIDATE : POSITION_LABEL_ELECTED)[p.position] ?? p.position}
                       </span>
                       {editingId === p.id ? (
                         <input value={editTitle} onChange={e => setEditTitle(e.target.value)} className="hy-input" style={{ marginBottom: 6 }} />
