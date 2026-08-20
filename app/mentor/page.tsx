@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/components/lib/supabaseClient";
 import SemesterTabs from "@/components/SemesterTabs";
 import { CURRENT_SEMESTER, LEGACY_SEMESTER, type SemesterId } from "@/components/lib/semester";
@@ -28,18 +28,6 @@ const MENTORS_2ND = [
   { subject: "과학",   emoji: "🔬", mentors: ["이시원", "박우진"],  color: "linear-gradient(135deg,#10b981,#14b8a6)" },
 ];
 
-type MentorLog = {
-  id: string;
-  created_at: string;
-  subject: string;
-  mentor_name: string;
-  date: string;
-  activity: string;
-  content: string;
-  resource_link: string | null;
-  semester: string;
-};
-
 type Resource = {
   id: string;
   created_at: string;
@@ -49,7 +37,7 @@ type Resource = {
   link: string | null;
   file_url: string | null;
   file_name: string | null;
-  file_type: "예상문제" | "학습자료" | "쪽지시험";
+  file_type: string;
   uploader_name: string | null;
   delete_code: string | null;
   semester: string;
@@ -65,15 +53,8 @@ type Comment = {
 
 const ADMIN_PW = "hyfl2025";
 
-function toISODateKST() {
-  const k = new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Seoul" }));
-  return `${k.getFullYear()}-${String(k.getMonth()+1).padStart(2,"0")}-${String(k.getDate()).padStart(2,"0")}`;
-}
-
-function formatDate(dateStr: string) {
-  const d = new Date(new Date(dateStr).toLocaleString("en-US", { timeZone: "Asia/Seoul" }));
-  return `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,"0")}.${String(d.getDate()).padStart(2,"0")}`;
-}
+// 새로 올릴 때 고를 수 있는 분류. 사진/필기를 가장 앞에 두어 기본값으로 유도한다.
+const UPLOAD_TYPES = ["필기노트", "요약정리", "예상문제"] as const;
 
 function formatDateTime(dateStr: string) {
   const d = new Date(new Date(dateStr).toLocaleString("en-US", { timeZone: "Asia/Seoul" }));
@@ -97,7 +78,10 @@ function isImageFile(fileName: string | null) {
   return ["jpg","jpeg","png","gif","webp"].includes(ext ?? "");
 }
 
+// 옛 자료(1학기 "학습자료"/"쪽지시험" 등)도 그대로 표시되도록 새 분류와 함께 색을 지정한다.
 const FTYPE_STYLE: Record<string, { bg: string; color: string }> = {
+  "필기노트": { bg:"#eff6ff", color:"#3b82f6" },
+  "요약정리": { bg:"#f0fdf4", color:"#16a34a" },
   "예상문제": { bg:"#fff7ed", color:"#f97316" },
   "학습자료": { bg:"#eff6ff", color:"#3b82f6" },
   "쪽지시험": { bg:"#fdf4ff", color:"#a855f7" },
@@ -108,31 +92,22 @@ export default function MentorPage() {
   const MENTORS = semester === CURRENT_SEMESTER ? MENTORS_2ND : MENTORS_1ST;
   const isFrozen = semester === LEGACY_SEMESTER;
 
-  const [logs, setLogs]           = useState<MentorLog[]>([]);
   const [resources, setResources] = useState<Resource[]>([]);
   const [comments, setComments]   = useState<Comment[]>([]);
-  const [tab, setTab]             = useState<"mentors"|"logs"|"resources">("mentors");
+  const [tab, setTab]             = useState<"mentors"|"resources">("mentors");
   const [filterSubject, setFilterSubject] = useState("전체");
   const [selectedSubject, setSelectedSubject] = useState<string | null>(null);
-
-  // 활동 일지 작성
-  const [lSubject,  setLSubject]  = useState(MENTORS[0].subject);
-  const [lMentor,   setLMentor]   = useState("");
-  const [lDate,     setLDate]     = useState(toISODateKST());
-  const [lActivity, setLActivity] = useState("");
-  const [lContent,  setLContent]  = useState("");
-  const [lLink,     setLLink]     = useState("");
-  const [lOpen,     setLOpen]     = useState(false);
-  const [saving,    setSaving]    = useState(false);
 
   // 자료 공유
   const [rSubject,      setRSubject]      = useState(MENTORS[0].subject);
   const [rTitle,        setRTitle]        = useState("");
   const [rDesc,         setRDesc]         = useState("");
-  const [rType,         setRType]         = useState<Resource["file_type"]>("학습자료");
+  const [rType,         setRType]         = useState<string>(UPLOAD_TYPES[0]);
   const [rUploaderName, setRUploaderName] = useState("");
   const [rDeleteCode,   setRDeleteCode]   = useState("");
   const [rFile,         setRFile]         = useState<File | null>(null);
+  const [rPreviewUrl,   setRPreviewUrl]   = useState<string | null>(null);
+  const [rDragOver,     setRDragOver]     = useState(false);
   const [rOpen,         setROpen]         = useState(false);
   const [uploading,     setUploading]     = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
@@ -142,13 +117,15 @@ export default function MentorPage() {
   const [isAdmin, setIsAdmin] = useState(false);
 
   // 댓글
-  const [expandedComments, setExpandedComments] = useState<Set<string>>(new Set());
   const [commentInputs, setCommentInputs] = useState<Record<string, { author: string; content: string }>>({});
   const [savingComment, setSavingComment] = useState<string | null>(null);
 
   // 삭제 코드 입력
   const [deletingResource, setDeletingResource] = useState<string | null>(null);
   const [deleteCodeInput,  setDeleteCodeInput]  = useState("");
+
+  // 상세 보기(탭하면 열리는 모달) — 사진 갤러리처럼 그리드에서 눌러야 자세히 보임
+  const [detailId, setDetailId] = useState<string | null>(null);
 
   // 새글 추적 (localStorage 기반)
   const [lastVisit] = useState<Date | null>(() => {
@@ -161,12 +138,10 @@ export default function MentorPage() {
   const subjectSectionRef = useRef<HTMLDivElement>(null);
 
   async function load() {
-    const [{ data: ld }, { data: rd }, { data: cd }] = await Promise.all([
-      supabase.from("mentor_logs").select("*").order("date", { ascending: false }),
+    const [{ data: rd }, { data: cd }] = await Promise.all([
       supabase.from("mentor_resources").select("*").order("created_at", { ascending: false }),
       supabase.from("resource_comments").select("*").order("created_at", { ascending: true }),
     ]);
-    setLogs((ld as MentorLog[]) ?? []);
     setResources((rd as Resource[]) ?? []);
     setComments((cd as Comment[]) ?? []);
   }
@@ -176,14 +151,19 @@ export default function MentorPage() {
   useEffect(() => {
     setFilterSubject("전체");
     setSelectedSubject(null);
-    setLSubject(MENTORS[0].subject);
     setRSubject(MENTORS[0].subject);
-    setLOpen(false);
     setROpen(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [semester]);
 
-  const scopedLogs = logs.filter(l => l.semester === semester);
+  // 선택한 파일의 미리보기 URL 생성/정리
+  useEffect(() => {
+    if (!rFile || !isImageFile(rFile.name)) { setRPreviewUrl(null); return; }
+    const url = URL.createObjectURL(rFile);
+    setRPreviewUrl(url);
+    return () => URL.revokeObjectURL(url);
+  }, [rFile]);
+
   const scopedResources = resources.filter(r => r.semester === semester);
 
   function handleMentorCardClick(subject: string) {
@@ -199,26 +179,16 @@ export default function MentorPage() {
     return new Date(dateStr) > lastVisit;
   }
 
-  async function addLog() {
-    if (!lMentor.trim() || !lContent.trim() || !lActivity.trim()) {
-      alert("이름, 활동유형, 내용을 입력하세요");
-      return;
+  function pickFile(f: File | null) {
+    setRFile(f);
+    if (!rTitle.trim() && f) {
+      setRTitle(f.name.replace(/\.[^./]+$/, ""));
     }
-    setSaving(true);
-    await supabase.from("mentor_logs").insert({
-      subject: lSubject, mentor_name: lMentor.trim(), date: lDate,
-      activity: lActivity.trim(), content: lContent.trim(), resource_link: lLink.trim() || null,
-      semester,
-    });
-    setSaving(false);
-    setLContent(""); setLActivity(""); setLLink(""); setLMentor(""); setLOpen(false);
-    await load();
   }
 
   async function addResource(subjectOverride?: string) {
-    if (!rTitle.trim()) { alert("자료 제목을 입력하세요"); return; }
-    if (!rUploaderName.trim()) { alert("올리는 사람 이름을 입력하세요"); return; }
-    if (!rFile) { alert("파일을 선택해주세요"); return; }
+    if (!rUploaderName.trim()) { alert("올리는 사람 이름을 입력해주세요"); return; }
+    if (!rFile) { alert("사진이나 파일을 선택해주세요"); return; }
     setUploading(true);
 
     try {
@@ -235,7 +205,7 @@ export default function MentorPage() {
 
       const { error: insertErr } = await supabase.from("mentor_resources").insert({
         subject: subjectOverride ?? rSubject,
-        title: rTitle.trim(),
+        title: rTitle.trim() || rFile.name.replace(/\.[^./]+$/, ""),
         description: rDesc.trim() || null,
         link: null,
         file_url: urlData.publicUrl,
@@ -253,7 +223,7 @@ export default function MentorPage() {
         return;
       }
 
-      setRTitle(""); setRDesc(""); setRFile(null); setRUploaderName(""); setRDeleteCode("");
+      setRTitle(""); setRDesc(""); pickFile(null); setRDeleteCode("");
       if (fileRef.current) fileRef.current.value = "";
       setROpen(false);
       await load();
@@ -265,7 +235,7 @@ export default function MentorPage() {
     }
   }
 
-  async function deleteResource(id: string, fileUrl: string | null) {
+  async function deleteResource(id: string) {
     if (!confirm("자료를 삭제할까요?")) return;
     const res = await fetch("/api/mentor-resources/delete", {
       method: "POST",
@@ -277,6 +247,7 @@ export default function MentorPage() {
       alert("삭제에 실패했습니다: " + error);
       return;
     }
+    setDetailId(null);
     await load();
   }
 
@@ -296,6 +267,7 @@ export default function MentorPage() {
       alert(res.status === 403 ? "삭제 코드가 맞지 않아요 🔒" : "삭제에 실패했습니다: " + error);
       return;
     }
+    setDetailId(null);
     await load();
   }
 
@@ -325,17 +297,7 @@ export default function MentorPage() {
     await load();
   }
 
-  function toggleComments(id: string) {
-    setExpandedComments(prev => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
-  }
-
-  const filteredLogs = scopedLogs.filter(l => filterSubject === "전체" || l.subject === filterSubject);
-  const filteredRes  = scopedResources.filter(r => filterSubject === "전체" || r.subject === filterSubject);
+  const filteredRes = scopedResources.filter(r => filterSubject === "전체" || r.subject === filterSubject);
 
   const selectedSubjectResources = selectedSubject
     ? scopedResources.filter(r => r.subject === selectedSubject).sort((a, b) => b.created_at.localeCompare(a.created_at))
@@ -344,71 +306,139 @@ export default function MentorPage() {
 
   // 새글 카운트 (탭 뱃지용)
   const newResCount = scopedResources.filter(r => isNew(r.created_at)).length;
-  const newLogCount = scopedLogs.filter(l => isNew(l.created_at)).length;
 
-  // ─── 자료 카드 렌더 ───
-  const renderResourceCard = (r: Resource, showSubject = false) => {
+  const detailResource = resources.find(r => r.id === detailId) ?? null;
+
+  // ─── 갤러리 타일(그리드 안의 카드) ───
+  const renderResourceTile = (r: Resource, showSubject = false) => {
     const m = MENTORS.find(x => x.subject === r.subject);
-    const ts = FTYPE_STYLE[r.file_type];
+    const ts = FTYPE_STYLE[r.file_type] ?? { bg:"#f3f4f6", color:"var(--text-muted)" };
+    const openUrl = r.file_url || r.link || null;
+    const isImg = isImageFile(r.file_name);
+    const newItem = isNew(r.created_at);
+
+    return (
+      <button
+        key={r.id}
+        onClick={() => setDetailId(r.id)}
+        style={{
+          position:"relative", display:"block", width:"100%", padding:0, cursor:"pointer",
+          border: newItem ? "2px solid #6366f1" : "1.5px solid var(--border)",
+          borderRadius:16, overflow:"hidden", background:"#fff", textAlign:"left", fontFamily:"inherit",
+          boxShadow: newItem ? "0 4px 18px rgba(99,102,241,0.18)" : "0 2px 10px rgba(0,0,0,0.06)",
+        }}
+      >
+        <div style={{ position:"relative", aspectRatio:"1 / 1", width:"100%", background:ts.bg, overflow:"hidden" }}>
+          {isImg && openUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={openUrl} alt={r.title} style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>
+          ) : (
+            <div style={{ width:"100%", height:"100%", display:"flex", alignItems:"center", justifyContent:"center", fontSize:40 }}>
+              {getFileIcon(r.file_name)}
+            </div>
+          )}
+          {newItem && (
+            <span style={{ position:"absolute", top:8, left:8, fontSize:9, fontWeight:800, padding:"2px 7px", borderRadius:999, background:"#6366f1", color:"#fff", letterSpacing:"0.5px" }}>NEW</span>
+          )}
+          <span style={{ position:"absolute", top:8, right:8, fontSize:10, fontWeight:700, padding:"2px 8px", borderRadius:999, background:"rgba(255,255,255,0.92)", color:ts.color }}>
+            {r.file_type}
+          </span>
+        </div>
+        <div style={{ padding:"10px 12px" }}>
+          <p style={{ fontSize:13, fontWeight:800, color:"var(--text)", margin:"0 0 4px", overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>
+            {r.title}
+          </p>
+          <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", gap:6 }}>
+            {showSubject && m ? (
+              <span style={{ fontSize:10, fontWeight:700, color:"var(--text-muted)" }}>{m.emoji} {r.subject}</span>
+            ) : (
+              <span style={{ fontSize:10, fontWeight:700, color:"#16a34a" }}>👤 {r.uploader_name ?? "익명"}</span>
+            )}
+            <span style={{ fontSize:9, color:"var(--text-subtle)", flexShrink:0 }}>{formatDateTime(r.created_at)}</span>
+          </div>
+        </div>
+      </button>
+    );
+  };
+
+  // ─── 상세 보기 모달 ───
+  const renderDetailModal = () => {
+    if (!detailResource) return null;
+    const r = detailResource;
+    const m = MENTORS.find(x => x.subject === r.subject);
+    const ts = FTYPE_STYLE[r.file_type] ?? { bg:"#f3f4f6", color:"var(--text-muted)" };
     const openUrl = r.file_url || r.link || null;
     const isImg = isImageFile(r.file_name);
     const resComments = comments.filter(c => c.resource_id === r.id);
-    const isExpanded = expandedComments.has(r.id);
     const cInput = commentInputs[r.id] ?? { author: "", content: "" };
-    const newItem = isNew(r.created_at);
     const isBeingDeleted = deletingResource === r.id;
 
     return (
-      <div key={r.id} style={{ borderRadius:16, overflow:"hidden", border: newItem ? "2px solid #6366f1" : "1.5px solid var(--border)", background:"#fff", boxShadow: newItem ? "0 2px 16px rgba(99,102,241,0.15)" : "0 2px 10px rgba(0,0,0,0.06)" }}>
-        {/* 헤더 */}
-        <div style={{ padding:"14px 18px", display:"flex", alignItems:"flex-start", gap:12, background: newItem ? "#f5f3ff" : "#fafafa", borderBottom:"1px solid var(--border)" }}>
-          <div style={{ width:44, height:44, borderRadius:12, background:ts.bg, display:"flex", alignItems:"center", justifyContent:"center", fontSize:22, flexShrink:0 }}>
-            {getFileIcon(r.file_name)}
-          </div>
-          <div style={{ flex:1, minWidth:0 }}>
-            <div style={{ display:"flex", alignItems:"center", gap:6, marginBottom:5, flexWrap:"wrap" }}>
-              {newItem && (
-                <span style={{ fontSize:10, fontWeight:800, padding:"2px 7px", borderRadius:999, background:"#6366f1", color:"#fff", letterSpacing:"0.5px" }}>NEW</span>
-              )}
+      <div
+        onClick={() => setDetailId(null)}
+        style={{ position:"fixed", inset:0, zIndex:100, background:"rgba(15,15,20,0.72)", display:"flex", alignItems:"flex-start", justifyContent:"center", padding:"24px 14px", overflowY:"auto" }}
+      >
+        <div
+          onClick={e => e.stopPropagation()}
+          style={{ width:"100%", maxWidth:520, background:"#fff", borderRadius:20, overflow:"hidden", boxShadow:"0 20px 60px rgba(0,0,0,0.4)" }}
+        >
+          <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", padding:"12px 16px", borderBottom:"1px solid var(--border)" }}>
+            <div style={{ display:"flex", alignItems:"center", gap:8, flexWrap:"wrap" }}>
               <span style={{ fontSize:11, fontWeight:700, padding:"2px 8px", borderRadius:999, background:ts.bg, color:ts.color }}>{r.file_type}</span>
-              {showSubject && m && (
-                <span style={{ fontSize:11, fontWeight:700, padding:"2px 8px", borderRadius:999, background:"#f3f4f6", color:"var(--text-muted)" }}>{m.emoji} {r.subject}</span>
-              )}
-              <span style={{ fontSize:11, color:"var(--text-subtle)" }}>{formatDateTime(r.created_at)}</span>
+              {m && <span style={{ fontSize:11, fontWeight:700, padding:"2px 8px", borderRadius:999, background:"#f3f4f6", color:"var(--text-muted)" }}>{m.emoji} {r.subject}</span>}
             </div>
-            <h4 style={{ fontSize:15, fontWeight:800, color:"var(--text)", margin:"0 0 5px", overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>{r.title}</h4>
-            {/* 올린 사람 */}
-            <div style={{ display:"flex", alignItems:"center", gap:6 }}>
+            <button onClick={() => setDetailId(null)}
+              style={{ fontSize:16, background:"none", border:"none", cursor:"pointer", color:"var(--text-muted)", padding:4, lineHeight:1 }}>
+              ✕
+            </button>
+          </div>
+
+          {isImg && openUrl && (
+            <a href={openUrl} target="_blank" rel="noopener noreferrer">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={openUrl} alt={r.title} style={{ width:"100%", maxHeight:420, objectFit:"contain", background:"#f8f9fa", display:"block", cursor:"zoom-in" }}/>
+            </a>
+          )}
+
+          <div style={{ padding:"16px 18px" }}>
+            <h4 style={{ fontSize:16, fontWeight:900, color:"var(--text)", margin:"0 0 8px" }}>{r.title}</h4>
+            <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:10, flexWrap:"wrap" }}>
               <div style={{ display:"inline-flex", alignItems:"center", gap:4, background:"#f0fdf4", border:"1px solid #bbf7d0", borderRadius:999, padding:"2px 10px" }}>
                 <span style={{ fontSize:11 }}>👤</span>
                 <span style={{ fontSize:12, fontWeight:700, color:"#16a34a" }}>{r.uploader_name ?? "익명"}</span>
               </div>
-              {r.delete_code && (
-                <span style={{ fontSize:10, color:"var(--text-subtle)", fontWeight:600 }}>🔒 삭제 코드 있음</span>
-              )}
+              <span style={{ fontSize:11, color:"var(--text-subtle)" }}>{formatDateTime(r.created_at)}</span>
             </div>
-          </div>
 
-          {/* 삭제 버튼 영역 */}
-          <div style={{ flexShrink:0, display:"flex", flexDirection:"column", alignItems:"flex-end", gap:4 }}>
-            {isAdmin ? (
-              <button onClick={() => deleteResource(r.id, r.file_url)}
-                style={{ fontSize:11, padding:"4px 10px", borderRadius:999, border:"1px solid #fecaca", background:"#fff5f5", color:"#ef4444", cursor:"pointer", fontFamily:"inherit", fontWeight:700 }}>
-                삭제
-              </button>
-            ) : r.delete_code ? (
-              isBeingDeleted ? (
-                <div style={{ display:"flex", flexDirection:"column", gap:4, alignItems:"flex-end" }}>
-                  <input
-                    placeholder="삭제 코드 입력"
-                    value={deleteCodeInput}
-                    onChange={e => setDeleteCodeInput(e.target.value)}
-                    onKeyDown={e => { if (e.key === "Enter") handleCodeDelete(r); }}
-                    className="hy-input"
-                    style={{ fontSize:12, width:110, padding:"4px 10px", textAlign:"center" }}
-                    autoFocus
-                  />
-                  <div style={{ display:"flex", gap:4 }}>
+            {r.description && (
+              <p style={{ fontSize:13, color:"var(--text)", lineHeight:1.7, margin:"0 0 12px", whiteSpace:"pre-wrap" }}>{r.description}</p>
+            )}
+
+            {openUrl && !isImg && (
+              <a href={openUrl} target="_blank" rel="noopener noreferrer"
+                style={{ display:"inline-flex", alignItems:"center", gap:6, fontSize:13, fontWeight:700, color:"#6366f1", textDecoration:"none", padding:"8px 18px", borderRadius:999, background:"#eff6ff", border:"1.5px solid #c7d2fe", marginBottom:12 }}>
+                {getFileIcon(r.file_name)} {r.file_name ?? "파일 열기"} 보기 →
+              </a>
+            )}
+
+            <div style={{ display:"flex", justifyContent:"flex-end", marginBottom:12 }}>
+              {isAdmin ? (
+                <button onClick={() => deleteResource(r.id)}
+                  style={{ fontSize:11, padding:"4px 10px", borderRadius:999, border:"1px solid #fecaca", background:"#fff5f5", color:"#ef4444", cursor:"pointer", fontFamily:"inherit", fontWeight:700 }}>
+                  삭제
+                </button>
+              ) : r.delete_code ? (
+                isBeingDeleted ? (
+                  <div style={{ display:"flex", gap:6, alignItems:"center" }}>
+                    <input
+                      placeholder="삭제 코드 입력"
+                      value={deleteCodeInput}
+                      onChange={e => setDeleteCodeInput(e.target.value)}
+                      onKeyDown={e => { if (e.key === "Enter") handleCodeDelete(r); }}
+                      className="hy-input"
+                      style={{ fontSize:12, width:110, padding:"4px 10px", textAlign:"center" }}
+                      autoFocus
+                    />
                     <button onClick={() => handleCodeDelete(r)}
                       style={{ fontSize:11, padding:"3px 8px", borderRadius:999, border:"1px solid #fecaca", background:"#fff5f5", color:"#ef4444", cursor:"pointer", fontFamily:"inherit", fontWeight:700 }}>
                       확인
@@ -418,64 +448,27 @@ export default function MentorPage() {
                       취소
                     </button>
                   </div>
-                </div>
-              ) : (
-                <button onClick={() => setDeletingResource(r.id)}
-                  style={{ fontSize:11, padding:"4px 10px", borderRadius:999, border:"1px solid #fecaca", background:"#fff5f5", color:"#ef4444", cursor:"pointer", fontFamily:"inherit", fontWeight:700 }}>
-                  삭제
-                </button>
-              )
-            ) : null}
-          </div>
-        </div>
+                ) : (
+                  <button onClick={() => setDeletingResource(r.id)}
+                    style={{ fontSize:11, padding:"4px 10px", borderRadius:999, border:"1px solid #fecaca", background:"#fff5f5", color:"#ef4444", cursor:"pointer", fontFamily:"inherit", fontWeight:700 }}>
+                    삭제
+                  </button>
+                )
+              ) : null}
+            </div>
 
-        {/* 이미지 미리보기 */}
-        {isImg && openUrl && (
-          <div style={{ padding:"12px 18px 0", background:"#fff" }}>
-            <a href={openUrl} target="_blank" rel="noopener noreferrer">
-              <img src={openUrl} alt={r.title}
-                style={{ width:"100%", maxHeight:300, objectFit:"contain", borderRadius:12, border:"1px solid var(--border)", background:"#f8f9fa", display:"block", cursor:"zoom-in" }}/>
-            </a>
-          </div>
-        )}
-
-        {/* 설명 + 파일 열기 */}
-        <div style={{ padding:"14px 18px", background:"#fff" }}>
-          {r.description && (
-            <p style={{ fontSize:13, color:"var(--text)", lineHeight:1.7, margin:"0 0 12px", whiteSpace:"pre-wrap" }}>{r.description}</p>
-          )}
-          {openUrl && !isImg && (
-            <a href={openUrl} target="_blank" rel="noopener noreferrer"
-              style={{ display:"inline-flex", alignItems:"center", gap:6, fontSize:13, fontWeight:700, color:"#6366f1", textDecoration:"none", padding:"8px 18px", borderRadius:999, background:"#eff6ff", border:"1.5px solid #c7d2fe" }}>
-              {getFileIcon(r.file_name)} {r.file_name ?? "파일 열기"} 보기 →
-            </a>
-          )}
-          {openUrl && isImg && (
-            <a href={openUrl} target="_blank" rel="noopener noreferrer"
-              style={{ fontSize:12, fontWeight:600, color:"#6366f1", textDecoration:"none" }}>
-              🔍 원본 크기로 보기 →
-            </a>
-          )}
-        </div>
-
-        {/* 댓글 섹션 */}
-        <div style={{ borderTop:"1px solid var(--border)" }}>
-          <button onClick={() => toggleComments(r.id)}
-            style={{ width:"100%", padding:"10px 18px", background:"#f9fafb", border:"none", borderBottom: isExpanded ? "1px solid var(--border)" : "none", cursor:"pointer", fontFamily:"inherit", display:"flex", alignItems:"center", gap:6, fontSize:12, fontWeight:700, color:"var(--text-muted)" }}>
-            💬 댓글 {resComments.length}개 {isExpanded ? "▲" : "▼"}
-          </button>
-          {isExpanded && (
-            <div style={{ padding:"14px 18px", background:"#f9fafb", display:"flex", flexDirection:"column", gap:10 }}>
+            <div style={{ borderTop:"1px solid var(--border)", paddingTop:14 }}>
+              <p style={{ fontSize:12, fontWeight:700, color:"var(--text-muted)", margin:"0 0 10px" }}>💬 댓글 {resComments.length}개</p>
               {resComments.length === 0 ? (
-                <p style={{ fontSize:12, color:"var(--text-subtle)", margin:0, textAlign:"center", fontWeight:600 }}>첫 번째 댓글을 남겨봐요!</p>
+                <p style={{ fontSize:12, color:"var(--text-subtle)", margin:"0 0 12px", textAlign:"center", fontWeight:600 }}>첫 번째 댓글을 남겨봐요!</p>
               ) : (
-                <div style={{ display:"flex", flexDirection:"column", gap:8 }}>
+                <div style={{ display:"flex", flexDirection:"column", gap:8, marginBottom:12 }}>
                   {resComments.map(c => (
                     <div key={c.id} style={{ display:"flex", gap:8, alignItems:"flex-start" }}>
-                      <div style={{ width:30, height:30, borderRadius:999, background:"var(--primary-light)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:12, fontWeight:800, color:"var(--primary)", flexShrink:0 }}>
+                      <div style={{ width:28, height:28, borderRadius:999, background:"var(--primary-light)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:11, fontWeight:800, color:"var(--primary)", flexShrink:0 }}>
                         {c.author_name.charAt(0)}
                       </div>
-                      <div style={{ flex:1, background:"#fff", borderRadius:12, padding:"8px 12px", border:"1px solid var(--border)" }}>
+                      <div style={{ flex:1, background:"#f9fafb", borderRadius:12, padding:"8px 12px", border:"1px solid var(--border)" }}>
                         <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:4 }}>
                           <span style={{ fontSize:12, fontWeight:800, color:"var(--text)" }}>{c.author_name}</span>
                           <div style={{ display:"flex", gap:6, alignItems:"center" }}>
@@ -509,7 +502,7 @@ export default function MentorPage() {
                 </div>
               )}
             </div>
-          )}
+          </div>
         </div>
       </div>
     );
@@ -519,63 +512,70 @@ export default function MentorPage() {
   const renderUploadForm = (subjectFixed?: string) => (
     <div style={{ padding:"18px 20px", background:"#f8faff", borderRadius:16, border:"1.5px solid #e0e7ff" }}>
       <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
-        <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(155px,1fr))", gap:10 }}>
-          {!subjectFixed && (
-            <select value={rSubject} onChange={e => setRSubject(e.target.value)} className="hy-input" style={{ cursor:"pointer" }}>
-              {MENTORS.map(m => <option key={m.subject} value={m.subject}>{m.subject}</option>)}
-            </select>
-          )}
-          <select value={rType} onChange={e => setRType(e.target.value as Resource["file_type"])} className="hy-input" style={{ cursor:"pointer" }}>
-            <option value="학습자료">학습자료</option>
-            <option value="예상문제">예상문제</option>
-            <option value="쪽지시험">쪽지시험</option>
-          </select>
-          <input placeholder="올리는 사람 이름 *" value={rUploaderName} onChange={e => setRUploaderName(e.target.value)} className="hy-input"/>
-        </div>
-        <input placeholder="자료 제목 *" value={rTitle} onChange={e => setRTitle(e.target.value)} className="hy-input"/>
-        <input placeholder="설명 (선택)" value={rDesc} onChange={e => setRDesc(e.target.value)} className="hy-input"/>
-
-        {/* 삭제 코드 */}
-        <div style={{ display:"flex", alignItems:"center", gap:8, padding:"10px 14px", background:"#fffbeb", borderRadius:10, border:"1px solid #fde68a" }}>
-          <span style={{ fontSize:14 }}>🔑</span>
-          <div style={{ flex:1 }}>
-            <p style={{ fontSize:11, color:"#92400e", fontWeight:700, margin:"0 0 4px" }}>삭제 코드 (선택)</p>
-            <input
-              placeholder="나중에 삭제할 때 필요한 코드 (예: 1234)"
-              value={rDeleteCode}
-              onChange={e => setRDeleteCode(e.target.value)}
-              className="hy-input"
-              style={{ fontSize:12 }}
-            />
-            <p style={{ fontSize:10, color:"#92400e", margin:"4px 0 0", fontWeight:600 }}>코드 없이 올리면 관리자만 삭제할 수 있어요</p>
-          </div>
-        </div>
-
-        <div style={{ border:"2px dashed #c7d2fe", borderRadius:12, padding:"16px", background:"#fff", textAlign:"center", cursor:"pointer" }}
-          onClick={() => fileRef.current?.click()}>
+        <div
+          onClick={() => fileRef.current?.click()}
+          onDragOver={e => { e.preventDefault(); setRDragOver(true); }}
+          onDragLeave={() => setRDragOver(false)}
+          onDrop={e => { e.preventDefault(); setRDragOver(false); const f = e.dataTransfer.files?.[0]; if (f) pickFile(f); }}
+          style={{
+            border: rDragOver ? "2px dashed #6366f1" : "2px dashed #c7d2fe",
+            borderRadius:14, padding: rPreviewUrl ? 8 : 22, background: rDragOver ? "#eef2ff" : "#fff",
+            textAlign:"center", cursor:"pointer", transition:"all 0.12s",
+          }}>
           {rFile ? (
-            <div style={{ display:"flex", alignItems:"center", justifyContent:"center", gap:8 }}>
-              <span style={{ fontSize:20 }}>{getFileIcon(rFile.name)}</span>
-              <span style={{ fontSize:13, fontWeight:700, color:"var(--primary)" }}>{rFile.name}</span>
-              <button onClick={e => { e.stopPropagation(); setRFile(null); if (fileRef.current) fileRef.current.value = ""; }}
-                style={{ fontSize:11, color:"#ef4444", background:"none", border:"none", cursor:"pointer", fontFamily:"inherit", fontWeight:700 }}>✕</button>
-            </div>
+            rPreviewUrl ? (
+              <div style={{ position:"relative" }}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={rPreviewUrl} alt="미리보기" style={{ width:"100%", maxHeight:220, objectFit:"contain", borderRadius:10, display:"block" }}/>
+                <button onClick={e => { e.stopPropagation(); pickFile(null); if (fileRef.current) fileRef.current.value = ""; }}
+                  style={{ position:"absolute", top:6, right:6, width:26, height:26, borderRadius:999, border:"none", background:"rgba(0,0,0,0.55)", color:"#fff", cursor:"pointer", fontSize:13, fontWeight:700 }}>✕</button>
+              </div>
+            ) : (
+              <div style={{ display:"flex", alignItems:"center", justifyContent:"center", gap:8 }}>
+                <span style={{ fontSize:20 }}>{getFileIcon(rFile.name)}</span>
+                <span style={{ fontSize:13, fontWeight:700, color:"var(--primary)" }}>{rFile.name}</span>
+                <button onClick={e => { e.stopPropagation(); pickFile(null); if (fileRef.current) fileRef.current.value = ""; }}
+                  style={{ fontSize:11, color:"#ef4444", background:"none", border:"none", cursor:"pointer", fontFamily:"inherit", fontWeight:700 }}>✕</button>
+              </div>
+            )
           ) : (
             <>
-              <p style={{ fontSize:13, color:"var(--text-subtle)", margin:"0 0 4px", fontWeight:600 }}>📁 파일을 클릭해서 선택하세요</p>
-              <p style={{ fontSize:11, color:"var(--text-subtle)", margin:0 }}>PDF · HWP · JPG · PNG · PPT · DOC 등 (최대 50MB)</p>
+              <p style={{ fontSize:26, margin:"0 0 4px" }}>📸</p>
+              <p style={{ fontSize:13, color:"var(--text)", margin:"0 0 4px", fontWeight:700 }}>필기 사진을 올리거나 여기로 끌어다 놓으세요</p>
+              <p style={{ fontSize:11, color:"var(--text-subtle)", margin:0 }}>JPG · PNG · PDF · HWP · PPT · DOC 등 (최대 50MB)</p>
             </>
           )}
         </div>
         <input ref={fileRef} type="file"
           accept=".pdf,.hwp,.hwpx,.jpg,.jpeg,.png,.gif,.webp,.ppt,.pptx,.doc,.docx,.xls,.xlsx,.zip"
           style={{ display:"none" }}
-          onChange={e => setRFile(e.target.files?.[0] ?? null)}/>
+          onChange={e => pickFile(e.target.files?.[0] ?? null)}/>
+
+        <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(140px,1fr))", gap:10 }}>
+          {!subjectFixed && (
+            <select value={rSubject} onChange={e => setRSubject(e.target.value)} className="hy-input" style={{ cursor:"pointer" }}>
+              {MENTORS.map(m => <option key={m.subject} value={m.subject}>{m.subject}</option>)}
+            </select>
+          )}
+          <select value={rType} onChange={e => setRType(e.target.value)} className="hy-input" style={{ cursor:"pointer" }}>
+            {UPLOAD_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
+          </select>
+          <input placeholder="올리는 사람 이름 *" value={rUploaderName} onChange={e => setRUploaderName(e.target.value)} className="hy-input"/>
+        </div>
+        <input placeholder="제목 (선택, 비우면 파일명 사용)" value={rTitle} onChange={e => setRTitle(e.target.value)} className="hy-input"/>
+        <input placeholder="한 줄 메모 (선택, 예: 3단원 개념 정리했어요!)" value={rDesc} onChange={e => setRDesc(e.target.value)} className="hy-input"/>
+        <input
+          placeholder="🔑 삭제 코드 (선택, 나중에 직접 지울 때 필요해요)"
+          value={rDeleteCode}
+          onChange={e => setRDeleteCode(e.target.value)}
+          className="hy-input"
+          style={{ fontSize:12 }}
+        />
 
         <div style={{ display:"flex", gap:8, alignItems:"center" }}>
           <button onClick={() => addResource(subjectFixed)} disabled={uploading}
             className="hy-btn hy-btn-primary" style={{ fontSize:13 }}>
-            {uploading ? "업로드 중..." : "공유하기"}
+            {uploading ? "올리는 중..." : "📤 공유하기"}
           </button>
           {uploading && <span style={{ fontSize:12, color:"var(--text-subtle)" }}>업로드 중입니다...</span>}
         </div>
@@ -601,11 +601,11 @@ export default function MentorPage() {
           <div style={{ display:"inline-flex",alignItems:"center",background:"rgba(255,255,255,0.2)",backdropFilter:"blur(8px)",borderRadius:999,padding:"4px 14px",marginBottom:12,border:"1px solid rgba(255,255,255,0.3)" }}>
             <span style={{ fontSize:12,color:"#fff",fontWeight:700 }}>🤝 학급자율활동</span>
           </div>
-          <h1 style={{ color:"#fff",fontSize:"clamp(20px,4vw,30px)",fontWeight:900,margin:"0 0 8px",letterSpacing:"-0.5px" }}>교과 멘토·멘티 협력학습</h1>
+          <h1 style={{ color:"#fff",fontSize:"clamp(20px,4vw,30px)",fontWeight:900,margin:"0 0 8px",letterSpacing:"-0.5px" }}>교과 멘토·멘티 필기 공유</h1>
           <p style={{ color:"rgba(255,255,255,0.85)",fontSize:13,margin:"0 0 14px",lineHeight:1.7,fontWeight:500 }}>
             {isFrozen
               ? "1학기 최종 기록이에요. 자료는 그대로 보존됩니다."
-              : <>멘토가 질문에 답변하고 예상 문제와 자료를 공유해요.<br/>시험 기간 전 적극적으로 활용해봐요!</>}
+              : <>필기 사진, 요약 자료, 예상 문제를 사진 한 장으로 편하게 공유해요.<br/>시험 기간 전 적극적으로 활용해봐요!</>}
           </p>
           <div style={{ background:"rgba(255,255,255,0.15)", borderRadius:14, padding:6, display:"inline-flex" }}>
             <SemesterTabs value={semester} onChange={setSemester} />
@@ -617,8 +617,7 @@ export default function MentorPage() {
       <div style={{ display:"flex", gap:8, flexWrap:"wrap" }}>
         {([
           ["mentors", "멘토 명단 👥", 0],
-          ["logs",    "활동 일지 📋", newLogCount],
-          ["resources","자료 공유 📂", newResCount],
+          ["resources","필기·자료 공유 📸", newResCount],
         ] as const).map(([t, label, count]) => (
           <button key={t} onClick={() => { setTab(t); setSelectedSubject(null); }}
             className={t===tab ? "hy-btn hy-btn-primary" : "hy-btn"}
@@ -653,10 +652,10 @@ export default function MentorPage() {
           <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(260px,1fr))", gap:14 }}>
             {MENTORS.map(m=>{
               const isSelected = selectedSubject === m.subject;
-              const resCount = scopedResources.filter(r=>r.subject===m.subject).length;
-              const logCount = scopedLogs.filter(l=>l.subject===m.subject).length;
-              const recentRes = scopedResources.filter(r=>r.subject===m.subject).slice(0,2);
-              const hasNew = scopedResources.some(r=>r.subject===m.subject && isNew(r.created_at));
+              const subjectRes = scopedResources.filter(r=>r.subject===m.subject);
+              const resCount = subjectRes.length;
+              const recentRes = subjectRes.slice(0,3);
+              const hasNew = subjectRes.some(r => isNew(r.created_at));
               return (
                 <div key={m.subject}
                   onClick={()=>handleMentorCardClick(m.subject)}
@@ -672,51 +671,42 @@ export default function MentorPage() {
                         {m.subject}
                         {hasNew && <span style={{ marginLeft:6, fontSize:10, fontWeight:800, background:"#ef4444", color:"#fff", padding:"1px 6px", borderRadius:999, verticalAlign:"middle" }}>NEW</span>}
                       </h3>
-                      <p style={{ color:"rgba(255,255,255,0.8)", fontSize:12, margin:0, fontWeight:600 }}>멘토 {m.mentors.length}명</p>
+                      <p style={{ color:"rgba(255,255,255,0.8)", fontSize:12, margin:0, fontWeight:600 }}>멘토 {m.mentors.length}명 · 공유 자료 {resCount}개</p>
                     </div>
                     <span style={{ fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.9)",background:"rgba(255,255,255,0.2)",padding:"3px 10px",borderRadius:999 }}>
                       {isSelected ? "선택됨 ✓" : "자료 보기 →"}
                     </span>
                   </div>
                   <div style={{ background:"#fff", padding:"14px 18px" }}>
-                    <div style={{ display:"flex", gap:8, flexWrap:"wrap", marginBottom:10 }}>
+                    <div style={{ display:"flex", gap:8, flexWrap:"wrap", marginBottom: recentRes.length > 0 ? 12 : 0 }}>
                       {m.mentors.map(name=>(
                         <span key={name} style={{ padding:"6px 14px", borderRadius:999, background:"#fdf2f8", color:"var(--primary)", fontWeight:800, fontSize:13, border:"1.5px solid #f9d0ea" }}>
                           {name}
                         </span>
                       ))}
                     </div>
-                    <div style={{ padding:"8px 12px", borderRadius:10, background:"#fafafa", border:"1px solid var(--border)", marginBottom: recentRes.length > 0 ? 10 : 0 }}>
-                      <p style={{ fontSize:11, color:"var(--text-subtle)", margin:0, fontWeight:600 }}>
-                        활동 일지: {logCount}건 · 공유 자료: {resCount}개
-                      </p>
-                    </div>
-                    {recentRes.map(r => {
-                      const ts = FTYPE_STYLE[r.file_type];
-                      const openUrl = r.file_url || r.link || null;
-                      return (
-                        <div key={r.id}
-                          style={{ display:"flex", alignItems:"center", gap:8, padding:"7px 0", borderTop:"1px solid var(--border)" }}
-                          onClick={e => e.stopPropagation()}>
-                          {isNew(r.created_at) && <span style={{ fontSize:9, fontWeight:800, padding:"1px 5px", borderRadius:999, background:"#6366f1", color:"#fff", flexShrink:0 }}>N</span>}
-                          <span style={{ fontSize:14, flexShrink:0 }}>{getFileIcon(r.file_name)}</span>
-                          <span style={{ fontSize:10, fontWeight:700, padding:"2px 7px", borderRadius:999, background:ts.bg, color:ts.color, flexShrink:0 }}>{r.file_type}</span>
-                          {openUrl ? (
-                            <a href={openUrl} target="_blank" rel="noopener noreferrer"
-                              style={{ fontSize:12, color:"var(--text)", fontWeight:600, flex:1, minWidth:0, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap", textDecoration:"none" }}>
-                              {r.title}
-                            </a>
-                          ) : (
-                            <span style={{ fontSize:12, color:"var(--text)", fontWeight:600, flex:1, minWidth:0, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>
-                              {r.title}
-                            </span>
-                          )}
-                          <span style={{ fontSize:10, color:"#16a34a", flexShrink:0, whiteSpace:"nowrap", fontWeight:700 }}>
-                            {r.uploader_name ?? "익명"}
-                          </span>
-                        </div>
-                      );
-                    })}
+                    {recentRes.length > 0 && (
+                      <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:6 }} onClick={e => e.stopPropagation()}>
+                        {recentRes.map(r => {
+                          const openUrl = r.file_url || r.link || null;
+                          const isImg = isImageFile(r.file_name);
+                          return (
+                            <button key={r.id} onClick={() => setDetailId(r.id)}
+                              style={{ position:"relative", aspectRatio:"1 / 1", borderRadius:10, overflow:"hidden", border:"1px solid var(--border)", padding:0, cursor:"pointer", background:"#fafafa" }}>
+                              {isImg && openUrl ? (
+                                // eslint-disable-next-line @next/next/no-img-element
+                                <img src={openUrl} alt={r.title} style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>
+                              ) : (
+                                <span style={{ position:"absolute", inset:0, display:"flex", alignItems:"center", justifyContent:"center", fontSize:18 }}>{getFileIcon(r.file_name)}</span>
+                              )}
+                              {isNew(r.created_at) && (
+                                <span style={{ position:"absolute", top:3, left:3, fontSize:7, fontWeight:800, padding:"1px 4px", borderRadius:999, background:"#6366f1", color:"#fff" }}>N</span>
+                              )}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    )}
                   </div>
                 </div>
               );
@@ -738,7 +728,7 @@ export default function MentorPage() {
                 </div>
                 {!isFrozen && (
                   <button onClick={()=>setROpen(o=>!o)} className="hy-btn hy-btn-primary" style={{ fontSize:13 }}>
-                    {rOpen ? "닫기" : "📤 자료 올리기"}
+                    {rOpen ? "닫기" : "📸 필기 올리기"}
                   </button>
                 )}
               </div>
@@ -748,12 +738,12 @@ export default function MentorPage() {
               {selectedSubjectResources.length === 0 ? (
                 <div style={{ textAlign:"center",padding:"32px 0" }}>
                   <p style={{ fontSize:14,color:"var(--text-subtle)",fontWeight:600 }}>
-                    {isFrozen ? "공유된 자료가 없어요." : "아직 공유된 자료가 없어요. 첫 자료를 올려봐요! 📂"}
+                    {isFrozen ? "공유된 자료가 없어요." : "아직 공유된 자료가 없어요. 첫 필기를 올려봐요! 📸"}
                   </p>
                 </div>
               ) : (
-                <div style={{ display:"flex",flexDirection:"column",gap:12 }}>
-                  {selectedSubjectResources.map(r => renderResourceCard(r))}
+                <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(150px,1fr))", gap:12 }}>
+                  {selectedSubjectResources.map(r => renderResourceTile(r))}
                 </div>
               )}
             </div>
@@ -761,93 +751,7 @@ export default function MentorPage() {
         </div>
       )}
 
-      {/* ───────── 활동 일지 탭 ───────── */}
-      {tab==="logs" && (
-        <div style={{ display:"flex", flexDirection:"column", gap:14 }}>
-          <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", flexWrap:"wrap", gap:10 }}>
-            <div style={{ display:"flex", gap:6, flexWrap:"wrap" }}>
-              {["전체", ...MENTORS.map(m=>m.subject)].map(s=>(
-                <button key={s} onClick={()=>setFilterSubject(s)}
-                  style={{ padding:"6px 14px", borderRadius:999, border:"1.5px solid", fontFamily:"inherit", cursor:"pointer",
-                    borderColor: filterSubject===s ? "var(--primary)" : "var(--border)",
-                    background: filterSubject===s ? "var(--primary-light)" : "#fff",
-                    color: filterSubject===s ? "var(--primary)" : "var(--text-muted)",
-                    fontWeight:700, fontSize:12,
-                  }}>{s}</button>
-              ))}
-            </div>
-            {!isFrozen && (
-              <button onClick={()=>setLOpen(o=>!o)} className="hy-btn hy-btn-primary" style={{ fontSize:13 }}>
-                {lOpen ? "닫기" : "✏️ 일지 쓰기"}
-              </button>
-            )}
-          </div>
-
-          {!isFrozen && lOpen && (
-            <div className="hy-card" style={{ padding:"20px 22px" }}>
-              <h3 style={{ fontSize:15,fontWeight:800,color:"var(--text)",margin:"0 0 14px" }}>활동 일지 작성</h3>
-              <div style={{ display:"flex",flexDirection:"column",gap:10 }}>
-                <div style={{ display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(155px,1fr))",gap:10 }}>
-                  <select value={lSubject} onChange={e=>setLSubject(e.target.value)} className="hy-input" style={{ cursor:"pointer" }}>
-                    {MENTORS.map(m=><option key={m.subject} value={m.subject}>{m.subject}</option>)}
-                  </select>
-                  <input placeholder="이름 *" value={lMentor} onChange={e=>setLMentor(e.target.value)} className="hy-input"/>
-                  <input type="date" value={lDate} onChange={e=>setLDate(e.target.value)} className="hy-input"/>
-                  <input placeholder="활동 유형 (예: 질문 답변)" value={lActivity} onChange={e=>setLActivity(e.target.value)} className="hy-input"/>
-                </div>
-                <textarea placeholder="활동 내용을 자유롭게 써봐요 *" value={lContent} onChange={e=>setLContent(e.target.value)}
-                  className="hy-input" style={{ minHeight:120,resize:"vertical" }}/>
-                <input placeholder="관련 자료 링크 (선택)" value={lLink} onChange={e=>setLLink(e.target.value)} className="hy-input"/>
-                <button onClick={addLog} disabled={saving} className="hy-btn hy-btn-primary" style={{ fontSize:13,alignSelf:"flex-start" }}>
-                  {saving ? "저장 중..." : "일지 올리기"}
-                </button>
-              </div>
-            </div>
-          )}
-
-          {filteredLogs.length === 0 ? (
-            <div className="hy-card" style={{ padding:"40px",textAlign:"center" }}>
-              <p style={{ fontSize:14,color:"var(--text-subtle)",fontWeight:600 }}>아직 활동 일지가 없어요 📋</p>
-            </div>
-          ) : (
-            <div style={{ display:"flex",flexDirection:"column",gap:12 }}>
-              {filteredLogs.map(l=>{
-                const m = MENTORS.find(x=>x.subject===l.subject);
-                const newLog = isNew(l.created_at);
-                return (
-                  <div key={l.id} className="hy-card" style={{ padding:"18px 22px", border: newLog ? "2px solid #6366f1" : undefined, background: newLog ? "#fdfcff" : undefined }}>
-                    <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:12 }}>
-                      <div style={{ width:38, height:38, borderRadius:999, background:"var(--primary-light)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:15, fontWeight:900, color:"var(--primary)", flexShrink:0 }}>
-                        {l.mentor_name.charAt(0)}
-                      </div>
-                      <div style={{ flex:1 }}>
-                        <div style={{ display:"flex", alignItems:"center", gap:6, flexWrap:"wrap" }}>
-                          {newLog && <span style={{ fontSize:10, fontWeight:800, padding:"2px 7px", borderRadius:999, background:"#6366f1", color:"#fff" }}>NEW</span>}
-                          <span style={{ fontSize:14, fontWeight:800, color:"var(--text)" }}>{l.mentor_name}</span>
-                          <span style={{ fontSize:11, fontWeight:700, padding:"2px 8px", borderRadius:999, background:"var(--primary-light)", color:"var(--primary)" }}>{m?.emoji} {l.subject}</span>
-                          <span style={{ fontSize:11, padding:"2px 8px", borderRadius:999, background:"#f3f4f6", color:"var(--text-muted)", fontWeight:600 }}>{l.activity}</span>
-                        </div>
-                        <span style={{ fontSize:11, color:"var(--text-subtle)", fontWeight:500 }}>{l.date} · {formatDateTime(l.created_at)} 작성</span>
-                      </div>
-                    </div>
-                    <p style={{ fontSize:14, color:"var(--text)", lineHeight:1.8, margin:0, whiteSpace:"pre-wrap", paddingLeft:12, borderLeft:"3px solid var(--primary-light)" }}>
-                      {l.content}
-                    </p>
-                    {l.resource_link && (
-                      <a href={l.resource_link} target="_blank" rel="noopener noreferrer"
-                        style={{ display:"inline-flex",alignItems:"center",gap:4,marginTop:12,fontSize:12,fontWeight:700,color:"#6366f1",textDecoration:"none",padding:"5px 12px",borderRadius:999,background:"#eff6ff",border:"1px solid #c7d2fe" }}>
-                        📎 자료 보기 →
-                      </a>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* ───────── 자료 공유 탭 ───────── */}
+      {/* ───────── 필기·자료 공유 탭 ───────── */}
       {tab==="resources" && (
         <div style={{ display:"flex", flexDirection:"column", gap:14 }}>
           <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", flexWrap:"wrap", gap:10 }}>
@@ -864,14 +768,14 @@ export default function MentorPage() {
             </div>
             {!isFrozen && (
               <button onClick={()=>setROpen(o=>!o)} className="hy-btn hy-btn-primary" style={{ fontSize:13 }}>
-                {rOpen ? "닫기" : "📤 자료 공유"}
+                {rOpen ? "닫기" : "📸 필기/자료 올리기"}
               </button>
             )}
           </div>
 
           {!isFrozen && rOpen && (
             <div className="hy-card" style={{ padding:"20px 22px" }}>
-              <h3 style={{ fontSize:15,fontWeight:800,color:"var(--text)",margin:"0 0 14px" }}>자료 공유하기</h3>
+              <h3 style={{ fontSize:15,fontWeight:800,color:"var(--text)",margin:"0 0 14px" }}>필기·자료 공유하기</h3>
               {renderUploadForm()}
             </div>
           )}
@@ -881,12 +785,14 @@ export default function MentorPage() {
               <p style={{ fontSize:14,color:"var(--text-subtle)",fontWeight:600 }}>공유된 자료가 없어요 📂</p>
             </div>
           ) : (
-            <div style={{ display:"flex",flexDirection:"column",gap:12 }}>
-              {filteredRes.map(r => renderResourceCard(r, true))}
+            <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(150px,1fr))", gap:12 }}>
+              {filteredRes.map(r => renderResourceTile(r, true))}
             </div>
           )}
         </div>
       )}
+
+      {renderDetailModal()}
     </div>
   );
 }
