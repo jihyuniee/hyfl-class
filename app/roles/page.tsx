@@ -249,11 +249,12 @@ function DeptSections({
             <h2 className="text-xl font-bold text-gray-900">{section.dept}</h2>
           </div>
 
-          <div className="overflow-x-auto">
-            <table className="w-full min-w-[720px] border-collapse">
+          {/* 태블릿·데스크톱: 표 */}
+          <div className="hidden overflow-x-auto md:block">
+            <table className="w-full min-w-[560px] border-collapse">
               <thead>
                 <tr className="bg-gray-50 text-left">
-                  <th className="rounded-l-2xl border-b px-4 py-3 text-sm font-semibold text-gray-700">
+                  <th className="w-36 rounded-l-2xl border-b px-4 py-3 text-sm font-semibold text-gray-700">
                     역할
                   </th>
                   <th className="border-b px-4 py-3 text-sm font-semibold text-gray-700">
@@ -267,7 +268,7 @@ function DeptSections({
               <tbody>
                 {section.roles.map((item) => (
                   <tr key={`${section.dept}-${item.role}`} className="align-top">
-                    <td className="border-b px-4 py-4 text-sm font-semibold text-gray-900">
+                    <td className="whitespace-nowrap border-b px-4 py-4 text-sm font-semibold text-gray-900">
                       {item.role}
                     </td>
                     <td className="border-b px-4 py-4 text-sm text-gray-800">
@@ -289,6 +290,29 @@ function DeptSections({
                 ))}
               </tbody>
             </table>
+          </div>
+
+          {/* 휴대폰: 카드 목록 */}
+          <div className="flex flex-col gap-3 md:hidden">
+            {section.roles.map((item) => (
+              <div
+                key={`${section.dept}-${item.role}-card`}
+                className="rounded-2xl border border-gray-100 bg-gray-50 p-4"
+              >
+                <div className="text-sm font-bold text-gray-900">{item.role}</div>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {item.students.map((student) => (
+                    <span
+                      key={student}
+                      className="rounded-full bg-rose-100 px-3 py-1 text-xs font-medium text-rose-700"
+                    >
+                      {student}
+                    </span>
+                  ))}
+                </div>
+                <div className="mt-2 text-sm leading-6 text-gray-700">{item.desc}</div>
+              </div>
+            ))}
           </div>
         </section>
       ))}

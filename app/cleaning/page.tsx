@@ -86,6 +86,75 @@ function formatWeekRange(startIso: string, endIso: string): string {
   return sm === em ? `${sm}/${sd} ~ ${ed}` : `${sm}/${sd} ~ ${em}/${ed}`;
 }
 
+type SummaryRow = { label: string; value: string; note: string };
+
+const SUMMARY_ROWS_2ND: SummaryRow[] = [
+  { label: "청소 총괄", value: "장지현, 박우진, 현서정", note: "회장/부회장" },
+  { label: "칠판 담당", value: SUMMARY_2ND.chalkboard.join(", "), note: "주번 대신 매번 칠판 정리" },
+  { label: "쓰레기 담당", value: "이승지, 김하연, 윤혜림, 양효승", note: "주번 대신 매번 쓰레기 배출" },
+  {
+    label: "특별구역",
+    value: SUMMARY_2ND.specialZones.map((student) => `${classNo(student.no)}번 ${student.name}`).join(", "),
+    note: "주번 대신 매번 특별구역 청소 · 6인",
+  },
+  {
+    label: "주번",
+    value: SUMMARY_2ND.weekly.map((student) => `${classNo(student.no)}번 ${student.name}`).join(", "),
+    note: "매일 아침 교실 빗자루로 쓸기 · 교탁 닦기, 학번 순서대로 매주 순환",
+  },
+];
+
+const SUMMARY_ROWS_1ST: SummaryRow[] = [
+  { label: "청소 총괄", value: "주보민, 강지우, 이시원", note: "회장/부회장" },
+  { label: "칠판 담당", value: "김은솔, 송민주, 심지안", note: "청소 제외" },
+  { label: "쓰레기 담당", value: "윤혜림, 이승지, 현서정, 박민석", note: "청소 제외" },
+  { label: "특별구역", value: "김태현, 김혜민, 박우진, 손정연, 유다현, 이조은", note: "홀수 번호 중 6명" },
+  { label: "교실 청소", value: "김하연, 성연준, 양효승, 장지현, 정은지, 최인아, 전주하", note: "월/목 쓸기·닦기 교대" },
+];
+
+function SummaryTable({ rows }: { rows: SummaryRow[] }) {
+  return (
+    <>
+      {/* 태블릿·데스크톱: 표 */}
+      <div className="mt-4 hidden overflow-x-auto md:block">
+        <table className="w-full min-w-[560px] border-collapse">
+          <thead>
+            <tr className="bg-gray-50 text-left">
+              <th className="w-28 rounded-l-2xl border-b px-4 py-3 text-sm font-semibold text-gray-700">
+                구분
+              </th>
+              <th className="border-b px-4 py-3 text-sm font-semibold text-gray-700">담당</th>
+              <th className="rounded-r-2xl border-b px-4 py-3 text-sm font-semibold text-gray-700">
+                비고
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((row) => (
+              <tr key={row.label} className="align-top">
+                <td className="whitespace-nowrap border-b px-4 py-4 text-sm font-semibold text-gray-900">{row.label}</td>
+                <td className="border-b px-4 py-4 text-sm text-gray-800">{row.value}</td>
+                <td className="border-b px-4 py-4 text-sm text-gray-700">{row.note}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* 휴대폰: 카드 목록 */}
+      <div className="mt-4 flex flex-col gap-3 md:hidden">
+        {rows.map((row) => (
+          <div key={row.label} className="rounded-2xl border border-gray-100 bg-gray-50 p-4">
+            <div className="text-sm font-bold text-gray-900">{row.label}</div>
+            <div className="mt-1.5 text-sm text-gray-800">{row.value}</div>
+            <div className="mt-1.5 text-xs text-gray-500">{row.note}</div>
+          </div>
+        ))}
+      </div>
+    </>
+  );
+}
+
 export default function CleaningPage() {
   const [semester, setSemester] = useState<SemesterId>(CURRENT_SEMESTER);
 
@@ -223,13 +292,13 @@ function CleaningSecondSemester() {
         </p>
 
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[360px] border-collapse">
+          <table className="w-full border-collapse">
             <thead>
               <tr className="bg-gray-50 text-left">
-                <th className="rounded-l-2xl border-b px-4 py-3 text-sm font-semibold text-gray-700">
+                <th className="rounded-l-2xl border-b px-3 py-3 text-sm font-semibold text-gray-700 sm:px-4">
                   기간
                 </th>
-                <th className="rounded-r-2xl border-b px-4 py-3 text-sm font-semibold text-gray-700">
+                <th className="rounded-r-2xl border-b px-3 py-3 text-sm font-semibold text-gray-700 sm:px-4">
                   담당
                 </th>
               </tr>
@@ -240,15 +309,15 @@ function CleaningSecondSemester() {
                 const isThisWeek = todayIso >= week.start && todayIso <= week.end;
                 return (
                   <tr key={week.start} className={isThisWeek ? "bg-sky-50" : undefined}>
-                    <td className="border-b px-4 py-3 text-sm font-semibold text-gray-900">
+                    <td className="whitespace-nowrap border-b px-3 py-3 text-sm font-semibold text-gray-900 sm:px-4">
                       {formatWeekRange(week.start, week.end)}
                       {isThisWeek && (
-                        <span className="ml-2 rounded-full bg-sky-500 px-2 py-0.5 text-xs font-bold text-white">
+                        <span className="ml-2 inline-block rounded-full bg-sky-500 px-2 py-0.5 text-xs font-bold text-white">
                           이번 주
                         </span>
                       )}
                     </td>
-                    <td className="border-b px-4 py-3 text-sm text-gray-800">
+                    <td className="border-b px-3 py-3 text-sm text-gray-800 sm:px-4">
                       {week.pair.join(", ")}
                     </td>
                   </tr>
@@ -261,71 +330,7 @@ function CleaningSecondSemester() {
 
       <section className="rounded-[24px] border border-gray-200 bg-white p-6 shadow-sm">
         <h2 className="text-xl font-bold text-gray-900">전체 역할 한눈에 보기</h2>
-
-        <div className="mt-4 overflow-x-auto">
-          <table className="w-full min-w-[760px] border-collapse">
-            <thead>
-              <tr className="bg-gray-50 text-left">
-                <th className="rounded-l-2xl border-b px-4 py-3 text-sm font-semibold text-gray-700">
-                  구분
-                </th>
-                <th className="border-b px-4 py-3 text-sm font-semibold text-gray-700">담당</th>
-                <th className="rounded-r-2xl border-b px-4 py-3 text-sm font-semibold text-gray-700">
-                  비고
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="align-top">
-                <td className="border-b px-4 py-4 text-sm font-semibold text-gray-900">
-                  청소 총괄
-                </td>
-                <td className="border-b px-4 py-4 text-sm text-gray-800">
-                  장지현, 박우진, 현서정
-                </td>
-                <td className="border-b px-4 py-4 text-sm text-gray-700">회장/부회장</td>
-              </tr>
-
-              <tr className="align-top">
-                <td className="border-b px-4 py-4 text-sm font-semibold text-gray-900">
-                  칠판 담당
-                </td>
-                <td className="border-b px-4 py-4 text-sm text-gray-800">{s.chalkboard.join(", ")}</td>
-                <td className="border-b px-4 py-4 text-sm text-gray-700">주번 대신 매번 칠판 정리</td>
-              </tr>
-
-              <tr className="align-top">
-                <td className="border-b px-4 py-4 text-sm font-semibold text-gray-900">
-                  쓰레기 담당
-                </td>
-                <td className="border-b px-4 py-4 text-sm text-gray-800">
-                  이승지, 김하연, 윤혜림, 양효승
-                </td>
-                <td className="border-b px-4 py-4 text-sm text-gray-700">주번 대신 매번 쓰레기 배출</td>
-              </tr>
-
-              <tr className="align-top">
-                <td className="border-b px-4 py-4 text-sm font-semibold text-gray-900">
-                  특별구역
-                </td>
-                <td className="border-b px-4 py-4 text-sm text-gray-800">
-                  {s.specialZones.map((student) => `${classNo(student.no)}번 ${student.name}`).join(", ")}
-                </td>
-                <td className="border-b px-4 py-4 text-sm text-gray-700">주번 대신 매번 특별구역 청소 · 6인</td>
-              </tr>
-
-              <tr className="align-top">
-                <td className="px-4 py-4 text-sm font-semibold text-gray-900">주번</td>
-                <td className="px-4 py-4 text-sm text-gray-800">
-                  {s.weekly.map((student) => `${classNo(student.no)}번 ${student.name}`).join(", ")}
-                </td>
-                <td className="px-4 py-4 text-sm text-gray-700">
-                  매일 아침 교실 빗자루로 쓸기 · 교탁 닦기, 학번 순서대로 매주 순환
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        <SummaryTable rows={SUMMARY_ROWS_2ND} />
       </section>
     </>
   );
@@ -491,71 +496,7 @@ function CleaningFirstSemester() {
 
       <section className="rounded-[24px] border border-gray-200 bg-white p-6 shadow-sm">
         <h2 className="text-xl font-bold text-gray-900">전체 역할 한눈에 보기</h2>
-
-        <div className="mt-4 overflow-x-auto">
-          <table className="w-full min-w-[760px] border-collapse">
-            <thead>
-              <tr className="bg-gray-50 text-left">
-                <th className="rounded-l-2xl border-b px-4 py-3 text-sm font-semibold text-gray-700">
-                  구분
-                </th>
-                <th className="border-b px-4 py-3 text-sm font-semibold text-gray-700">담당</th>
-                <th className="rounded-r-2xl border-b px-4 py-3 text-sm font-semibold text-gray-700">
-                  비고
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="align-top">
-                <td className="border-b px-4 py-4 text-sm font-semibold text-gray-900">
-                  청소 총괄
-                </td>
-                <td className="border-b px-4 py-4 text-sm text-gray-800">
-                  주보민, 강지우, 이시원
-                </td>
-                <td className="border-b px-4 py-4 text-sm text-gray-700">회장/부회장</td>
-              </tr>
-
-              <tr className="align-top">
-                <td className="border-b px-4 py-4 text-sm font-semibold text-gray-900">
-                  칠판 담당
-                </td>
-                <td className="border-b px-4 py-4 text-sm text-gray-800">
-                  김은솔, 송민주, 심지안
-                </td>
-                <td className="border-b px-4 py-4 text-sm text-gray-700">청소 제외</td>
-              </tr>
-
-              <tr className="align-top">
-                <td className="border-b px-4 py-4 text-sm font-semibold text-gray-900">
-                  쓰레기 담당
-                </td>
-                <td className="border-b px-4 py-4 text-sm text-gray-800">
-                  윤혜림, 이승지, 현서정, 박민석
-                </td>
-                <td className="border-b px-4 py-4 text-sm text-gray-700">청소 제외</td>
-              </tr>
-
-              <tr className="align-top">
-                <td className="border-b px-4 py-4 text-sm font-semibold text-gray-900">
-                  특별구역
-                </td>
-                <td className="border-b px-4 py-4 text-sm text-gray-800">
-                  김태현, 김혜민, 박우진, 손정연, 유다현, 이조은
-                </td>
-                <td className="border-b px-4 py-4 text-sm text-gray-700">홀수 번호 중 6명</td>
-              </tr>
-
-              <tr className="align-top">
-                <td className="px-4 py-4 text-sm font-semibold text-gray-900">교실 청소</td>
-                <td className="px-4 py-4 text-sm text-gray-800">
-                  김하연, 성연준, 양효승, 장지현, 정은지, 최인아, 전주하
-                </td>
-                <td className="px-4 py-4 text-sm text-gray-700">월/목 쓸기·닦기 교대</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        <SummaryTable rows={SUMMARY_ROWS_1ST} />
       </section>
     </>
   );
