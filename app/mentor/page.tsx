@@ -551,7 +551,7 @@ export default function MentorPage() {
           style={{ display:"none" }}
           onChange={e => pickFile(e.target.files?.[0] ?? null)}/>
 
-        <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(140px,1fr))", gap:10 }}>
+        <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
           {!subjectFixed && (
             <select value={rSubject} onChange={e => setRSubject(e.target.value)} className="hy-input" style={{ cursor:"pointer" }}>
               {MENTORS.map(m => <option key={m.subject} value={m.subject}>{m.subject}</option>)}
@@ -649,7 +649,7 @@ export default function MentorPage() {
       {/* ───────── 멘토 명단 탭 ───────── */}
       {tab==="mentors" && (
         <div style={{ display:"flex", flexDirection:"column", gap:16 }}>
-          <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(260px,1fr))", gap:14 }}>
+          <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2 xl:grid-cols-3">
             {MENTORS.map(m=>{
               const isSelected = selectedSubject === m.subject;
               const subjectRes = scopedResources.filter(r=>r.subject===m.subject);
@@ -742,7 +742,7 @@ export default function MentorPage() {
                   </p>
                 </div>
               ) : (
-                <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(150px,1fr))", gap:12 }}>
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
                   {selectedSubjectResources.map(r => renderResourceTile(r))}
                 </div>
               )}
@@ -785,7 +785,7 @@ export default function MentorPage() {
               <p style={{ fontSize:14,color:"var(--text-subtle)",fontWeight:600 }}>공유된 자료가 없어요 📂</p>
             </div>
           ) : (
-            <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(150px,1fr))", gap:12 }}>
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
               {filteredRes.map(r => renderResourceTile(r, true))}
             </div>
           )}
