@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import SemesterTabs from "@/components/SemesterTabs";
-import { CURRENT_SEMESTER, type SemesterId } from "@/components/lib/semester";
+import { CURRENT_SEMESTER, toKSTDateStr, type SemesterId } from "@/components/lib/semester";
 import { STUDENTS } from "@/components/lib/students";
 
 const SUMMARY_1ST = {
@@ -58,6 +58,33 @@ const SUMMARY_2ND = {
   weekly: WEEKLY_2ND,
   weeklyTasks: ["매일 아침 교실 빗자루로 쓸기", "교탁 닦기"],
 };
+
+// 2학기 주번 주간 일정. 8/24(다음주)부터 종업식(12/31) 전 마지막 등교주까지,
+// 중간고사(9/28~10/2)·기말고사(12/2~12/8) 주는 제외하고 학번 순으로 2명씩 순환 배정.
+const WEEKLY_SCHEDULE_2ND: { start: string; end: string; pair: [string, string] }[] = [
+  { start: "2026-08-24", end: "2026-08-28", pair: ["강지우", "박우진"] },
+  { start: "2026-08-31", end: "2026-09-04", pair: ["성연준", "손정연"] },
+  { start: "2026-09-07", end: "2026-09-11", pair: ["유다현", "이시원"] },
+  { start: "2026-09-14", end: "2026-09-18", pair: ["장지현", "전주하"] },
+  { start: "2026-09-21", end: "2026-09-25", pair: ["주보민", "최인아"] },
+  { start: "2026-10-05", end: "2026-10-09", pair: ["현서정", "강지우"] },
+  { start: "2026-10-12", end: "2026-10-16", pair: ["박우진", "성연준"] },
+  { start: "2026-10-19", end: "2026-10-23", pair: ["손정연", "유다현"] },
+  { start: "2026-10-26", end: "2026-10-30", pair: ["이시원", "장지현"] },
+  { start: "2026-11-02", end: "2026-11-06", pair: ["전주하", "주보민"] },
+  { start: "2026-11-09", end: "2026-11-13", pair: ["최인아", "현서정"] },
+  { start: "2026-11-16", end: "2026-11-20", pair: ["강지우", "박우진"] },
+  { start: "2026-11-23", end: "2026-11-27", pair: ["성연준", "손정연"] },
+  { start: "2026-12-14", end: "2026-12-18", pair: ["유다현", "이시원"] },
+  { start: "2026-12-21", end: "2026-12-25", pair: ["장지현", "전주하"] },
+  { start: "2026-12-28", end: "2026-12-31", pair: ["주보민", "최인아"] },
+];
+
+function formatWeekRange(startIso: string, endIso: string): string {
+  const [, sm, sd] = startIso.split("-");
+  const [, em, ed] = endIso.split("-");
+  return sm === em ? `${sm}/${sd} ~ ${ed}` : `${sm}/${sd} ~ ${em}/${ed}`;
+}
 
 export default function CleaningPage() {
   const [semester, setSemester] = useState<SemesterId>(CURRENT_SEMESTER);
@@ -182,6 +209,53 @@ function CleaningSecondSemester() {
               <li key={task}>{task}</li>
             ))}
           </ul>
+        </div>
+      </section>
+
+      <section className="rounded-[24px] border border-gray-200 bg-white p-6 shadow-sm">
+        <div className="mb-2 flex items-center gap-2">
+          <span className="text-2xl">🗓️</span>
+          <h2 className="text-xl font-bold text-gray-900">주번 주간 일정표</h2>
+        </div>
+        <p className="mb-4 text-sm leading-6 text-gray-700">
+          8/24(다음 주)부터 종업식(12/31) 전까지예요. 중간고사(9/28~10/2)·기말고사(12/2~12/8)
+          주간은 빠졌어요.
+        </p>
+
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[360px] border-collapse">
+            <thead>
+              <tr className="bg-gray-50 text-left">
+                <th className="rounded-l-2xl border-b px-4 py-3 text-sm font-semibold text-gray-700">
+                  기간
+                </th>
+                <th className="rounded-r-2xl border-b px-4 py-3 text-sm font-semibold text-gray-700">
+                  담당
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {WEEKLY_SCHEDULE_2ND.map((week) => {
+                const todayIso = toKSTDateStr();
+                const isThisWeek = todayIso >= week.start && todayIso <= week.end;
+                return (
+                  <tr key={week.start} className={isThisWeek ? "bg-sky-50" : undefined}>
+                    <td className="border-b px-4 py-3 text-sm font-semibold text-gray-900">
+                      {formatWeekRange(week.start, week.end)}
+                      {isThisWeek && (
+                        <span className="ml-2 rounded-full bg-sky-500 px-2 py-0.5 text-xs font-bold text-white">
+                          이번 주
+                        </span>
+                      )}
+                    </td>
+                    <td className="border-b px-4 py-3 text-sm text-gray-800">
+                      {week.pair.join(", ")}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         </div>
       </section>
 
