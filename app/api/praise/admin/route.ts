@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic";
 export async function POST(req: NextRequest) {
   try {
     const { password } = await req.json();
-    const teacherPassword = process.env.TEACHER_PW ?? process.env.NEXT_PUBLIC_TEACHER_PW;
+    const teacherPassword = process.env.TEACHER_PW;
 
     if (!teacherPassword || password !== teacherPassword) {
       return NextResponse.json({ error: "비밀번호가 올바르지 않습니다." }, { status: 401 });
