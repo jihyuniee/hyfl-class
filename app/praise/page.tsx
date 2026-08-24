@@ -23,24 +23,25 @@ const STUDENTS = [
 ];
 
 const FRIEND_CATEGORIES = [
-  { emoji:"⏱", label:"시간 활용의 달인", desc:"자투리 시간을 효율적으로 활용한 친구" },
-  { emoji:"🛡", label:"위기 해결사", desc:"어려움이 있을 때 잘 해결되도록 도와준 친구" },
-  { emoji:"🎯", label:"진로를 향해", desc:"진로를 위해 열심히 노력하는 친구" },
-  { emoji:"🤝", label:"돈독한 친구", desc:"닮고 싶은 좋은 관계를 만드는 친구" },
-  { emoji:"💡", label:"친절한 선생님", desc:"친구들의 질문에 친절하게 대답해주는 친구" },
-  { emoji:"🌸", label:"양보와 배려", desc:"배려가 몸에 밴 친구" },
-  { emoji:"👑", label:"리더십", desc:"우리반 리더십이 뛰어난 친구" },
-  { emoji:"📚", label:"수업 태도", desc:"수업시간에 가장 칭찬해주고 싶은 친구" },
-  { emoji:"✨", label:"기타 칭찬", desc:"그 외 칭찬하고 싶은 친구" },
+  { emoji:"🙋", label:"책임감", desc:"맡은 일을 꾸준히 수행하고 끝까지 마무리한 모습" },
+  { emoji:"🌱", label:"솔선수범", desc:"필요한 일을 스스로 찾아 먼저 행동한 모습" },
+  { emoji:"🌸", label:"배려와 공감", desc:"친구의 어려움을 살피고 따뜻하게 도운 모습" },
+  { emoji:"💬", label:"소통과 조율", desc:"의견을 경청하고 갈등을 합리적으로 조정한 모습" },
+  { emoji:"🤝", label:"학급 기여", desc:"우리 반이 더 좋아지도록 힘을 보탠 모습" },
+  { emoji:"💡", label:"학습 나눔", desc:"배운 내용을 설명하고 함께 성장하도록 도운 모습" },
+  { emoji:"🛠️", label:"문제 해결", desc:"학급의 불편을 발견하고 해결 방법을 실천한 모습" },
+  { emoji:"☀️", label:"긍정적 태도", desc:"밝고 성실한 태도로 좋은 분위기를 만든 모습" },
+  { emoji:"✨", label:"그 밖의 좋은 행동", desc:"친구에게서 발견한 의미 있는 행동" },
 ];
 
 const SELF_CATEGORIES = [
-  { emoji:"🙋", label:"1인1역할", desc:"오늘 내 역할을 완벽하게 해냈어요" },
-  { emoji:"📚", label:"학습 성취", desc:"공부에서 뿌듯한 일이 있었어요" },
-  { emoji:"🤝", label:"학급 기여", desc:"우리 반을 위해 의미 있는 일을 했어요" },
-  { emoji:"🎯", label:"목표 달성", desc:"세운 목표를 이뤄냈어요" },
-  { emoji:"💪", label:"도전 극복", desc:"어렵지만 포기하지 않았어요" },
-  { emoji:"✨", label:"기타 자랑", desc:"그 외 자랑하고 싶은 일" },
+  { emoji:"🙋", label:"1인 1역할", desc:"맡은 역할을 책임감 있게 수행한 일" },
+  { emoji:"🌱", label:"자발적인 실천", desc:"시키지 않아도 필요한 일을 먼저 한 경험" },
+  { emoji:"🤝", label:"친구와 학급 돕기", desc:"친구 또는 우리 반에 도움이 된 행동" },
+  { emoji:"💡", label:"학습 나눔", desc:"배운 내용을 친구와 나누며 함께 성장한 경험" },
+  { emoji:"🛠️", label:"문제 해결", desc:"불편이나 문제를 발견하고 해결한 경험" },
+  { emoji:"💪", label:"꾸준함과 성장", desc:"어려움 속에서도 계속 실천하거나 개선한 일" },
+  { emoji:"✨", label:"그 밖의 실천", desc:"나의 책임감과 성장을 보여 주는 행동" },
 ];
 
 function timeAgo(iso: string) {
@@ -83,7 +84,8 @@ export default function PraisePage() {
   async function submit() {
     if (!category)           { alert("카테고리를 선택해주세요"); return; }
     if (!content.trim())     { alert("내용을 입력해주세요"); return; }
-    if (formType === "friend" && !toName) { alert("칭찬할 친구를 선택해주세요"); return; }
+    if (formType === "friend" && !toName) { alert("좋은 행동을 발견한 친구를 선택해주세요"); return; }
+    if (formType === "self" && !fromName) { alert("내 이름을 선택해주세요"); return; }
     setPosting(true);
     await supabase.from("praise_posts").insert({
       type: formType,
@@ -111,15 +113,25 @@ export default function PraisePage() {
       {/* 헤더 */}
       <div className="hy-hero">
         <h1 style={{ color:"#fff", fontSize:"clamp(22px,4vw,32px)", fontWeight:900, margin:"0 0 8px" }}>
-          🌟 칭찬 게시판
+          🌱 우리 반 성장 기록
         </h1>
         <p style={{ color:"rgba(255,255,255,0.85)", fontSize:13, margin:0, fontWeight:500, lineHeight:1.8 }}>
-          친구를 칭찬하거나, 오늘 내가 한 일을 자랑해봐요!
+          평소의 작은 실천과 서로의 좋은 행동을 구체적으로 남겨요.
+        </p>
+      </div>
+
+      <div className="hy-card" style={{ padding:"16px 18px", background:"#f8fafc" }}>
+        <p style={{ fontSize:13, color:"var(--text)", fontWeight:800, margin:"0 0 7px" }}>
+          작은 행동도 좋은 기록이 됩니다
+        </p>
+        <p style={{ fontSize:12, color:"var(--text-muted)", lineHeight:1.75, margin:0 }}>
+          1인 1역할을 꾸준히 수행한 일, 친구를 도운 일, 학습을 나눈 일, 학급의 문제를 해결한 일처럼
+          평소의 구체적인 모습을 남겨주세요. 선생님이 여러분을 더 잘 이해하는 참고 자료로 활용합니다.
         </p>
       </div>
 
       <p style={{ fontSize:12, color:"var(--text-subtle)", fontWeight:600, margin:"0 0 -8px", textAlign:"right" }}>
-        💡 구체적으로 쓸수록 더 의미 있어요
+        💡 상황 → 행동 → 도움·변화의 순서로 기록해요
       </p>
 
       {/* 글쓰기 버튼 */}
@@ -127,7 +139,7 @@ export default function PraisePage() {
         <button onClick={() => openForm("friend")}
           className="hy-btn hy-btn-primary"
           style={{ flex:1, fontSize:13, padding:"14px" }}>
-          🙌 친구 칭찬하기
+          👀 친구의 좋은 행동 남기기
         </button>
         <button onClick={() => openForm("self")}
           style={{
@@ -136,7 +148,7 @@ export default function PraisePage() {
             color:"#92400e", fontSize:13, fontWeight:800,
             cursor:"pointer", fontFamily:"inherit",
           }}>
-          🌟 오늘 내 자랑하기
+          ✍️ 나의 실천 기록하기
         </button>
       </div>
 
@@ -147,7 +159,7 @@ export default function PraisePage() {
           border:`2px solid ${formType === "friend" ? "var(--primary)" : "#fbbf24"}`,
         }}>
           <h3 style={{ fontSize:15, fontWeight:900, color:"var(--text)", margin:"0 0 18px" }}>
-            {formType === "friend" ? "🙌 친구 칭찬하기" : "🌟 오늘 내 자랑하기"}
+            {formType === "friend" ? "👀 친구의 좋은 행동 남기기" : "✍️ 나의 실천 기록하기"}
           </h3>
 
           <div style={{ display:"flex", flexDirection:"column", gap:14 }}>
@@ -155,7 +167,7 @@ export default function PraisePage() {
             {/* 내 이름 */}
             <div>
               <label style={{ fontSize:12, fontWeight:700, color:"var(--text-muted)", display:"block", marginBottom:5 }}>
-                내 이름 {formType === "friend" ? "(익명 가능, 선택)" : "(선택)"}
+                내 이름 {formType === "friend" ? "(익명 가능)" : "*"}
               </label>
               <select
                 value={fromName}
@@ -163,7 +175,7 @@ export default function PraisePage() {
                 className="hy-input"
                 style={{ cursor:"pointer" }}
               >
-                <option value="">익명으로 올리기</option>
+                <option value="">{formType === "friend" ? "익명으로 올리기" : "내 이름을 선택해주세요"}</option>
                 {STUDENTS.map(s => (
                   <option key={s} value={s}>{s}</option>
                 ))}
@@ -174,7 +186,7 @@ export default function PraisePage() {
             {formType === "friend" && (
               <div>
                 <label style={{ fontSize:12, fontWeight:700, color:"var(--text-muted)", display:"block", marginBottom:5 }}>
-                  칭찬할 친구 *
+                  좋은 행동을 발견한 친구 *
                 </label>
                 <select
                   value={toName}
@@ -188,14 +200,14 @@ export default function PraisePage() {
                     fontWeight: toName ? 800 : undefined,
                   }}
                 >
-                  <option value="">우리 반 친구를 선택해주세요 👇</option>
+                  <option value="">친구를 선택해주세요 👇</option>
                   {STUDENTS.map(s => (
                     <option key={s} value={s}>{s}</option>
                   ))}
                 </select>
                 {toName && (
                   <p style={{ fontSize:12, color:"var(--primary)", fontWeight:700, margin:"6px 0 0" }}>
-                    ✓ {toName} 에게 칭찬을 보낼게요!
+                    ✓ {toName}의 좋은 행동을 기록할게요!
                   </p>
                 )}
               </div>
@@ -204,7 +216,7 @@ export default function PraisePage() {
             {/* 카테고리 */}
             <div>
               <label style={{ fontSize:12, fontWeight:700, color:"var(--text-muted)", display:"block", marginBottom:8 }}>
-                {formType === "friend" ? "어떤 점을 칭찬하고 싶어요? *" : "어떤 일을 자랑하고 싶어요? *"}
+                {formType === "friend" ? "어떤 좋은 행동이었나요? *" : "어떤 실천을 기록할까요? *"}
               </label>
               <div style={{ display:"flex", flexDirection:"column", gap:6 }}>
                 {cats.map(c => (
@@ -231,12 +243,12 @@ export default function PraisePage() {
             {/* 내용 */}
             <div>
               <label style={{ fontSize:12, fontWeight:700, color:"var(--text-muted)", display:"block", marginBottom:6 }}>
-                어떤 상황이었는지 구체적으로 써줘요 *
+                상황과 행동, 도움이나 변화를 구체적으로 써주세요 *
               </label>
               <textarea
                 placeholder={formType === "friend"
-                  ? "언제, 어떤 상황에서, 어떤 행동이 좋았는지 구체적으로 써줘요 🙂\n예) 3월 11일 조회시간에 내가 준비물을 못 챙겼는데 아무 말 없이 자기 것을 나눠줬다. 항상 배려가 몸에 배어 있는 것 같아서 닮고 싶다."
-                  : "언제, 무엇을, 어떻게 했는지 구체적으로 써줘요 💪\n예) 오늘 1인1역할 청소 당번이었는데 수업이 끝나고 가장 먼저 빗자루를 들고 구석구석 청소했다. 선생님이 안 봐도 늘 같은 자세로 임하는 내 모습이 뿌듯했다."}
+                  ? "상황 → 친구가 한 행동 → 도움이 된 점을 써주세요.\n예) 수행평가 일정을 놓친 친구에게 준비물과 제출일을 다시 알려 주고 함께 확인하여 과제를 제때 제출하도록 도왔다."
+                  : "상황 → 내가 한 행동 → 친구나 학급에 생긴 변화를 써주세요.\n예) 이번 주 알림이 역할을 맡아 수행평가 일정을 정리하고 전날 다시 안내하여 친구들이 제출일을 놓치지 않도록 도왔다."}
                 value={content}
                 onChange={e => setContent(e.target.value)}
                 className="hy-input"
@@ -262,8 +274,8 @@ export default function PraisePage() {
       <div style={{ display:"flex", background:"#f3f4f6", borderRadius:16, padding:4, gap:4 }}>
         {([
           { key:"all",    label:"✨ 전체" },
-          { key:"friend", label:"🙌 친구 칭찬" },
-          { key:"self",   label:"🌟 내 자랑" },
+          { key:"friend", label:"👀 친구의 좋은 행동" },
+          { key:"self",   label:"✍️ 나의 실천" },
         ] as const).map(t => (
           <button key={t.key} onClick={() => setTab(t.key)}
             style={{
@@ -284,7 +296,7 @@ export default function PraisePage() {
         <div className="hy-card" style={{ padding:"40px", textAlign:"center" }}>
           <p style={{ fontSize:32, margin:"0 0 12px" }}>🌱</p>
           <p style={{ fontSize:14, color:"var(--text-subtle)", fontWeight:600 }}>
-            아직 글이 없어요.<br/>첫 번째로 칭찬을 남겨봐요!
+            아직 기록이 없어요.<br/>오늘 발견한 좋은 행동부터 남겨봐요!
           </p>
         </div>
       ) : (
@@ -304,7 +316,7 @@ export default function PraisePage() {
                       background: post.type === "friend" ? "var(--primary-light)" : "#fffbeb",
                       color: post.type === "friend" ? "var(--primary)" : "#92400e",
                     }}>
-                      {post.type === "friend" ? "🙌 친구 칭찬" : "🌟 내 자랑"}
+                      {post.type === "friend" ? "👀 친구의 좋은 행동" : "✍️ 나의 실천"}
                     </span>
                     {post.category && (
                       <span style={{
