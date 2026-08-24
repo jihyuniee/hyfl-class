@@ -737,7 +737,7 @@ export default function CounselingPage() {
             <p style={{ fontSize:14, fontWeight:800, color:"#15803d", margin:"0 0 6px" }}>🙋 수시 상담이란?</p>
             <p style={{ fontSize:13, color:"#166534", margin:0, lineHeight:1.7, fontWeight:500 }}>
               정식 상담 기간이 아니어도, 고민이나 상담하고 싶은 내용이 있으면 언제든 신청해요.<br/>
-              선생님이 확인 후 편한 시간에 연락드릴게요 🙂
+              가능하면 금요일 오후를 희망 시간으로 적어주세요. 선생님이 확인 후 상담 가능한 시간을 연락드릴게요 🙂
             </p>
           </div>
 
@@ -767,7 +767,7 @@ export default function CounselingPage() {
                 <textarea placeholder={"상담하고 싶은 내용을 편하게 적어줘요 🙂\n(성적, 진로, 친구 관계, 학교생활 등 무엇이든 괜찮아요)"}
                   value={wContent} onChange={e=>setWContent(e.target.value)}
                   className="hy-input" style={{ minHeight:120, resize:"vertical" }}/>
-                <input placeholder="희망 시간대 (선택, 예: 방과후, 점심시간)"
+                <input placeholder="희망 시간대 (가능하면 금요일 오후)"
                   value={wPreferred} onChange={e=>setWPreferred(e.target.value)} className="hy-input"/>
                 <label style={{ display:"flex", alignItems:"center", gap:8, fontSize:13, color:"var(--text-muted)", fontWeight:600, cursor:"pointer" }}>
                   <input type="checkbox" checked={wPrivate} onChange={e=>setWPrivate(e.target.checked)}/>
