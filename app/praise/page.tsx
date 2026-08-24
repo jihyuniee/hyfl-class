@@ -42,13 +42,14 @@ export default function PraisePage() {
   const [toName,   setToName]   = useState("");
   const [category, setCategory] = useState("");
   const [content,  setContent]  = useState("");
+  const [confirmed, setConfirmed] = useState(false);
   const [posting,  setPosting]  = useState(false);
 
   const cats = formType === "friend" ? FRIEND_CATEGORIES : SELF_CATEGORIES;
 
   function openForm(type: "friend" | "self") {
     setFormType(type); setFormOpen(true); setSubmitted(false);
-    setFromName(""); setToName(""); setCategory(""); setContent("");
+    setFromName(""); setToName(""); setCategory(""); setContent(""); setConfirmed(false);
   }
 
   async function submit() {
@@ -56,6 +57,7 @@ export default function PraisePage() {
     if (!category)            { alert("분류를 선택해주세요"); return; }
     if (!content.trim())      { alert("내용을 입력해주세요"); return; }
     if (formType === "friend" && !toName) { alert("좋은 행동을 발견한 친구를 선택해주세요"); return; }
+    if (!confirmed) { alert("사실에 근거하여 작성했다는 확인이 필요합니다"); return; }
     setPosting(true);
     const response = await fetch("/api/praise", {
       method: "POST",
@@ -304,11 +306,33 @@ export default function PraisePage() {
               />
             </div>
 
+            <label style={{
+              display:"flex", alignItems:"flex-start", gap:10, padding:"13px 14px",
+              borderRadius:12, cursor:"pointer",
+              border:`1.5px solid ${confirmed ? "#86efac" : "var(--border)"}`,
+              background:confirmed ? "#f0fdf4" : "#f8fafc",
+            }}>
+              <input
+                type="checkbox"
+                checked={confirmed}
+                onChange={e => setConfirmed(e.target.checked)}
+                style={{ width:17, height:17, marginTop:2, accentColor:"#16a34a", cursor:"pointer", flexShrink:0 }}
+              />
+              <span style={{ fontSize:12, color:confirmed ? "#166534" : "var(--text-muted)", lineHeight:1.65, fontWeight:700 }}>
+                나는 다른 사람의 이름을 사용하지 않았으며, 내 이름으로 실제 있었던 일을 사실에 근거하여 작성했습니다.
+                필요하면 담임 선생님이 관련 학생에게 내용을 확인할 수 있습니다.
+              </span>
+            </label>
+
+            <p style={{ fontSize:10, color:"var(--text-subtle)", lineHeight:1.6, margin:"-5px 2px 0" }}>
+              제출한 내용은 생활기록부에 바로 반영되지 않으며, 담임 선생님이 평소 모습과 사실관계를 확인한 후 참고합니다.
+            </p>
+
             <div style={{ display:"flex", gap:8 }}>
-              <button onClick={submit} disabled={posting}
+              <button onClick={submit} disabled={posting || !confirmed}
                 className="hy-btn hy-btn-primary"
-                style={{ flex:1, fontSize:14 }}>
-                {posting ? "올리는 중..." : "게시하기 🚀"}
+                style={{ flex:1, fontSize:14, opacity:confirmed ? 1 : 0.55, cursor:confirmed ? "pointer" : "not-allowed" }}>
+                {posting ? "제출하는 중..." : "기록 제출하기"}
               </button>
               <button onClick={() => setFormOpen(false)} className="hy-btn" style={{ fontSize:13 }}>
                 취소
