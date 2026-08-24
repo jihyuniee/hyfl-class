@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 
 
 const STUDENTS = [
@@ -359,6 +360,21 @@ export default function PraisePage() {
           </p>
         </div>
       )}
+
+      <div style={{ display:"flex", justifyContent:"flex-end" }}>
+        <Link
+          href="/praise/teacher"
+          style={{
+            display:"inline-flex", alignItems:"center", gap:6,
+            padding:"9px 14px", borderRadius:999,
+            border:"1px solid var(--border)", background:"#fff",
+            color:"var(--text-muted)", fontSize:11, fontWeight:700,
+            textDecoration:"none",
+          }}
+        >
+          🔒 담임 기록 확인
+        </Link>
+      </div>
 
     </div>
   );
