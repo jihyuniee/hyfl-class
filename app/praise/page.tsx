@@ -130,6 +130,72 @@ export default function PraisePage() {
         </p>
       </div>
 
+      <div className="hy-card" style={{ padding:"20px 20px 18px" }}>
+        <div style={{ marginBottom:14 }}>
+          <p style={{ fontSize:14, color:"var(--text)", fontWeight:900, margin:"0 0 5px" }}>
+            ✍️ 이렇게 남겨보세요
+          </p>
+          <p style={{ fontSize:11, color:"var(--text-subtle)", lineHeight:1.6, margin:0 }}>
+            멋있는 말보다 실제로 있었던 행동을 적는 것이 더 중요해요.
+          </p>
+        </div>
+
+        <div style={{
+          padding:"13px 14px", borderRadius:14, background:"#fff7ed",
+          border:"1px solid #fed7aa", marginBottom:12,
+        }}>
+          <p style={{ fontSize:12, color:"#9a3412", fontWeight:800, margin:"0 0 7px" }}>
+            ❌ “1인 1역할을 열심히 했다.”
+          </p>
+          <p style={{ fontSize:12, color:"var(--text)", lineHeight:1.75, margin:0 }}>
+            ✅ “이번 주 알림이 역할을 맡아 수행평가 일정과 준비물을 정리해 안내하고,
+            제출 전날 다시 알려 주어 친구들이 일정을 놓치지 않도록 도왔다.”
+          </p>
+        </div>
+
+        <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit, minmax(210px, 1fr))", gap:10 }}>
+          {[
+            {
+              title:"🙋 1인 1역할",
+              example:"청소 담당 친구가 결석한 날, 담당 구역이 비어 있는 것을 보고 내 구역을 마친 뒤 함께 정리했다.",
+              traits:"책임감 · 솔선수범 · 학급 기여",
+            },
+            {
+              title:"💡 학습 나눔",
+              example:"수학 문제를 어려워하는 친구에게 답만 알려 주지 않고 단계별로 질문하며 스스로 풀 수 있도록 설명했다.",
+              traits:"배려 · 의사소통 · 함께 성장",
+            },
+            {
+              title:"💬 소통과 조율",
+              example:"학급회의에서 의견이 엇갈리자 양쪽의 생각을 정리하고 모두가 받아들일 수 있는 대안을 제안했다.",
+              traits:"경청 · 문제 해결 · 리더십",
+            },
+          ].map(item => (
+            <div key={item.title} style={{
+              padding:"14px", borderRadius:14, background:"#f8fafc",
+              border:"1px solid #e2e8f0",
+            }}>
+              <p style={{ fontSize:12, color:"var(--text)", fontWeight:900, margin:"0 0 7px" }}>
+                {item.title}
+              </p>
+              <p style={{ fontSize:12, color:"var(--text-muted)", lineHeight:1.7, margin:"0 0 10px" }}>
+                {item.example}
+              </p>
+              <p style={{
+                display:"inline-block", fontSize:10, color:"var(--primary)", fontWeight:800,
+                background:"var(--primary-light)", borderRadius:999, padding:"4px 9px", margin:0,
+              }}>
+                기록에서 보이는 모습: {item.traits}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        <p style={{ fontSize:10, color:"var(--text-subtle)", lineHeight:1.6, margin:"12px 2px 0" }}>
+          ※ 작성한 문장이 생활기록부에 그대로 옮겨지는 것은 아닙니다. 선생님이 평소의 모습을 이해하고 확인하는 참고 자료로 활용합니다.
+        </p>
+      </div>
+
       <p style={{ fontSize:12, color:"var(--text-subtle)", fontWeight:600, margin:"0 0 -8px", textAlign:"right" }}>
         💡 상황 → 행동 → 도움·변화의 순서로 기록해요
       </p>
