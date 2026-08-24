@@ -248,7 +248,7 @@ export default function RolesPage() {
         <h1 className="mt-2 text-3xl font-bold tracking-tight text-gray-900">1인 1역할</h1>
         <p className="mt-3 text-sm leading-6 text-gray-700">
           {semester === CURRENT_SEMESTER
-            ? "2학기 확정 역할표예요. 탭을 옮기면 1학기 최종표도 확인할 수 있어요."
+            ? "2학기에는 칠판·쓰레기 등 청소 업무를 별도 청소 역할표로 분리했어요. 기존에 청소를 1인 1역할로 맡았던 학생들은 교과 멘토 등 새로운 학급 역할로 연결했습니다."
             : "1학기 최종 확정 역할표예요. 자료는 그대로 보존됩니다."}
         </p>
         <div className="mt-5">
