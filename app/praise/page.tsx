@@ -1,18 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { supabase } from "@/components/lib/supabaseClient";
+import { useState } from "react";
 
-type PraisePost = {
-  id: string;
-  created_at: string;
-  type: "friend" | "self";
-  from_name: string | null;
-  to_name: string | null;
-  category: string | null;
-  content: string;
-  likes: number;
-};
 
 const STUDENTS = [
   "강지우","김은솔","김태현","김하연","김혜민",
@@ -44,18 +33,8 @@ const SELF_CATEGORIES = [
   { emoji:"✨", label:"그 밖의 실천", desc:"나의 책임감과 성장을 보여 주는 행동" },
 ];
 
-function timeAgo(iso: string) {
-  const diff = Math.floor((Date.now() - new Date(iso).getTime()) / 1000);
-  if (diff < 60) return "방금 전";
-  if (diff < 3600) return `${Math.floor(diff/60)}분 전`;
-  if (diff < 86400) return `${Math.floor(diff/3600)}시간 전`;
-  const d = new Date(iso);
-  return `${d.getMonth()+1}월 ${d.getDate()}일`;
-}
-
 export default function PraisePage() {
-  const [posts,    setPosts]    = useState<PraisePost[]>([]);
-  const [tab,      setTab]      = useState<"all"|"friend"|"self">("all");
+  const [submitted, setSubmitted] = useState(false);
   const [formType, setFormType] = useState<"friend"|"self">("friend");
   const [formOpen, setFormOpen] = useState(false);
 
@@ -67,45 +46,37 @@ export default function PraisePage() {
 
   const cats = formType === "friend" ? FRIEND_CATEGORIES : SELF_CATEGORIES;
 
-  async function load() {
-    const { data } = await supabase
-      .from("praise_posts").select("*")
-      .order("created_at", { ascending: false });
-    setPosts((data as PraisePost[]) ?? []);
-  }
-
-  useEffect(() => { load(); }, []);
-
   function openForm(type: "friend" | "self") {
-    setFormType(type); setFormOpen(true);
+    setFormType(type); setFormOpen(true); setSubmitted(false);
     setFromName(""); setToName(""); setCategory(""); setContent("");
   }
 
   async function submit() {
-    if (!category)           { alert("카테고리를 선택해주세요"); return; }
-    if (!content.trim())     { alert("내용을 입력해주세요"); return; }
+    if (!fromName)            { alert("내 이름을 선택해주세요"); return; }
+    if (!category)            { alert("분류를 선택해주세요"); return; }
+    if (!content.trim())      { alert("내용을 입력해주세요"); return; }
     if (formType === "friend" && !toName) { alert("좋은 행동을 발견한 친구를 선택해주세요"); return; }
-    if (formType === "self" && !fromName) { alert("내 이름을 선택해주세요"); return; }
     setPosting(true);
-    await supabase.from("praise_posts").insert({
-      type: formType,
-      from_name: fromName.trim() || null,
-      to_name: formType === "friend" ? toName : null,
-      category,
-      content: content.trim(),
-      likes: 0,
+    const response = await fetch("/api/praise", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        type: formType,
+        from_name: fromName,
+        to_name: formType === "friend" ? toName : null,
+        category,
+        content: content.trim(),
+      }),
     });
+    const result = await response.json();
     setPosting(false);
+    if (!response.ok) {
+      alert(result.error ?? "저장하지 못했습니다.");
+      return;
+    }
     setFormOpen(false);
-    await load();
+    setSubmitted(true);
   }
-
-  async function like(id: string, current: number) {
-    await supabase.from("praise_posts").update({ likes: current + 1 }).eq("id", id);
-    setPosts(prev => prev.map(p => p.id === id ? { ...p, likes: current + 1 } : p));
-  }
-
-  const filteredPosts = posts.filter(p => tab === "all" || p.type === tab);
 
   return (
     <div style={{ display:"flex", flexDirection:"column", gap:20 }}>
@@ -116,7 +87,7 @@ export default function PraisePage() {
           🌱 우리 반 성장 기록
         </h1>
         <p style={{ color:"rgba(255,255,255,0.85)", fontSize:13, margin:0, fontWeight:500, lineHeight:1.8 }}>
-          평소의 작은 실천과 서로의 좋은 행동을 구체적으로 남겨요.
+          평소의 작은 실천과 서로의 좋은 행동을 실명으로 기록해요.
         </p>
       </div>
 
@@ -126,7 +97,7 @@ export default function PraisePage() {
         </p>
         <p style={{ fontSize:12, color:"var(--text-muted)", lineHeight:1.75, margin:0 }}>
           1인 1역할을 꾸준히 수행한 일, 친구를 도운 일, 학습을 나눈 일, 학급의 문제를 해결한 일처럼
-          평소의 구체적인 모습을 남겨주세요. 선생님이 여러분을 더 잘 이해하는 참고 자료로 활용합니다.
+          평소의 구체적인 모습을 남겨주세요. 작성 내용은 담임 선생님만 확인하며, 여러분을 더 잘 이해하는 참고 자료로 활용합니다.
         </p>
       </div>
 
@@ -192,7 +163,7 @@ export default function PraisePage() {
         </div>
 
         <p style={{ fontSize:10, color:"var(--text-subtle)", lineHeight:1.6, margin:"12px 2px 0" }}>
-          ※ 작성한 문장이 생활기록부에 그대로 옮겨지는 것은 아닙니다. 선생님이 평소의 모습을 이해하고 확인하는 참고 자료로 활용합니다.
+          ※ 모든 기록은 실명으로 제출되며 담임 선생님만 확인합니다. 작성한 문장이 생활기록부에 그대로 옮겨지는 것은 아닙니다.
         </p>
       </div>
 
@@ -233,7 +204,7 @@ export default function PraisePage() {
             {/* 내 이름 */}
             <div>
               <label style={{ fontSize:12, fontWeight:700, color:"var(--text-muted)", display:"block", marginBottom:5 }}>
-                내 이름 {formType === "friend" ? "(익명 가능)" : "*"}
+                내 이름 *
               </label>
               <select
                 value={fromName}
@@ -241,7 +212,7 @@ export default function PraisePage() {
                 className="hy-input"
                 style={{ cursor:"pointer" }}
               >
-                <option value="">{formType === "friend" ? "익명으로 올리기" : "내 이름을 선택해주세요"}</option>
+                <option value="">내 이름을 선택해주세요</option>
                 {STUDENTS.map(s => (
                   <option key={s} value={s}>{s}</option>
                 ))}
@@ -336,98 +307,20 @@ export default function PraisePage() {
         </div>
       )}
 
-      {/* 탭 필터 */}
-      <div style={{ display:"flex", background:"#f3f4f6", borderRadius:16, padding:4, gap:4 }}>
-        {([
-          { key:"all",    label:"✨ 전체" },
-          { key:"friend", label:"👀 친구의 좋은 행동" },
-          { key:"self",   label:"✍️ 나의 실천" },
-        ] as const).map(t => (
-          <button key={t.key} onClick={() => setTab(t.key)}
-            style={{
-              flex:1, padding:"10px 8px", borderRadius:12, border:"none",
-              cursor:"pointer", fontFamily:"inherit",
-              background: tab === t.key ? "#fff" : "transparent",
-              boxShadow: tab === t.key ? "0 2px 8px rgba(0,0,0,0.08)" : "none",
-              fontSize:13, fontWeight:800,
-              color: tab === t.key ? "var(--primary)" : "var(--text-muted)",
-            }}>
-            {t.label}
-          </button>
-        ))}
-      </div>
-
-      {/* 게시글 목록 */}
-      {filteredPosts.length === 0 ? (
-        <div className="hy-card" style={{ padding:"40px", textAlign:"center" }}>
-          <p style={{ fontSize:32, margin:"0 0 12px" }}>🌱</p>
-          <p style={{ fontSize:14, color:"var(--text-subtle)", fontWeight:600 }}>
-            아직 기록이 없어요.<br/>오늘 발견한 좋은 행동부터 남겨봐요!
+      {submitted && (
+        <div className="hy-card" style={{
+          padding:"20px", textAlign:"center", background:"#f0fdf4", border:"1.5px solid #bbf7d0",
+        }}>
+          <p style={{ fontSize:24, margin:"0 0 7px" }}>✅</p>
+          <p style={{ fontSize:14, fontWeight:900, color:"#166534", margin:"0 0 5px" }}>
+            기록이 담임 선생님께 전달되었습니다
+          </p>
+          <p style={{ fontSize:11, color:"#15803d", lineHeight:1.6, margin:0 }}>
+            이 내용은 게시판에 공개되지 않으며 담임 선생님만 확인합니다.
           </p>
         </div>
-      ) : (
-        <div style={{ display:"flex", flexDirection:"column", gap:12 }}>
-          {filteredPosts.map(post => {
-            const allCats = [...FRIEND_CATEGORIES, ...SELF_CATEGORIES];
-            return (
-              <div key={post.id} className="hy-card" style={{
-                padding:"18px 22px",
-                borderLeft:`4px solid ${post.type === "friend" ? "var(--primary)" : "#fbbf24"}`,
-              }}>
-                <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start",
-                  marginBottom:8, flexWrap:"wrap", gap:6 }}>
-                  <div style={{ display:"flex", alignItems:"center", gap:8, flexWrap:"wrap" }}>
-                    <span style={{
-                      fontSize:11, padding:"3px 10px", borderRadius:999, fontWeight:800,
-                      background: post.type === "friend" ? "var(--primary-light)" : "#fffbeb",
-                      color: post.type === "friend" ? "var(--primary)" : "#92400e",
-                    }}>
-                      {post.type === "friend" ? "👀 친구의 좋은 행동" : "✍️ 나의 실천"}
-                    </span>
-                    {post.category && (
-                      <span style={{
-                        fontSize:11, padding:"3px 10px", borderRadius:999, fontWeight:700,
-                        background:"#f3f4f6", color:"var(--text-muted)",
-                      }}>
-                        {allCats.find(c => c.label === post.category)?.emoji ?? "✨"} {post.category}
-                      </span>
-                    )}
-                    {post.type === "friend" && post.to_name && (
-                      <span style={{ fontSize:13, fontWeight:900, color:"var(--text)" }}>
-                        {post.from_name ? `${post.from_name} → ` : "익명 → "}
-                        <span style={{ color:"var(--primary)" }}>@{post.to_name}</span>
-                      </span>
-                    )}
-                    {post.type === "self" && (
-                      <span style={{ fontSize:13, fontWeight:900, color:"var(--text)" }}>
-                        {post.from_name ?? "익명"}
-                      </span>
-                    )}
-                  </div>
-                  <span style={{ fontSize:11, color:"var(--text-subtle)", fontWeight:600 }}>
-                    {timeAgo(post.created_at)}
-                  </span>
-                </div>
-
-                <p style={{ fontSize:14, color:"var(--text)", lineHeight:1.8, margin:"0 0 12px", whiteSpace:"pre-wrap" }}>
-                  {post.content}
-                </p>
-
-                <button onClick={() => like(post.id, post.likes)}
-                  style={{
-                    padding:"6px 14px", borderRadius:999,
-                    border:"1.5px solid #fecdd3", background:"#fff5f5",
-                    fontSize:13, fontWeight:700, color:"#e11d48",
-                    cursor:"pointer", fontFamily:"inherit",
-                    display:"flex", alignItems:"center", gap:4,
-                  }}>
-                  ❤️ {post.likes}
-                </button>
-              </div>
-            );
-          })}
-        </div>
       )}
+
     </div>
   );
 }
