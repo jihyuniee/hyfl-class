@@ -56,7 +56,7 @@ const SUMMARY_2ND = {
   trash: ["이승지", "김하연", "윤혜림", "양효승"],
   specialZones: SPECIAL_ZONES_2ND,
   weekly: WEEKLY_2ND,
-  weeklyTasks: ["매일 아침 교실 빗자루로 쓸기", "교탁 닦기"],
+  weeklyTasks: ["교실 바닥 쓸기", "교실 바닥 닦기", "유리창이 많이 더러우면 한 번씩 닦기"],
 };
 
 // 2학기 주번 주간 일정. 8/24(다음주)부터 종업식(12/31) 전 마지막 등교주까지,
@@ -100,7 +100,7 @@ const SUMMARY_ROWS_2ND: SummaryRow[] = [
   {
     label: "주번",
     value: SUMMARY_2ND.weekly.map((student) => `${classNo(student.no)}번 ${student.name}`).join(", "),
-    note: "매일 아침 교실 빗자루로 쓸기 · 교탁 닦기, 학번 순서대로 매주 순환",
+    note: "교실 바닥 쓸기·닦기, 필요할 때 유리창 닦기 · 학번 순서대로 매주 순환",
   },
 ];
 
@@ -167,7 +167,7 @@ export default function CleaningPage() {
         </h1>
         <p className="mt-3 text-sm leading-6 text-gray-700">
           {semester === CURRENT_SEMESTER
-            ? "칠판 담당, 쓰레기 담당, 특별구역 담당은 주번 대신 매번 자기 몫을 맡고, 나머지 학생은 주번으로 매주 순환하며 교실 청소를 맡아요."
+            ? "칠판 담당, 쓰레기 담당, 특별구역 담당은 매일 자기 몫을 맡기 때문에 주번에서 제외해요. 나머지 학생은 매주 순환하며 교실 바닥을 쓸고 닦고, 유리창이 많이 더러우면 한 번씩 닦아요."
             : "월요일, 목요일 청소 기준 역할표예요. 자료는 그대로 보존됩니다."}
         </p>
         <div className="mt-5">
