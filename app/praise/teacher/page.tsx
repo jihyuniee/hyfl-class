@@ -18,6 +18,7 @@ export default function PraiseTeacherPage() {
   const [records, setRecords] = useState<RecordItem[]>([]);
   const [authed, setAuthed] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
   const [error, setError] = useState("");
   const [query, setQuery] = useState("");
   const [type, setType] = useState<"all"|"friend"|"self">("all");
@@ -38,6 +39,27 @@ export default function PraiseTeacherPage() {
     }
     setRecords(body.records ?? []);
     setAuthed(true);
+  }
+
+  async function deleteRecord(record: RecordItem) {
+    const owner = record.type === "friend"
+      ? `${record.from_name ?? "이름 없음"} → ${record.to_name ?? "이름 없음"}`
+      : record.from_name ?? "이름 없음";
+    if (!window.confirm(`${owner}의 기록을 삭제할까요?\n삭제한 기록은 복구할 수 없습니다.`)) return;
+
+    setDeletingId(record.id);
+    const res = await fetch("/api/praise/admin", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ password, id: record.id }),
+    });
+    const body = await res.json();
+    setDeletingId(null);
+    if (!res.ok) {
+      alert(body.error ?? "기록을 삭제하지 못했습니다.");
+      return;
+    }
+    setRecords(prev => prev.filter(item => item.id !== record.id));
   }
 
   const filtered = useMemo(() => {
@@ -152,9 +174,25 @@ export default function PraiseTeacherPage() {
               </strong>
               {r.category && <span style={{ fontSize:11, color:"var(--text-muted)" }}>{r.category}</span>}
             </div>
-            <span style={{ fontSize:11, color:"var(--text-subtle)" }}>
-              {new Date(r.created_at).toLocaleString("ko-KR", { timeZone:"Asia/Seoul" })}
-            </span>
+            <div style={{ display:"flex", alignItems:"center", gap:8 }}>
+              <span style={{ fontSize:11, color:"var(--text-subtle)" }}>
+                {new Date(r.created_at).toLocaleString("ko-KR", { timeZone:"Asia/Seoul" })}
+              </span>
+              <button
+                onClick={() => deleteRecord(r)}
+                disabled={deletingId === r.id}
+                style={{
+                  padding:"5px 9px", borderRadius:8,
+                  border:"1px solid #fecaca", background:"#fff5f5",
+                  color:"#dc2626", fontSize:10, fontWeight:800,
+                  cursor:deletingId === r.id ? "not-allowed" : "pointer",
+                  opacity:deletingId === r.id ? 0.6 : 1,
+                  fontFamily:"inherit",
+                }}
+              >
+                {deletingId === r.id ? "삭제 중..." : "삭제"}
+              </button>
+            </div>
           </div>
           <p style={{ fontSize:13, color:"var(--text)", lineHeight:1.8, whiteSpace:"pre-wrap", margin:0 }}>
             {r.content}
