@@ -167,6 +167,17 @@ export default function PraisePage() {
         </p>
       </div>
 
+      <div className="hy-card" style={{ padding:"16px 18px", border:"1.5px solid #bbf7d0", background:"#f0fdf4" }}>
+        <p style={{ fontSize:13, color:"#166534", fontWeight:900, margin:"0 0 7px" }}>
+          🌱 이 기록은 이렇게 활용합니다
+        </p>
+        <p style={{ fontSize:12, color:"#166534", lineHeight:1.75, margin:0 }}>
+          자신을 자랑하거나 친구를 막연하게 칭찬하는 게시판이 아닙니다. 선생님이 미처 보지 못한 구체적인 실천과 변화를
+          상황 → 행동 → 도움·변화의 순서로 남겨주세요. 담임 선생님이 실제 학교생활과 함께 확인하여 행동특성 및 종합의견을
+          작성할 때 참고합니다.
+        </p>
+      </div>
+
       <p style={{ fontSize:12, color:"var(--text-subtle)", fontWeight:600, margin:"0 0 -8px", textAlign:"right" }}>
         💡 상황 → 행동 → 도움·변화의 순서로 기록해요
       </p>
