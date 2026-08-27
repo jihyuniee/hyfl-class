@@ -64,7 +64,7 @@ const SUMMARY_2ND = {
 };
 
 // 2학기 주번 주간 일정. 이번 주에 이미 활동한 강지우·박우진부터 시작하고,
-// 휴지통 비우기 담당 4명을 포함해 중간고사·기말고사 주를 제외하고 2명씩 순환 배정.
+// 쓰레기 버리기·휴지통 비우기 담당 4명을 포함해 중간고사·기말고사 주를 제외하고 2명씩 순환 배정.
 const WEEKLY_SCHEDULE_2ND: { start: string; end: string; pair: [string, string] }[] = [
   { start: "2026-08-24", end: "2026-08-28", pair: ["강지우", "박우진"] },
   { start: "2026-08-31", end: "2026-09-04", pair: ["김하연", "성연준"] },
@@ -95,7 +95,7 @@ type SummaryRow = { label: string; value: string; note: string };
 const SUMMARY_ROWS_2ND: SummaryRow[] = [
   { label: "청소 총괄", value: "장지현, 박우진, 현서정", note: "회장/부회장" },
   { label: "칠판 담당", value: SUMMARY_2ND.chalkboard.join(", "), note: "주번 대신 매번 칠판 정리" },
-  { label: "휴지통 비우기 담당", value: "이승지, 김하연, 윤혜림, 양효승", note: "주번 주간에는 제외, 나머지 3명이 쓰레기·재활용품 배출 및 휴지통 비우기" },
+  { label: "쓰레기 버리기·휴지통 비우기 담당", value: "이승지, 김하연, 윤혜림, 양효승", note: "주번 주간에는 제외, 나머지 3명이 쓰레기·재활용품 배출 및 휴지통 비우기" },
   {
     label: "특별구역",
     value: SUMMARY_2ND.specialZones.map((student) => `${classNo(student.no)}번 ${student.name}`).join(", "),
@@ -111,7 +111,7 @@ const SUMMARY_ROWS_2ND: SummaryRow[] = [
 const SUMMARY_ROWS_1ST: SummaryRow[] = [
   { label: "청소 총괄", value: "주보민, 강지우, 이시원", note: "회장/부회장" },
   { label: "칠판 담당", value: "김은솔, 송민주, 심지안", note: "청소 제외" },
-  { label: "휴지통 비우기 담당", value: "윤혜림, 이승지, 현서정, 박민석", note: "청소 제외" },
+  { label: "쓰레기 버리기·휴지통 비우기 담당", value: "윤혜림, 이승지, 현서정, 박민석", note: "청소 제외" },
   { label: "특별구역", value: "김태현, 김혜민, 박우진, 손정연, 유다현, 이조은", note: "홀수 번호 중 6명" },
   { label: "교실 청소", value: "김하연, 성연준, 양효승, 장지현, 정은지, 최인아, 전주하", note: "월/목 쓸기·닦기 교대" },
 ];
@@ -171,7 +171,7 @@ export default function CleaningPage() {
         </h1>
         <p className="mt-3 text-sm leading-6 text-gray-700">
           {semester === CURRENT_SEMESTER
-            ? "칠판 담당과 특별구역 담당을 제외한 모든 학생이 주번에 참여해요. 휴지통 비우기 담당 학생이 주번인 주에는 쓰레기 버리기에서 빠지고, 나머지 3명이 쓰레기와 재활용품을 버리고 휴지통을 비워요."
+            ? "칠판 담당과 특별구역 담당을 제외한 모든 학생이 주번에 참여해요. 쓰레기 버리기·휴지통 비우기 담당 학생이 주번인 주에는 쓰레기 버리기에서 빠지고, 나머지 3명이 쓰레기와 재활용품을 버리고 휴지통을 비워요."
             : "월요일, 목요일 청소 기준 역할표예요. 자료는 그대로 보존됩니다."}
         </p>
         <div className="mt-5">
@@ -222,7 +222,7 @@ function CleaningSecondSemester() {
         </div>
 
         <div className="rounded-2xl border border-violet-200 bg-violet-50 p-5 shadow-sm">
-          <div className="text-sm font-semibold text-violet-700">휴지통 비우기 담당 · 주번도 참여</div>
+          <div className="text-sm font-semibold text-violet-700">쓰레기 버리기·휴지통 비우기 담당 · 주번도 참여</div>
           <div className="mt-3 flex flex-wrap gap-2">
             {s.trash.map((name) => (
               <span
@@ -261,7 +261,7 @@ function CleaningSecondSemester() {
         </div>
         <p className="mb-4 text-sm leading-6 text-gray-700">
           칠판·특별구역 담당을 제외한 {s.weekly.length}명이 매주 돌아가며 주번을 맡아요.
-          휴지통 비우기 담당 학생도 주번에 참여하며, 주번인 주에는 나머지 3명이 쓰레기와 재활용품을 버리고 휴지통을 비워요.
+          쓰레기 버리기·휴지통 비우기 담당 학생도 주번에 참여하며, 주번인 주에는 나머지 3명이 쓰레기와 재활용품을 버리고 휴지통을 비워요.
         </p>
 
         <div className="mb-5 flex flex-wrap gap-2">
@@ -375,7 +375,7 @@ function CleaningFirstSemester() {
         </div>
 
         <div className="rounded-2xl border border-violet-200 bg-violet-50 p-5 shadow-sm">
-          <div className="text-sm font-semibold text-violet-700">청소 제외 · 휴지통 비우기 담당</div>
+          <div className="text-sm font-semibold text-violet-700">청소 제외 · 쓰레기 버리기·휴지통 비우기 담당</div>
           <div className="mt-3 flex flex-wrap gap-2">
             {s.excluded.trash.map((name) => (
               <span
