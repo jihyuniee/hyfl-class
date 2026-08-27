@@ -322,7 +322,12 @@ function CleaningSecondSemester() {
                       )}
                     </td>
                     <td className="border-b px-3 py-3 text-sm text-gray-800 sm:px-4">
-                      {week.pair.join(", ")}
+                      {week.pair
+                        .map((name) => {
+                          const student = STUDENTS.find((item) => item.name === name);
+                          return student ? `${classNo(student.no)}번 ${name}` : name;
+                        })
+                        .join(", ")}
                     </td>
                   </tr>
                 );
