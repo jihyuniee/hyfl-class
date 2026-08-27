@@ -35,6 +35,10 @@ const WEEKLY_NAMES_2ND = new Set([
   "전주하",
   "손정연",
   "강지우",
+  "김하연",
+  "양효승",
+  "윤혜림",
+  "이승지",
 ]);
 
 // 우리반 학번 순서(components/lib/students.ts)대로 정렬한 주번 명단.
@@ -59,25 +63,25 @@ const SUMMARY_2ND = {
   weeklyTasks: ["교실 바닥 쓸기", "교실 바닥 닦기", "유리창이 많이 더러우면 한 번씩 닦기"],
 };
 
-// 2학기 주번 주간 일정. 8/24(다음주)부터 종업식(12/31) 전 마지막 등교주까지,
-// 중간고사(9/28~10/2)·기말고사(12/2~12/8) 주는 제외하고 학번 순으로 2명씩 순환 배정.
+// 2학기 주번 주간 일정. 이번 주에 이미 활동한 강지우·박우진부터 시작하고,
+// 쓰레기 담당 4명을 포함해 중간고사·기말고사 주를 제외하고 2명씩 순환 배정.
 const WEEKLY_SCHEDULE_2ND: { start: string; end: string; pair: [string, string] }[] = [
   { start: "2026-08-24", end: "2026-08-28", pair: ["강지우", "박우진"] },
-  { start: "2026-08-31", end: "2026-09-04", pair: ["성연준", "손정연"] },
-  { start: "2026-09-07", end: "2026-09-11", pair: ["유다현", "이시원"] },
-  { start: "2026-09-14", end: "2026-09-18", pair: ["장지현", "전주하"] },
-  { start: "2026-09-21", end: "2026-09-25", pair: ["주보민", "최인아"] },
-  { start: "2026-10-05", end: "2026-10-09", pair: ["현서정", "강지우"] },
-  { start: "2026-10-12", end: "2026-10-16", pair: ["박우진", "성연준"] },
-  { start: "2026-10-19", end: "2026-10-23", pair: ["손정연", "유다현"] },
-  { start: "2026-10-26", end: "2026-10-30", pair: ["이시원", "장지현"] },
-  { start: "2026-11-02", end: "2026-11-06", pair: ["전주하", "주보민"] },
-  { start: "2026-11-09", end: "2026-11-13", pair: ["최인아", "현서정"] },
-  { start: "2026-11-16", end: "2026-11-20", pair: ["강지우", "박우진"] },
-  { start: "2026-11-23", end: "2026-11-27", pair: ["성연준", "손정연"] },
-  { start: "2026-12-14", end: "2026-12-18", pair: ["유다현", "이시원"] },
-  { start: "2026-12-21", end: "2026-12-25", pair: ["장지현", "전주하"] },
-  { start: "2026-12-28", end: "2026-12-31", pair: ["주보민", "최인아"] },
+  { start: "2026-08-31", end: "2026-09-04", pair: ["김하연", "성연준"] },
+  { start: "2026-09-07", end: "2026-09-11", pair: ["손정연", "양효승"] },
+  { start: "2026-09-14", end: "2026-09-18", pair: ["유다현", "윤혜림"] },
+  { start: "2026-09-21", end: "2026-09-25", pair: ["이승지", "이시원"] },
+  { start: "2026-10-05", end: "2026-10-09", pair: ["장지현", "전주하"] },
+  { start: "2026-10-12", end: "2026-10-16", pair: ["주보민", "최인아"] },
+  { start: "2026-10-19", end: "2026-10-23", pair: ["현서정", "강지우"] },
+  { start: "2026-10-26", end: "2026-10-30", pair: ["김하연", "박우진"] },
+  { start: "2026-11-02", end: "2026-11-06", pair: ["성연준", "손정연"] },
+  { start: "2026-11-09", end: "2026-11-13", pair: ["양효승", "유다현"] },
+  { start: "2026-11-16", end: "2026-11-20", pair: ["윤혜림", "이승지"] },
+  { start: "2026-11-23", end: "2026-11-27", pair: ["이시원", "장지현"] },
+  { start: "2026-12-14", end: "2026-12-18", pair: ["전주하", "주보민"] },
+  { start: "2026-12-21", end: "2026-12-25", pair: ["최인아", "현서정"] },
+  { start: "2026-12-28", end: "2026-12-31", pair: ["강지우", "김하연"] },
 ];
 
 function formatWeekRange(startIso: string, endIso: string): string {
@@ -91,7 +95,7 @@ type SummaryRow = { label: string; value: string; note: string };
 const SUMMARY_ROWS_2ND: SummaryRow[] = [
   { label: "청소 총괄", value: "장지현, 박우진, 현서정", note: "회장/부회장" },
   { label: "칠판 담당", value: SUMMARY_2ND.chalkboard.join(", "), note: "주번 대신 매번 칠판 정리" },
-  { label: "쓰레기 담당", value: "이승지, 김하연, 윤혜림, 양효승", note: "주번 대신 매번 쓰레기 배출" },
+  { label: "쓰레기 담당", value: "이승지, 김하연, 윤혜림, 양효승", note: "주번 주간에는 제외, 나머지 3명이 쓰레기 배출" },
   {
     label: "특별구역",
     value: SUMMARY_2ND.specialZones.map((student) => `${classNo(student.no)}번 ${student.name}`).join(", "),
@@ -167,7 +171,7 @@ export default function CleaningPage() {
         </h1>
         <p className="mt-3 text-sm leading-6 text-gray-700">
           {semester === CURRENT_SEMESTER
-            ? "칠판 담당, 쓰레기 담당, 특별구역 담당은 매일 자기 몫을 맡기 때문에 주번에서 제외해요. 나머지 학생은 매주 순환하며 교실 바닥을 쓸고 닦고, 유리창이 많이 더러우면 한 번씩 닦아요."
+            ? "칠판 담당과 특별구역 담당을 제외한 모든 학생이 주번에 참여해요. 쓰레기 담당 학생이 주번인 주에는 쓰레기 버리기에서 빠지고, 나머지 3명이 쓰레기를 맡아요."
             : "월요일, 목요일 청소 기준 역할표예요. 자료는 그대로 보존됩니다."}
         </p>
         <div className="mt-5">
@@ -218,7 +222,7 @@ function CleaningSecondSemester() {
         </div>
 
         <div className="rounded-2xl border border-violet-200 bg-violet-50 p-5 shadow-sm">
-          <div className="text-sm font-semibold text-violet-700">주번 대신 · 쓰레기 담당</div>
+          <div className="text-sm font-semibold text-violet-700">쓰레기 담당 · 주번도 참여</div>
           <div className="mt-3 flex flex-wrap gap-2">
             {s.trash.map((name) => (
               <span
@@ -256,8 +260,8 @@ function CleaningSecondSemester() {
           <h2 className="text-xl font-bold text-gray-900">주번 (매주 순환)</h2>
         </div>
         <p className="mb-4 text-sm leading-6 text-gray-700">
-          칠판·쓰레기·특별구역 담당을 제외한 나머지 {s.weekly.length}명이 학번 순서대로 아래
-          번호대로 매주 돌아가며 주번을 맡아요.
+          칠판·특별구역 담당을 제외한 {s.weekly.length}명이 매주 돌아가며 주번을 맡아요.
+          쓰레기 담당 학생도 주번에 참여하며, 주번인 주에는 나머지 3명이 쓰레기를 버려요.
         </p>
 
         <div className="mb-5 flex flex-wrap gap-2">
