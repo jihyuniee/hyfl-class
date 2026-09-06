@@ -106,8 +106,8 @@ export default function MentorPage() {
   const [rType,         setRType]         = useState<string>(UPLOAD_TYPES[0]);
   const [rUploaderName, setRUploaderName] = useState("");
   const [rDeleteCode,   setRDeleteCode]   = useState("");
-  const [rFile,         setRFile]         = useState<File | null>(null);
-  const [rPreviewUrl,   setRPreviewUrl]   = useState<string | null>(null);
+  const [rFiles,        setRFiles]        = useState<File[]>([]);
+  const [rPreviewUrls,  setRPreviewUrls]  = useState<(string | null)[]>([]);
   const [rDragOver,     setRDragOver]     = useState(false);
   const [rOpen,         setROpen]         = useState(false);
   const [uploading,     setUploading]     = useState(false);
@@ -157,13 +157,12 @@ export default function MentorPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [semester]);
 
-  // 선택한 파일의 미리보기 URL 생성/정리
+  // 선택한 파일들의 미리보기 URL 생성/정리
   useEffect(() => {
-    if (!rFile || !isImageFile(rFile.name)) { setRPreviewUrl(null); return; }
-    const url = URL.createObjectURL(rFile);
-    setRPreviewUrl(url);
-    return () => URL.revokeObjectURL(url);
-  }, [rFile]);
+    const urls = rFiles.map(f => isImageFile(f.name) ? URL.createObjectURL(f) : null);
+    setRPreviewUrls(urls);
+    return () => { urls.forEach(u => u && URL.revokeObjectURL(u)); };
+  }, [rFiles]);
 
   const scopedResources = resources.filter(r => r.semester === semester);
 
@@ -180,52 +179,76 @@ export default function MentorPage() {
     return new Date(dateStr) > lastVisit;
   }
 
-  function pickFile(f: File | null) {
-    setRFile(f);
-    if (!rTitle.trim() && f) {
-      setRTitle(f.name.replace(/\.[^./]+$/, ""));
+  function pickFiles(newFiles: FileList | File[] | null) {
+    if (!newFiles) return;
+    const arr = Array.from(newFiles);
+    if (arr.length === 0) return;
+    setRFiles(prev => [...prev, ...arr]);
+    if (!rTitle.trim() && arr.length === 1 && rFiles.length === 0) {
+      setRTitle(arr[0].name.replace(/\.[^./]+$/, ""));
     }
+  }
+
+  function removeFile(idx: number) {
+    setRFiles(prev => prev.filter((_, i) => i !== idx));
+  }
+
+  function clearFiles() {
+    setRFiles([]);
+    if (fileRef.current) fileRef.current.value = "";
   }
 
   async function addResource(subjectOverride?: string) {
     if (!rUploaderName.trim()) { alert("올리는 사람 이름을 입력해주세요"); return; }
-    if (!rFile) { alert("사진이나 파일을 선택해주세요"); return; }
+    if (rFiles.length === 0) { alert("사진이나 파일을 선택해주세요"); return; }
     setUploading(true);
 
     try {
-      const ext = rFile.name.split(".").pop() ?? "bin";
-      const safeName = `mentor-files/${Date.now()}.${ext}`;
+      let failCount = 0;
+      for (const file of rFiles) {
+        const ext = file.name.split(".").pop() ?? "bin";
+        const safeName = `mentor-files/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
 
-      const { error: upErr } = await supabase.storage
-        .from("uploads")
-        .upload(safeName, rFile, { cacheControl: "3600", upsert: false });
+        const { error: upErr } = await supabase.storage
+          .from("uploads")
+          .upload(safeName, file, { cacheControl: "3600", upsert: false });
 
-      if (upErr) { alert("파일 업로드 실패: " + upErr.message); setUploading(false); return; }
+        if (upErr) {
+          console.error("mentor upload error:", upErr);
+          failCount++;
+          continue;
+        }
 
-      const { data: urlData } = supabase.storage.from("uploads").getPublicUrl(safeName);
+        const { data: urlData } = supabase.storage.from("uploads").getPublicUrl(safeName);
 
-      const { error: insertErr } = await supabase.from("mentor_resources").insert({
-        subject: subjectOverride ?? rSubject,
-        title: rTitle.trim() || rFile.name.replace(/\.[^./]+$/, ""),
-        description: rDesc.trim() || null,
-        link: null,
-        file_url: urlData.publicUrl,
-        file_name: rFile.name,
-        file_type: rType,
-        uploader_name: rUploaderName.trim(),
-        delete_code: rDeleteCode.trim() || null,
-        semester,
-      });
+        const title = rFiles.length === 1
+          ? (rTitle.trim() || file.name.replace(/\.[^./]+$/, ""))
+          : file.name.replace(/\.[^./]+$/, "");
 
-      if (insertErr) {
-        console.error("mentor_resources insert error:", insertErr);
-        alert("데이터베이스 저장 실패: " + insertErr.message);
-        setUploading(false);
-        return;
+        const { error: insertErr } = await supabase.from("mentor_resources").insert({
+          subject: subjectOverride ?? rSubject,
+          title,
+          description: rDesc.trim() || null,
+          link: null,
+          file_url: urlData.publicUrl,
+          file_name: file.name,
+          file_type: rType,
+          uploader_name: rUploaderName.trim(),
+          delete_code: rDeleteCode.trim() || null,
+          semester,
+        });
+
+        if (insertErr) {
+          console.error("mentor_resources insert error:", insertErr);
+          failCount++;
+        }
       }
 
-      setRTitle(""); setRDesc(""); pickFile(null); setRDeleteCode("");
-      if (fileRef.current) fileRef.current.value = "";
+      if (failCount > 0) {
+        alert(`${failCount}개 파일 업로드에 실패했어요. 나머지는 정상적으로 올라갔어요.`);
+      }
+
+      setRTitle(""); setRDesc(""); clearFiles(); setRDeleteCode("");
       setROpen(false);
       await load();
     } catch (err) {
@@ -592,40 +615,48 @@ export default function MentorPage() {
           onClick={() => fileRef.current?.click()}
           onDragOver={e => { e.preventDefault(); setRDragOver(true); }}
           onDragLeave={() => setRDragOver(false)}
-          onDrop={e => { e.preventDefault(); setRDragOver(false); const f = e.dataTransfer.files?.[0]; if (f) pickFile(f); }}
+          onDrop={e => { e.preventDefault(); setRDragOver(false); pickFiles(e.dataTransfer.files); }}
           style={{
             border: rDragOver ? "2px dashed #6366f1" : "2px dashed #c7d2fe",
-            borderRadius:14, padding: rPreviewUrl ? 8 : 22, background: rDragOver ? "#eef2ff" : "#fff",
+            borderRadius:14, padding: rFiles.length > 0 ? 10 : 22, background: rDragOver ? "#eef2ff" : "#fff",
             textAlign:"center", cursor:"pointer", transition:"all 0.12s",
           }}>
-          {rFile ? (
-            rPreviewUrl ? (
-              <div style={{ position:"relative" }}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={rPreviewUrl} alt="미리보기" style={{ width:"100%", maxHeight:220, objectFit:"contain", borderRadius:10, display:"block" }}/>
-                <button onClick={e => { e.stopPropagation(); pickFile(null); if (fileRef.current) fileRef.current.value = ""; }}
-                  style={{ position:"absolute", top:6, right:6, width:26, height:26, borderRadius:999, border:"none", background:"rgba(0,0,0,0.55)", color:"#fff", cursor:"pointer", fontSize:13, fontWeight:700 }}>✕</button>
+          {rFiles.length > 0 ? (
+            <div onClick={e => e.stopPropagation()}>
+              <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:8 }}>
+                <span style={{ fontSize:12, fontWeight:700, color:"var(--primary)" }}>📎 {rFiles.length}개 선택됨</span>
+                <button onClick={clearFiles}
+                  style={{ fontSize:11, color:"#ef4444", background:"none", border:"none", cursor:"pointer", fontFamily:"inherit", fontWeight:700 }}>전체 지우기</button>
               </div>
-            ) : (
-              <div style={{ display:"flex", alignItems:"center", justifyContent:"center", gap:8 }}>
-                <span style={{ fontSize:20 }}>{getFileIcon(rFile.name)}</span>
-                <span style={{ fontSize:13, fontWeight:700, color:"var(--primary)" }}>{rFile.name}</span>
-                <button onClick={e => { e.stopPropagation(); pickFile(null); if (fileRef.current) fileRef.current.value = ""; }}
-                  style={{ fontSize:11, color:"#ef4444", background:"none", border:"none", cursor:"pointer", fontFamily:"inherit", fontWeight:700 }}>✕</button>
+              <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(72px,1fr))", gap:8 }}>
+                {rFiles.map((f, i) => (
+                  <div key={i} style={{ position:"relative", aspectRatio:"1 / 1", borderRadius:10, overflow:"hidden", border:"1px solid var(--border)", background:"#f8faff" }}>
+                    {rPreviewUrls[i] ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={rPreviewUrls[i]!} alt={f.name} style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>
+                    ) : (
+                      <div style={{ width:"100%", height:"100%", display:"flex", alignItems:"center", justifyContent:"center", fontSize:22 }}>{getFileIcon(f.name)}</div>
+                    )}
+                    <button onClick={() => removeFile(i)}
+                      style={{ position:"absolute", top:2, right:2, width:20, height:20, borderRadius:999, border:"none", background:"rgba(0,0,0,0.55)", color:"#fff", cursor:"pointer", fontSize:11, lineHeight:1 }}>✕</button>
+                  </div>
+                ))}
+                <button onClick={e => { e.stopPropagation(); fileRef.current?.click(); }}
+                  style={{ aspectRatio:"1 / 1", borderRadius:10, border:"1.5px dashed #c7d2fe", background:"#f8faff", cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", fontSize:22, color:"var(--primary)" }}>＋</button>
               </div>
-            )
+            </div>
           ) : (
             <>
               <p style={{ fontSize:26, margin:"0 0 4px" }}>📸</p>
               <p style={{ fontSize:13, color:"var(--text)", margin:"0 0 4px", fontWeight:700 }}>필기 사진을 올리거나 여기로 끌어다 놓으세요</p>
-              <p style={{ fontSize:11, color:"var(--text-subtle)", margin:0 }}>JPG · PNG · PDF · HWP · PPT · DOC 등 (최대 50MB)</p>
+              <p style={{ fontSize:11, color:"var(--text-subtle)", margin:0 }}>여러 장을 한 번에 선택할 수 있어요 · JPG · PNG · PDF · HWP · PPT · DOC 등 (최대 50MB)</p>
             </>
           )}
         </div>
-        <input ref={fileRef} type="file"
+        <input ref={fileRef} type="file" multiple
           accept=".pdf,.hwp,.hwpx,.jpg,.jpeg,.png,.gif,.webp,.ppt,.pptx,.doc,.docx,.xls,.xlsx,.zip"
           style={{ display:"none" }}
-          onChange={e => pickFile(e.target.files?.[0] ?? null)}/>
+          onChange={e => { pickFiles(e.target.files); e.target.value = ""; }}/>
 
         <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
           {!subjectFixed && (
@@ -638,7 +669,11 @@ export default function MentorPage() {
           </select>
           <input placeholder="올리는 사람 이름 *" value={rUploaderName} onChange={e => setRUploaderName(e.target.value)} className="hy-input"/>
         </div>
-        <input placeholder="제목 (선택, 비우면 파일명 사용)" value={rTitle} onChange={e => setRTitle(e.target.value)} className="hy-input"/>
+        {rFiles.length <= 1 ? (
+          <input placeholder="제목 (선택, 비우면 파일명 사용)" value={rTitle} onChange={e => setRTitle(e.target.value)} className="hy-input"/>
+        ) : (
+          <p style={{ fontSize:11, color:"var(--text-subtle)", margin:0 }}>사진이 여러 장이라 제목은 각 파일명으로 자동 저장돼요.</p>
+        )}
         <input placeholder="한 줄 메모 (선택, 예: 3단원 개념 정리했어요!)" value={rDesc} onChange={e => setRDesc(e.target.value)} className="hy-input"/>
         <input
           placeholder="🔑 삭제 코드 (선택, 나중에 직접 지울 때 필요해요)"
@@ -651,7 +686,7 @@ export default function MentorPage() {
         <div style={{ display:"flex", gap:8, alignItems:"center" }}>
           <button onClick={() => addResource(subjectFixed)} disabled={uploading}
             className="hy-btn hy-btn-primary" style={{ fontSize:13 }}>
-            {uploading ? "올리는 중..." : "📤 공유하기"}
+            {uploading ? "올리는 중..." : rFiles.length > 1 ? `📤 ${rFiles.length}장 공유하기` : "📤 공유하기"}
           </button>
           {uploading && <span style={{ fontSize:12, color:"var(--text-subtle)" }}>업로드 중입니다...</span>}
         </div>
