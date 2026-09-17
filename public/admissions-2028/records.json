@@ -1,0 +1,3940 @@
+{
+  "source": "인천광역시교육청 2028 대입전형 프리뷰",
+  "updated": "2026-07-15",
+  "notice": "일부 대학의 2028학년도 대입전형시행계획을 정리한 자료이며 최종 모집요강에서 변경될 수 있습니다.",
+  "records": [
+    {
+      "id": "2028-2-001",
+      "university": "가천대",
+      "category": "학생부교과",
+      "admission": "학생부우수자",
+      "method": "학생부(교과) 100%",
+      "minimum": "• 국, 수, 영, 사탐, 과탐 중 2개 영역 등급 합 6\n• 의예과 : 국, 수, 영, 과 중 3개 영역 각 1등급\n• 한의예과 : 국, 수, 영, 과 중 2개 영역 각 1등급\n• 약학과 : 국, 수, 영, 과 중 3개 영역 등급 합 5\n• 바이오로직스학과 : 국, 수, 영, 사탐, 과탐 중 2개 영역 등급 합 5",
+      "notes": "",
+      "page": 2,
+      "fields": [
+        "의약"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-2-002",
+      "university": "국민대",
+      "category": "학생부교과",
+      "admission": "교과우수자(학교장추천 I / II )",
+      "method": "학생부(교과) 100%",
+      "minimum": "• 국,수,영,사/과(1) 중 2개 영역 등급 합 6",
+      "notes": "• 학교장추천 I → 졸업예정자 대상\n• 학교장추천 II → 졸업자 대상\n• 고교별 추천 인원 제한 없음",
+      "page": 2,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-2-003",
+      "university": "고려대(세종)",
+      "category": "학생부교과",
+      "admission": "학생부교과(일반)",
+      "method": "학생부(교과) 100%",
+      "minimum": "• 국, 수, 영, 사/과(1) 중 1개 영역 3등급 이내\n• 약학과 → 국, 수, 영, 과 중 3개 영역 등급 합 5",
+      "notes": "",
+      "page": 2,
+      "fields": [
+        "의약"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-2-004",
+      "university": "동덕여대",
+      "category": "학생부교과",
+      "admission": "학생부교과우수자(학교장추천)",
+      "method": "학생부(교과) 100%",
+      "minimum": "• 국, 수, 영, 사/과(1) 중 2개 영역 등급 합 7\n• 약학대학 → 국, 수, 과 중 3개 영역 등급 합 5",
+      "notes": "• 고교별 추천 인원 제한 없음",
+      "page": 2,
+      "fields": [
+        "의약"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-2-005",
+      "university": "삼육대",
+      "category": "학생부교과",
+      "admission": "학교장추천",
+      "method": "학생부(교과) 100%",
+      "minimum": "• 국, 수, 영, 탐(1) 중 2개 영역 등급 합 7\n• 간호, 물리치료 → 국, 수, 영, 탐(1) 중 2개 영역 등급 합 6\n• 약학과 → 국, 수, 영, 과 중 3개 영역 등급 합 5\n• 체육학과/아트앤디자인학과 → 수능최저기준 미적용",
+      "notes": "• 고교별 추천 인원 제한 없음",
+      "page": 2,
+      "fields": [
+        "의약",
+        "예체능"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-2-006",
+      "university": "서경대",
+      "category": "학생부교과",
+      "admission": "교과우수자(언어위주/수리위주)",
+      "method": "학생부(교과) 100%",
+      "minimum": "• 국, 수, 영, 탐(1) 중 2개 영역 등급 합 8",
+      "notes": "",
+      "page": 2,
+      "fields": [
+        "인문·어문",
+        "자연·공학"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-2-007",
+      "university": "서울과학기술대",
+      "category": "학생부교과",
+      "admission": "고교추천",
+      "method": "학생부(교과) 100%",
+      "minimum": "• 국, 수, 영,사/과(1) 중 2개 영역 등급 합 6",
+      "notes": "• 3학년1학기까지 반영 교과목 80학점 이상 성적 산출이 가능한자\n• 고교별 추천 인원 제한 없음",
+      "page": 2,
+      "fields": [
+        "자연·공학"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-2-008",
+      "university": "서울여대",
+      "category": "학생부교과",
+      "admission": "교과우수자(학교장추천)",
+      "method": "학생부(교과) 100%",
+      "minimum": "• 국, 수, 영, 사/과(1) 중 2개 영역 등급 합 7",
+      "notes": "• 고교별 추천 인원 제한 없음",
+      "page": 2,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-2-009",
+      "university": "세종대",
+      "category": "학생부교과",
+      "admission": "지역균형",
+      "method": "학생부(교과) 100%",
+      "minimum": "• 국,수,영,사/과(1) 중 2개 영역 등급 합 5\n• 우주항공시스템공학과, 항공시스템공학전공 → 국, 수, 영, 사/과(1) 중 3개 영역 등급 합10",
+      "notes": "• 고교별 추천 인원 제한 없음\n• 항공시스템공학전공 → 2단계: 공군전형 합불 포함",
+      "page": 2,
+      "fields": [
+        "자연·공학"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-2-010",
+      "university": "수원대",
+      "category": "학생부교과",
+      "admission": "교과우수",
+      "method": "학생부(교과) 100%",
+      "minimum": "• 국, 수, 영, 탐(1)중 2개 영역 합 7 (단, 간호학과는 2개 영역 합 6)",
+      "notes": "",
+      "page": 2,
+      "fields": [
+        "의약"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-2-011",
+      "university": "용인대",
+      "category": "학생부교과",
+      "admission": "교과성적우수자",
+      "method": "학생부(교과) 100%",
+      "minimum": "• 인문사회 및 자연과학 계열 → 국, 수, 영 중 2개 영역 등급 합 8\n• 경찰행정학과 → 국, 수, 영 3개 영역 등급 합 9",
+      "notes": "",
+      "page": 2,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-2-012",
+      "university": "인천대",
+      "category": "학생부교과",
+      "admission": "교과성적우수자(학교장추천)",
+      "method": "학생부(교과) 100%",
+      "minimum": "• 국, 수, 영, 사/과(1) 중 2개 영역 등급 합 7\n• 동북아국제통상학과 → 국, 수, 영, 사/과(1) 중 2개 영역 등급 합 6",
+      "notes": "• 고교별 추천 인원 제한 없음",
+      "page": 2,
+      "fields": [
+        "인문·어문"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-2-013",
+      "university": "한국공학대",
+      "category": "학생부교과",
+      "admission": "교과우수자",
+      "method": "학생부(교과) 100%",
+      "minimum": "• 국, 수, 영, 사/과(1) 중 2개 영역 등급 합 8",
+      "notes": "",
+      "page": 2,
+      "fields": [
+        "자연·공학"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-2-014",
+      "university": "한국항공대",
+      "category": "학생부교과",
+      "admission": "교과성적우수자 I / II",
+      "method": "학생부(교과) 100%",
+      "minimum": "• 국, 수, 영, 사/과/직(1)중 2개 영역 등급 합 6",
+      "notes": "• 교과성적우수자 I → 졸업예정자 대상\n• 교과성적우수자 II → 졸업자 대상",
+      "page": 2,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-2-015",
+      "university": "한성대",
+      "category": "학생부교과",
+      "admission": "교과우수",
+      "method": "학생부(교과) 100%",
+      "minimum": "• 국, 수, 영, 사/과(1) 중 2개 영역 등급 합 7\n• (야간) → 국,수,영,사/과(1) 중 2개 영역 등급 합 8",
+      "notes": "• 제2외국어/한문을 탐구로 대체 가능",
+      "page": 2,
+      "fields": [
+        "인문·어문"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-2-016",
+      "university": "한양대(에리카)",
+      "category": "학생부교과",
+      "admission": "지역균형선발",
+      "method": "학생부(교과) 100%",
+      "minimum": "• 국, 수, 영, 사/과(1) 중 2개 영역 등급 합 6\n• 약학과 → 국, 수, 영, 사/과(1) 중 3개 영역 등급 합 5",
+      "notes": "• 고교별 추천 인원 제한 없음",
+      "page": 2,
+      "fields": [
+        "의약"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-2-017",
+      "university": "건국대(글로컬)",
+      "category": "학생부교과",
+      "admission": "교과우수",
+      "method": "• 학생부(교과) 100%",
+      "minimum": "미적용\n• 일부 모집단위 예외: 간호학과 → 국, 수, 영, 사탐, 과탐 중 2개 영역 등급 합 6",
+      "notes": "• 간호학과 → 국, 수, 영, 사탐, 과탐 중 2개 영역 등급 합 6",
+      "page": 2,
+      "fields": [
+        "의약"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-2-018",
+      "university": "차의과학대",
+      "category": "학생부교과",
+      "admission": "지역균형선발",
+      "method": "• 학생부(교과) 100%",
+      "minimum": "미적용\n• 일부 모집단위 예외: 약학대학 → 국, 수, 영, 과 중 수학 필수 포함 3개 영역 등급 합 6",
+      "notes": "• 약학대학 → 국, 수, 영, 과 중 수학 필수 포함 3개 영역 등급 합 6\n• 고교별 추천 인원 제한 없음",
+      "page": 2,
+      "fields": [
+        "자연·공학",
+        "의약"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-2-019",
+      "university": "동국대(WISE)",
+      "category": "학생부교과",
+      "admission": "학업성적우수자",
+      "method": "• 학생부(교과)100%",
+      "minimum": "미적용\n• 일부 모집단위 예외: 간호학과 → 국, 수, 영, 사/과(2) (소수점 절사) 중 2개 영역 등급 합 7\n• 한의예과 → 국, 수,영, 사/과(2) (소수점 절사) 중 3개 영역 등급 합 5\n• 의예과 → 국, 수, 영, 사/과(2)(소수점 절사) 중 3개 영역 등급 합 4",
+      "notes": "• 간호학과 → 국, 수, 영, 사/과(2) (소수점 절사) 중 2개 영역 등급 합 7\n• 한의예과 → 국, 수,영, 사/과(2) (소수점 절사) 중 3개 영역 등급 합 5\n• 의예과 → 국, 수, 영, 사/과(2)(소수점 절사) 중 3개 영역 등급 합 4",
+      "page": 2,
+      "fields": [
+        "의약"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-2-020",
+      "university": "평택대",
+      "category": "학생부교과",
+      "admission": "PTU교과",
+      "method": "• 학생부(교과) 100%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 2,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-2-021",
+      "university": "평택대",
+      "category": "학생부교과",
+      "admission": "PTU지역균형",
+      "method": "• 학생부(교과) 100% •고교별 추천 인원 제한 없음",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 2,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-2-022",
+      "university": "서경대",
+      "category": "학생부교과",
+      "admission": "미래인재",
+      "method": "• 학생부(교과) 100%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 2,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-2-023",
+      "university": "평택대",
+      "category": "학생부교과",
+      "admission": "PTU자율전공",
+      "method": "• 학생부(교과) 100%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 2,
+      "fields": [
+        "사회·상경"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-2-024",
+      "university": "서울신학대",
+      "category": "학생부교과",
+      "admission": "교과성적",
+      "method": "• 학생부(교과) 100%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 2,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-2-025",
+      "university": "한국공학대",
+      "category": "학생부교과",
+      "admission": "지역균형",
+      "method": "• 학생부(교과) 100% •고교별 추천 인원 제한 없음",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 2,
+      "fields": [
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-2-026",
+      "university": "성결대",
+      "category": "학생부교과",
+      "admission": "교과성적우수자",
+      "method": "• 학생부(교과) 100%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 2,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-2-027",
+      "university": "한국항공대",
+      "category": "학생부교과",
+      "admission": "학교장추천",
+      "method": "• 학생부(교과) 100% •고교별 추천 인원 제한 없음",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 2,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-2-028",
+      "university": "성공회대",
+      "category": "학생부교과",
+      "admission": "교과성적",
+      "method": "• 학생부(교과) 100%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 2,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-2-029",
+      "university": "신한대",
+      "category": "학생부교과",
+      "admission": "학생부우수자",
+      "method": "• 학생부(교과) 100%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 2,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-2-030",
+      "university": "한성대",
+      "category": "학생부교과",
+      "admission": "지역균형",
+      "method": "• 학생부(교과) 100% •고교별 추천 인원 제한 없음",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 2,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-2-031",
+      "university": "안양대",
+      "category": "학생부교과",
+      "admission": "교과일반",
+      "method": "• 학생부(교과) 100%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 2,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-2-032",
+      "university": "한세대",
+      "category": "학생부교과",
+      "admission": "교과우수자",
+      "method": "• 학생부(교과) 100%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 2,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-2-033",
+      "university": "을지대",
+      "category": "학생부교과",
+      "admission": "학교장추천",
+      "method": "• 학생부(교과 )100%",
+      "minimum": "미적용\n• 일부 모집단위 예외: 의예과 → 국, 수, 영, 사/과(2) 중 탐구 필수 포함 3개 영역 등급 합 6\n• 간호대학 → 국, 수, 영, 사/과(1) 중 2개 영역 등급 합 8\n• 보건과학대학 → 국, 수, 영, 사/과(1) 중 1개 영역 4등급",
+      "notes": "• 의예과 → 국, 수, 영, 사/과(2) 중 탐구 필수 포함 3개 영역 등급 합 6\n• 간호대학 → 국, 수, 영, 사/과(1) 중 2개 영역 등급 합 8\n• 보건과학대학 → 국, 수, 영, 사/과(1) 중 1개 영역 4등급\n• 고교별 추천 인원 제한 없음",
+      "page": 2,
+      "fields": [
+        "자연·공학",
+        "의약"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-2-034",
+      "university": "한신대",
+      "category": "학생부교과",
+      "admission": "학생부우수자",
+      "method": "• 학생부(교과) 100%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 2,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-2-035",
+      "university": "협성대",
+      "category": "학생부교과",
+      "admission": "교과성적우수자",
+      "method": "• 학생부(교과) 100%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 2,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-2-036",
+      "university": "화성의과학대",
+      "category": "학생부교과",
+      "admission": "학생부교과우수자",
+      "method": "• 학생부(교과) 100%",
+      "minimum": "미적용\n• 일부 모집단위 예외: 간호학과 → 국,수,영 중 2개 영역 등급 합 10",
+      "notes": "• 간호학과 → 국,수,영 중 2개 영역 등급 합 10",
+      "page": 2,
+      "fields": [
+        "자연·공학",
+        "의약"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-2-037",
+      "university": "용인대",
+      "category": "학생부교과",
+      "admission": "일반학생",
+      "method": "• 학생부(교과) 100%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 2,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-2-038",
+      "university": "연세대",
+      "category": "학생부교과",
+      "admission": "학생부교과(추천형)",
+      "method": "학생부(교과) 100% (5배수)\n1단계 성적 80% +\n서류평가 20%",
+      "minimum": "• 국 , 수, 사탐, 과탐 중 국,수 중 1개 과목을\n포함하여 2개 과목 등급 합 4\n• 국 , 수, 사탐, 과탐 중 수학 포함하여 2개\n과목 등급 합 5\n• 의 예/치의예/약학 → 국, 수, 사탐, 과탐\n중 수 포함 1등급 2개 이상\n• 통 합(상경계열/응용통계학과/생활과학대학/간호대학) → 인문 또는 자연계열(일반)의\n최저학력기준 중 하나 만족",
+      "notes": "• [공통] 영어 3등급 이내, 한국사 4등급 이내\n• 고교별 10명 이내 추천\n• 서 류평가 → 학교생활기록부 교과 학습 발달 상황\n(등급,성취도 제외)과 출결 등을 바탕으로 정성 평가함",
+      "page": 2,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학",
+        "의약"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-2-039",
+      "university": "을지대",
+      "category": "학생부교과",
+      "admission": "EU서류형",
+      "method": "학생부(교과) 100% (4배수)\n1단계 성적 70% + 서류 30%",
+      "minimum": "미적용",
+      "notes": "• 서류평가 → 고교 교육과정을 충실히 이수한 자로서 적극적으로 자신의 역량을 개발한 자\n• 고교별 추천인원 제한 없음",
+      "page": 2,
+      "fields": [
+        "교육"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-3-040",
+      "university": "가톨릭대",
+      "category": "학생부교과",
+      "admission": "지역균형",
+      "method": "교과 90%\n비교과 10%\n(출결)",
+      "minimum": "• 국, 수, 영, 사/과(1) 중 2개 영역 등급 합 7\n• 간호학과 → 국, 수, 영, 사/과(1) 중 3개 영역 등급 합 7",
+      "notes": "• 고교별 추천인원 제한 없음",
+      "page": 3,
+      "fields": [
+        "의약"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-3-041",
+      "university": "강남대",
+      "category": "학생부교과",
+      "admission": "지역균형",
+      "method": "교과 80%\n비교과 20%",
+      "minimum": "• 국, 수, 영, 사/과(1) 중 1개 영역 3등급 이내",
+      "notes": "• 비교과 →이수과목 수 •고교별 추천인원 제한 없음\n인문/자유 →사회교과 선택과목(일반, 진로, 융합)\n공학 → 수학/과학 선택과목(일반, 진로, 융합)",
+      "page": 3,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-3-042",
+      "university": "건국대",
+      "category": "학생부교과",
+      "admission": "KU지역균형",
+      "method": "교과 70%\n(교과정량)\n비교과 30%\n(교과정성)",
+      "minimum": "• 국, 수, 영, 사/과(1), 한국사 중 3개 영역 등급 합 8\n• 수의예과 → 국, 수, 영, 사/과(2), 한국사 중 3개 영역 등급 합 4",
+      "notes": "• 탐구영역 : 2과목 평균 •고교별 추천인원 제한 없음\n• 학생부평가30% → 학교생활기록부 교과학습발달상황 항목",
+      "page": 3,
+      "fields": [
+        "자연·공학",
+        "의약"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-3-043",
+      "university": "경기대",
+      "category": "학생부교과",
+      "admission": "교과성적우수자",
+      "method": "교과 90%\n비교과 10% (출결)",
+      "minimum": "• 국, 수, 영, 탐(1) 중2개 영역 등급 합 7, 한국사 6등급 이내",
+      "notes": "• 영어 1~2등급은 모두 1등급으로 반영",
+      "page": 3,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-3-044",
+      "university": "경희대",
+      "category": "학생부교과",
+      "admission": "지역균형",
+      "method": "교과 70%\n(교과+출결ㆍ봉사)\n비교과 30%\n(교과종합평가)",
+      "minimum": "• 국, 수, 영, 사/과(1) 중 2개 영역 등급 합 5, 한국사 5등급 이내\n• 의예/치의예/약학/한의예과(인문/자연) : 국, 수, 영, 사/과(1) 중 3개 영역 등급 합 4, 한국사 5등급 이내\n• 예술·체육 → 국, 수, 영, 사/과(2) 중 1개 영역 이상 3등급 이내",
+      "notes": "• 교 과종합평가 → 학교생활기록부교과학습발달상황 (교과성적, 세부 능력 및\n특기사항)을 학업역량과 진로역량으로 종합 평가\n• 고교별 추천인원 제한 없음",
+      "page": 3,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학",
+        "의약",
+        "예체능"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-3-045",
+      "university": "광운대",
+      "category": "학생부교과",
+      "admission": "지역균형",
+      "method": "교과 90%\n비교과 10% (출결)",
+      "minimum": "• 국, 수, 영, 사/과(1) 중 2개 영역 등급 합 6",
+      "notes": "• 자율전공학부 인문 / 자연으로 모집 •고교별 추천인원 제한 없음",
+      "page": 3,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-3-046",
+      "university": "단국대\n(죽전/천안)",
+      "category": "학생부교과",
+      "admission": "지역균형선발",
+      "method": "교과 95%\n비교과 5%\n(출결)",
+      "minimum": "• 죽전 → 국, 수, 영, 사/과(1) 중 2개 영역 등급 합 6\n• 천안(율곡혁신칼리지/인문사회계열광역/자연공학계열광역) → 국, 수, 영, 사/과(1) 중 2개 영역 등급 합 8",
+      "notes": "• 고교별 추천인원 제한 없음",
+      "page": 3,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-3-047",
+      "university": "단국대(천안)",
+      "category": "학생부교과",
+      "admission": "학생부교과우수자",
+      "method": "교과 95%\n비교과 5%\n(출결)",
+      "minimum": "• 인문, 자연, 체육 → 국, 수, 영, 사/과(1) 중 2개 영역 등급 합 8\n• 간호학과 → 국, 수, 영, 사/과(1) 중 2개 영역 등급 합 5\n• 공공정책학과(야) → 국, 수, 영 중 1개 영역 4등급",
+      "notes": "",
+      "page": 3,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학",
+        "의약",
+        "예체능"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-3-048",
+      "university": "덕성여대",
+      "category": "학생부교과",
+      "admission": "고교추천",
+      "method": "교과 90%\n비교과 10% (출결)",
+      "minimum": "• 국, 수, 영, 사/과(1) 중 2개 영역 등급 합 7\n• 글로벌융합대학 → 제2외국어, 한문 영역을 영어 영역으로 대체 가능\n• 약학대학 → 국, 수, 영, 사/과(2)중 수학 포함 3개 영역 등급 합 5",
+      "notes": "• 출 결 → 미인정결석 1회부터 감점\n(미인정 지각·조퇴·결과는 미인정 0.5회차로 간주)\n• 고교별 추천 인원 제한없음",
+      "page": 3,
+      "fields": [
+        "인문·어문",
+        "자연·공학",
+        "의약"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-3-049",
+      "university": "명지대",
+      "category": "학생부교과",
+      "admission": "학교장추천",
+      "method": "교과 90%\n비교과 10%(출결)",
+      "minimum": "• 인 문계열, 인공지능ㆍ소프트웨어융합대학\n→ 국, 수, 영, 사/과(1) 중 2개 영역 등급 합 6",
+      "notes": "• 고교별 추천인원 추후 모집요강에서 확인",
+      "page": 3,
+      "fields": [
+        "자연·공학"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-3-050",
+      "university": "상명대(천안)",
+      "category": "학생부교과",
+      "admission": "학생부교과",
+      "method": "교과 95%\n비교과 5%\n(출결)",
+      "minimum": "• 국,수,영,사/과(1) 중 2개 영역 등급 합 10\n• 간호학과 → 국, 수, 영, 사/과(1) 중 2개 영역 등급 합 8",
+      "notes": "",
+      "page": 3,
+      "fields": [
+        "의약"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-3-051",
+      "university": "서강대",
+      "category": "학생부교과",
+      "admission": "지역균형선발",
+      "method": "교과 90%\n비교과 10% (출결)",
+      "minimum": "• 국,수,영,사/과(1) 중 3개 영역 각 3등급 이내, 한국사 4등급 이내",
+      "notes": "• 출결일수 = 결석일수 + (지각일수+조퇴일수+결과일수)/3\n• 고교별 추천인원 제한 없음",
+      "page": 3,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-3-052",
+      "university": "서울시립대",
+      "category": "학생부교과",
+      "admission": "지역균형선발",
+      "method": "교과 60%\n비교과 40%\n(서류)",
+      "minimum": "• 국, 수, 영, 사/과(1) 중 3개 영역 등급 합 7, 한국사 4등급 이내",
+      "notes": "• 서류40% → 교과 영역 및 출결 상황을 중심으로 학업역량과 성실성 평가\n• 고교별 추천 인원 제한없음",
+      "page": 3,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-3-053",
+      "university": "성균관대",
+      "category": "학생부교과",
+      "admission": "추천인재",
+      "method": "교과 70%\n비교과 30%\n(정성평가)",
+      "minimum": "• 국, 수, 영, 사탐, 과탐 중 3개 등급 합 7\n• 글 로벌리더, 글로벌경영, 글로벌경제, 자유전공계열, 전자전기정보, 컴퓨터공학, 반도체융합공학,\n글로벌바이오메디컬공학, 에너지학 → 국, 수, 영, 사탐, 과탐 중3개 등급합 6",
+      "notes": "• 정량평가 70% → 공통과목 35%+석차등급 표시된 선택과목 35%\n• 정 성평가 30% → 학생부 교과학습 발달상황(전체과목) 및 출결사항만 반영 (그외\n항목 미반영)\n• 고교별 추천 인원 제한없음",
+      "page": 3,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학",
+        "의약"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-3-054",
+      "university": "성신여대",
+      "category": "학생부교과",
+      "admission": "지역균형 I, II",
+      "method": "교과 90%\n비교과 10%\n(출결)",
+      "minimum": "• 국, 수, 영, 사/과/직(1) 중 2개 영역 등급 합 7",
+      "notes": "• 지역균형 I → 졸업예정자 대상 / 지역균형 II → 졸업자 대상\n• 고교별 추천 인원 제한없음",
+      "page": 3,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-3-055",
+      "university": "숭실대",
+      "category": "학생부교과",
+      "admission": "교과우수자\n(학교장추천)",
+      "method": "교과 90%\n비교과 10%\n(학생부정성)",
+      "minimum": "• 국, 수, 영, 사/과(1) 중 2개 영역 등급 합 6",
+      "notes": "• 학 생부(정성) : 고교교육과정에서 지원전공(계열) 관련 교과를 충실히\n이수하였는지 등 평가\n• 고교별 추천 인원 제한없음",
+      "page": 3,
+      "fields": [
+        "교육"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-3-056",
+      "university": "아주대",
+      "category": "학생부교과",
+      "admission": "고교추천",
+      "method": "교과 90%\n비교과 10%(출결)",
+      "minimum": "• 국, 수, 영, 사/과(1) 중 2개 영역 등급 합 6",
+      "notes": "• 출결 → 미인정결석일수 4일부터 감점 •고교별 추천 인원 제한없음",
+      "page": 3,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-3-057",
+      "university": "연세대(미래)",
+      "category": "학생부교과",
+      "admission": "교과우수자\n(일반형)",
+      "method": "교과 90%\n비교과 10%\n(출결)",
+      "minimum": "• 인문, 자연 → 국, 수, 영, 사/과(1) 중 2개 영역 등급 합 7\n• 보건계열 → 국, 수, 영, 사/과(1) 중 2개 영역 등급 합 6\n• 간호학부 → 국, 수, 영, 사/과(1) 중 2개 영역 등급 합 4",
+      "notes": "• 출결 → 미인정결석 1일부터 감점 / 미인정결석 외 미인정 항목 2회 시 결석 1회\n• 교과우수자(추천형) →졸업예정자 대상",
+      "page": 3,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학",
+        "의약"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-3-058",
+      "university": "이화여대",
+      "category": "학생부교과",
+      "admission": "고교추천",
+      "method": "교과 80%\n비교과 5%(출결)+15%(서류)",
+      "minimum": "• 국, 수, 영, 사/과(1) 중 3개 영역 등급 합 7",
+      "notes": "• 서류15% →교과정성평가(학업역량, 진로역량 등 종합평가)\n• 고교별 20명 이내 추천",
+      "page": 3,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-3-059",
+      "university": "인하대",
+      "category": "학생부교과",
+      "admission": "지역균형",
+      "method": "교과 90%\n비교과 5%(출결)+5%(봉사)",
+      "minimum": "• 국, 수, 영, 사/과(1) 중 2개 영역 등급 합 6",
+      "notes": "• 비교과(출결·봉사) 반영점수 → 모집요강에 환산 점수표 공지 예정\n• 고교별 추천 인원 제한없음",
+      "page": 3,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-3-060",
+      "university": "중앙대",
+      "category": "학생부교과",
+      "admission": "지역균형",
+      "method": "교과 90%\n비교과 10%\n(출결)",
+      "minimum": "• 국, 수, 영, 사탐, 과탐 중 3개 영역 등급 합 7, 한국사 4등급 이내\n• 약학부 → 국, 수, 영, 사탐, 과탐 중 4개 영역 등급 합 5, 한국사 4등급 이내\n• 중앙대(다빈치)는 수능최저기준 미적용",
+      "notes": "• 영어 2등급 누적비율이 20%미만일 경우 1, 2등급을 통합하여 1등급으로 간주\n• 인 문, 사범, 사회과학, 경영경제대학 소속 모집단위의 경우 과탐 영역 1, 2등급을\n통합하여 1등급으로 간주\n• 출결 → 미인정결석, 조퇴일수에 따른 환산점수표 추후 발표\n• 고교별 20명 이내 추천",
+      "page": 3,
+      "fields": [
+        "사회·상경",
+        "교육",
+        "자연·공학",
+        "의약"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-3-061",
+      "university": "한경국립대",
+      "category": "학생부교과",
+      "admission": "일반",
+      "method": "교과 90%\n비교과 10%(출결)",
+      "minimum": "• 국, 수,영,사/과(1) 중 2개 영역 등급 합 8",
+      "notes": "• 평택캠퍼스는 수능최저기준 미적용",
+      "page": 3,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-3-062",
+      "university": "한양대",
+      "category": "학생부교과",
+      "admission": "학생부교과\n(추천형)",
+      "method": "교과 60%\n비교과 40%\n(학생부 종합평가)",
+      "minimum": "• 자연, 상경, 한양인터칼리지학부 → 국, 수, 영, 사/과(1) 중 3개 영역(수학포함) 각 3등급 이내\n• 인문, 의류학과, 실내건축디자인학과 → 국, 수, 영, 사/과(1) 중 3개 영역 각 3등급 이내",
+      "notes": "• 학 생부종합평가40% → 고교교육과정에 충실한 이수 및 종합 성취도, 핵심 역량\n등을 종합적으로 평가 •고교별 추천 인원 제한없음",
+      "page": 3,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "교육",
+        "자연·공학",
+        "예체능"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-3-063",
+      "university": "한국외대",
+      "category": "학생부교과",
+      "admission": "학교장추천",
+      "method": "교과 70%\n비교과 30%\n(교과종합평가)",
+      "minimum": "• (서울) 국, 수, 영,사/과(1) 중 2개 영역 등급 합 5\n• (글로벌) 국, 수, 영, 사/과(1) 중 2개 영역 등급 합 6",
+      "notes": "• 교 과종합평가 → 교과학습발달상황을 바탕으로 교과이수현황 및 관련\n학업역량을 정성적ㆍ종합적으로 평가 •고교별 추천 인원 제한없음",
+      "page": 3,
+      "fields": [
+        "인문·어문",
+        "자연·공학"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-3-064",
+      "university": "홍익대",
+      "category": "학생부교과",
+      "admission": "학교장추천자",
+      "method": "교과 95%\n비교과 5% (출결)",
+      "minimum": "• 국, 수, 영, 탐(사/과)(1) 중 2개 영역 등급 합 5, 한국사 4등급 이내",
+      "notes": "• 고교별 추천 인원 제한없음",
+      "page": 3,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-3-065",
+      "university": "홍익대(세종)",
+      "category": "학생부교과",
+      "admission": "교과우수자",
+      "method": "교과 95%\n비교과 5% (출결)",
+      "minimum": "• 국, 수, 영, 탐(사/과)(1) 중 1개 영역 4등급 이내",
+      "notes": "",
+      "page": 3,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-3-066",
+      "university": "경기대",
+      "category": "학생부교과",
+      "admission": "학교장추천",
+      "method": "학생부(교과) 90% + 출결 10%",
+      "minimum": "미적용",
+      "notes": "• 반영교과 : 전교과 •고교별 추천인원 제한 없음",
+      "page": 3,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-3-067",
+      "university": "고려대",
+      "category": "학생부교과",
+      "admission": "학교추천",
+      "method": "학생부(교과) 80% + 서류평가 20%",
+      "minimum": "미적용\n• 일부 모집단위 예외: 의과대학 → 국, 수, 영, 사/과(1) 중 4개 영역 등급합 5, 한국사 4등급 이내",
+      "notes": "• 의과대학 → 국, 수, 영, 사/과(1) 중 4개 영역 등급합 5, 한국사 4등급 이내\n• 서류평가 → 학생부종합평가 •고교별 12명 이내 추천 •학생부종합전형과 중복지원 가능",
+      "page": 3,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-3-068",
+      "university": "동국대",
+      "category": "학생부교과",
+      "admission": "학교장추천인재",
+      "method": "학생부(교과) 70% + 서류평가 30%",
+      "minimum": "미적용",
+      "notes": "• 서류평가 → 학교생활기록부 교과 관련 영역\n- 교과학습발달상황, 세부능력 및 특기사항, 출결상황, 행동특성 및 종합의견 •고교별 추천인원 제한 없음",
+      "page": 3,
+      "fields": [
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-3-069",
+      "university": "동국대(WISE)",
+      "category": "학생부교과",
+      "admission": "학교생활우수자",
+      "method": "학생부(교과) 70% + 서류평가 30%",
+      "minimum": "미적용\n• 일부 모집단위 예외: 간호학과 → 국, 수, 영, 사/과(2)(소수점 절사)중2개영역등급 합 7",
+      "notes": "• 간호학과 → 국, 수, 영, 사/과(2)(소수점 절사)중2개영역등급 합 7",
+      "page": 3,
+      "fields": [
+        "의약"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-3-070",
+      "university": "대진대",
+      "category": "학생부교과",
+      "admission": "학교장추천",
+      "method": "학생부(교과) 90% + 출결 10%",
+      "minimum": "미적용",
+      "notes": "• 출결 → 미인정결석 1회부터 감점 •고교별 추천인원 제한 없음",
+      "page": 3,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-3-071",
+      "university": "상명대",
+      "category": "학생부교과",
+      "admission": "고교추천",
+      "method": "학생부(교과) 95% + 출결 5%",
+      "minimum": "미적용",
+      "notes": "• 고교별 추천인원 제한 없음",
+      "page": 3,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-3-072",
+      "university": "숙명여대",
+      "category": "학생부교과",
+      "admission": "지역균형선발",
+      "method": "학생부(교과) 70% + 서류평가 30%",
+      "minimum": "미적용\n• 일부 모집단위 예외: 서류평가 → 교과위주 •약학부 → 국,수,영,사/과(1) 중 3개영역 등급 합 5 •고교별 추천인원 제한 없음",
+      "notes": "• 서류평가 → 교과위주 •약학부 → 국,수,영,사/과(1) 중 3개영역 등급 합 5 •고교별 추천인원 제한 없음",
+      "page": 3,
+      "fields": [
+        "의약"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-3-073",
+      "university": "연세대(미래)",
+      "category": "학생부교과",
+      "admission": "교과우수자(추천형)",
+      "method": "학생부(교과) 90% + 출결 10%",
+      "minimum": "미적용",
+      "notes": "• 출결 → 미인정결석 1일부터 감점 / 미인정결석 외 미인정 항목 2회시 결석 1회 •고교별 추천인원 제한 없음",
+      "page": 3,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-3-074",
+      "university": "청운대",
+      "category": "학생부교과",
+      "admission": "일반(학생부)",
+      "method": "학생부(교과+출석) 100%",
+      "minimum": "미적용",
+      "notes": "• 실질반영율 : 교과성적 78.7% + 출석성적 21.3% • 출결 → 1,~2학년의 출결상황 / 미인정결석만 반영 / 10일 이상 최저점",
+      "page": 3,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-3-075",
+      "university": "한경국립대",
+      "category": "학생부교과",
+      "admission": "지역균형선발",
+      "method": "학생부(교과) 90% + 출결 10%",
+      "minimum": "미적용",
+      "notes": "• 출결 → 미인정결석 4일부터 감점 / 미인정조퇴·결과·지각 2회가 결석 1일 •고교별 추천 인원 제한없음",
+      "page": 3,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-3-076",
+      "university": "한신대",
+      "category": "학생부교과",
+      "admission": "학교장추천",
+      "method": "학생부(교과) 90% + 출결 10%",
+      "minimum": "미적용",
+      "notes": "• 출결 → 미인정결석 4일부터 감점 •고교별 추천 인원 제한없음",
+      "page": 3,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-3-077",
+      "university": "수원대",
+      "category": "학생부교과",
+      "admission": "고교추천",
+      "method": "학생부(교과) 51.7% + 면접 48.3%",
+      "minimum": "• 국, 수, 영, 탐(1) 중 1개 영역 4등급 이내",
+      "notes": "• 고교별 추천인원 제한 없음",
+      "page": 3,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": true,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-3-078",
+      "university": "연세대(미래)",
+      "category": "학생부교과",
+      "admission": "교과우수자추천형 (의예과만 해당)",
+      "method": "학생부(교과) 80%\n+ 출결 10% + 면접 10%",
+      "minimum": "• 국, 수, 과 중 1등급 2개, 영어 2등급 및 한국사 4등급 이내",
+      "notes": "• 고교별 추천인원 제한 없음\n• 출결 → 미인정결석 1일부터 감점 / 미인정결석 외 미인정 항목 2회시 결석 1회\n• 면접 → 미응시는 불합격 처리",
+      "page": 3,
+      "fields": [
+        "의약"
+      ],
+      "hasMinimum": true,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-3-079",
+      "university": "연세대(미래)",
+      "category": "학생부교과",
+      "admission": "교과우수자일반형 (의예과만 해당)",
+      "method": "학생부(교과) 80%\n+ 출결 10% + 면접 10%",
+      "minimum": "• 국, 수, 과 중 1등급 2개, 영어 2등급 및 한국사 4등급 이내",
+      "notes": "• 고교별 추천인원 제한 없음\n• 출결 → 미인정결석 1일부터 감점 / 미인정결석 외 미인정 항목 2회시 결석 1회\n• 면접 → 미응시는 불합격 처리",
+      "page": 3,
+      "fields": [
+        "의약"
+      ],
+      "hasMinimum": true,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-4-080",
+      "university": "가천대",
+      "category": "학생부교과",
+      "admission": "지역균형",
+      "method": "학생부(교과) 100% (5배수)\n학생부(교과) 50% + 면접 50%",
+      "minimum": "미적용",
+      "notes": "• 고교별 추천인원 제한 없음",
+      "page": 4,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-4-081",
+      "university": "동국대(WISE)",
+      "category": "학생부교과",
+      "admission": "면접",
+      "method": "[일괄합산] 학생부(교과) 70% + 면접 30%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 4,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-4-082",
+      "university": "대진대",
+      "category": "학생부교과",
+      "admission": "학생부우수자",
+      "method": "[일괄합산] 학생부(교과) 60% + 면접 30% + 출결 10%",
+      "minimum": "미적용",
+      "notes": "• 면접 → 논리적 사고력 및 창의능력, 전공적성능력, 인성(태도 및 가치관) 5분 내외 •출결 → 미인정결석 1회부터 감점",
+      "page": 4,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-4-083",
+      "university": "명지대",
+      "category": "학생부교과",
+      "admission": "교과면접",
+      "method": "학생부(교과) 90% + 출결 10% (4배수)\n학생부(교과) 60% + 면접 40%",
+      "minimum": "미적용",
+      "notes": "• 면접 → 공동체역량, 진로역량, 의사소통역량(면접기초자료 2-3문항 작성 20분 제공)",
+      "page": 4,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-4-084",
+      "university": "서울신학대",
+      "category": "학생부교과",
+      "admission": "일반",
+      "method": "[일괄합산] 학생부(교과) 60% + 면접 40%",
+      "minimum": "미적용",
+      "notes": "• 면접 → 전공적합성, 인성 및 공동체 역량, 성장가능성",
+      "page": 4,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-4-085",
+      "university": "성결대",
+      "category": "학생부교과",
+      "admission": "SKU창의인재",
+      "method": "학생부(교과) 100% (4배수)\n학생부(교과) 40% + 면접 60%",
+      "minimum": "미적용",
+      "notes": "• 면접 → 주제의 이해력, 주장의 논리력, 언어구사능력, 성실성(태도) 등 종합평가 토론면접(1개조 2~4명)",
+      "page": 4,
+      "fields": [
+        "인문·어문"
+      ],
+      "hasMinimum": false,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-4-086",
+      "university": "신한대",
+      "category": "학생부교과",
+      "admission": "일반",
+      "method": "[일괄합산] 학생부(교과) 55% + 면접 45%",
+      "minimum": "미적용",
+      "notes": "• 면접 → 지원 동기, 논리적 사고력 및 인성(기본 소양) 3분 이내",
+      "page": 4,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-4-087",
+      "university": "수원대",
+      "category": "학생부교과",
+      "admission": "면접위주교과",
+      "method": "학생부(교과) 100% (5배수)\n학생부(교과) 60% + 면접 40%",
+      "minimum": "미적용",
+      "notes": "• 면접 → 그룹면접(3명), 자기소개 1분, 인성, 창의력 및 사고력, 학업계획 및 포부",
+      "page": 4,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-4-088",
+      "university": "안양대",
+      "category": "학생부교과",
+      "admission": "교과면접",
+      "method": "학생부(교과) 100% (5배수)\n학생부(교과) 50% + 면접 50%",
+      "minimum": "미적용",
+      "notes": "• 면접 → 전공 소양, 일반 소양(공동체 의식 및 소통 능력) 10분 내외",
+      "page": 4,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-4-089",
+      "university": "차의과학대",
+      "category": "학생부교과",
+      "admission": "CHA학생부교과",
+      "method": "학생부(교과) 100% (4배수)\n학생부(교과) 80% + 면접 20%",
+      "minimum": "미적용\n• 일부 모집단위 예외: 약학대학 → 국,수,영, 과중3개영역(수학포함)등급합6",
+      "notes": "• 약학대학 → 국,수,영, 과중3개영역(수학포함)등급합6",
+      "page": 4,
+      "fields": [
+        "자연·공학",
+        "의약"
+      ],
+      "hasMinimum": true,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-4-090",
+      "university": "청운대",
+      "category": "학생부교과",
+      "admission": "청운인재",
+      "method": "[일괄합산] 학생부(교과+비교과) 50% + 면접 50%",
+      "minimum": "미적용",
+      "notes": "• 학생부 → 교과성적 44% + 출석성적 12%•면접(인천캠퍼스) → 기본 소양, 인성 및 가치관, 전공적합성, 전공준비도, 전공잠재력",
+      "page": 4,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-4-091",
+      "university": "한세대",
+      "category": "학생부교과",
+      "admission": "면접우수자",
+      "method": "[일괄합산] 학생부(교과) 60% + 면접 40%",
+      "minimum": "미적용",
+      "notes": "• 면접 → 인성 및 신앙, 지원동기 및 학업계획, 전공적성 및 기초지식, 사회문제에 대한 이해 등 평가 (공통) 표현력, 태도 등 평가",
+      "page": 4,
+      "fields": [
+        "사회·상경"
+      ],
+      "hasMinimum": false,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-4-092",
+      "university": "한신대",
+      "category": "학생부교과",
+      "admission": "참인재",
+      "method": "[일괄합산] 학생부(교과) 54% + 출결 6% + 면접 40%",
+      "minimum": "미적용",
+      "notes": "• 면접 → 인성, 기초 소양, 전공적합성 •출결 → 미인정결석 4일부터 감점",
+      "page": 4,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-4-093",
+      "university": "협성대",
+      "category": "학생부교과",
+      "admission": "미래창의인재",
+      "method": "학생부(교과) 100% (7배수)\n학생부(교과) 50% + 면접 50%",
+      "minimum": "미적용",
+      "notes": "• 면접 → 기초적인 전공 소양 질문을 통한 발전가능성 평가",
+      "page": 4,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-8-094",
+      "university": "가천대",
+      "category": "논술",
+      "admission": "논술",
+      "method": "논술 100%",
+      "minimum": "• 인문/자연 → 국, 수, 영, 사탐, 과탐 중 2개 영역 합 6 이내 (국어 또는 수학을 반영할 경우 1개 등급 상향)\n• 바이오로직스학과 → 국, 수, 영, 사탐, 과탐 중 2개 영역 등급 합 5 이내\n• 의예과 → 국, 수, 영, 과탐 중 3개 영역 각 1등급\n• 한의예과 → 국, 수, 영, 과탐 중 2개 영역 각 1등급\n• 약학과 → 국, 수, 영, 과탐 중 3개 영역 등급 합 5 이내",
+      "notes": "",
+      "page": 8,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학",
+        "의약"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-8-095",
+      "university": "건국대",
+      "category": "논술",
+      "admission": "KU논술우수자",
+      "method": "논술 100%",
+      "minimum": "• 인문/자연 → 국, 수, 영, 한국사, 사/과(1) 중 3개 영역 등급 합 8 이내\n• 수의예과 → 국, 수, 영, 한국사, 사/과(2) 중 3개 영역 등급 합 4 이내",
+      "notes": "• 한국사 수능최저학력기준에 포함",
+      "page": 8,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학",
+        "의약"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-8-096",
+      "university": "경희대",
+      "category": "논술",
+      "admission": "논술우수자",
+      "method": "논술 100%",
+      "minimum": "• 인문/자연 → 국, 수, 영, 사/과(1) 중 2개 영역 등급합 5, 한국사 5등급 이내\n• 의예/치의예/약학/한의예과(인문·자연) →국, 수, 영, 사/과(1) 중 3개 영역 등급합 4, 한국사 5등급 이내\n• 체육 → 국, 수, 영, 사/과(1) 중 1개 영역 3등급 이내",
+      "notes": "",
+      "page": 8,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학",
+        "의약",
+        "예체능"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-8-097",
+      "university": "고려대",
+      "category": "논술",
+      "admission": "논술",
+      "method": "논술 100%",
+      "minimum": "• 인문/자연 →국, 수, 영, 사/과(1) 4개 영역 등급 합 8 이내 및 한국사 4등급 이내",
+      "notes": "",
+      "page": 8,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-8-098",
+      "university": "고려대(세종)",
+      "category": "논술",
+      "admission": "논술일반",
+      "method": "논술 100%",
+      "minimum": "• 인문/자연/체능 → 국, 수,영, 사/과(1) 중 1개 영역 3등급 이내\n• 약학과 → 국, 수, 영, 과탐 중 3개 영역 등급 합 5 이내",
+      "notes": "• 수능지정영역 모두 응시",
+      "page": 8,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학",
+        "의약",
+        "예체능"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-8-099",
+      "university": "국민대",
+      "category": "논술",
+      "admission": "논술",
+      "method": "논술 100%",
+      "minimum": "• 인문/자연 → 국, 수, 영, 사/과(1) 중 2개 영역 등급 합 6 이내",
+      "notes": "",
+      "page": 8,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-8-100",
+      "university": "동국대",
+      "category": "논술",
+      "admission": "논술",
+      "method": "논술 70% + 교과 20% +\n출결 10%",
+      "minimum": "• 전모집단위 → 국, 수, 영, 사탐, 과탐 중 2개 영역 등급 합 5 및 한국사 4등급 이내\n• 약학 → 국, 수, 영, 사탐, 과탐 중 3개 영역 등급합 4 및 한국사 4등급 이내",
+      "notes": "",
+      "page": 8,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학",
+        "의약"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-8-101",
+      "university": "대전대",
+      "category": "논술",
+      "admission": "한의논술",
+      "method": "논술 90% + 교과 10%",
+      "minimum": "• 한의예과 → 국, 수, 영, 사/과(2) 중 수학포함 3개 영역 등급 합 5 및 한국사 5등급 이내",
+      "notes": "• 2028대입 신설",
+      "page": 8,
+      "fields": [
+        "자연·공학",
+        "의약"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-8-102",
+      "university": "삼육대",
+      "category": "논술",
+      "admission": "논술우수자",
+      "method": "논술 100%",
+      "minimum": "• 일반학과 →국, 수, 영, 사/과(1) 중 1개 영역 3등급 이내\n• 약학과 → 국, 수, 영, 과탐 중 3개 영역 합 5 이내",
+      "notes": "",
+      "page": 8,
+      "fields": [
+        "의약"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-8-103",
+      "university": "서강대",
+      "category": "논술",
+      "admission": "논술(일반)",
+      "method": "논술 80% + 교과 10% + 출결 10%",
+      "minimum": "• 전계열 → 국, 수, 영, 사/과(1) 중 3개 영역 등급 합 7, 한국사 4등급 이내",
+      "notes": "",
+      "page": 8,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-8-104",
+      "university": "서울시립대",
+      "category": "논술",
+      "admission": "논술(자연계열)",
+      "method": "논술 100%",
+      "minimum": "• 자연계열 → 국, 수, 영, 사/과(1) 중 3개 영역 등급 합 7, 한국사 4등급 이내",
+      "notes": "",
+      "page": 8,
+      "fields": [
+        "자연·공학"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-8-105",
+      "university": "성균관대",
+      "category": "논술",
+      "admission": "논술우수\n(언어형/\n수리형)",
+      "method": "논술 100%",
+      "minimum": "• 글로벌AI융합학부 / 인문과학계열 / 사회과학계열 / 경영학과 / 자연과학계열 / 공학계열 / 건설환경공학부\n→ 국, 수, 영, 사탐, 과탐 중 3개 영역 등급 합 6 이내\n• 자 유전공계열 / 글로벌리더학부 / 글로벌경제 / 글로벌경영 / 전자전기정보공학부 / 반도체시스템공 / 컴퓨터공 /\n글로벌바이오메디컬공/지능형소프트웨어 / 약학 / 반도체융합공/ 에너지학 → 국, 수, 영, 사탐, 과탐 중 3개 영역 등급 합 5 이내\n• 자 연과학계열 / 공학계열 / 건설환경공학부 / 전자전기정보공학부 / 컴퓨터공학과 / 글로벌AI융합학부 모집단위\n→ 언어형 지원 시 수능최저학력기준에 수학 영역 의무 반영\n• 의예과 → 국, 수, 영, 사/과(2) 4개 영역 등급 합 5 이내",
+      "notes": "• 언어형과 수리형 논술 중복지원할 수 없음",
+      "page": 8,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학",
+        "의약"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-8-106",
+      "university": "세종대",
+      "category": "논술",
+      "admission": "논술우수자",
+      "method": "논술 100%",
+      "minimum": "• 전모집단위 → 국, 수, 영, 사/과(1) 중 2개 영역 등급합 5 이내",
+      "notes": "",
+      "page": 8,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-8-107",
+      "university": "숭실대",
+      "category": "논술",
+      "admission": "논술우수자",
+      "method": "논술 90% + 교과 10%",
+      "minimum": "• 전모집단위 → 국, 수, 영, 사/과(1) 중 2개 영역 등급 합 6 이내",
+      "notes": "",
+      "page": 8,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-8-108",
+      "university": "연세대",
+      "category": "논술",
+      "admission": "논술",
+      "method": "논술 100%",
+      "minimum": "• 전모집단위 → 국, 수, 사/과(1) 중 3개 영역 합 6 및 영어 3등급, 한국사 4등급 이내\n• 약학과 → 국, 수, 사/과(1) 중 3개 영역 합 5 및 영어 3등급, 한국사 4등급 이내",
+      "notes": "• 탐구는 소수점 첫째자리에서 절사",
+      "page": 8,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학",
+        "의약"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-8-109",
+      "university": "인하대",
+      "category": "논술",
+      "admission": "논술우수자",
+      "method": "논술 90% + 교과 10%",
+      "minimum": "• 전모집단위(의예과 제외) → 국, 수, 영, 사/과(1) 중 2개 영역 등급 합 6 이내\n• 의예과 → 국, 수, 영, 사/과(2) 중 3개 영역 등급 합 3 이내",
+      "notes": "",
+      "page": 8,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학",
+        "의약"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-8-110",
+      "university": "중앙대",
+      "category": "논술",
+      "admission": "모두의 논술",
+      "method": "논술 80% + 교과 10% +\n출결 10%",
+      "minimum": "• 서울 전모집단위 → 국,수,영,사탐, 과탐 중 3개 영역 등급합 6, 한국사 4등급 이내\n• 다빈치캠 → 수능최저 미적용\n• 약학부 → 국, 수, 영, 사탐, 과탐 중 4개 영역 등급합 5 및 한국사 4등급 이내\n• 의학부 → 국, 수, 영, 사/과(2) 4개 영역 등급합 5 및 한국사 4등급 이내",
+      "notes": "• 영 어2등급 누적비율이 20%미만일 경우 1,2등급을\n모두 1등급 인정",
+      "page": 8,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학",
+        "의약"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-8-111",
+      "university": "한국외대",
+      "category": "논술",
+      "admission": "논술",
+      "method": "논술100%",
+      "minimum": "• 서울 전모집단위 → 국, 수, 영, 사/과(1) 중 2개 영역 등급 합 5 이내\n• 글로벌 전모집단위 → 국, 수, 영, 사/과(1) 중 2개 영역 등급 합 6 이내",
+      "notes": "",
+      "page": 8,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-8-112",
+      "university": "한국항공대",
+      "category": "논술",
+      "admission": "논술우수자",
+      "method": "논술 100%",
+      "minimum": "• 전모집단위 → 국, 수, 영, 사/과/직(1) 중 2개 영역 등급합 6 이내",
+      "notes": "",
+      "page": 8,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-8-113",
+      "university": "한양대",
+      "category": "논술",
+      "admission": "논술",
+      "method": "논술 90% + 출결 10%",
+      "minimum": "• 전모집단위 → 국,수,영,사/과(1) 중 3개 영역 등급합 7 이내\n• 의예 → 국, 수, 영, 사/과(2) 중 3개 영역 등급합 4 이내",
+      "notes": "",
+      "page": 8,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학",
+        "의약"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-8-114",
+      "university": "한양대에리카",
+      "category": "논술",
+      "admission": "논술",
+      "method": "논술 100%",
+      "minimum": "• 전모집단위 → 국, 수, 영, 사/과/직(1) 중 2개 영역 등급합 6 이내",
+      "notes": "• 2028대입 신설",
+      "page": 8,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-8-115",
+      "university": "홍익대",
+      "category": "논술",
+      "admission": "논술",
+      "method": "논술 90% + 교과 10%",
+      "minimum": "• 전모집단위 → 국, 수, 영, 사/과(1) 중 2개 영역 등급 합 5, 한국사 4등급 이내",
+      "notes": "",
+      "page": 8,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-8-116",
+      "university": "홍익대(세종)",
+      "category": "논술",
+      "admission": "논술",
+      "method": "논술 90% + 교과 10%",
+      "minimum": "• 전모집단위 → 국, 수, 영, 사/과(1) 중 1개 영역 4등급 이내",
+      "notes": "",
+      "page": 8,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-8-117",
+      "university": "덕성여대",
+      "category": "논술",
+      "admission": "논술",
+      "method": "논술 100%",
+      "minimum": "• 글로벌융합대학, 과학기술대학 → 국, 수, 영, 사/과(1) 중 2개 영역 등급 합 7 이내\n• 약학대학 → 국, 수, 영, 사/과(2) 중 수학 포함 3개 영역 등급 합 5 이내",
+      "notes": "• 글 로벌융합대학 : 제 2외국어영역을 영어영역으로\n대체 가능",
+      "page": 8,
+      "fields": [
+        "인문·어문",
+        "자연·공학",
+        "의약"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-8-118",
+      "university": "동덕여대",
+      "category": "논술",
+      "admission": "논술우수자",
+      "method": "논술 100%",
+      "minimum": "• 전모집단위 → 국, 수, 영, 사/과(1) 중 2개 영역 등급 합 7 이내",
+      "notes": "",
+      "page": 8,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-8-119",
+      "university": "성신여대",
+      "category": "논술",
+      "admission": "논술우수자",
+      "method": "논술 100%",
+      "minimum": "• 전모집단위 → 국, 수, 영, 사/과/직(1) 중 2개 영역 등급 합 7 이내",
+      "notes": "",
+      "page": 8,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-8-120",
+      "university": "숙명여대",
+      "category": "논술",
+      "admission": "논술우수자",
+      "method": "논술 85% + 교과 15%",
+      "minimum": "• 전모집단위 → 국, 수, 영, 사/과(1) 중 2개 영역 등급 합 5 이내\n• 약학부 → 국, 수, 영, 사/과(1) 중 수학 포함 3개 영역 등급 합 4 이내",
+      "notes": "",
+      "page": 8,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학",
+        "의약"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-8-121",
+      "university": "이화여대",
+      "category": "논술",
+      "admission": "논술",
+      "method": "논술 100%",
+      "minimum": "• 인문/자연 → 국, 수, 영, 사/과(1) 중 3개 영역 등급 합 7 이내\n• 의예 → 국, 수, 영, 사/과(1) 4개 영역 등급 합 5 이내\n• 약학 → 국, 수, 영, 사/과(1) 4개 영역 등급 합 6 이내\n• 스크랜튼학부 → 국, 수, 영, 사/과(1) 중 3개 영역 등급 합 5 이내",
+      "notes": "",
+      "page": 8,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학",
+        "의약"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-8-122",
+      "university": "가톨릭대",
+      "category": "논술",
+      "admission": "논술",
+      "method": "논술 100%",
+      "minimum": "미적용\n• 일부 모집단위 예외: 인문/자연 → 수능최저 미적용 • 간호 → 국, 수, 영, 사/과(1) 중 3개 영역 등급 합 7\n• 약학 → 국, 수, 영, 과탐 중 3개 영역 등급 합 5\n• 의예 → 국, 수, 영, 과탐 중 3개 영역 등급 합 4 이내 및 한국사 4등급 이내",
+      "notes": "• 인문/자연 → 수능최저 미적용 • 간호 → 국, 수, 영, 사/과(1) 중 3개 영역 등급 합 7\n• 약학 → 국, 수, 영, 과탐 중 3개 영역 등급 합 5\n• 의예 → 국, 수, 영, 과탐 중 3개 영역 등급 합 4 이내 및 한국사 4등급 이내",
+      "page": 8,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학",
+        "의약"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-8-123",
+      "university": "강남대",
+      "category": "논술",
+      "admission": "논술",
+      "method": "논술 80% + 교과 20%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 8,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-8-124",
+      "university": "경기대",
+      "category": "논술",
+      "admission": "논술우수자",
+      "method": "논술 90% + 교과 10%",
+      "minimum": "미적용",
+      "notes": "• 자유전공학부(서울/수원)",
+      "page": 8,
+      "fields": [
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-8-125",
+      "university": "광운대",
+      "category": "논술",
+      "admission": "논술우수자",
+      "method": "논술 80% + 교과 20%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 8,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-8-126",
+      "university": "단국대(죽전)",
+      "category": "논술",
+      "admission": "논술우수자",
+      "method": "논술 90% + 교과 10%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 8,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-8-127",
+      "university": "상명대(서울)",
+      "category": "논술",
+      "admission": "논술",
+      "method": "논술 90% + 교과 10%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 8,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-8-128",
+      "university": "서경대",
+      "category": "논술",
+      "admission": "논술우수자",
+      "method": "논술 100%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 8,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-8-129",
+      "university": "서울과학기술대",
+      "category": "논술",
+      "admission": "논술",
+      "method": "논술 80% + 교과 20%",
+      "minimum": "미적용",
+      "notes": "• 자유전공학부",
+      "page": 8,
+      "fields": [
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-8-130",
+      "university": "수원대",
+      "category": "논술",
+      "admission": "교과논술",
+      "method": "논술 100%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 8,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-8-131",
+      "university": "신한대",
+      "category": "논술",
+      "admission": "논술",
+      "method": "논술 100%",
+      "minimum": "미적용",
+      "notes": "• 학생부교과성적은 동점자 처리기준으로 활용",
+      "page": 8,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-8-132",
+      "university": "아주대",
+      "category": "논술",
+      "admission": "논술우수자",
+      "method": "논술 90% + 교과 10%",
+      "minimum": "미적용\n• 일부 모집단위 예외: 인문/자연 → 수능최저 미적용 • 의학과 →국, 수, 영, 사/과(2) 4개 영역 등급 합 6 이내\n• 약학과 → 국, 수, 영, 사/과(2) 중 3개 영역등급 합 5 이내",
+      "notes": "• 인문/자연 → 수능최저 미적용 • 의학과 →국, 수, 영, 사/과(2) 4개 영역 등급 합 6 이내\n• 약학과 → 국, 수, 영, 사/과(2) 중 3개 영역등급 합 5 이내",
+      "page": 8,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학",
+        "의약"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-8-133",
+      "university": "연세대",
+      "category": "논술",
+      "admission": "논술",
+      "method": "논술 100%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 8,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-8-134",
+      "university": "연세대(미래)",
+      "category": "논술",
+      "admission": "논술우수자",
+      "method": "논술 80% + 교과 10% + 출결 10%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 8,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-8-135",
+      "university": "을지대",
+      "category": "논술",
+      "admission": "논술우수자",
+      "method": "논술 80% + 교과 20%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 8,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-8-136",
+      "university": "중앙대",
+      "category": "논술",
+      "admission": "재학생논술",
+      "method": "논술 80% + 교과 10% + 출결 10%",
+      "minimum": "미적용",
+      "notes": "• 2028년 졸업예정자만 지원 가능",
+      "page": 8,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-8-137",
+      "university": "한국공학대",
+      "category": "논술",
+      "admission": "논술우수자",
+      "method": "논술 80% + 교과 20%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 8,
+      "fields": [
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-8-138",
+      "university": "한국기술교육대",
+      "category": "논술",
+      "admission": "논술일반",
+      "method": "논술 100%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 8,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-8-139",
+      "university": "한신대",
+      "category": "논술",
+      "admission": "논술",
+      "method": "논술 100%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 8,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-8-140",
+      "university": "서울여대",
+      "category": "논술",
+      "admission": "논술우수자",
+      "method": "논술 80% + 교과 20%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 8,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-8-141",
+      "university": "한성대",
+      "category": "논술",
+      "admission": "논술(약술형)",
+      "method": "논술 80% + 교과 20%",
+      "minimum": "미적용",
+      "notes": "• 2028대입 신설",
+      "page": 8,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-10-142",
+      "university": "가천대",
+      "category": "학생부종합",
+      "admission": "가천바람개비",
+      "method": "서류 100% (4배수)\n1단계 50% + 면접 50%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 10,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-10-143",
+      "university": "가천대",
+      "category": "학생부종합",
+      "admission": "가천의약학\n(의예과/약학과)",
+      "method": "서류 100% (4배수)\n1단계 50% + 면접 50%",
+      "minimum": "• 의예과 → 국, 수, 영, 과 중 3개 영역 각 1등급\n• 약학과 → 국, 수, 영, 과 중 3개 영역 등급 합 5",
+      "notes": "",
+      "page": 10,
+      "fields": [
+        "의약"
+      ],
+      "hasMinimum": true,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-10-144",
+      "university": "가톨릭대",
+      "category": "학생부종합",
+      "admission": "잠재능력우수자면접",
+      "method": "서류 100% (4배수)\n1단계 70% + 면접 30%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 10,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-10-145",
+      "university": "가톨릭대",
+      "category": "학생부종합",
+      "admission": "학교장추천",
+      "method": "서류 100% (4배수)\n*간호학과 → 3배수\n1단계 70% + 면접 30%",
+      "minimum": "미적용\n• 의예과 → 국, 수, 영, 과 중 3개 영역 등급 합 4, 한국사 4등급\n• 약학과 → 국, 수, 영, 과 중 3개 영역 등급 합 5",
+      "notes": "• 의예과 → 고교별 추천인원 : 2명\n• 약학, 간호학과 → 추천 인원 제한 없음",
+      "page": 10,
+      "fields": [
+        "의약"
+      ],
+      "hasMinimum": true,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-10-146",
+      "university": "강남대",
+      "category": "학생부종합",
+      "admission": "학교생활우수자2",
+      "method": "서류 100% (3배수)\n1단계 70% + 면접 30%",
+      "minimum": "미적용",
+      "notes": "• 인문사회계",
+      "page": 10,
+      "fields": [
+        "인문·어문",
+        "사회·상경"
+      ],
+      "hasMinimum": false,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-10-147",
+      "university": "건국대",
+      "category": "학생부종합",
+      "admission": "KU자기추천",
+      "method": "서류 100% (3배수)\n1단계 70% + 면접 30%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 10,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-10-148",
+      "university": "건국대(글로컬)",
+      "category": "학생부종합",
+      "admission": "Cogitio자기추천(면접형)",
+      "method": "서류 100% (4배수)\n1단계 70% + 면접 30%",
+      "minimum": "미적용\n• 의예과 → 국, 수, 영, 사, 과 중 4개 영역 등급 합 5, 한국사 4등급",
+      "notes": "• 의예과: 1단계 5배수",
+      "page": 10,
+      "fields": [
+        "의약"
+      ],
+      "hasMinimum": true,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-10-149",
+      "university": "경기대",
+      "category": "학생부종합",
+      "admission": "KGU학생부종합(면접형) /\nSW우수자",
+      "method": "서류 100% (3배수)\n1단계 70% + 면접 30%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 10,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-10-150",
+      "university": "경희대",
+      "category": "학생부종합",
+      "admission": "네오르네상스(면접형)",
+      "method": "서류 100% (4배수)\n1단계 70% + 면접 30%",
+      "minimum": "미적용",
+      "notes": "• 1단계 : 의/치/한/약학과는 5배수 내외",
+      "page": 10,
+      "fields": [
+        "의약"
+      ],
+      "hasMinimum": false,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-10-151",
+      "university": "고려대",
+      "category": "학생부종합",
+      "admission": "학업우수",
+      "method": "서류 100% (5배수)\n1단계 80% + 면접 20%",
+      "minimum": "• 인문, 자연 → 국, 수, 영, 사/과(1) 중 4개 영역 등급 합 9, 한국사 4등급\n• 의학과 → 국, 수, 영, 사/과(1) 중 4개 영역 등급 합 5, 한국사 4등급",
+      "notes": "• 학생부 기반 면접\n• 의학과 : 적성 및 인성 면접 추가시행",
+      "page": 10,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학",
+        "의약"
+      ],
+      "hasMinimum": true,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-10-152",
+      "university": "고려대(세종)",
+      "category": "학생부종합",
+      "admission": "일반전형-면접형",
+      "method": "서류 100% (3배수)\n1단계 70% + 면접 30%",
+      "minimum": "미적용\n• 약학과 → 국, 수, 영, 과 중 3개 영역 등급 합 5",
+      "notes": "",
+      "page": 10,
+      "fields": [
+        "의약"
+      ],
+      "hasMinimum": true,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-10-153",
+      "university": "광운대",
+      "category": "학생부종합",
+      "admission": "광운참빛인재Ⅰ-면접형 /\n소프트웨어우수자",
+      "method": "서류 100% (3.5배수)\n1단계 60% + 면접 40%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 10,
+      "fields": [
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-10-154",
+      "university": "국민대",
+      "category": "학생부종합",
+      "admission": "국민프런티어 /\n알고리즘우수자",
+      "method": "서류 100% (3배수)\n1단계 60% + 면접 40%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 10,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-10-155",
+      "university": "단국대(죽전/천안)",
+      "category": "학생부종합",
+      "admission": "DKU인재(면접형)/SW인재",
+      "method": "서류 100% (3배수)\n1단계 60% + 면접 40%",
+      "minimum": "미적용\n• [천안] 의예, 치의예 → 국, 수, 영, 과 중3개 영역 등급 합 4 (수학 포함)\n• [천안] 약학과 → 국, 수, 영, 과 중 3개 영역 등급 합 5 (수학 포함)",
+      "notes": "",
+      "page": 10,
+      "fields": [
+        "자연·공학",
+        "의약"
+      ],
+      "hasMinimum": true,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-10-156",
+      "university": "대진대",
+      "category": "학생부종합",
+      "admission": "윈윈대진",
+      "method": "서류 100% (3배수)\n1단계 70% + 면접 30%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 10,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-10-157",
+      "university": "동국대",
+      "category": "학생부종합",
+      "admission": "DoDream",
+      "method": "서류 100% (2.5~3.5배수)\n1단계 60% + 면접 40%",
+      "minimum": "미적용",
+      "notes": "• 2 .5배수 : 경영대학, 기계로봇에너지공학, 법학,\n전자전기공학부, 컴퓨터AI학부\n• 3 .5배수 : 교육학과, 문화유산학과, 물리학과, 북한학전공,\n불교학부, 사회복지학과, 수학과, 수학교육과, 철학과\n• 3배수 : 위 모집 단위 제외한 모집 단위",
+      "page": 10,
+      "fields": [
+        "사회·상경",
+        "교육",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-10-158",
+      "university": "동국대(WISE)",
+      "category": "학생부종합",
+      "admission": "참사람(간호, 한의예, 의예)",
+      "method": "서류 100% (5배수)\n1단계 70% + 면접 30%",
+      "minimum": "• 간호학과 → 국, 수, 영, 탐(2) 중 2개 영역 등급 합 7\n• 한의예과 → 국, 수, 영, 탐(2) 중 3개 영역 등급 합 5\n• 의예과 → 국, 수, 영, 탐(2) 중 3개 영역 등급 합 4",
+      "notes": "• 탐(2) → 평균 반영: 소수점 절사",
+      "page": 10,
+      "fields": [
+        "의약"
+      ],
+      "hasMinimum": true,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-10-159",
+      "university": "명지대",
+      "category": "학생부종합",
+      "admission": "명지인재면접",
+      "method": "서류 100% (3배수)\n1단계 60% + 면접 40%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 10,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-10-160",
+      "university": "삼육대",
+      "category": "학생부종합",
+      "admission": "세움인재 / S/W인재",
+      "method": "서류 100% (4배수)\n1단계 60% + 면접 40%",
+      "minimum": "미적용\n• 약학과 → 국, 수, 영, 과 중 3개 영역 등급 합 5",
+      "notes": "",
+      "page": 10,
+      "fields": [
+        "의약"
+      ],
+      "hasMinimum": true,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-10-161",
+      "university": "서울과학기술대",
+      "category": "학생부종합",
+      "admission": "서울텍인재/서울텍미래",
+      "method": "서류 100% (3배수)\n1단계 70% + 면접 30%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 10,
+      "fields": [
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-10-162",
+      "university": "서울대",
+      "category": "학생부종합",
+      "admission": "지역균형",
+      "method": "서류 100% (3배수)\n1단계 70% + 면접 30%",
+      "minimum": "미적용\n※ 제 2외국어/한문 영역 응시 필수 학과 : 인문대학, 사회과학대학, 경영대학,\n농경제사회학부, 사범대학(인문사회, 체육계열), 소비자아동학부",
+      "notes": "• 고 교별 3명 이내 추천(자율형사립고, 외국어고, 국제고, 과학고,\n영재학교 지원 불가)\n• 2 022개정교육과정의 핵심역량을 평가에 반영하는 학생부\n기반 면접",
+      "page": 10,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "교육",
+        "자연·공학",
+        "예체능"
+      ],
+      "hasMinimum": false,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-10-163",
+      "university": "서울대",
+      "category": "학생부종합",
+      "admission": "일반",
+      "method": "서류 100% (2배수)\n• 1단계 50% + 면접 50%\n• 사범대학:\n1단계 50% + 면접 30% +\n면접(교직적성·인성) 20%\n• 미술대학 디자인과:\n면접 100%",
+      "minimum": "미적용",
+      "notes": "• 면접 →공동 출제 문항 활용 모집단위와 비활용 모집단위\n1) 공 동 출제 문항 활용 : 열린 문항과 답변에 기반한\n탐침 질문을 활용하여 문제해결능력과 사고력을 종합\n평가함(20분 내외, 답변준비시간 별도)\n면접유형 : 분 석적 주제토론, 심층적 문제해결, 융합적 과제수행\n면접유형은 모집단위별 다름(모집요강확인)\n2) 공 동 출제 문항 비활용: 상황제시, 자질, 적성, 인성,\n학업소양등 평가\n- 간호, 수의과, 의과, 치의학, 미술, 음악대학",
+      "page": 10,
+      "fields": [
+        "의약",
+        "예체능"
+      ],
+      "hasMinimum": false,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-10-164",
+      "university": "서울시립대",
+      "category": "학생부종합",
+      "admission": "학생부종합",
+      "method": "서류 100% (3배수)\n1단계 50%+면접 50%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 10,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-10-165",
+      "university": "서울신학대",
+      "category": "학생부종합",
+      "admission": "H+인재",
+      "method": "서류 100% (4배수)\n1단계 60% + 면접 40%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 10,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-10-166",
+      "university": "성공회대",
+      "category": "학생부종합",
+      "admission": "열린인재",
+      "method": "서류평가 60% + 면접 40%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 10,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-10-167",
+      "university": "성결대",
+      "category": "학생부종합",
+      "admission": "영암인재(면접형)",
+      "method": "서류 100% (4배수)\n1단계 40% + 면접 60%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 10,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-10-168",
+      "university": "성균관대",
+      "category": "학생부종합",
+      "admission": "성균인재",
+      "method": "서류 100% (3~7배수)\n1단계 70% + 면접 30%",
+      "minimum": "미적용",
+      "notes": "• 성균인재 3배수 : 사범대학, 스포츠과학과\n• 성균인재 5배수 : 연기예술학과(연출)\n• 성균인재 6배수 : 의예과\n• 성 균인재 7배수 : 자유전공계열, 글로벌융합학부, 공학계열,\n사회과학계열\n• 과학인재 : 제시문 기반 수학/과학 교과형 면접",
+      "page": 10,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "교육",
+        "자연·공학",
+        "의약",
+        "예체능"
+      ],
+      "hasMinimum": false,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-10-169",
+      "university": "성균관대",
+      "category": "학생부종합",
+      "admission": "과학인재",
+      "method": "서류 100% (7배수)",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 10,
+      "fields": [
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-10-170",
+      "university": "세종대",
+      "category": "학생부종합",
+      "admission": "세종인재(면접형)",
+      "method": "서류 100% (3배수)\n1단계 60% + 면접 40%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 10,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-10-171",
+      "university": "숭실대",
+      "category": "학생부종합",
+      "admission": "SSU미래인재(면접형)/AI우수자",
+      "method": "서류 100% (3~3.5배수)\n1단계 50% + 면접 50%",
+      "minimum": "미적용",
+      "notes": "• SSU미래인재(면접형) 3배수: 인문대학 및 정보보호학과\n• A I우수자 : 1단계 3배수 선발. 활동증빙서류 제출(해당자에\n한함)",
+      "page": 10,
+      "fields": [
+        "인문·어문",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-10-172",
+      "university": "아주대",
+      "category": "학생부종합",
+      "admission": "ACE(면접형)",
+      "method": "서류 100% (4배수)\n1단계 70% + 면접 30%",
+      "minimum": "미적용\n• 의학과 → 국, 수, 영, 사/과(2) 4개 영역 등급 합 6\n• 약학과 → 국, 수, 영, 사/과(2) 중 3개 영역 등급 합 5",
+      "notes": "",
+      "page": 10,
+      "fields": [
+        "의약"
+      ],
+      "hasMinimum": true,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-10-173",
+      "university": "연세대",
+      "category": "학생부종합",
+      "admission": "종합인재형",
+      "method": "서류 100% (4배수)\n1단계 70% + 면접 30%",
+      "minimum": "• 인문 / 사회 → 국, 수, 사, 과 중 국, 수 중 1개 과목 포함 2개 과목 등급 합 4\n• 자연 → 국, 수, 사, 과 중 수학 포함 2개 과목 등급 합 5\n• 의예 / 치의예 / 약학 → 국, 수, 사, 과 중 수학 포함하여 1등급 2개 이상\n• 통합(상경계열 / 응용통계학과 / 생활과학대학 / 간호대학)\n→ 인문 또는 자연계열(일반)의 최저학력기준 중 하나 만족\n• 국 제(아시아학전공, 융합인문사회과학부(HASS), 융합과학공학부(ISE))\n→ 국, 수, 사, 과 중 국, 수 중 1개 과목 포 2개 과목 등급 합 5\n• 언더우드학부(인문·사회), 언더우드학부(생명과학공학) → 최저미적용",
+      "notes": "• 공통 : 영어 3등급 및 한국사 4등급 이내\n• 국제 : 영어 2등급 및 한국사 4등급 이내\n• 제시문 기반 논리적 사고력 및 의사소통 능력 면접\n언더우드국제대학 전 모집단위의 경우 영어 제시문 출제 가능\n언더우드학부(인문·사회/생명과학공학)은 영어 구술면접 실시",
+      "page": 10,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학",
+        "의약"
+      ],
+      "hasMinimum": true,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-10-174",
+      "university": "연세대",
+      "category": "학생부종합",
+      "admission": "탐구인재형(일반,국제)",
+      "method": "서류 100%\n(일반: 4배수, 국제: 3배수)\n1단계 60% + 면접 40%",
+      "minimum": "미적용",
+      "notes": "• 제시문 기반 면접\n국제트랙은 영어 제시문 출제 가능",
+      "page": 10,
+      "fields": [
+        "인문·어문"
+      ],
+      "hasMinimum": false,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-10-175",
+      "university": "연세대(미래)",
+      "category": "학생부종합",
+      "admission": "학교생활우수자(면접형)",
+      "method": "서류 100% (3.5배수)\n(의예과 6배수)\n1단계 70% + 면접 30%",
+      "minimum": "미적용\n• 의예과 → 국, 수, 과 중 1등급 2개, (단, 영어 2등급 및 한국사 4등급이내)",
+      "notes": "",
+      "page": 10,
+      "fields": [
+        "의약"
+      ],
+      "hasMinimum": true,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-10-176",
+      "university": "연세대(미래)",
+      "category": "학생부종합",
+      "admission": "글로벌인재",
+      "method": "",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 10,
+      "fields": [
+        "인문·어문"
+      ],
+      "hasMinimum": false,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-10-177",
+      "university": "을지대",
+      "category": "학생부종합",
+      "admission": "EU면접형",
+      "method": "서류 100% (4배수)\n1단계 70% + 면접 30%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 10,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-10-178",
+      "university": "인천대",
+      "category": "학생부종합",
+      "admission": "자기추천-면접형",
+      "method": "서류 100% (3배수)\n1단계 60% + 면접 40%",
+      "minimum": "미적용",
+      "notes": "• 사범대학(체육교육과 제외) : 1단계 4배수\n• 스포츠의학, 체육교육과 : 1단계 5배수",
+      "page": 10,
+      "fields": [
+        "교육",
+        "의약",
+        "예체능"
+      ],
+      "hasMinimum": false,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-11-179",
+      "university": "인하대",
+      "category": "학생부종합",
+      "admission": "인하미래인재(면접형)",
+      "method": "서류 100%\n(3.5배수 내외)\n1단계 70% + 면접 30%",
+      "minimum": "미적용\n• 의예과 → 국, 수, 영 사/과(2) 중 3개 영역 등급 합 6",
+      "notes": "• 사/과(2): 평균 반영 소수점 첫째자리에서 절사",
+      "page": 11,
+      "fields": [
+        "의약"
+      ],
+      "hasMinimum": true,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-11-180",
+      "university": "중앙대",
+      "category": "학생부종합",
+      "admission": "모두의학종(All)",
+      "method": "서류 100%\n(3~6배수)\n1단계 60% + 면접 40%",
+      "minimum": "미적용",
+      "notes": "• 1단계 선발 모집단위별 상이 (모집요강 참조)",
+      "page": 11,
+      "fields": [
+        "의약"
+      ],
+      "hasMinimum": false,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-11-181",
+      "university": "중앙대",
+      "category": "학생부종합",
+      "admission": "탐구하는학종(Core)",
+      "method": "서류 100%\n(3~6배수)\n1단계 60% + 면접 40%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 11,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-11-182",
+      "university": "중앙대",
+      "category": "학생부종합",
+      "admission": "최저있는학종(Up)-의학부",
+      "method": "서류 100% (5배수)",
+      "minimum": "• 의학부 → 국, 수, 영, 사/과(2) 중 4개 영역 등급 합 5, 한국사 4등급",
+      "notes": "",
+      "page": 11,
+      "fields": [
+        "의약"
+      ],
+      "hasMinimum": true,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-11-183",
+      "university": "차의과학대",
+      "category": "학생부종합",
+      "admission": "CHA세대인재면접",
+      "method": "서류 100% (3배수)\n1단계 60% + 면접 40%",
+      "minimum": "미적용\n• 약학대학 → 국, 수, 영, 과 중 3개 영역 등급 합 6 (수학 포함)",
+      "notes": "",
+      "page": 11,
+      "fields": [
+        "자연·공학",
+        "의약"
+      ],
+      "hasMinimum": true,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-11-184",
+      "university": "포항공대\n(POSTECH)",
+      "category": "학생부종합",
+      "admission": "일반전형Ⅰ",
+      "method": "서류 100% (3.5배수)\n1단계 40% + 면접 60%",
+      "minimum": "미적용",
+      "notes": "• 면접 : 과학공학계의 잠재력, 사고력, 이공계 분야 수학을 위한 역량과 태도 평가",
+      "page": 11,
+      "fields": [
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-11-185",
+      "university": "포항공대\n(POSTECH)",
+      "category": "학생부종합",
+      "admission": "반도체공학인재전형",
+      "method": "서류 100% (3배수)\n1단계 50% + 면접 50%",
+      "minimum": "• 국, 수, 영, 과 중 수학 포함 2개 영역 등급 합 4",
+      "notes": "",
+      "page": 11,
+      "fields": [
+        "자연·공학"
+      ],
+      "hasMinimum": true,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-11-186",
+      "university": "포항공대\n(POSTECH)",
+      "category": "학생부종합",
+      "admission": "일반전형Ⅱ",
+      "method": "1단계 70% + 면접 30%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 11,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-11-187",
+      "university": "한국공학대",
+      "category": "학생부종합",
+      "admission": "창의인재",
+      "method": "서류 100% (3배수)\n1단계 60% + 면접 40%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 11,
+      "fields": [
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-11-188",
+      "university": "한국외대\n(서울/글로벌)",
+      "category": "학생부종합",
+      "admission": "면접형",
+      "method": "서류 100% (3배수)\n1단계 50% + 면접 50%",
+      "minimum": "미적용",
+      "notes": "• 인적성 면접",
+      "page": 11,
+      "fields": [
+        "인문·어문"
+      ],
+      "hasMinimum": false,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-11-189",
+      "university": "한국항공대",
+      "category": "학생부종합",
+      "admission": "미래인재",
+      "method": "서류 100% (3배수)\n1단계 70% + 면접 30%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 11,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-11-190",
+      "university": "한양대",
+      "category": "학생부종합",
+      "admission": "면접형",
+      "method": "서류 100% (3~5배수)\n1단계 70% + 면접 30%",
+      "minimum": "미적용",
+      "notes": "• 학생부 기반 면접\n• 공과 및 한양YK인터칼리지 → 제시문기반 면접",
+      "page": 11,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-11-191",
+      "university": "한양대(에리카)",
+      "category": "학생부종합",
+      "admission": "면접형",
+      "method": "서류 100% (3배수)\n1단계 70% + 면접 30%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 11,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-11-192",
+      "university": "협성대",
+      "category": "학생부종합",
+      "admission": "융합인재Ⅱ",
+      "method": "서류 100% (4배수)\n1단계 50% + 면접 50%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 11,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-11-193",
+      "university": "홍익대",
+      "category": "학생부종합",
+      "admission": "학교생활우수자(면접형)",
+      "method": "서류 100% (5배수)\n1단계 50% + 면접 50%",
+      "minimum": "미적용",
+      "notes": "• 캠퍼스자율전공 인문·예능 / 자연·예능",
+      "page": 11,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-11-194",
+      "university": "덕성여대",
+      "category": "학생부종합",
+      "admission": "덕성인재Ⅱ\n(서류및면접형)",
+      "method": "서류 100% (3~4배수)\n1단계 60% +면접 40%",
+      "minimum": "미적용\n• 약학대학 →국, 수, 영, 사/과(2) 중 수학포함 3개 영역 등급 합 6",
+      "notes": "• 3 배수 : 유아교육과, 약학과, 가상현실융합학과, 데이터사이언스학과, AI신약학과\n• 4배수 : 인문사회 , 과학기술대학, 자유전공학부",
+      "page": 11,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "교육",
+        "자연·공학",
+        "의약"
+      ],
+      "hasMinimum": true,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-11-195",
+      "university": "동덕여대",
+      "category": "학생부종합",
+      "admission": "동덕창의리더",
+      "method": "서류 100% (3배수)\n1단계 40% + 면접 60%",
+      "minimum": "미적용\n• 약학과 → 국, 수, 과 3개 영역 등급 합 5",
+      "notes": "",
+      "page": 11,
+      "fields": [
+        "의약"
+      ],
+      "hasMinimum": true,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-11-196",
+      "university": "서울여대",
+      "category": "학생부종합",
+      "admission": "바롬인재면접/AI융합인재",
+      "method": "서류 100% (5배수)\n1단계 50% + 면접 50%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 11,
+      "fields": [
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-11-197",
+      "university": "성신여대",
+      "category": "학생부종합",
+      "admission": "자기주도인재",
+      "method": "서류 100% (3배수)\n1단계 60% + 면접 40%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 11,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-11-198",
+      "university": "숙명여대",
+      "category": "학생부종합",
+      "admission": "숙명인재(면접형)/ SW인재",
+      "method": "서류 100% (4배수)\n1단계 70% + 면접 30%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 11,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-11-199",
+      "university": "이화여대",
+      "category": "학생부종합",
+      "admission": "미래인재-면접형",
+      "method": "서류 100% (5배수)\n1단계 70% + 면접 30%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 11,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": true
+    },
+    {
+      "id": "2028-11-200",
+      "university": "가톨릭대",
+      "category": "학생부종합",
+      "admission": "잠재능력우수자서류",
+      "method": "서류 100%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 11,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-11-201",
+      "university": "강남대",
+      "category": "학생부종합",
+      "admission": "학교생활우수자Ⅰ",
+      "method": "서류 100%",
+      "minimum": "미적용",
+      "notes": "• 인문사회계, 공학계, 자유전공학부, 예체능계",
+      "page": 11,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학",
+        "예체능"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-11-202",
+      "university": "건국대(글로컬)",
+      "category": "학생부종합",
+      "admission": "Cogitio자기추천(서류형)",
+      "method": "서류 100%",
+      "minimum": "미적용\n• 간호학과 → 국, 수, 영, 사, 과 중 상위 2개 영역 합 6",
+      "notes": "",
+      "page": 11,
+      "fields": [
+        "의약"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-11-203",
+      "university": "경희대",
+      "category": "학생부종합",
+      "admission": "네오르네상스(서류형)",
+      "method": "서류 100%",
+      "minimum": "• 인문, 자연, 자율/자유전공학부 → 국, 수, 영, 사/과(1) 중 2개 영역 등급 합 5, 한국사 5등급\n• 의예/한의예(인문·자연)/치의예/약학과 → 국, 수, 영, 사/과(1) 중 3개 영역 등급 합 4, 한국사 5등급",
+      "notes": "",
+      "page": 11,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학",
+        "의약"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-11-204",
+      "university": "고려대",
+      "category": "학생부종합",
+      "admission": "계열적합",
+      "method": "서류 100%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 11,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-11-205",
+      "university": "고려대(세종)",
+      "category": "학생부종합",
+      "admission": "일반전형-서류형",
+      "method": "서류 100%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 11,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-11-206",
+      "university": "광운대",
+      "category": "학생부종합",
+      "admission": "광운참빛인재Ⅱ-서류형",
+      "method": "서류 100%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 11,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-11-207",
+      "university": "단국대(죽전/천안)",
+      "category": "학생부종합",
+      "admission": "DKU인재(서류형)",
+      "method": "서류 100%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 11,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-11-208",
+      "university": "명지대",
+      "category": "학생부종합",
+      "admission": "명지인재서류",
+      "method": "서류 100%",
+      "minimum": "• 인문캠 → 국, 수, 영, 사/과(1) 중 2개 영역 등급 합 6\n• 자연캠 → 국, 수, 영, 사/과(1) 중 2개 영역 등급 합 7",
+      "notes": "• 인공지능·소프트웨어융합 → 인문캠",
+      "page": 11,
+      "fields": [
+        "인문·어문",
+        "자연·공학"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-11-209",
+      "university": "상명대(서울/천안)",
+      "category": "학생부종합",
+      "admission": "상명인재",
+      "method": "서류 100%",
+      "minimum": "미적용",
+      "notes": "• 예체능(애니메이션전공) 포함",
+      "page": 11,
+      "fields": [
+        "예체능"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-11-210",
+      "university": "서강대",
+      "category": "학생부종합",
+      "admission": "일반Ⅰ",
+      "method": "서류 100%",
+      "minimum": "미적용",
+      "notes": "• 학과별 모집",
+      "page": 11,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-11-211",
+      "university": "서강대",
+      "category": "학생부종합",
+      "admission": "일반Ⅱ",
+      "method": "서류 100%",
+      "minimum": "• 국, 수, 영, 사/과(1) 중 3개 영역 등급 합 7, 한국사 4등급",
+      "notes": "• 자유전공 포함 학부 모집",
+      "page": 11,
+      "fields": [
+        "사회·상경"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-11-212",
+      "university": "성결대",
+      "category": "학생부종합",
+      "admission": "영암인재(서류형)",
+      "method": "서류 100%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 11,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-11-213",
+      "university": "성균관대",
+      "category": "학생부종합",
+      "admission": "융합인재",
+      "method": "서류 100%",
+      "minimum": "• 국, 수, 영, 사탐, 과탐 중 3개 영역 중 등급 합 6",
+      "notes": "",
+      "page": 11,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-11-214",
+      "university": "성균관대",
+      "category": "학생부종합",
+      "admission": "탐구인재",
+      "method": "서류 100%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 11,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-11-215",
+      "university": "세종대",
+      "category": "학생부종합",
+      "admission": "세종인재(서류형)",
+      "method": "서류 100%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 11,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-11-216",
+      "university": "숭실대",
+      "category": "학생부종합",
+      "admission": "SSU미래인재(서류형)",
+      "method": "서류 100%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 11,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-11-217",
+      "university": "신한대",
+      "category": "학생부종합",
+      "admission": "신한국인",
+      "method": "서류 100%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 11,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-11-218",
+      "university": "아주대",
+      "category": "학생부종합",
+      "admission": "ACE(서류형)",
+      "method": "서류 100%",
+      "minimum": "• 인문계열 → 국, 수, 영, 사/과(1) 중 2개 영역 등급 합 6\n• 자연계열 → 국, 수, 영, 사/과(1) 중 2개 영역 등급 합 5",
+      "notes": "",
+      "page": 11,
+      "fields": [
+        "인문·어문",
+        "자연·공학"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-11-219",
+      "university": "안양대",
+      "category": "학생부종합",
+      "admission": "아리종합",
+      "method": "서류 100%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 11,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-11-220",
+      "university": "연세대(미래)",
+      "category": "학생부종합",
+      "admission": "학교생활우수자(서류형)",
+      "method": "서류 100%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 11,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-11-221",
+      "university": "인천대",
+      "category": "학생부종합",
+      "admission": "자기추천-서류형",
+      "method": "서류 100%",
+      "minimum": "미적용",
+      "notes": "• 자유전공학부 인문/자연",
+      "page": 11,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-11-222",
+      "university": "인하대",
+      "category": "학생부종합",
+      "admission": "인하미래인재(서류형)",
+      "method": "서류 100%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 11,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-11-223",
+      "university": "중앙대",
+      "category": "학생부종합",
+      "admission": "최저있는학종(Up)",
+      "method": "서류 100%",
+      "minimum": "미적용\n• 국, 수, 영, 사탐, 과탐 중 3개 영역 등급 합 6, 한국사 4등급\n• 약학부 → 국, 수, 영, 사,탐 과탐 중 4개 영역 등급 합 5, 한국사 4등급",
+      "notes": "• 영어 2등급 누적비율 20% 미만시 1, 2등급 통합 1등급으로 간주\n• 인문대학, 사회과학대학, 경영경제대학 소속 모집 단위 : 과학탐구 1, 2등급 통합 1등급으로 간주\n• 제2외국어/한문은 반영하지 않음.",
+      "page": 11,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학",
+        "의약"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-11-224",
+      "university": "차의과학대",
+      "category": "학생부종합",
+      "admission": "CHA세대인재서류",
+      "method": "서류 100%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 11,
+      "fields": [
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-11-225",
+      "university": "평택대",
+      "category": "학생부종합",
+      "admission": "PTU종합",
+      "method": "서류 100%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 11,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-11-226",
+      "university": "한경국립대",
+      "category": "학생부종합",
+      "admission": "잠재력우수자",
+      "method": "서류 100%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 11,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-11-227",
+      "university": "한국공학대",
+      "category": "학생부종합",
+      "admission": "융합인재",
+      "method": "서류 100%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 11,
+      "fields": [
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-11-228",
+      "university": "한국외대\n(서울/글로벌)",
+      "category": "학생부종합",
+      "admission": "서류형/SW인재",
+      "method": "서류 100%",
+      "minimum": "• 서울캠 → 국, 수, 영, 사/과(1) 중 2개 영역 등급 합 6\n• 글로벌캠 → 국, 수, 영, 사/과(1) 중 2개 영역 등급 합 7",
+      "notes": "",
+      "page": 11,
+      "fields": [
+        "인문·어문"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-11-229",
+      "university": "한성대",
+      "category": "학생부종합",
+      "admission": "한성인재",
+      "method": "서류 100%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 11,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-11-230",
+      "university": "한세대",
+      "category": "학생부종합",
+      "admission": "한세인재",
+      "method": "서류 100%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 11,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-11-231",
+      "university": "한양대",
+      "category": "학생부종합",
+      "admission": "학업형",
+      "method": "서류 100%",
+      "minimum": "• 자연, 상경, 한양인터칼리지학부 → 국, 수, 영, 사탐, 과탐 중 3개 영역 등급 합 7 (수학 포함)\n• 인문, 의류학과, 실내건축디자인학과 → 국, 수, 영, 사탐, 과탐 중 3개 영역 등급 합 7\n• 의예과 → 국, 수, 영, 사/과(2) 중 3개 영역 등급 합 4",
+      "notes": "",
+      "page": 11,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학",
+        "의약",
+        "예체능"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-11-232",
+      "university": "한양대(에리카)",
+      "category": "학생부종합",
+      "admission": "서류형",
+      "method": "서류 100%",
+      "minimum": "• 국,수,영,사/과(1) 중 2개 영역 등급 합 7\n• 약학과 → 국, 수, 영, 사/과(1) 중 3개 영역 등급 합 6",
+      "notes": "• 디자인계열 : 수능최저기준 미적용",
+      "page": 11,
+      "fields": [
+        "의약",
+        "예체능"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-11-233",
+      "university": "협성대",
+      "category": "학생부종합",
+      "admission": "융합인재Ⅰ",
+      "method": "서류 100%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 11,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-11-234",
+      "university": "홍익대(서울/세종)",
+      "category": "학생부종합",
+      "admission": "학교생활우수자(서류형)",
+      "method": "서류 100%",
+      "minimum": "• 서울캠 → 국, 수, 영, 사/과(1) 중 2개 영역 등급 합 5, 한국사 4등급 이내",
+      "notes": "• 세종캠퍼스는 수능최저기준 미적용",
+      "page": 11,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-11-235",
+      "university": "덕성여대",
+      "category": "학생부종합",
+      "admission": "덕성인재전형Ⅰ(서류형)",
+      "method": "서류 100%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 11,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-11-236",
+      "university": "서울여대",
+      "category": "학생부종합",
+      "admission": "바롬인재서류",
+      "method": "서류 100%",
+      "minimum": "미적용",
+      "notes": "",
+      "page": 11,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false
+    },
+    {
+      "id": "2028-11-237",
+      "university": "이화여대",
+      "category": "학생부종합",
+      "admission": "미래인재-서류형",
+      "method": "서류100%",
+      "minimum": "• 국, 수, 영, 사/과(1) 중 3개 영역 등급 합 7\n• 의예과 → 국, 수, 영, 사/과(1) 4개 영역 등급 합 5\n• 약학전공 → 국, 수, 영, 사/과(1) 4개 영역 등급 합 6\n• 스크랜튼학부 → 국, 수, 영, 사/과(1) 중 3개 영역 등급 합 5\n• 국제학부 → 국, 수, 영, 사/과(1) 중 국어포함 3개 영역 등급 합 7 및 영어 2등급 이내",
+      "notes": "",
+      "page": 11,
+      "fields": [
+        "인문·어문",
+        "의약"
+      ],
+      "hasMinimum": true,
+      "hasInterview": false
+    }
+  ]
+}
