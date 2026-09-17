@@ -44,6 +44,12 @@ const NAV_GROUPS = [
     ],
   },
   {
+    label: "대학입시", emoji: "🎓",
+    items: [
+      { href: "/admissions", label: "대학입시 살펴보기 🎓" },
+    ],
+  },
+  {
     label: "소통", emoji: "💬",
     items: [
       { href: "/counseling", label: "상담" },
