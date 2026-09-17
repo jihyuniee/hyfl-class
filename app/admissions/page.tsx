@@ -360,8 +360,8 @@ function ResultList({
 function preparationText(record: Admission2028Record) {
   if (record.category === "학생부교과") {
     return record.hasInterview
-      ? "교과 성적 · 출결/추천 조건 · 면접 답변 · 수능최저를 함께 준비"
-      : "반영 교과 · 출결/추천 조건 · 수능최저를 우선 확인";
+      ? `교과 성적 · 출결/추천 조건 · 면접 답변${record.hasMinimum ? " · 수능최저" : ""} 함께 준비`
+      : `반영 교과 · 출결/추천 조건${record.hasMinimum ? " · 수능최저" : ""} 우선 확인`;
   }
   if (record.category === "학생부종합") {
     return record.hasInterview
