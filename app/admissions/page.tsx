@@ -731,7 +731,7 @@ function MinimumPlanner() {
             <div>
               <p>현재 유리한 {targetCount}개 영역: {result.chosen.map((subject) => `${subject.name} ${subject.grade}`).join(" + ")}</p>
               <h3>
-                합 {result.currentSum} · {result.met ? `${targetCount}합 ${targetSum} 충족 가능` : `${result.improvement}등급만큼 더 낮춰야 해요`}
+                합 {result.currentSum} · {result.met ? `${targetCount}합 ${targetSum} 충족 가능` : `${result.improvement}등급 더 올려야 해요`}
               </h3>
             </div>
           </div>
