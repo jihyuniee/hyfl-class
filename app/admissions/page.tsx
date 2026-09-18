@@ -52,7 +52,7 @@ const TABS: { key: TabKey; label: string; emoji: string }[] = [
   { key: "plan", label: "2028 학종 검색", emoji: "🧭" },
   { key: "minimum", label: "최저 맞추기", emoji: "🎯" },
   { key: "saved", label: "관심 목록", emoji: "♡" },
-  { key: "guide", label: "학종 준비", emoji: "📚" },
+  { key: "guide", label: "학종 정보", emoji: "📚" },
 ];
 
 const REGIONS = [
@@ -93,39 +93,39 @@ const PLAN_CATEGORY_ORDER = new Map([
 const FIELD_GUIDES: Record<string, { icon: string; title: string; focus: string[]; minimum: string }> = {
   "인문·어문": {
     icon: "🌏",
-    title: "인문·어문 계열 준비",
-    focus: ["국어·영어 성취를 기본 축으로 관리", "전공어·사회 과목의 세특을 관심 주제와 연결", "읽기·쓰기·토론 결과를 탐구 과정으로 남기기"],
-    minimum: "국어·영어 중 안정적인 한 영역을 만들고, 수학 또는 탐구를 두 번째 충족 영역으로 준비해요.",
+    title: "인문·어문 계열",
+    focus: ["국어·영어 교과 성취", "전공어·사회 과목 세특과 전공 관련성", "읽기·쓰기·토론을 포함한 탐구 과정"],
+    minimum: "대학별로 국어·영어·수학·탐구 반영 조합과 필수 영역이 다릅니다.",
   },
   "사회·상경": {
     icon: "📈",
-    title: "사회·상경 계열 준비",
-    focus: ["사회 현상을 자료와 근거로 분석", "경영·경제는 수학 성취와 데이터 해석도 점검", "시사 이슈를 전공 질문으로 바꾸어 탐구"],
-    minimum: "국어·영어만 보지 말고 수학 필수 조건이 있는지 먼저 확인한 뒤 2~3개 강점 영역을 정해요.",
+    title: "사회·상경 계열",
+    focus: ["사회 현상에 대한 자료·근거 기반 분석", "경영·경제 모집단위의 수학 성취와 데이터 해석", "시사 이슈와 전공 관련 탐구"],
+    minimum: "일부 대학·모집단위는 수학을 수능최저 필수 영역으로 지정합니다.",
   },
   교육: {
     icon: "🧑‍🏫",
-    title: "교육 계열 준비",
-    focus: ["교과 성취와 출결을 균형 있게 관리", "교육 문제에 대한 탐구와 실제 협업 경험 정리", "면접에서 지원 동기와 교직 적성을 구체화"],
-    minimum: "교대·사범대는 면접과 한국사 조건이 함께 붙는 경우가 있어 영역 합과 별도 조건을 같이 관리해요.",
+    title: "교육 계열",
+    focus: ["교과 성취와 출결", "교육 문제에 대한 탐구와 협업 경험", "지원 동기와 교직 적성을 확인하는 면접"],
+    minimum: "교대·사범대는 영역 합 외에 면접과 한국사 조건을 적용하는 경우가 있습니다.",
   },
   "자연·공학": {
     icon: "🧪",
-    title: "자연·공학 계열 준비",
-    focus: ["수학·과학 선택과목과 성취를 우선 점검", "실험·설계·코딩 과정에서 문제 해결 근거 남기기", "지원 전공과 선택과목의 연결성 확인"],
-    minimum: "수학 포함 조건이 자주 등장하므로 수학을 우선 안정시키고 과탐 1~2과목 반영 방식을 확인해요.",
+    title: "자연·공학 계열",
+    focus: ["수학·과학 선택과목과 성취", "실험·설계·코딩 과정의 문제 해결", "지원 전공과 선택과목의 관련성"],
+    minimum: "수학 포함 조건과 과학탐구 1~2과목 반영 방식이 대학별로 다릅니다.",
   },
   의약: {
     icon: "🩺",
-    title: "의약 계열 준비",
-    focus: ["수학·과학 상위 성취를 꾸준히 유지", "생명·화학 탐구를 윤리와 공동체 관점까지 확장", "다중미니면접·인성면접 가능성까지 대비"],
-    minimum: "3합4~5, 4합5처럼 강한 최저가 많아요. 수학 포함 여부, 탐구 2과목 평균, 영어·한국사 별도 조건을 반드시 확인해요.",
+    title: "의약 계열",
+    focus: ["수학·과학 교과 성취", "생명·화학 탐구와 윤리·공동체 관점", "다중미니면접·인성면접 적용 여부"],
+    minimum: "3합4~5, 4합5 등의 기준과 수학 포함 여부, 탐구 2과목 평균, 영어·한국사 조건이 적용됩니다.",
   },
   예체능: {
     icon: "🎨",
-    title: "예체능 계열 준비",
-    focus: ["실기·작품·활동 준비와 교과 관리를 병행", "대학별 실기 종목과 반영 비율을 일찍 확인", "비실기 전형은 면접·서류 평가 요소 점검"],
-    minimum: "최저 미적용 전형도 있지만 일부 대학은 1개 영역 3등급처럼 별도 기준을 두므로 전형별로 확인해요.",
+    title: "예체능 계열",
+    focus: ["실기·작품·활동과 교과 반영", "대학별 실기 종목과 반영 비율", "비실기 전형의 면접·서류 평가요소"],
+    minimum: "최저 미적용 전형과 1개 영역 3등급 등의 기준을 적용하는 전형이 함께 있습니다.",
   },
 };
 
@@ -134,8 +134,8 @@ const GUIDE_CARDS = [
     title: "학생부종합",
     color: "#7c3aed",
     bg: "#f5f3ff",
-    summary: "한영외고 학생이 가장 먼저 살펴볼 전형",
-    checks: ["지원 학과와 과목 선택·세특의 연결", "활동의 개수보다 동기·과정·배운 점", "서류형·면접형과 수능최저 여부"],
+    summary: "학생부의 교과·세특·과목 선택·탐구 과정을 종합평가하는 전형",
+    checks: ["지원 학과와 과목 선택·세특의 관련성", "탐구의 동기·과정·결과", "서류형·면접형과 수능최저 적용 여부"],
   },
   {
     title: "논술",
@@ -152,11 +152,11 @@ const GUIDE_CARDS = [
     checks: ["표준점수·백분위·변환표준점수 중 반영 방식", "영역별 반영 비율과 가산점", "가·나·다군 모집단위"],
   },
   {
-    title: "학생부교과 · 참고용",
+    title: "학생부교과",
     color: "#64748b",
     bg: "#f8fafc",
-    summary: "한영외고에서는 기본 추천하지 않는 전형",
-    checks: ["학교장추천·고교유형 등 지원자격부터 확인", "교과 정량평가가 외고 교육과정에 유리한지 상담", "지원 가능하더라도 대학별 환산 방식 확인"],
+    summary: "교과 성적을 중심으로 선발하는 전형",
+    checks: ["학교장추천·고교유형·졸업연도 등의 지원자격", "대학별 반영 교과와 정량·정성 평가 비율", "수능최저와 대학별 교과 환산 방식"],
   },
 ];
 
@@ -164,22 +164,22 @@ const HOLISTIC_STEPS = [
   {
     number: "01",
     title: "과목 선택",
-    text: "관심 전공에 필요한 과목을 고르고, 학교 개설 여건이나 진로 변경으로 못 들은 과목은 그 맥락까지 설명할 수 있게 정리해요.",
+    text: "과목 선택, 학교의 과목 개설 여건, 진로 변경 여부 등이 과목 이수 맥락에 포함됩니다.",
   },
   {
     number: "02",
     title: "세특·탐구",
-    text: "무엇을 했는지만 나열하지 말고 동기 → 자료와 방법 → 시행착오와 수정 → 배운 점 → 다음 질문이 드러나게 남겨요.",
+    text: "세특과 탐구 기록에는 동기, 자료와 방법, 시행착오와 수정, 결과와 배운 점 등이 포함됩니다.",
   },
   {
     number: "03",
     title: "면접",
-    text: "학생부의 모든 기록을 자기 말로 설명하고, 대학에 따라 제시문·토론·심층 문제해결형 질문도 함께 연습해요.",
+    text: "면접 유형은 학생부 기반, 제시문, 토론, 심층 문제해결형 등으로 대학·모집단위에 따라 다릅니다.",
   },
   {
     number: "04",
     title: "최저·공동체",
-    text: "학종도 수능최저와 응시영역 조건을 확인하고, 협업에서 맡은 역할·갈등 해결·기여를 구체적인 장면으로 준비해요.",
+    text: "학종에도 수능최저·응시영역 조건이 적용될 수 있으며, 공동체역량에는 역할·협업·갈등 해결 등이 포함됩니다.",
   },
 ];
 
@@ -228,7 +228,7 @@ const HOLISTIC_SPOTLIGHTS = [
     admission: "일반전형",
     method: "1단계 서류 100%(모집단위별 2~2.5배수) → 2단계 서류 50% + 면접 50%",
     minimum: "수능최저 없음",
-    note: "지역균형은 외고가 지원할 수 없어 일반전형을 중심으로 확인해요. 사범대·미술대 등은 2단계 반영 방식이 다르고, 면접에는 추가 탐침 질문이 도입됩니다.",
+    note: "지역균형은 외고 지원 불가입니다. 외고 지원 가능 전형은 일반전형이며, 사범대·미술대 등은 2단계 반영 방식이 다릅니다. 면접에는 추가 탐침 질문이 도입됩니다.",
     source: "전북 3~6쪽 · 울산 6쪽",
   },
   {
@@ -236,7 +236,7 @@ const HOLISTIC_SPOTLIGHTS = [
     admission: "종합인재형 · 2028 신설",
     method: "1단계 서류 100%(4배수) → 2단계 서류 70% + 면접 30%",
     minimum: "일부 모집단위 적용",
-    note: "국제인재형과 중복 지원할 수 없어요. 모집단위별 최저 조합과 제시문 기반 면접을 함께 확인해야 합니다.",
+    note: "국제인재형과 중복 지원은 불가합니다. 모집단위별 수능최저가 다르며 제시문 기반 면접을 실시합니다.",
     source: "전북 7~10쪽 · 울산 6쪽",
   },
   {
@@ -244,7 +244,7 @@ const HOLISTIC_SPOTLIGHTS = [
     admission: "학업우수형 · 계열적합형",
     method: "학업우수형은 서류 80% + 면접 20%, 계열적합형은 2028 면접 폐지 후 서류 100%",
     minimum: "학업우수형 있음 · 계열적합형 없음",
-    note: "두 전형의 면접과 최저 차이가 커서 학생부 강점과 수능 준비도를 기준으로 나누어 봐야 해요.",
+    note: "학업우수형은 면접과 수능최저를 적용하고, 계열적합형은 서류 100%로 선발하며 수능최저를 적용하지 않습니다.",
     source: "전북 11~13쪽 · 울산 6쪽",
   },
   {
@@ -252,7 +252,7 @@ const HOLISTIC_SPOTLIGHTS = [
     admission: "일반Ⅰ · 일반Ⅱ",
     method: "두 전형 모두 서류평가 100%",
     minimum: "일반Ⅰ 없음 · 일반Ⅱ 있음",
-    note: "일반Ⅱ는 국어·수학·영어·탐구(1) 중 3개 합 7 이내와 한국사 4등급 이내를 확인해요.",
+    note: "일반Ⅱ의 수능최저는 국어·수학·영어·탐구(1) 중 3개 합 7 이내, 한국사 4등급 이내입니다.",
     source: "전북 14~16쪽 · 울산 6쪽",
   },
   {
@@ -260,7 +260,7 @@ const HOLISTIC_SPOTLIGHTS = [
     admission: "서류형 · 면접형",
     method: "서류형은 학생부 100%, 면접형은 1단계 학생부 100% → 2단계 학생부 70% + 면접 30%",
     minimum: "전형별 적용 여부 다름",
-    note: "융합인재·탐구인재·성균인재 등 전형별 모집단위와 최저가 달라 전형명을 정확히 확인해야 해요.",
+    note: "융합인재·탐구인재·성균인재 등 전형별로 모집단위와 수능최저 적용 여부가 다릅니다.",
     source: "전북 17~20쪽 · 울산 6쪽",
   },
   {
@@ -268,7 +268,7 @@ const HOLISTIC_SPOTLIGHTS = [
     admission: "학업형 · 면접형",
     method: "학업형은 학생부종합평가 100%, 면접형은 1단계 종합평가 100% → 2단계 70% + 면접 30%",
     minimum: "학업형 있음 · 면접형 없음",
-    note: "면접형 모집단위가 확대됐어요. 지원 학과가 학업형과 면접형 중 어디에 속하는지 먼저 확인해요.",
+    note: "2028학년도에는 면접형 모집단위가 확대됐으며, 모집단위별로 학업형과 면접형이 구분됩니다.",
     source: "전북 21~24쪽 · 울산 6쪽",
   },
   {
@@ -276,7 +276,7 @@ const HOLISTIC_SPOTLIGHTS = [
     admission: "미래인재 서류형 · 면접형",
     method: "서류형은 서류 100%, 면접형은 1단계 서류 100%(5배수) → 2단계 서류 70% + 면접 30%",
     minimum: "서류형 있음 · 면접형 없음",
-    note: "같은 미래인재전형도 유형에 따라 최저와 면접이 갈리므로 자신의 수능·말하기 강점에 맞춰 비교해요.",
+    note: "미래인재 서류형은 수능최저를 적용하고, 미래인재 면접형은 면접을 실시하며 수능최저를 적용하지 않습니다.",
     source: "전북 25~28쪽 · 울산 6쪽",
   },
   {
@@ -558,27 +558,25 @@ function ResultList({
 function preparationText(record: Admission2028Record) {
   if (record.category === "학생부교과") {
     return record.hasInterview
-      ? `교과 성적 · 출결/추천 조건 · 면접 답변${record.hasMinimum ? " · 수능최저" : ""} 함께 준비`
-      : `반영 교과 · 출결/추천 조건${record.hasMinimum ? " · 수능최저" : ""} 우선 확인`;
+      ? `교과 성적 · 출결/추천 조건 · 면접${record.hasMinimum ? " · 수능최저" : ""}`
+      : `반영 교과 · 출결/추천 조건${record.hasMinimum ? " · 수능최저" : ""}`;
   }
   if (record.category === "학생부종합") {
     return record.hasInterview
-      ? "과목 선택과 세특의 전공 연결 · 탐구 과정 · 학생부 기반 면접 준비"
-      : "과목 선택과 세특의 전공 연결 · 탐구 동기와 과정이 보이는 학생부 준비";
+      ? "과목 선택과 세특의 전공 관련성 · 탐구 과정 · 학생부 기반 면접"
+      : "과목 선택과 세특의 전공 관련성 · 탐구 동기와 과정";
   }
-  return "대학별 논술 유형과 기출 풀이 · 시간 관리 · 수능최저를 병행";
+  return "대학별 논술 유형 · 논술 반영 비율 · 수능최저 적용 여부";
 }
 
 function PlanCard({ record }: { record: Admission2028Record }) {
-  const isCoursework = record.category === "학생부교과";
   const evaluation = record.category === "학생부종합" ? holisticEvaluation(record.university) : undefined;
   return (
-    <article className={`ad-plan-card${isCoursework ? " is-reference" : ""}`}>
+    <article className="ad-plan-card">
       <div className="ad-plan-card-head">
         <div>
           <div className="ad-chips">
             <span>{record.category}</span>
-            {isCoursework && <span className="ad-reference-chip">한영외고 참고용</span>}
             {record.hasInterview && <span>면접 있음</span>}
             <span>{record.hasMinimum ? "수능최저 있음" : "수능최저 없음"}</span>
           </div>
@@ -604,7 +602,7 @@ function PlanCard({ record }: { record: Admission2028Record }) {
       </div>
 
       <div className="ad-plan-prepare">
-        <span>준비 포인트</span>
+        <span>확인 항목</span>
         <p>{preparationText(record)}</p>
       </div>
 
@@ -615,15 +613,9 @@ function PlanCard({ record }: { record: Admission2028Record }) {
         </div>
       )}
 
-      {isCoursework && (
-        <div className="ad-plan-reference-note">
-          학교장추천·고교유형·졸업연도 등 지원자격을 먼저 확인하고, 담임 선생님과 개별 상담한 뒤 검토하세요.
-        </div>
-      )}
-
       {record.notes && (
         <details className="ad-plan-notes">
-          <summary>추천 인원·예외 조건·비고 보기</summary>
+          <summary>지원자격·추천 인원·예외 조건</summary>
           <p>{record.notes}</p>
         </details>
       )}
@@ -777,7 +769,7 @@ function MinimumPlanner() {
       {!validCore ? (
         <div className="ad-min-empty">
           <span>✍️</span>
-          <p>국어·수학·영어·탐구 2과목의 예상 등급을 모두 입력하면 준비 계획을 계산해요.</p>
+          <p>국어·수학·영어·탐구 2과목의 예상 등급을 모두 입력하면 목표 조합과의 등급 차이가 계산됩니다.</p>
         </div>
       ) : result && (
         <div className={`ad-min-result ${result.met ? "is-met" : "needs-work"}`}>
@@ -804,8 +796,8 @@ function MinimumPlanner() {
       )}
 
       <div className="ad-min-caution">
-        <b>계산 결과를 이렇게 사용하세요</b>
-        <p>위 결과는 국어·수학·영어·탐구(상위 1과목) 중 유리한 영역을 고르는 단순 계산입니다. 대학이 지정한 수학 포함, 국어 포함, 탐구 2과목 평균·절사, 영어·한국사 별도 등급, 모집단위별 예외는 자동 판정하지 않습니다. 반드시 ‘2028 학종 검색’ 카드와 대학 최종 모집요강을 함께 확인하세요.</p>
+        <b>계산 범위</b>
+        <p>위 결과는 국어·수학·영어·탐구(상위 1과목) 중 유리한 영역을 고르는 단순 계산입니다. 대학이 지정한 수학 포함, 국어 포함, 탐구 2과목 평균·절사, 영어·한국사 별도 등급, 모집단위별 예외는 자동 판정하지 않습니다. 대학별 지정 영역과 모집단위별 예외는 대학 최종 모집요강에서 확인할 수 있습니다.</p>
       </div>
     </>
   );
@@ -1178,14 +1170,14 @@ export default function AdmissionsPage() {
           <div className="ad-section-title">
             <div>
               <p>2028 ADMISSION PLAN</p>
-              <h2>계열별 전형 검색과 준비 방향</h2>
+              <h2>계열별 전형 검색</h2>
             </div>
             <span>인천·전북·울산교육청 2028 자료 대조</span>
           </div>
 
           <div className="ad-plan-notice">
             <span>🧭</span>
-            <p><b>한영외고 기본 화면은 학생부종합전형입니다.</b> 먼저 관심 계열을 고른 뒤 전형 방법·면접·수능최저를 비교하세요. 학생부교과는 학교장추천·고교유형 등 자격을 개별 확인해야 하므로 참고용으로만 남겼습니다.</p>
+            <p><b>기본 전형 필터는 학생부종합입니다.</b> 계열·전형·수능최저·면접 조건과 대학명을 기준으로 검색할 수 있습니다. 전형 필터에서 논술·학생부교과·전체로 전환할 수 있습니다.</p>
           </div>
 
           <div className="ad-field-selector" aria-label="계열 선택">
@@ -1206,12 +1198,12 @@ export default function AdmissionsPage() {
             <article className="ad-field-guide">
               <div className="ad-field-guide-title">
                 <span>{FIELD_GUIDES[planField].icon}</span>
-                <div><p>MY PREPARATION</p><h3>{FIELD_GUIDES[planField].title}</h3></div>
+                <div><p>FIELD INFORMATION</p><h3>{FIELD_GUIDES[planField].title}</h3></div>
               </div>
               <ul>
                 {FIELD_GUIDES[planField].focus.map((item) => <li key={item}>{item}</li>)}
               </ul>
-              <div><b>최저 전략</b><p>{FIELD_GUIDES[planField].minimum}</p></div>
+              <div><b>수능최저</b><p>{FIELD_GUIDES[planField].minimum}</p></div>
             </article>
           )}
 
@@ -1257,7 +1249,7 @@ export default function AdmissionsPage() {
               <div className="ad-result-header">
                 <div>
                   <h3>검색 결과 <b>{planResults.length.toLocaleString()}개 전형</b></h3>
-                  <p>학생부종합을 먼저, 주요 인서울 대학 순으로 보여줘요. 학생부교과는 참고용으로만 표시합니다.</p>
+                  <p>기본 필터는 학생부종합이며, 결과는 주요 인서울 대학 우선순위로 정렬됩니다.</p>
                 </div>
               </div>
               {planResults.length > 0 ? (
@@ -1286,7 +1278,7 @@ export default function AdmissionsPage() {
               <p>CSAT MINIMUM PLANNER</p>
               <h2>수능최저 맞추기</h2>
             </div>
-            <span>현재 등급에서 목표 조합까지 필요한 변화를 계산해요.</span>
+            <span>현재 등급과 목표 수능최저 조합의 차이를 계산합니다.</span>
           </div>
           <MinimumPlanner />
         </section>
@@ -1316,24 +1308,24 @@ export default function AdmissionsPage() {
         <section className="ad-section">
           <div className="ad-section-title">
             <div>
-              <p>HYFL HOLISTIC ADMISSION</p>
-              <h2>한영외고 학종 준비 가이드</h2>
+              <p>2028 HOLISTIC ADMISSION</p>
+              <h2>2028 학생부종합전형 정리</h2>
             </div>
             <span>인천·전북·울산교육청 2028 자료 대조</span>
           </div>
 
           <div className="ad-holistic-hero">
             <div>
-              <span>한영외고 추천 방향</span>
-              <h3>학종 중심으로 준비하고, 교과는 개별 상담 뒤 확인해요.</h3>
-              <p>외고 교육과정의 강점은 단순 등급보다 과목 선택의 맥락, 전공어·사회 탐구, 세특에 남은 사고 과정, 면접에서 설명하는 힘으로 보여주는 편이 적합합니다.</p>
+              <span>학생부종합전형</span>
+              <h3>서류형·면접형·수능최저 적용 여부 비교</h3>
+              <p>학생부종합전형은 교과 성취, 과목 선택, 세특, 탐구 과정, 진로역량, 공동체역량 등을 대학별 평가기준에 따라 종합평가합니다.</p>
             </div>
-            <button type="button" onClick={() => selectTab("plan")}>학종 전형 검색하기 →</button>
+            <button type="button" onClick={() => selectTab("plan")}>학종 전형 검색 →</button>
           </div>
 
           <div className="ad-subsection-heading">
-            <div><p>2028 ADMISSION CALENDAR</p><h3>먼저 큰 일정을 잡아두세요</h3></div>
-            <span>대학별 원서접수일과 면접일은 최종 모집요강에서 다시 확인해요.</span>
+            <div><p>2028 ADMISSION CALENDAR</p><h3>2028 대입 주요 일정</h3></div>
+            <span>원서접수일과 면접일은 대학별 최종 모집요강에 따라 달라질 수 있습니다.</span>
           </div>
 
           <div className="ad-timeline">
@@ -1346,8 +1338,8 @@ export default function AdmissionsPage() {
           </div>
 
           <div className="ad-subsection-heading">
-            <div><p>STUDENT CHECKLIST</p><h3>지금부터 준비할 네 가지</h3></div>
-            <span>기록을 억지로 만들기보다 수업 안에서 탐구의 깊이를 키워요.</span>
+            <div><p>EVALUATION ITEMS</p><h3>학생부종합전형의 주요 확인 항목</h3></div>
+            <span>대학별 서류평가 기준과 모집단위에 따라 반영 범위가 다릅니다.</span>
           </div>
 
           <div className="ad-holistic-steps">
@@ -1361,13 +1353,13 @@ export default function AdmissionsPage() {
           </div>
 
           <div className="ad-record-formula">
-            <b>세특·탐구 정리 공식</b>
+            <b>세특·탐구 기록 요소</b>
             <div><span>왜 시작했나</span><i>→</i><span>어떻게 탐구했나</span><i>→</i><span>무엇을 수정했나</span><i>→</i><span>무엇을 배웠나</span><i>→</i><span>다음 질문은 무엇인가</span></div>
           </div>
 
           <div className="ad-subsection-heading">
-            <div><p>2028 UNIVERSITY CHECK</p><h3>관심대학 학종 핵심 변화</h3></div>
-            <span>외고 학생이 많이 찾는 대학을 인서울 우선순위로 정리했어요.</span>
+            <div><p>2028 UNIVERSITY CHECK</p><h3>주요 대학 학생부종합전형 비교</h3></div>
+            <span>인서울 우선순위에 따른 전형 방법·수능최저·서류 평가요소 비교</span>
           </div>
 
           <div className="ad-spotlight-grid">
@@ -1384,8 +1376,8 @@ export default function AdmissionsPage() {
           </div>
 
           <div className="ad-subsection-heading">
-            <div><p>OTHER ROUTES</p><h3>다른 전형은 이렇게 봐요</h3></div>
-            <span>교과전형은 ‘지원 불가’로 단정하지 않고 자격과 환산 방식을 개별 확인해요.</span>
+            <div><p>OTHER ROUTES</p><h3>전형별 주요 확인 항목</h3></div>
+            <span>전형별로 평가자료, 지원자격, 수능최저, 반영 방식이 다릅니다.</span>
           </div>
 
           <div className="ad-guide-grid">
@@ -1400,21 +1392,8 @@ export default function AdmissionsPage() {
             ))}
           </div>
 
-          <div className="ad-foreign-card">
-            <div>
-              <span>🌏</span>
-              <h3>외고 학생부에서 연결할 것</h3>
-            </div>
-            <ul>
-              <li><b>국어·영어·수학의 기본 학업 역량</b>과 지원 학과에 필요한 교과 성취</li>
-              <li><b>전공어·사회·탐구 과목의 세특</b>이 하나의 관심 질문으로 어떻게 이어지는지</li>
-              <li>공동체역량은 직책보다 <b>협업 과정·역할·갈등 해결·기여</b>의 구체적인 장면</li>
-              <li>서울대처럼 <b>과목 이수 맥락과 권장과목</b>을 보는 대학은 미이수 사유까지 점검</li>
-            </ul>
-          </div>
-
           <div className="ad-check-order">
-            <h3>대학 정보는 이 순서로 확인해요</h3>
+            <h3>대입 정보 확인 경로</h3>
             <div>
               <a href="https://www.adiga.kr" target="_blank" rel="noreferrer">
                 <span>1</span><b>대입정보포털 어디가</b><small>대학·학과·전형 비교</small>
@@ -1425,7 +1404,7 @@ export default function AdmissionsPage() {
               </div>
               <div className="ad-order-arrow">→</div>
               <div>
-                <span>3</span><b>학교 진학 상담</b><small>내 학생부와 성적을 함께 점검</small>
+                <span>3</span><b>시도교육청 대입자료</b><small>시행계획 분석·전형 비교 자료</small>
               </div>
             </div>
           </div>
@@ -1542,8 +1521,6 @@ export default function AdmissionsPage() {
         .ad-plan-results { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:11px; }
         .ad-plan-card { display:flex; flex-direction:column; gap:11px; min-width:0; padding:19px; border-radius:21px; border:1.5px solid var(--border); background:#fff; box-shadow:var(--shadow-sm); transition:.17s ease; }
         .ad-plan-card:hover { transform:translateY(-2px); border-color:#c4b5fd; box-shadow:var(--shadow-md); }
-        .ad-plan-card.is-reference { border-style:dashed; background:#fcfcfd; }
-        .ad-plan-card.is-reference:hover { border-color:#94a3b8; }
         .ad-plan-card-head { display:flex; justify-content:space-between; align-items:flex-start; gap:10px; }
         .ad-plan-card-head h3 { margin:0; color:var(--text); font-size:17px; font-weight:900; }
         .ad-plan-card-head p { margin:3px 0 0; color:#6d5c7b; font-size:12px; font-weight:800; }
@@ -1564,8 +1541,6 @@ export default function AdmissionsPage() {
         .ad-plan-evaluation { display:grid; grid-template-columns:auto 1fr; gap:9px; align-items:start; padding:10px 12px; border-radius:13px; background:#f5f3ff; border:1px solid #ede9fe; }
         .ad-plan-evaluation span { color:#7c3aed; font-size:9px; font-weight:900; white-space:nowrap; }
         .ad-plan-evaluation p { margin:0; color:#645478; font-size:9px; line-height:1.55; }
-        .ad-reference-chip { background:#f1f5f9 !important; color:#64748b !important; }
-        .ad-plan-reference-note { padding:9px 11px; border-radius:12px; border:1px dashed #cbd5e1; background:#f8fafc; color:#64748b; font-size:9px; line-height:1.55; }
         .ad-plan-notes { border-top:1px dashed var(--border); padding-top:9px; }
         .ad-plan-notes summary { color:#7c3aed; font-size:9px; font-weight:800; cursor:pointer; }
         .ad-plan-notes p { margin:8px 0 0; padding:10px 12px; border-radius:12px; background:#f8fafc; color:#64748b; font-size:9px; line-height:1.6; white-space:pre-line; }
@@ -1653,12 +1628,6 @@ export default function AdmissionsPage() {
         .ad-guide-card ul { display:flex; flex-direction:column; gap:6px; padding:0; margin:0; list-style:none; }
         .ad-guide-card li { position:relative; padding-left:14px; color:var(--text-muted); font-size:11px; line-height:1.5; }
         .ad-guide-card li::before { content:'✓'; position:absolute; left:0; color:#10b981; font-weight:900; }
-        .ad-foreign-card { padding:22px; border-radius:22px; border:1.5px solid #bae6fd; background:linear-gradient(135deg,#f0f9ff,#eff6ff); }
-        .ad-foreign-card > div { display:flex; align-items:center; gap:8px; margin-bottom:12px; }
-        .ad-foreign-card > div span { font-size:23px; }
-        .ad-foreign-card h3 { margin:0; color:#075985; font-size:16px; font-weight:900; }
-        .ad-foreign-card ul { display:grid; grid-template-columns:1fr 1fr; gap:8px 22px; margin:0; padding-left:18px; }
-        .ad-foreign-card li { color:#486579; font-size:11px; line-height:1.65; }
         .ad-check-order { padding:22px; border-radius:22px; border:1.5px solid var(--border); background:#fff; }
         .ad-check-order h3 { margin:0 0 15px; font-size:15px; font-weight:900; }
         .ad-check-order > div { display:flex; align-items:stretch; gap:10px; }
@@ -1687,7 +1656,6 @@ export default function AdmissionsPage() {
           .ad-filters label { flex:1; }
           .ad-filters select { width:100%; }
           .ad-guide-grid { grid-template-columns:1fr; }
-          .ad-foreign-card ul { grid-template-columns:1fr; }
           .ad-check-order > div { flex-direction:column; }
           .ad-order-arrow { transform:rotate(90deg); }
           .ad-field-selector { grid-template-columns:repeat(4,1fr); }
