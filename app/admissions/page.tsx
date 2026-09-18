@@ -62,6 +62,25 @@ const REGIONS = [
 
 const TRACKS = ["전체", "인문", "자연", "공통"];
 
+// 진학 상담에서 흔히 사용하는 인서울 대학군 순서입니다.
+// 공식 대학 서열이 아니라 결과 탐색용 우선순위이며, 같은 대학 안에서는
+// 이투스 지원 참고점수가 높은 모집단위를 먼저 보여 줍니다.
+const SEOUL_UNIVERSITY_ORDER = [
+  "서울대", "연세대", "고려대",
+  "서강대", "성균관대", "한양대",
+  "중앙대", "경희대", "한국외대", "서울시립대", "이화여대", "서울교대",
+  "건국대", "동국대", "홍익대", "숙명여대",
+  "국민대", "숭실대", "세종대", "서울과학기술대", "광운대",
+  "성신여대", "서울여대", "덕성여대", "동덕여대",
+  "명지대", "상명대", "가톨릭대", "한성대", "서경대", "삼육대",
+  "성공회대", "한국성서대", "강서대", "감리교신대", "장로회신대",
+  "서울기독대", "서울한영대", "추계예대",
+] as const;
+
+const SEOUL_UNIVERSITY_RANK = new Map<string, number>(
+  SEOUL_UNIVERSITY_ORDER.map((university, index) => [university, index])
+);
+
 const FIELDS = ["전체", "인문·어문", "사회·상경", "교육", "자연·공학", "의약", "예체능"];
 const PLAN_CATEGORIES = ["전체", "학생부교과", "학생부종합", "논술"];
 
@@ -141,6 +160,33 @@ function rowKey(row: AdmissionRow) {
 
 function numberText(value: number) {
   return Number.isInteger(value) ? String(value) : value.toFixed(1);
+}
+
+function universitySortBucket(row: AdmissionRow) {
+  const seoulRank = row.r === "서울" ? SEOUL_UNIVERSITY_RANK.get(row.u) : undefined;
+  if (seoulRank != null) return seoulRank;
+  if (row.r === "서울") return SEOUL_UNIVERSITY_ORDER.length + 1;
+  if (row.r === "경기" || row.r === "인천") return 1000;
+  return 2000;
+}
+
+function compareAdmissionRows(
+  a: AdmissionRow,
+  b: AdmissionRow,
+  universityPeaks: Map<string, { standard: number; percentile: number }>
+) {
+  const bucketDifference = universitySortBucket(a) - universitySortBucket(b);
+  if (bucketDifference !== 0) return bucketDifference;
+
+  if (a.u !== b.u) {
+    const aPeak = universityPeaks.get(a.u) ?? { standard: 0, percentile: 0 };
+    const bPeak = universityPeaks.get(b.u) ?? { standard: 0, percentile: 0 };
+    return bPeak.standard - aPeak.standard
+      || bPeak.percentile - aPeak.percentile
+      || a.u.localeCompare(b.u, "ko");
+  }
+
+  return b.s - a.s || b.p - a.p || a.d.localeCompare(b.d, "ko");
 }
 
 function ScoreCalculator({
@@ -697,12 +743,23 @@ export default function AdmissionsPage() {
     && (track === "전체" || row.t === track)
   )), [rows, region, track]);
 
+  const universityPeaks = useMemo(() => {
+    const peaks = new Map<string, { standard: number; percentile: number }>();
+    rows.forEach((row) => {
+      const current = peaks.get(row.u);
+      if (!current || row.s > current.standard || (row.s === current.standard && row.p > current.percentile)) {
+        peaks.set(row.u, { standard: row.s, percentile: row.p });
+      }
+    });
+    return peaks;
+  }, [rows]);
+
   const scoreResults = useMemo(() => {
     if (!scoreSearched || !validScore) return [];
     return filteredBase
       .filter((row) => row.s <= studentStandard && row.p <= studentPercentile)
-      .sort((a, b) => b.s - a.s || b.p - a.p || a.u.localeCompare(b.u, "ko"));
-  }, [filteredBase, scoreSearched, studentStandard, studentPercentile, validScore]);
+      .sort((a, b) => compareAdmissionRows(a, b, universityPeaks));
+  }, [filteredBase, scoreSearched, studentStandard, studentPercentile, universityPeaks, validScore]);
 
   const searchResults = useMemo(() => {
     const query = keyword.trim().toLocaleLowerCase("ko");
@@ -711,13 +768,13 @@ export default function AdmissionsPage() {
       .filter((row) => [row.u, row.d, row.c, row.a].some((value) => (
         value.toLocaleLowerCase("ko").includes(query)
       )))
-      .sort((a, b) => a.u.localeCompare(b.u, "ko") || b.s - a.s || a.d.localeCompare(b.d, "ko"));
-  }, [filteredBase, keyword]);
+      .sort((a, b) => compareAdmissionRows(a, b, universityPeaks));
+  }, [filteredBase, keyword, universityPeaks]);
 
   const savedRows = useMemo(() => rows
     .filter((row) => favorites.has(rowKey(row)))
-    .sort((a, b) => a.u.localeCompare(b.u, "ko") || a.d.localeCompare(b.d, "ko")),
-  [rows, favorites]);
+    .sort((a, b) => compareAdmissionRows(a, b, universityPeaks)),
+  [rows, favorites, universityPeaks]);
 
   const planResults = useMemo(() => {
     const query = planKeyword.trim().toLocaleLowerCase("ko");
@@ -870,7 +927,7 @@ export default function AdmissionsPage() {
               <div className="ad-result-header">
                 <div>
                   <h3>검색 결과 <b>{scoreResults.length.toLocaleString()}개</b></h3>
-                  <p>표준점수와 백분위 참고점수를 모두 충족한 모집단위입니다.</p>
+                  <p>주요 인서울 대학을 우선 배치하고, 같은 대학에서는 지원 참고점수가 높은 모집단위부터 보여 줍니다.</p>
                 </div>
                 <Filters region={region} track={track} onRegion={setRegion} onTrack={setTrack} />
               </div>
