@@ -183,14 +183,53 @@ const HOLISTIC_STEPS = [
   },
 ];
 
+const ADMISSION_TIMELINE = [
+  { label: "수시 원서접수", date: "2027. 9. 20.~9. 23.", note: "대학별로 기간 중 3일 이상" },
+  { label: "대학수학능력시험", date: "2027. 11. 18.", note: "성적 통지 12. 10." },
+  { label: "수시 합격·등록", date: "발표 12. 21.까지", note: "등록 12. 22.~12. 24." },
+  { label: "정시 원서접수", date: "2028. 1. 3.~1. 6.", note: "대학별로 기간 중 3일 이상" },
+  { label: "정시 합격·등록", date: "발표 2. 10.까지", note: "등록 2. 11.~2. 14." },
+];
+
+const HOLISTIC_EVALUATIONS: Record<string, string> = {
+  가톨릭대: "학업역량 30% · 진로역량 50% · 공동체역량 20%",
+  건국대: "학업역량 · 진로역량 · 공동체역량 등을 정성적으로 종합평가",
+  경희대: "학업역량 · 진로역량 · 자기주도역량 · 공동체역량 등을 종합평가",
+  고려대: "학교생활기록부를 종합적으로 정성평가",
+  광운대: "학교생활기록부를 종합적으로 정성평가",
+  국민대: "학교생활기록부 종합평가",
+  동국대: "학교생활충실도 80% · 인성 및 사회성 20%",
+  명지대: "공동체역량 · 학업역량 · 진로역량 등을 종합평가",
+  상명대: "학업역량 · 진로역량 · 공동체역량 등을 종합적으로 정성평가",
+  서강대: "학교생활기록부 종합평가",
+  서울과학기술대: "학교생활기록부를 토대로 종합평가",
+  서울대: "학교생활기록부 종합평가",
+  서울시립대: "학업역량 · 잠재역량 · 사회역량 등을 종합적으로 정성평가",
+  성균관대: "학교생활기록부 종합평가",
+  성신여대: "학교생활기록부의 교과영역과 비교과영역을 종합평가",
+  세종대: "교과·비교과를 평가영역별로 종합적 정량·정성평가",
+  숙명여대: "학교생활기록부 종합평가",
+  숭실대: "면접형은 전공 탐색, 서류형은 자기주도적이고 깊이 있는 탐구를 중점 평가",
+  연세대: "제출한 서류를 종합적으로 평가",
+  이화여대: "학업역량 · 진로역량 · 발전가능성 등을 종합평가",
+  중앙대: "탐구형은 탐구능력·계열적합성·학교생활충실성, 모두형은 균형적 성장을 중점 평가",
+  한국외대: "학생부 등 제출서류를 바탕으로 정성적·종합적 역량평가",
+  한성대: "학업역량 30% · 진로/성장역량 40% · 공동체역량 30%",
+  한양대: "교육과정의 충실한 이수 · 종합성취도 · 핵심역량 등을 종합평가",
+  홍익대: "학교생활기록부 종합평가",
+  인천대: "학교생활기록부 종합평가",
+  인하대: "평가기준에 따라 정성적으로 종합평가",
+  아주대: "학교생활기록부 종합평가",
+};
+
 const HOLISTIC_SPOTLIGHTS = [
   {
     university: "서울대",
     admission: "일반전형",
-    method: "1단계 서류 100%(2배수) → 2단계 서류 50% + 면접 50%",
+    method: "1단계 서류 100%(모집단위별 2~2.5배수) → 2단계 서류 50% + 면접 50%",
     minimum: "수능최저 없음",
-    note: "지역균형은 일반고만 지원할 수 있어 외고 학생은 일반전형을 중심으로 확인해요. 면접에는 추가 탐침 질문이 도입됩니다.",
-    page: 3,
+    note: "지역균형은 외고가 지원할 수 없어 일반전형을 중심으로 확인해요. 사범대·미술대 등은 2단계 반영 방식이 다르고, 면접에는 추가 탐침 질문이 도입됩니다.",
+    source: "전북 3~6쪽 · 울산 6쪽",
   },
   {
     university: "연세대",
@@ -198,7 +237,7 @@ const HOLISTIC_SPOTLIGHTS = [
     method: "1단계 서류 100%(4배수) → 2단계 서류 70% + 면접 30%",
     minimum: "일부 모집단위 적용",
     note: "국제인재형과 중복 지원할 수 없어요. 모집단위별 최저 조합과 제시문 기반 면접을 함께 확인해야 합니다.",
-    page: 7,
+    source: "전북 7~10쪽 · 울산 6쪽",
   },
   {
     university: "고려대",
@@ -206,7 +245,7 @@ const HOLISTIC_SPOTLIGHTS = [
     method: "학업우수형은 서류 80% + 면접 20%, 계열적합형은 2028 면접 폐지 후 서류 100%",
     minimum: "학업우수형 있음 · 계열적합형 없음",
     note: "두 전형의 면접과 최저 차이가 커서 학생부 강점과 수능 준비도를 기준으로 나누어 봐야 해요.",
-    page: 11,
+    source: "전북 11~13쪽 · 울산 6쪽",
   },
   {
     university: "서강대",
@@ -214,7 +253,7 @@ const HOLISTIC_SPOTLIGHTS = [
     method: "두 전형 모두 서류평가 100%",
     minimum: "일반Ⅰ 없음 · 일반Ⅱ 있음",
     note: "일반Ⅱ는 국어·수학·영어·탐구(1) 중 3개 합 7 이내와 한국사 4등급 이내를 확인해요.",
-    page: 14,
+    source: "전북 14~16쪽 · 울산 6쪽",
   },
   {
     university: "성균관대",
@@ -222,23 +261,23 @@ const HOLISTIC_SPOTLIGHTS = [
     method: "서류형은 학생부 100%, 면접형은 1단계 학생부 100% → 2단계 학생부 70% + 면접 30%",
     minimum: "전형별 적용 여부 다름",
     note: "융합인재·탐구인재·성균인재 등 전형별 모집단위와 최저가 달라 전형명을 정확히 확인해야 해요.",
-    page: 17,
+    source: "전북 17~20쪽 · 울산 6쪽",
   },
   {
     university: "한양대",
     admission: "학업형 · 면접형",
     method: "학업형은 학생부종합평가 100%, 면접형은 1단계 종합평가 100% → 2단계 70% + 면접 30%",
-    minimum: "학업형 적용 · 면접형은 일부 예외 외 없음",
+    minimum: "학업형 있음 · 면접형 없음",
     note: "면접형 모집단위가 확대됐어요. 지원 학과가 학업형과 면접형 중 어디에 속하는지 먼저 확인해요.",
-    page: 21,
+    source: "전북 21~24쪽 · 울산 6쪽",
   },
   {
     university: "이화여대",
     admission: "미래인재 서류형 · 면접형",
-    method: "서류형은 서류 100%, 면접형은 1단계 서류 100%(4배수) → 2단계 서류 70% + 면접 30%",
+    method: "서류형은 서류 100%, 면접형은 1단계 서류 100%(5배수) → 2단계 서류 70% + 면접 30%",
     minimum: "서류형 있음 · 면접형 없음",
     note: "같은 미래인재전형도 유형에 따라 최저와 면접이 갈리므로 자신의 수능·말하기 강점에 맞춰 비교해요.",
-    page: 25,
+    source: "전북 25~28쪽 · 울산 6쪽",
   },
   {
     university: "한국외대",
@@ -246,9 +285,17 @@ const HOLISTIC_SPOTLIGHTS = [
     method: "면접형은 1단계 서류 100%(3배수) → 2단계 1단계 성적 50% + 면접 50%, 서류형은 서류 100%",
     minimum: "면접형 없음 · 서류형 모집단위별 적용",
     note: "면접형은 제출서류 기반 블라인드 인적성면접이에요. 서류형 최저는 모집단위별 합 6~7 이내로 달라집니다.",
-    page: 36,
+    source: "전북 36~37쪽 · 울산 6쪽",
   },
 ];
+
+function universityBaseName(name: string) {
+  return name.split("\n")[0].split("(")[0].trim();
+}
+
+function holisticEvaluation(name: string) {
+  return HOLISTIC_EVALUATIONS[universityBaseName(name)];
+}
 
 function rowKey(row: AdmissionRow) {
   return [row.u, row.d, row.a, row.g, row.t, row.r].join("|");
@@ -524,6 +571,7 @@ function preparationText(record: Admission2028Record) {
 
 function PlanCard({ record }: { record: Admission2028Record }) {
   const isCoursework = record.category === "학생부교과";
+  const evaluation = record.category === "학생부종합" ? holisticEvaluation(record.university) : undefined;
   return (
     <article className={`ad-plan-card${isCoursework ? " is-reference" : ""}`}>
       <div className="ad-plan-card-head">
@@ -559,6 +607,13 @@ function PlanCard({ record }: { record: Admission2028Record }) {
         <span>준비 포인트</span>
         <p>{preparationText(record)}</p>
       </div>
+
+      {evaluation && (
+        <div className="ad-plan-evaluation">
+          <span>서류에서 보는 것</span>
+          <p>{evaluation}</p>
+        </div>
+      )}
 
       {isCoursework && (
         <div className="ad-plan-reference-note">
@@ -750,7 +805,7 @@ function MinimumPlanner() {
 
       <div className="ad-min-caution">
         <b>계산 결과를 이렇게 사용하세요</b>
-        <p>위 결과는 국어·수학·영어·탐구(상위 1과목) 중 유리한 영역을 고르는 단순 계산입니다. 대학이 지정한 수학 포함, 국어 포함, 탐구 2과목 평균·절사, 영어·한국사 별도 등급, 모집단위별 예외는 자동 판정하지 않습니다. 반드시 ‘2028 전형 검색’ 카드와 대학 최종 모집요강을 함께 확인하세요.</p>
+        <p>위 결과는 국어·수학·영어·탐구(상위 1과목) 중 유리한 영역을 고르는 단순 계산입니다. 대학이 지정한 수학 포함, 국어 포함, 탐구 2과목 평균·절사, 영어·한국사 별도 등급, 모집단위별 예외는 자동 판정하지 않습니다. 반드시 ‘2028 학종 검색’ 카드와 대학 최종 모집요강을 함께 확인하세요.</p>
       </div>
     </>
   );
@@ -897,7 +952,7 @@ export default function AdmissionsPage() {
         && (planCategory === "전체" || record.category === planCategory)
         && (planMinimum === "전체" || (planMinimum === "있음" ? record.hasMinimum : !record.hasMinimum))
         && (planInterview === "전체" || (planInterview === "있음" ? record.hasInterview : !record.hasInterview))
-        && (!query || [record.university, record.admission, record.method, record.minimum, record.notes]
+        && (!query || [record.university, record.admission, record.method, record.minimum, record.notes, holisticEvaluation(record.university) ?? ""]
           .some((value) => value.toLocaleLowerCase("ko").includes(query)))
       ))
       .sort(comparePlanRecords);
@@ -946,7 +1001,7 @@ export default function AdmissionsPage() {
       <div className="ad-warning">
         <span>📌</span>
         <p>
-          점수 검색은 <b>이투스 2027학년도 9월 학력평가 지원참고표</b>, 2028 전형 검색은 <b>인천광역시교육청 프리뷰와 전북특별자치도교육청 시행계획 분석</b>을 바탕으로 만든 탐색 자료입니다.
+          점수 검색은 <b>이투스 2027학년도 9월 학력평가 지원참고표</b>, 2028 전형 검색은 <b>인천·전북·울산교육청 자료</b>를 서로 대조해 만든 탐색 자료입니다.
           시행계획은 바뀔 수 있으며 실제 지원 전에는 반드시 대학 입학처의 최종 모집요강을 확인해야 합니다.
         </p>
       </div>
@@ -1125,7 +1180,7 @@ export default function AdmissionsPage() {
               <p>2028 ADMISSION PLAN</p>
               <h2>계열별 전형 검색과 준비 방향</h2>
             </div>
-            <span>인천·전북특별자치도교육청 2028 자료 기준</span>
+            <span>인천·전북·울산교육청 2028 자료 대조</span>
           </div>
 
           <div className="ad-plan-notice">
@@ -1264,7 +1319,7 @@ export default function AdmissionsPage() {
               <p>HYFL HOLISTIC ADMISSION</p>
               <h2>한영외고 학종 준비 가이드</h2>
             </div>
-            <span>전북특별자치도교육청 2028 시행계획 분석 반영</span>
+            <span>인천·전북·울산교육청 2028 자료 대조</span>
           </div>
 
           <div className="ad-holistic-hero">
@@ -1274,6 +1329,20 @@ export default function AdmissionsPage() {
               <p>외고 교육과정의 강점은 단순 등급보다 과목 선택의 맥락, 전공어·사회 탐구, 세특에 남은 사고 과정, 면접에서 설명하는 힘으로 보여주는 편이 적합합니다.</p>
             </div>
             <button type="button" onClick={() => selectTab("plan")}>학종 전형 검색하기 →</button>
+          </div>
+
+          <div className="ad-subsection-heading">
+            <div><p>2028 ADMISSION CALENDAR</p><h3>먼저 큰 일정을 잡아두세요</h3></div>
+            <span>대학별 원서접수일과 면접일은 최종 모집요강에서 다시 확인해요.</span>
+          </div>
+
+          <div className="ad-timeline">
+            {ADMISSION_TIMELINE.map((item, index) => (
+              <article key={item.label}>
+                <span>{String(index + 1).padStart(2, "0")}</span>
+                <div><b>{item.label}</b><strong>{item.date}</strong><small>{item.note}</small></div>
+              </article>
+            ))}
           </div>
 
           <div className="ad-subsection-heading">
@@ -1304,10 +1373,11 @@ export default function AdmissionsPage() {
           <div className="ad-spotlight-grid">
             {HOLISTIC_SPOTLIGHTS.map((item) => (
               <article key={item.university}>
-                <div><span>{item.university}</span><small>자료 {item.page}쪽</small></div>
+                <div><span>{item.university}</span><small>{item.source}</small></div>
                 <h4>{item.admission}</h4>
                 <p>{item.method}</p>
                 <b>{item.minimum}</b>
+                <div className="ad-spotlight-evaluation"><em>서류 평가</em><p>{holisticEvaluation(item.university)}</p></div>
                 <small>{item.note}</small>
               </article>
             ))}
@@ -1363,7 +1433,7 @@ export default function AdmissionsPage() {
       )}
 
       <footer className="ad-source">
-        자료: 이투스 2027학년도 9월 학력평가 대학별 지원참고표(고1 가채점) · 인천광역시교육청 2028 대입전형 프리뷰 · 전북특별자치도교육청 2028 대학 입학전형 시행계획 분석 · 교내 진학 탐색용
+        자료: 이투스 2027학년도 9월 학력평가 대학별 지원참고표(고1 가채점) · 인천광역시교육청 2028 대입전형 프리뷰 · 전북특별자치도교육청 2028 대학 입학전형 시행계획 분석 · 울산광역시교육청 2028 대입전형 깔끔정리 · 교내 진학 탐색용
       </footer>
 
       <style>{`
@@ -1491,6 +1561,9 @@ export default function AdmissionsPage() {
         .ad-plan-prepare { display:grid; grid-template-columns:auto 1fr; gap:9px; align-items:start; padding:10px 12px; border-radius:13px; background:#fffbeb; }
         .ad-plan-prepare span { color:#b45309; font-size:9px; font-weight:900; white-space:nowrap; }
         .ad-plan-prepare p { margin:0; color:#7c5a25; font-size:9px; line-height:1.5; }
+        .ad-plan-evaluation { display:grid; grid-template-columns:auto 1fr; gap:9px; align-items:start; padding:10px 12px; border-radius:13px; background:#f5f3ff; border:1px solid #ede9fe; }
+        .ad-plan-evaluation span { color:#7c3aed; font-size:9px; font-weight:900; white-space:nowrap; }
+        .ad-plan-evaluation p { margin:0; color:#645478; font-size:9px; line-height:1.55; }
         .ad-reference-chip { background:#f1f5f9 !important; color:#64748b !important; }
         .ad-plan-reference-note { padding:9px 11px; border-radius:12px; border:1px dashed #cbd5e1; background:#f8fafc; color:#64748b; font-size:9px; line-height:1.55; }
         .ad-plan-notes { border-top:1px dashed var(--border); padding-top:9px; }
@@ -1540,6 +1613,13 @@ export default function AdmissionsPage() {
         .ad-holistic-hero h3 { margin:0 0 7px; font-size:20px; font-weight:900; letter-spacing:-.035em; }
         .ad-holistic-hero p { margin:0; color:rgba(255,255,255,.82); font-size:11px; line-height:1.7; }
         .ad-holistic-hero button { flex:0 0 auto; padding:12px 15px; border:1px solid rgba(255,255,255,.34); border-radius:13px; background:#fff; color:#6d28d9; font:900 11px inherit; cursor:pointer; }
+        .ad-timeline { display:grid; grid-template-columns:repeat(5,1fr); gap:8px; }
+        .ad-timeline article { display:flex; align-items:flex-start; gap:9px; min-width:0; padding:14px; border-radius:16px; border:1.5px solid #d1fae5; background:linear-gradient(145deg,#fff,#f0fdf4); }
+        .ad-timeline article > span { display:flex; align-items:center; justify-content:center; width:25px; height:25px; flex:0 0 auto; border-radius:8px; background:#10b981; color:#fff; font-size:8px; font-weight:900; }
+        .ad-timeline article > div { display:flex; flex-direction:column; min-width:0; }
+        .ad-timeline b { color:#065f46; font-size:10px; }
+        .ad-timeline strong { margin-top:4px; color:var(--text); font-size:10px; line-height:1.4; }
+        .ad-timeline small { margin-top:3px; color:#6b7f76; font-size:8px; line-height:1.45; }
         .ad-subsection-heading { display:flex; align-items:end; justify-content:space-between; gap:16px; padding:7px 2px 0; }
         .ad-subsection-heading p { margin:0 0 3px; color:#a78bfa; font-size:8px; font-weight:900; letter-spacing:.11em; }
         .ad-subsection-heading h3 { margin:0; color:var(--text); font-size:17px; font-weight:900; }
@@ -1563,6 +1643,9 @@ export default function AdmissionsPage() {
         .ad-spotlight-grid p { margin:0; color:var(--text-muted); font-size:10px; line-height:1.55; }
         .ad-spotlight-grid article > b { align-self:flex-start; padding:4px 8px; border-radius:8px; background:#ecfdf5; color:#047857; font-size:9px; }
         .ad-spotlight-grid article > small { color:#64748b; font-size:9px; line-height:1.6; }
+        .ad-spotlight-evaluation { display:grid !important; grid-template-columns:auto 1fr; justify-content:initial !important; align-items:start !important; gap:7px !important; padding:9px 10px; border-radius:11px; background:#f5f3ff; }
+        .ad-spotlight-evaluation em { color:#7c3aed; font-size:8px; font-style:normal; font-weight:900; white-space:nowrap; }
+        .ad-spotlight-evaluation p { color:#645478; font-size:9px; line-height:1.5; }
         .ad-guide-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:11px; }
         .ad-guide-card { padding:20px; border-radius:20px; border:1.5px solid; }
         .ad-guide-card h3 { margin:0 0 5px; font-size:17px; font-weight:900; }
@@ -1619,6 +1702,7 @@ export default function AdmissionsPage() {
           .ad-holistic-hero { align-items:flex-start; flex-direction:column; }
           .ad-holistic-hero button { width:100%; }
           .ad-subsection-heading { align-items:flex-start; flex-direction:column; gap:4px; }
+          .ad-timeline { grid-template-columns:repeat(2,1fr); }
           .ad-holistic-steps { grid-template-columns:repeat(2,1fr); }
           .ad-record-formula { align-items:flex-start; flex-direction:column; }
           .ad-spotlight-grid { grid-template-columns:1fr; }
@@ -1633,6 +1717,7 @@ export default function AdmissionsPage() {
           .ad-plan-toolbar .ad-keyword-input { grid-column:auto; }
           .ad-plan-detail-grid { grid-template-columns:1fr; }
           .ad-grade-grid { grid-template-columns:repeat(2,1fr); }
+          .ad-timeline { grid-template-columns:1fr; }
           .ad-holistic-steps { grid-template-columns:1fr; }
         }
       `}</style>
