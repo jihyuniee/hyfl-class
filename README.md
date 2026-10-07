@@ -34,3 +34,12 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## 시험 일정 안내
+
+`components/lib/semester.ts`의 `SCHOOL_EXAMS`에서 확인된 시작일과 종료일을 관리합니다.
+종료일이 미확인인 시험은 `end`를 생략하며, 시작일 다음 날부터 안내를 숨깁니다.
+종료일을 입력하면 해당 날짜까지 시험 기간으로 표시합니다. 지난 시험은 홈 D-day와 배너에서 제외되며, 다음으로 확인된 학교 시험이 표시됩니다.
+
+날짜 경계 테스트는 Node.js 22.6 이상에서 `npm test`로 실행합니다.
+한국 시간 자정, 시험 전날·시작일·종료일·종료 다음 날, 종료일 미확인, 기말고사 선택을 검증합니다.
