@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import { supabase } from "@/components/lib/supabaseClient";
-import { MIDTERM_EXAM_START, examDdayLabel, examStatusText } from "@/components/lib/semester";
+import { nextSchoolExam, examDdayLabel, examStatusText, toKSTDateStr } from "@/components/lib/semester";
 
 type Notice = {
   id: string;
@@ -76,18 +76,38 @@ const TONE: Record<"pink"|"cyan"|"orange", { bg:string; ink:string; arrow:string
   orange: { bg: "linear-gradient(135deg,#FFB066,#FF7A2E)", ink: "#16131A", arrow:"rgba(0,0,0,0.15)",       arrowHover:"#16131A" },
 };
 
+// 서버의 빌드 날짜 대신 접속한 브라우저의 현재 한국 날짜로 안내한다.
+function subscribeDate(onChange: () => void) {
+  const timer = window.setInterval(onChange, 30_000);
+  window.addEventListener("focus", onChange);
+  document.addEventListener("visibilitychange", onChange);
+  return () => {
+    window.clearInterval(timer);
+    window.removeEventListener("focus", onChange);
+    document.removeEventListener("visibilitychange", onChange);
+  };
+}
+const currentDate = () => toKSTDateStr();
+const serverDate = () => null;
+
 export default function Home() {
   const [notices, setNotices] = useState<Notice[]>([]);
   const [heroSrc, setHeroSrc] = useState("/class-photo2.jpg");
 
-  const today     = new Date();
+  const todayStr = useSyncExternalStore(subscribeDate, currentDate, serverDate);
+  const today = todayStr ? new Date(`${todayStr}T00:00:00+09:00`) : null;
   const dayNames  = ["일", "월", "화", "수", "목", "금", "토"];
-  const todayName = dayNames[today.getDay()];
+  const todayName = todayStr ? dayNames[new Date(`${todayStr}T00:00:00Z`).getUTCDay()] : "—";
 
+  const schoolExam = today ? nextSchoolExam(today) : undefined;
+  const examMessage = schoolExam && today
+    ? examStatusText(schoolExam.start, today, schoolExam)
+    : null;
   const ddayData = [
-    { label: "중간고사", date: MIDTERM_EXAM_START, dLabel: examDdayLabel(MIDTERM_EXAM_START) },
-    { label: "수능",     date: SUNEUNG,            dLabel: examDdayLabel(SUNEUNG) },
-  ];
+    ...(schoolExam && today ? [{ label: schoolExam.shortLabel, dLabel: examDdayLabel(schoolExam.start, today, schoolExam.end), color: "#FF3D86" }] : []),
+    { label: "수능", dLabel: today ? examDdayLabel(SUNEUNG, today) : null, color: "#16131A" },
+  ].filter(item => item.dLabel !== null);
+
 
   useEffect(() => {
     supabase
@@ -135,7 +155,7 @@ export default function Home() {
               fontSize: 11, fontWeight: 700, letterSpacing: "0.18em",
               textTransform: "uppercase", color: "#16131A",
             }}>
-              {today.getFullYear()} 2학기 · 한영외고 2학년 2반
+              {todayStr?.slice(0, 4) ?? "2026"} 2학기 · 한영외고 2학년 2반
               <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#FF3D86" }}/>
             </div>
             <h1 style={{
@@ -162,20 +182,17 @@ export default function Home() {
               display: "inline-flex", gap: 16, alignItems: "center",
               boxShadow: "0 2px 10px rgba(0,0,0,0.06)",
             }}>
-              <div>
-                <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "#9C95A0" }}>{ddayData[0].label}</div>
-                <div style={{ fontFamily: "'Inter',sans-serif", fontSize: 20, fontWeight: 800, letterSpacing: "-0.03em", marginTop: 2, color: "#FF3D86" }}>
-                  {ddayData[0].dLabel}
+              {ddayData.map(item => (
+                <div key={item.label} style={{ display: "contents" }}>
+                  <div>
+                    <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "#9C95A0" }}>{item.label}</div>
+                    <div style={{ fontFamily: "'Inter',sans-serif", fontSize: 20, fontWeight: 800, letterSpacing: "-0.03em", marginTop: 2, color: item.color }}>
+                      {item.dLabel}
+                    </div>
+                  </div>
+                  <div style={{ width: 1, alignSelf: "stretch", background: "#ECE4DF" }}/>
                 </div>
-              </div>
-              <div style={{ width: 1, alignSelf: "stretch", background: "#ECE4DF" }}/>
-              <div>
-                <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "#9C95A0" }}>{ddayData[1].label}</div>
-                <div style={{ fontFamily: "'Inter',sans-serif", fontSize: 20, fontWeight: 800, letterSpacing: "-0.03em", marginTop: 2, color: "#16131A" }}>
-                  {ddayData[1].dLabel}
-                </div>
-              </div>
-              <div style={{ width: 1, alignSelf: "stretch", background: "#ECE4DF" }}/>
+              ))}
               <div>
                 <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "#9C95A0" }}>오늘</div>
                 <div style={{ fontFamily: "'Inter',sans-serif", fontSize: 20, fontWeight: 800, letterSpacing: "-0.03em", marginTop: 2, color: "#16131A" }}>
@@ -216,18 +233,20 @@ export default function Home() {
         </svg>
       </section>
 
-      {/* ════════ 중간고사 상태 배너 ════════ */}
-      <div className="hy-soft" style={{
-        padding: "12px 20px", display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap",
-      }}>
-        <span style={{ fontSize: 16 }}>📅</span>
-        <span style={{ fontSize: 13, fontWeight: 700, color: "#16131A" }}>
-          {examStatusText(MIDTERM_EXAM_START)}
-        </span>
-        <span style={{ fontSize: 12, color: "#9C95A0", fontWeight: 600 }}>
-          · 중간고사 시작일 9월 29일
-        </span>
-      </div>
+      {/* ════════ 현재/다음 시험 상태 배너 ════════ */}
+      {schoolExam && examMessage && (
+        <div className="hy-soft" style={{
+          padding: "12px 20px", display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap",
+        }}>
+          <span style={{ fontSize: 16 }}>📅</span>
+          <span style={{ fontSize: 13, fontWeight: 700, color: "#16131A" }}>
+            {examMessage}
+          </span>
+          <span style={{ fontSize: 12, color: "#9C95A0", fontWeight: 600 }}>
+            · {schoolExam.shortLabel} 시작일 {Number(schoolExam.start.slice(5, 7))}월 {Number(schoolExam.start.slice(8, 10))}일
+          </span>
+        </div>
+      )}
 
       {/* ════════ 컬러 블록 3-up ════════ */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 16 }} className="block-grid">
