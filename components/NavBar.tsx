@@ -41,6 +41,7 @@ const NAV_GROUPS = [
       { href: "/habits", label: "90일 습관" },
       { href: "/research", label: "심화탐구" },
       { href: "/mentor", label: "멘토·멘티" },
+      { href: "/hyfl", label: "AI 대회코치 🤖" },
     ],
   },
   {
