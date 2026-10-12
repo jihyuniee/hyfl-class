@@ -64,6 +64,7 @@ const HERO_BLOCKS = [
 const QUICK_LINKS = [
   { href: "/schedule",   label: "일정/수행", sub: "schedule" },
   { href: "/counseling", label: "상담",       sub: "counsel"  },
+  { href: "/gildong-mission", label: "길동 미션", sub: "mission" },
   { href: "/habits",     label: "90일 습관",  sub: "habits"   },
   { href: "/roles",      label: "1인1역할",   sub: "roles"    },
   { href: "/wall",       label: "학생 소개",  sub: "wall"     },
