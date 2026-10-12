@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
-import NavBar from "@/components/NavBar";
+import SiteFrame from "@/components/SiteFrame";
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -35,16 +35,7 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body>
-        <NavBar />
-        <main
-          style={{
-            maxWidth: 1100,
-            margin: "0 auto",
-            padding: "clamp(16px, 3vw, 28px) clamp(14px, 4vw, 40px) 80px",
-          }}
-        >
-          {children}
-        </main>
+        <SiteFrame>{children}</SiteFrame>
       </body>
     </html>
   );
