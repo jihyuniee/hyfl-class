@@ -82,8 +82,8 @@ function PrepRow({ label, value }: { label: string; value: string | number | nul
 function PrepSurveyView({ prep }: { prep: PrepSurvey }) {
   return (
     <div style={{ padding:"14px 16px", borderRadius:12, background:"#faf5ff", border:"1.5px solid #e9d5ff" }}>
-      <PrepRow label="1. 기말고사 직후 느낌/감정" value={prep.feeling} />
-      <PrepRow label="2. 최선을 다한 정도" value={prep.effort_score !== null ? `${prep.effort_score}점` : null} />
+      <PrepRow label="1. 중간고사 이후 느낌/감정" value={prep.feeling} />
+      <PrepRow label="2. 중간고사 준비에 최선을 다한 정도" value={prep.effort_score !== null ? `${prep.effort_score}점` : null} />
       <PrepRow label="3. 가장 열심히 준비한 과목" value={prep.hardest_subject} />
       <PrepRow label="4. 가장 노력이 적었던 과목" value={prep.least_effort_subject} />
       <PrepRow label="5. 자랑하고 싶은 것" value={prep.proud} />
@@ -94,9 +94,9 @@ function PrepSurveyView({ prep }: { prep: PrepSurvey }) {
       <PrepRow label="8. 영어" value={prep.subject_english} />
       <PrepRow label="8. 국제" value={prep.subject_gukje} />
       <PrepRow label="8. 사회와 문화" value={prep.subject_culture} />
-      <PrepRow label="9. 보완할 점 - 학습 방법" value={prep.improve_method} />
-      <PrepRow label="9. 보완할 점 - 생활 습관/노력의 정도" value={prep.improve_habit} />
-      <PrepRow label="10. 여름방학 계획" value={prep.vacation_plan} />
+      <PrepRow label="9. 기말고사까지 보완할 점 - 학습 방법" value={prep.improve_method} />
+      <PrepRow label="9. 기말고사까지 보완할 점 - 생활 습관/노력의 정도" value={prep.improve_habit} />
+      <PrepRow label="10. 남은 기말고사 계획" value={prep.vacation_plan} />
       <PrepRow label="11. 현재 심리 상태" value={prep.psych_state} />
       <PrepRow label="12. 정서/심리 고민" value={prep.emotional_concern} />
       <PrepRow label="13. 생기부 관련 고민" value={prep.record_concern} />
@@ -111,7 +111,7 @@ export default function CounselingPage() {
   const [applications, setApplications] = useState<Application[]>([]);
   const [walkIns,      setWalkIns]      = useState<WalkIn[]>([]);
 
-  // 1학기 마무리 설문 (상담 신청 전 필수)
+  // 중간고사 이후 상담 설문 (상담 신청 전 필수)
   const [gateNo,          setGateNo]          = useState("");
   const [gateName,        setGateName]        = useState("");
   const [gateNameLoading, setGateNameLoading] = useState(false);
@@ -338,7 +338,7 @@ export default function CounselingPage() {
       <div className="hy-hero">
         <h1 style={{ color:"#fff", fontSize:"clamp(20px,4vw,30px)", fontWeight:900, margin:"0 0 8px" }}>💬 상담 신청</h1>
         <p style={{ color:"rgba(255,255,255,0.85)", fontSize:13, margin:0, fontWeight:500, lineHeight:1.7 }}>
-          정식 상담 기간에는 슬롯을 선택하고,<br/>평소에는 언제든 수시 상담을 신청할 수 있어요
+          중간고사가 끝난 지금, 상담 시간을 선택하고<br/>남은 기말고사 계획까지 함께 정리해요
         </p>
       </div>
 
@@ -499,10 +499,10 @@ export default function CounselingPage() {
 
           {!isAdmin && gateStatus !== "checked-exists" && availableSlotCount > 0 && (
             <div className="hy-card" style={{ padding:"22px 24px", border:"2px solid var(--primary)" }}>
-              <h3 style={{ fontSize:15, fontWeight:900, color:"var(--text)", margin:"0 0 4px" }}>📝 1학기 마무리 설문 (상담 전 필수)</h3>
+              <h3 style={{ fontSize:15, fontWeight:900, color:"var(--text)", margin:"0 0 4px" }}>📝 중간고사 이후 상담 설문 (상담 전 필수)</h3>
               <p style={{ fontSize:13, color:"var(--text-muted)", margin:"0 0 16px", lineHeight:1.7 }}>
-                이 설문을 작성해야 상담 시간을 선택할 수 있어요.<br/>
-                선생님이 상담할 때 이 내용을 함께 보면서 이야기 나눌 거예요 🙂
+                중간고사를 돌아보고 남은 기말고사 계획을 세우기 위한 설문이에요.<br/>
+                작성 후 상담 시간을 선택할 수 있고, 선생님이 상담할 때 함께 보면서 이야기 나눌 거예요 🙂
               </p>
 
               <div style={{ position:"relative", marginBottom:10 }}>
@@ -524,9 +524,9 @@ export default function CounselingPage() {
 
               {gateStatus === "checked-missing" && (
                 <div style={{ display:"flex", flexDirection:"column", gap:14, marginTop:20, paddingTop:16, borderTop:"1.5px dashed var(--border)" }}>
-                  <PrepField label="1. 기말고사가 끝난 직후 나의 느낌/감정" value={prepForm.feeling} onChange={v=>setPrepForm(p=>({...p, feeling:v}))}/>
+                  <PrepField label="1. 중간고사가 끝난 뒤 나의 느낌/감정" value={prepForm.feeling} onChange={v=>setPrepForm(p=>({...p, feeling:v}))}/>
                   <div>
-                    <label style={{ fontSize:12, fontWeight:700, color:"var(--text-muted)", display:"block", marginBottom:6 }}>2. 이번 학기에 내가 최선을 다한 정도를 점수 매기면? (100점 만점)</label>
+                    <label style={{ fontSize:12, fontWeight:700, color:"var(--text-muted)", display:"block", marginBottom:6 }}>2. 중간고사 준비에 내가 최선을 다한 정도를 점수 매기면? (100점 만점)</label>
                     <input type="number" min={0} max={100} placeholder="예: 85" value={prepForm.effort_score}
                       onChange={e=>setPrepForm(p=>({...p, effort_score:e.target.value}))} className="hy-input" style={{ width:100 }}/>
                   </div>
@@ -550,7 +550,7 @@ export default function CounselingPage() {
                   </div>
 
                   <div>
-                    <label style={{ fontSize:12, fontWeight:700, color:"var(--text-muted)", display:"block", marginBottom:6 }}>9. 2학기 때 더 보완해야 할 점</label>
+                    <label style={{ fontSize:12, fontWeight:700, color:"var(--text-muted)", display:"block", marginBottom:6 }}>9. 남은 기말고사까지 더 보완해야 할 점</label>
                     <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:8 }}>
                       <div>
                         <p style={{ fontSize:11, fontWeight:700, color:"var(--text-subtle)", margin:"0 0 4px" }}>학습 방법</p>
@@ -563,7 +563,7 @@ export default function CounselingPage() {
                     </div>
                   </div>
 
-                  <PrepField label="10. 나의 여름방학 계획" value={prepForm.vacation_plan} onChange={v=>setPrepForm(p=>({...p, vacation_plan:v}))}/>
+                  <PrepField label="10. 남은 기말고사 계획" value={prepForm.vacation_plan} onChange={v=>setPrepForm(p=>({...p, vacation_plan:v}))}/>
                   <PrepField label="11. 현재 나의 심리 상태" value={prepForm.psych_state} onChange={v=>setPrepForm(p=>({...p, psych_state:v}))}/>
                   <PrepField label="12. 정서/심리 고민" value={prepForm.emotional_concern} onChange={v=>setPrepForm(p=>({...p, emotional_concern:v}))}/>
                   <PrepField label="13. 생기부 관련 고민" value={prepForm.record_concern} onChange={v=>setPrepForm(p=>({...p, record_concern:v}))}/>
