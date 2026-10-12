@@ -47,6 +47,25 @@ const PREP_SUBJECTS: { key: keyof PrepFormState; label: string }[] = [
 
 const ADMIN_PW = "hyfl2025";
 
+const FIXED_COUNSELING_SLOTS: Slot[] = [
+  { id: "20261013-1620-4000-8000-000000000001", date: "2026-10-13", time: "16:20~17:00", is_available: true },
+  { id: "20261013-1700-4000-8000-000000000002", date: "2026-10-13", time: "17:00~17:40", is_available: true },
+  { id: "20261015-1620-4000-8000-000000000003", date: "2026-10-15", time: "16:20~17:00", is_available: true },
+  { id: "20261015-1700-4000-8000-000000000004", date: "2026-10-15", time: "17:00~17:40", is_available: true },
+  { id: "20261016-1620-4000-8000-000000000005", date: "2026-10-16", time: "16:20~17:00", is_available: true },
+  { id: "20261016-1700-4000-8000-000000000006", date: "2026-10-16", time: "17:00~17:40", is_available: true },
+  { id: "20261016-1740-4000-8000-000000000007", date: "2026-10-16", time: "17:40~18:20", is_available: true },
+  { id: "20261016-1820-4000-8000-000000000008", date: "2026-10-16", time: "18:20~19:00", is_available: true },
+];
+
+function isFixedCounselingSlot(slotId: string) {
+  return FIXED_COUNSELING_SLOTS.some(slot => slot.id === slotId);
+}
+
+function sortSlots(a: Slot, b: Slot) {
+  return `${a.date} ${a.time}`.localeCompare(`${b.date} ${b.time}`);
+}
+
 function fmtDate(d: string) {
   const dt = new Date(`${d}T00:00:00+09:00`);
   const days = ["일","월","화","수","목","금","토"];
@@ -162,8 +181,14 @@ export default function CounselingPage() {
     const { data: sd } = await supabase.from("counseling_slots").select("*").gte("date", today).order("date").order("time");
     const { data: ad } = await supabase.from("counseling_applications").select("*").order("created_at");
     const { data: wd } = await supabase.from("counseling_walkins").select("*").order("created_at", { ascending: false });
-    setSlots((sd as Slot[]) ?? []);
-    setApplications((ad as Application[]) ?? []);
+    const dbSlots = (sd as Slot[]) ?? [];
+    const apps = (ad as Application[]) ?? [];
+    const fixedSlots = FIXED_COUNSELING_SLOTS
+      .filter(slot => slot.date >= today)
+      .filter(slot => !dbSlots.some(dbSlot => dbSlot.date === slot.date && dbSlot.time === slot.time))
+      .map(slot => ({ ...slot, is_available: !apps.some(app => app.slot_id === slot.id) }));
+    setSlots([...dbSlots, ...fixedSlots].sort(sortSlots));
+    setApplications(apps);
     setWalkIns((wd as WalkIn[]) ?? []);
   }
 
@@ -242,18 +267,32 @@ export default function CounselingPage() {
   async function submitFormal() {
     if (!selectedSlot || !sNo.trim() || !sName.trim()) return;
     setSubmitting(true);
-    const { data: freshSlot } = await supabase.from("counseling_slots").select("is_available").eq("id", selectedSlot.id).single();
-    if (!freshSlot?.is_available) {
-      setSubmitting(false);
-      alert("방금 다른 학생이 신청했어요 😢\n다른 시간을 선택해주세요!");
-      await load(); setSelectedSlot(null); return;
+    if (isFixedCounselingSlot(selectedSlot.id)) {
+      const { data: freshApp } = await supabase
+        .from("counseling_applications")
+        .select("id")
+        .eq("slot_id", selectedSlot.id)
+        .maybeSingle();
+      if (freshApp) {
+        setSubmitting(false);
+        alert("방금 다른 학생이 신청했어요 😢\n다른 시간을 선택해주세요!");
+        await load(); setSelectedSlot(null); return;
+      }
+    } else {
+      const { data: freshSlot } = await supabase.from("counseling_slots").select("is_available").eq("id", selectedSlot.id).single();
+      if (!freshSlot?.is_available) {
+        setSubmitting(false);
+        alert("방금 다른 학생이 신청했어요 😢\n다른 시간을 선택해주세요!");
+        await load(); setSelectedSlot(null); return;
+      }
+      await supabase.from("counseling_slots").update({ is_available: false }).eq("id", selectedSlot.id);
     }
-    await supabase.from("counseling_slots").update({ is_available: false }).eq("id", selectedSlot.id);
-    await supabase.from("counseling_applications").insert({
+    const { error } = await supabase.from("counseling_applications").insert({
       slot_id: selectedSlot.id, student_no: sNo.trim(), name: sName.trim(),
       reason: sReason.trim() || null, is_private: sPrivate,
     });
     setSubmitting(false);
+    if (error) { alert("상담 신청 실패: " + error.message); return; }
     setSelectedSlot(null); setSNo(""); setSName(""); setSReason(""); setSPrivate(false);
     await load();
     alert("신청 완료! 선생님이 확인하실 거예요 🙂");
