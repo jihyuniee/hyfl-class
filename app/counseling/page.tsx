@@ -17,6 +17,7 @@ type PrepSurvey = {
   improve_method: string | null; improve_habit: string | null;
   vacation_plan: string | null; psych_state: string | null;
   emotional_concern: string | null; record_concern: string | null;
+  survey_note?: string | null;
 };
 
 type PrepFormState = {
@@ -46,6 +47,7 @@ const PREP_SUBJECTS: { key: keyof PrepFormState; label: string }[] = [
 ];
 
 const ADMIN_PW = "hyfl2025";
+const MIDTERM_SURVEY_MARKER = "midterm-survey-2026-10-13";
 
 const FIXED_COUNSELING_SLOTS: Slot[] = [
   { id: "20261013-1620-4000-8000-000000000001", date: "2026-10-13", time: "16:20~17:00", is_available: true },
@@ -68,6 +70,61 @@ function fixedSlotLabel(slot: Slot) {
 
 function isFixedFormalWalkIn(walkIn: WalkIn) {
   return Boolean(walkIn.preferred_time && walkIn.content?.startsWith("[정식상담]"));
+}
+
+function isMidtermSurveyWalkIn(walkIn: WalkIn) {
+  return walkIn.preferred_time === MIDTERM_SURVEY_MARKER && walkIn.content?.startsWith("[중간고사상담설문]");
+}
+
+function formatMidtermSurvey(form: PrepFormState) {
+  return [
+    "[중간고사상담설문]",
+    `1. 중간고사 이후 느낌/감정: ${form.feeling.trim() || "-"}`,
+    `2. 중간고사 준비 만족도: ${form.effort_score.trim() || "-"}점`,
+    `3. 가장 열심히 준비한 과목: ${form.hardest_subject.trim() || "-"}`,
+    `4. 준비가 부족했던 과목: ${form.least_effort_subject.trim() || "-"}`,
+    `5. 스스로 칭찬하고 싶은 부분: ${form.proud.trim() || "-"}`,
+    `6. 아쉬운 점/후회되는 부분: ${form.regret.trim() || "-"}`,
+    `7. 과목별 시간 투자/밸런스: ${form.subject_balance.trim() || "-"}`,
+    `8-1. 국어: ${form.subject_korean.trim() || "-"}`,
+    `8-2. 수학: ${form.subject_math.trim() || "-"}`,
+    `8-3. 영어: ${form.subject_english.trim() || "-"}`,
+    `8-4. 국제: ${form.subject_gukje.trim() || "-"}`,
+    `8-5. 사회와 문화: ${form.subject_culture.trim() || "-"}`,
+    `9-1. 기말고사까지 보완할 학습 방법: ${form.improve_method.trim() || "-"}`,
+    `9-2. 기말고사까지 보완할 생활 습관/노력: ${form.improve_habit.trim() || "-"}`,
+    `10. 남은 기말고사 계획: ${form.vacation_plan.trim() || "-"}`,
+    `11. 요즘 나의 상태: ${form.psych_state.trim() || "-"}`,
+    `12. 지금 가장 고민되는 부분: ${form.emotional_concern.trim() || "-"}`,
+    `13. 선생님과 꼭 이야기하고 싶은 내용: ${form.record_concern.trim() || "-"}`,
+  ].join("\n");
+}
+
+function midtermSurveyToPrepSurvey(walkIn: WalkIn): PrepSurvey {
+  return {
+    student_no: walkIn.student_no,
+    name: walkIn.name,
+    created_at: walkIn.created_at,
+    feeling: null,
+    effort_score: null,
+    hardest_subject: null,
+    least_effort_subject: null,
+    proud: null,
+    regret: null,
+    subject_balance: null,
+    subject_korean: null,
+    subject_math: null,
+    subject_english: null,
+    subject_gukje: null,
+    subject_culture: null,
+    improve_method: null,
+    improve_habit: null,
+    vacation_plan: null,
+    psych_state: null,
+    emotional_concern: null,
+    record_concern: null,
+    survey_note: walkIn.content.replace(/^\[중간고사상담설문\]\s*/, "").trim(),
+  };
 }
 
 function fixedSlotReservationFor(slot: Slot, walkIns: WalkIn[]) {
@@ -130,6 +187,14 @@ function PrepRow({ label, value }: { label: string; value: string | number | nul
 }
 
 function PrepSurveyView({ prep }: { prep: PrepSurvey }) {
+  if (prep.survey_note) {
+    return (
+      <div style={{ padding:"14px 16px", borderRadius:12, background:"#faf5ff", border:"1.5px solid #e9d5ff" }}>
+        <PrepRow label="중간고사 이후 상담 설문" value={prep.survey_note} />
+      </div>
+    );
+  }
+
   return (
     <div style={{ padding:"14px 16px", borderRadius:12, background:"#faf5ff", border:"1.5px solid #e9d5ff" }}>
       <PrepRow label="1. 중간고사 이후 느낌/감정" value={prep.feeling} />
@@ -146,10 +211,10 @@ function PrepSurveyView({ prep }: { prep: PrepSurvey }) {
       <PrepRow label="8. 사회와 문화" value={prep.subject_culture} />
       <PrepRow label="9. 기말고사까지 보완할 점 - 학습 방법" value={prep.improve_method} />
       <PrepRow label="9. 기말고사까지 보완할 점 - 생활 습관/노력의 정도" value={prep.improve_habit} />
-      <PrepRow label="10. 남은 기말고사 계획" value={prep.vacation_plan} />
-      <PrepRow label="11. 현재 심리 상태" value={prep.psych_state} />
-      <PrepRow label="12. 정서/심리 고민" value={prep.emotional_concern} />
-      <PrepRow label="13. 생기부 관련 고민" value={prep.record_concern} />
+      <PrepRow label="10. 남은 기말고사까지의 계획" value={prep.vacation_plan} />
+      <PrepRow label="11. 요즘 나의 상태" value={prep.psych_state} />
+      <PrepRow label="12. 지금 가장 고민되는 부분" value={prep.emotional_concern} />
+      <PrepRow label="13. 선생님과 꼭 이야기하고 싶은 내용" value={prep.record_concern} />
     </div>
   );
 }
@@ -225,7 +290,7 @@ export default function CounselingPage() {
       .map(slot => ({ ...slot, is_available: !apps.some(app => app.slot_id === slot.id) }));
     setSlots([...dbSlots, ...fixedSlots].sort(sortSlots));
     setApplications(apps);
-    setWalkIns(walkIns.filter(walkIn => !isFixedFormalWalkIn(walkIn)));
+    setWalkIns(walkIns.filter(walkIn => !isFixedFormalWalkIn(walkIn) && !isMidtermSurveyWalkIn(walkIn)));
   }
 
   useEffect(() => { load(); }, []);
@@ -248,9 +313,15 @@ export default function CounselingPage() {
       const { data } = await supabase.from("student_contacts").select("name").eq("student_no", gateNo.trim()).maybeSingle();
       if (data?.name) { name = data.name; setGateName(data.name); }
     }
-    const { data: prep } = await supabase.from("counseling_prep_surveys").select("*").eq("student_no", gateNo.trim()).maybeSingle();
+    const { data: midtermSurvey } = await supabase
+      .from("counseling_walkins")
+      .select("id")
+      .eq("student_no", gateNo.trim())
+      .eq("preferred_time", MIDTERM_SURVEY_MARKER)
+      .like("content", "[중간고사상담설문]%")
+      .maybeSingle();
     setGateChecking(false);
-    if (prep) {
+    if (midtermSurvey) {
       setGateStatus("checked-exists");
       setSNo(gateNo.trim()); setSName(name);
     } else {
@@ -262,7 +333,24 @@ export default function CounselingPage() {
   async function submitPrep() {
     if (!gateNo.trim() || !gateName.trim()) { alert("학번을 다시 확인해주세요."); return; }
     setPrepSubmitting(true);
-    const { error } = await supabase.from("counseling_prep_surveys").insert({
+
+    const surveyContent = formatMidtermSurvey(prepForm);
+    const { error: surveyError } = await supabase.from("counseling_walkins").insert({
+      student_no: gateNo.trim(),
+      name: gateName.trim(),
+      content: surveyContent,
+      preferred_time: MIDTERM_SURVEY_MARKER,
+      is_private: true,
+      is_checked: false,
+    });
+
+    if (surveyError) {
+      setPrepSubmitting(false);
+      alert("설문 제출 실패: " + surveyError.message);
+      return;
+    }
+
+    await supabase.from("counseling_prep_surveys").upsert({
       student_no: gateNo.trim(), name: gateName.trim(),
       feeling: prepForm.feeling.trim() || null,
       effort_score: prepForm.effort_score.trim() ? Number(prepForm.effort_score) : null,
@@ -282,9 +370,9 @@ export default function CounselingPage() {
       psych_state: prepForm.psych_state.trim() || null,
       emotional_concern: prepForm.emotional_concern.trim() || null,
       record_concern: prepForm.record_concern.trim() || null,
-    });
+    }, { onConflict: "student_no" });
+
     setPrepSubmitting(false);
-    if (error) { alert("설문 제출 실패: " + error.message); return; }
     setSNo(gateNo.trim()); setSName(gateName.trim());
     setGateStatus("checked-exists");
     setPrepForm(EMPTY_PREP_FORM);
@@ -295,6 +383,21 @@ export default function CounselingPage() {
   async function togglePrepView(appId: string, studentNo: string) {
     setExpandedPrep(prev => ({ ...prev, [appId]: !prev[appId] }));
     if (prepCache[studentNo] !== undefined) return;
+    const { data: midtermSurvey } = await supabase
+      .from("counseling_walkins")
+      .select("*")
+      .eq("student_no", studentNo)
+      .eq("preferred_time", MIDTERM_SURVEY_MARKER)
+      .like("content", "[중간고사상담설문]%")
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    if (midtermSurvey) {
+      setPrepCache(prev => ({ ...prev, [studentNo]: midtermSurveyToPrepSurvey(midtermSurvey as WalkIn) }));
+      return;
+    }
+
     const { data } = await supabase.from("counseling_prep_surveys").select("*").eq("student_no", studentNo).maybeSingle();
     setPrepCache(prev => ({ ...prev, [studentNo]: (data as PrepSurvey) ?? "none" }));
   }
@@ -667,10 +770,10 @@ export default function CounselingPage() {
                     </div>
                   </div>
 
-                  <PrepField label="10. 남은 기말고사 계획" value={prepForm.vacation_plan} onChange={v=>setPrepForm(p=>({...p, vacation_plan:v}))}/>
-                  <PrepField label="11. 현재 나의 심리 상태" value={prepForm.psych_state} onChange={v=>setPrepForm(p=>({...p, psych_state:v}))}/>
-                  <PrepField label="12. 정서/심리 고민" value={prepForm.emotional_concern} onChange={v=>setPrepForm(p=>({...p, emotional_concern:v}))}/>
-                  <PrepField label="13. 생기부 관련 고민" value={prepForm.record_concern} onChange={v=>setPrepForm(p=>({...p, record_concern:v}))}/>
+                  <PrepField label="10. 남은 기말고사까지의 계획" value={prepForm.vacation_plan} onChange={v=>setPrepForm(p=>({...p, vacation_plan:v}))}/>
+                  <PrepField label="11. 요즘 나의 상태" value={prepForm.psych_state} onChange={v=>setPrepForm(p=>({...p, psych_state:v}))}/>
+                  <PrepField label="12. 지금 가장 고민되는 부분" value={prepForm.emotional_concern} onChange={v=>setPrepForm(p=>({...p, emotional_concern:v}))}/>
+                  <PrepField label="13. 선생님과 꼭 이야기하고 싶은 내용" value={prepForm.record_concern} onChange={v=>setPrepForm(p=>({...p, record_concern:v}))}/>
 
                   <button onClick={submitPrep} disabled={prepSubmitting} className="hy-btn hy-btn-primary" style={{ fontSize:14 }}>
                     {prepSubmitting ? "제출 중..." : "설문 제출하고 상담 신청하러 가기"}
