@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/components/lib/supabaseClient";
 
 type Slot = { id: string; date: string; time: string; is_available: boolean; };
-type Application = { id: string; slot_id: string; student_no: string; name: string; reason: string | null; is_private: boolean; is_confirmed: boolean; created_at: string; };
+type Application = { id: string; slot_id: string; student_no: string; name: string; reason: string | null; is_private: boolean; is_confirmed: boolean; created_at: string; source?: "fixed"; };
 type WalkIn = { id: string; created_at: string; student_no: string; name: string; content: string; preferred_time: string | null; is_private: boolean; is_checked: boolean; };
 
 type PrepSurvey = {
@@ -60,6 +60,37 @@ const FIXED_COUNSELING_SLOTS: Slot[] = [
 
 function isFixedCounselingSlot(slotId: string) {
   return FIXED_COUNSELING_SLOTS.some(slot => slot.id === slotId);
+}
+
+function fixedSlotLabel(slot: Slot) {
+  return `${slot.date} ${slot.time}`;
+}
+
+function isFixedFormalWalkIn(walkIn: WalkIn) {
+  return Boolean(walkIn.preferred_time && walkIn.content?.startsWith("[정식상담]"));
+}
+
+function fixedSlotReservationFor(slot: Slot, walkIns: WalkIn[]) {
+  const slotLabel = fixedSlotLabel(slot);
+  return walkIns.find(walkIn => walkIn.preferred_time === slotLabel && isFixedFormalWalkIn(walkIn));
+}
+
+function fixedWalkInToApplication(walkIn: WalkIn): Application | null {
+  if (!walkIn.preferred_time || !isFixedFormalWalkIn(walkIn)) return null;
+  const slot = FIXED_COUNSELING_SLOTS.find(item => fixedSlotLabel(item) === walkIn.preferred_time);
+  if (!slot) return null;
+  const reason = walkIn.content.replace(/^\[정식상담\]\s*/, "").trim();
+  return {
+    id: walkIn.id,
+    slot_id: slot.id,
+    student_no: walkIn.student_no,
+    name: walkIn.name,
+    reason: reason || null,
+    is_private: walkIn.is_private,
+    is_confirmed: walkIn.is_checked,
+    created_at: walkIn.created_at,
+    source: "fixed",
+  };
 }
 
 function sortSlots(a: Slot, b: Slot) {
@@ -182,14 +213,19 @@ export default function CounselingPage() {
     const { data: ad } = await supabase.from("counseling_applications").select("*").order("created_at");
     const { data: wd } = await supabase.from("counseling_walkins").select("*").order("created_at", { ascending: false });
     const dbSlots = (sd as Slot[]) ?? [];
-    const apps = (ad as Application[]) ?? [];
+    const dbApps = (ad as Application[]) ?? [];
+    const walkIns = (wd as WalkIn[]) ?? [];
+    const fixedApps = walkIns
+      .map(fixedWalkInToApplication)
+      .filter((app): app is Application => app !== null);
+    const apps = [...dbApps, ...fixedApps];
     const fixedSlots = FIXED_COUNSELING_SLOTS
       .filter(slot => slot.date >= today)
       .filter(slot => !dbSlots.some(dbSlot => dbSlot.date === slot.date && dbSlot.time === slot.time))
       .map(slot => ({ ...slot, is_available: !apps.some(app => app.slot_id === slot.id) }));
     setSlots([...dbSlots, ...fixedSlots].sort(sortSlots));
     setApplications(apps);
-    setWalkIns((wd as WalkIn[]) ?? []);
+    setWalkIns(walkIns.filter(walkIn => !isFixedFormalWalkIn(walkIn)));
   }
 
   useEffect(() => { load(); }, []);
@@ -267,26 +303,46 @@ export default function CounselingPage() {
   async function submitFormal() {
     if (!selectedSlot || !sNo.trim() || !sName.trim()) return;
     setSubmitting(true);
+
     if (isFixedCounselingSlot(selectedSlot.id)) {
-      const { data: freshApp } = await supabase
-        .from("counseling_applications")
+      const slotLabel = fixedSlotLabel(selectedSlot);
+      const { data: freshWalkIn } = await supabase
+        .from("counseling_walkins")
         .select("id")
-        .eq("slot_id", selectedSlot.id)
+        .eq("preferred_time", slotLabel)
+        .like("content", "[정식상담]%")
         .maybeSingle();
-      if (freshApp) {
+
+      if (freshWalkIn) {
         setSubmitting(false);
         alert("방금 다른 학생이 신청했어요 😢\n다른 시간을 선택해주세요!");
         await load(); setSelectedSlot(null); return;
       }
-    } else {
-      const { data: freshSlot } = await supabase.from("counseling_slots").select("is_available").eq("id", selectedSlot.id).single();
-      if (!freshSlot?.is_available) {
-        setSubmitting(false);
-        alert("방금 다른 학생이 신청했어요 😢\n다른 시간을 선택해주세요!");
-        await load(); setSelectedSlot(null); return;
-      }
-      await supabase.from("counseling_slots").update({ is_available: false }).eq("id", selectedSlot.id);
+
+      const { error } = await supabase.from("counseling_walkins").insert({
+        student_no: sNo.trim(),
+        name: sName.trim(),
+        content: sReason.trim() ? `[정식상담] ${sReason.trim()}` : "[정식상담]",
+        preferred_time: slotLabel,
+        is_private: sPrivate,
+        is_checked: false,
+      });
+
+      setSubmitting(false);
+      if (error) { alert("상담 신청 실패: " + error.message); return; }
+      setSelectedSlot(null); setSNo(""); setSName(""); setSReason(""); setSPrivate(false);
+      await load();
+      alert("신청 완료! 선생님이 확인하실 거예요 🙂");
+      return;
     }
+
+    const { data: freshSlot } = await supabase.from("counseling_slots").select("is_available").eq("id", selectedSlot.id).single();
+    if (!freshSlot?.is_available) {
+      setSubmitting(false);
+      alert("방금 다른 학생이 신청했어요 😢\n다른 시간을 선택해주세요!");
+      await load(); setSelectedSlot(null); return;
+    }
+    await supabase.from("counseling_slots").update({ is_available: false }).eq("id", selectedSlot.id);
     const { error } = await supabase.from("counseling_applications").insert({
       slot_id: selectedSlot.id, student_no: sNo.trim(), name: sName.trim(),
       reason: sReason.trim() || null, is_private: sPrivate,
@@ -318,9 +374,14 @@ export default function CounselingPage() {
     if (!confirm("상담 신청을 취소할까요?")) return;
     setCancelling(true);
     const app = myApp as Application;
-    await supabase.from("counseling_applications").delete().eq("id", app.id);
-    await supabase.from("counseling_slots").update({ is_available: true }).eq("id", app.slot_id);
+    const { error } = app.source === "fixed"
+      ? await supabase.from("counseling_walkins").delete().eq("id", app.id)
+      : await supabase.from("counseling_applications").delete().eq("id", app.id);
+    if (!app.source) {
+      await supabase.from("counseling_slots").update({ is_available: true }).eq("id", app.slot_id);
+    }
     setCancelling(false);
+    if (error) { alert("상담 취소 실패: " + error.message); return; }
     setMyApp(null); setCheckNo(""); setCheckName("");
     await load();
     alert("취소 완료! 해당 시간이 다시 열렸어요.");
@@ -358,8 +419,12 @@ export default function CounselingPage() {
     await load();
   }
 
-  async function confirmApp(id: string, current: boolean) {
-    await supabase.from("counseling_applications").update({ is_confirmed: !current }).eq("id", id);
+  async function confirmApp(app: Application) {
+    if (app.source === "fixed") {
+      await supabase.from("counseling_walkins").update({ is_checked: !app.is_confirmed }).eq("id", app.id);
+    } else {
+      await supabase.from("counseling_applications").update({ is_confirmed: !app.is_confirmed }).eq("id", app.id);
+    }
     await load();
   }
 
@@ -444,7 +509,7 @@ export default function CounselingPage() {
                             <p style={{ fontSize:12, color:"var(--text-subtle)", margin:"4px 0 0" }}>신청 사유 없음</p>
                           )}
                           <div style={{ display:"flex", gap:8, flexWrap:"wrap" }}>
-                            <button onClick={() => confirmApp(app.id, app.is_confirmed)}
+                            <button onClick={() => confirmApp(app)}
                               style={{ marginTop:8, fontSize:11, padding:"4px 12px", borderRadius:999, cursor:"pointer", fontFamily:"inherit", fontWeight:700,
                                 border: app.is_confirmed ? "1.5px solid #86efac" : "1.5px solid var(--border)",
                                 background: app.is_confirmed ? "#dcfce7" : "#fff",
