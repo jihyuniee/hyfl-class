@@ -1,5 +1,6 @@
 import Link from "next/link";
 import ParkMap from "./ParkMap";
+import PhotoContest from "./PhotoContest";
 
 const pageUrl = "https://hyfl-class.vercel.app/gildong-mission";
 const officialParkUrl = "https://parks.seoul.go.kr/content.do?key=2604300010";
@@ -17,11 +18,11 @@ const missions = [
     checks: ["친구 동의 받고 촬영", "얼굴·이름표 노출 주의", "마지막에 조 이름 넣기"],
   },
   {
-    title: "오늘의 식물 발견",
-    tag: "사진 인증",
+    title: "가을 사진 컨테스트",
+    tag: "사진 + 좋아요",
     score: "관찰",
-    text: "안내도에 나온 구역을 돌며 인상적인 식물이나 자연물을 찾아 기록합니다.",
-    checks: ["식물 훼손 금지", "가까이 보고 특징 적기", "이름을 모르면 색·모양 기록"],
+    text: "가을빛, 식물, 친구들과의 순간을 사진 한 장으로 남기고 서로 좋아요로 응원합니다.",
+    checks: ["사진에 제목 붙이기", "친구 사진은 동의 받고 올리기", "마음에 드는 작품에 좋아요"],
   },
   {
     title: "힐링 한 문장",
@@ -43,7 +44,7 @@ const steps = [
   ["1", "조 정하기", "2~4명으로 조를 정하고 역할을 나눕니다. 촬영, 편집, 기록, 발표 역할을 가볍게 정해요."],
   ["2", "미션 수행", "안내도를 보며 이동하고, 숏츠·식물 사진·한 문장 기록 중 2개 이상 수행합니다."],
   ["3", "숏츠 제작", "CapCut 또는 Vrew에서 15~30초 세로 영상으로 편집합니다. 자막은 짧게, 음악은 과하지 않게."],
-  ["4", "서로 응원", "학급 투표 링크에 올리고 좋아요로 서로의 결과물을 응원합니다."],
+  ["4", "서로 응원", "사진 컨테스트에 작품을 올리고 친구들의 사진에 좋아요를 눌러 응원합니다."],
 ];
 
 const editGuide = [
@@ -86,6 +87,7 @@ export default function GildongMissionPage() {
           </p>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 10, marginTop: 22 }}>
             <a href="#missions" className="hy-btn" style={{ background: "#fff", color: "#0f7a5b", border: "none", textDecoration: "none" }}>미션 보기</a>
+            <a href="#photo-contest" className="hy-btn" style={{ background: "#fff", color: "#0f7a5b", textDecoration: "none" }}>사진 컨테스트</a>
             <a href="#park-map" className="hy-btn" style={{ background: "rgba(255,255,255,0.16)", color: "#fff", border: "1.5px solid rgba(255,255,255,0.32)", textDecoration: "none" }}>안내도 보기</a>
             <a href="#shorts" className="hy-btn" style={{ background: "rgba(255,255,255,0.16)", color: "#fff", border: "1.5px solid rgba(255,255,255,0.32)", textDecoration: "none" }}>숏츠 제작법</a>
             <a href={officialParkUrl} target="_blank" rel="noopener noreferrer" className="hy-btn" style={{ background: "rgba(255,255,255,0.16)", color: "#fff", border: "1.5px solid rgba(255,255,255,0.32)", textDecoration: "none" }}>공식 홈페이지</a>
@@ -135,6 +137,8 @@ export default function GildongMissionPage() {
           ))}
         </div>
       </section>
+
+      <PhotoContest />
 
       <section className="hy-card" style={{ padding: 22, borderColor: "#d7f3e6" }}>
         <p className="hy-section-label">How To Play</p>
@@ -196,10 +200,10 @@ export default function GildongMissionPage() {
       <section className="hy-card" style={{ padding: 22, borderColor: "#d7f3e6", background: "linear-gradient(135deg,#f2fbf7,#eef9ff)" }}>
         <p className="hy-section-label">Teacher Note</p>
         <h2 style={{ margin: "6px 0 10px", fontSize: 23, fontWeight: 950, color: "#153b32" }}>
-          투표 링크를 붙이면 더 재밌어집니다
+          사진 한 장으로 함께 기억하기
         </h2>
         <p style={{ margin: 0, color: "#526a63", fontSize: 14, lineHeight: 1.8, fontWeight: 650 }}>
-          PollUnit이나 Google Form에 조별 숏츠 링크와 식물 인증 사진을 올리게 하고, 투표 항목을 “공동체가 잘 드러난 영상”, “가장 힐링되는 영상”, “관찰력이 좋은 식물 인증”처럼 나누면 경쟁보다 응원 분위기가 살아납니다.
+          사진 컨테스트는 이 페이지에서 바로 참여할 수 있어요. 좋아요가 많은 작품뿐 아니라 가을 감성상, 작은 발견상, 함께라서 좋은 상도 골라 서로의 순간을 칭찬해 주세요. 숏츠는 학급 투표 링크에서 함께 감상합니다.
         </p>
         <div style={{ display: "flex", flexWrap: "wrap", gap: 10, marginTop: 16 }}>
           <Link href="/" className="hy-btn" style={{ textDecoration: "none" }}>학급 사이트 홈으로</Link>
