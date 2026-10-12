@@ -42,8 +42,8 @@ const PREP_SUBJECTS: { key: keyof PrepFormState; label: string }[] = [
   { key: "subject_korean",  label: "국어" },
   { key: "subject_math",    label: "수학" },
   { key: "subject_english", label: "영어" },
-  { key: "subject_gukje",   label: "국제" },
-  { key: "subject_culture", label: "사회와 문화" },
+  { key: "subject_gukje",   label: "세계시민" },
+  { key: "subject_culture", label: "세계지리" },
 ];
 
 const ADMIN_PW = "hyfl2025";
@@ -57,7 +57,6 @@ const FIXED_COUNSELING_SLOTS: Slot[] = [
   { id: "20261016-1620-4000-8000-000000000005", date: "2026-10-16", time: "16:20~17:00", is_available: true },
   { id: "20261016-1700-4000-8000-000000000006", date: "2026-10-16", time: "17:00~17:40", is_available: true },
   { id: "20261016-1740-4000-8000-000000000007", date: "2026-10-16", time: "17:40~18:20", is_available: true },
-  { id: "20261016-1820-4000-8000-000000000008", date: "2026-10-16", time: "18:20~19:00", is_available: true },
 ];
 
 function isFixedCounselingSlot(slotId: string) {
@@ -79,25 +78,19 @@ function isMidtermSurveyWalkIn(walkIn: WalkIn) {
 function formatMidtermSurvey(form: PrepFormState) {
   return [
     "[중간고사상담설문]",
-    `1. 중간고사 이후 느낌/감정: ${form.feeling.trim() || "-"}`,
-    `2. 중간고사 준비 만족도: ${form.effort_score.trim() || "-"}점`,
-    `3. 가장 열심히 준비한 과목: ${form.hardest_subject.trim() || "-"}`,
-    `4. 준비가 부족했던 과목: ${form.least_effort_subject.trim() || "-"}`,
-    `5. 스스로 칭찬하고 싶은 부분: ${form.proud.trim() || "-"}`,
-    `6. 아쉬운 점/후회되는 부분: ${form.regret.trim() || "-"}`,
-    `7. 과목별 시간 투자/밸런스: ${form.subject_balance.trim() || "-"}`,
-    `8-1. 국어: ${form.subject_korean.trim() || "-"}`,
-    `8-2. 수학: ${form.subject_math.trim() || "-"}`,
-    `8-3. 영어: ${form.subject_english.trim() || "-"}`,
-    `8-4. 국제: ${form.subject_gukje.trim() || "-"}`,
-    `8-5. 사회와 문화: ${form.subject_culture.trim() || "-"}`,
-    `9-1. 기말고사까지 보완할 학습 방법: ${form.improve_method.trim() || "-"}`,
-    `9-2. 기말고사까지 보완할 생활 습관/노력: ${form.improve_habit.trim() || "-"}`,
-    `10. 남은 기말고사 계획: ${form.vacation_plan.trim() || "-"}`,
-    `11. 요즘 나의 상태: ${form.psych_state.trim() || "-"}`,
-    `12. 지금 가장 고민되는 부분: ${form.emotional_concern.trim() || "-"}`,
-    `13. 선생님과 꼭 이야기하고 싶은 내용: ${form.record_concern.trim() || "-"}`,
+    `1. 중간고사 이후 지금 내 상태: ${form.feeling.trim() || "-"}`,
+    `2. 남은 기말고사까지의 계획: ${form.vacation_plan.trim() || "-"}`,
+    `3. 지금 가장 고민되는 부분: ${form.emotional_concern.trim() || "-"}`,
+    `4. 선생님과 꼭 이야기하고 싶은 내용: ${form.record_concern.trim() || "-"}`,
   ].join("\n");
+}
+
+function formatPrepApplicationReason(form: PrepFormState) {
+  return [
+    form.vacation_plan.trim() ? `기말고사 계획: ${form.vacation_plan.trim()}` : "",
+    form.emotional_concern.trim() ? `가장 고민되는 부분: ${form.emotional_concern.trim()}` : "",
+    form.record_concern.trim() ? `상담에서 이야기하고 싶은 내용: ${form.record_concern.trim()}` : "",
+  ].filter(Boolean).join("\n");
 }
 
 function midtermSurveyToPrepSurvey(walkIn: WalkIn): PrepSurvey {
@@ -207,8 +200,8 @@ function PrepSurveyView({ prep }: { prep: PrepSurvey }) {
       <PrepRow label="8. 국어" value={prep.subject_korean} />
       <PrepRow label="8. 수학" value={prep.subject_math} />
       <PrepRow label="8. 영어" value={prep.subject_english} />
-      <PrepRow label="8. 국제" value={prep.subject_gukje} />
-      <PrepRow label="8. 사회와 문화" value={prep.subject_culture} />
+      <PrepRow label="8. 세계시민" value={prep.subject_gukje} />
+      <PrepRow label="8. 세계지리" value={prep.subject_culture} />
       <PrepRow label="9. 기말고사까지 보완할 점 - 학습 방법" value={prep.improve_method} />
       <PrepRow label="9. 기말고사까지 보완할 점 - 생활 습관/노력의 정도" value={prep.improve_habit} />
       <PrepRow label="10. 남은 기말고사까지의 계획" value={prep.vacation_plan} />
@@ -329,15 +322,104 @@ export default function CounselingPage() {
     }
   }
 
+  async function reserveCounselingSlot(slot: Slot, studentNo: string, name: string, reason: string | null, isPrivate: boolean) {
+    const takenMessage = "방금 다른 학생이 신청했어요 😢\n다른 시간을 선택해주세요!";
+
+    if (isFixedCounselingSlot(slot.id)) {
+      const slotLabel = fixedSlotLabel(slot);
+      const { data: existingWalkIns } = await supabase
+        .from("counseling_walkins")
+        .select("id")
+        .eq("preferred_time", slotLabel)
+        .like("content", "[정식상담]%")
+        .order("created_at", { ascending: true })
+        .limit(1);
+
+      if (((existingWalkIns as Pick<WalkIn, "id">[] | null) ?? []).length > 0) {
+        return { ok: false, message: takenMessage };
+      }
+
+      const { data: insertedReservation, error } = await supabase
+        .from("counseling_walkins")
+        .insert({
+          student_no: studentNo,
+          name,
+          content: reason ? `[정식상담] ${reason}` : "[정식상담]",
+          preferred_time: slotLabel,
+          is_private: isPrivate,
+          is_checked: false,
+        })
+        .select("id")
+        .single();
+
+      if (error) return { ok: false, message: "상담 신청 실패: " + error.message };
+
+      const insertedId = (insertedReservation as Pick<WalkIn, "id"> | null)?.id;
+      const { data: reservations } = await supabase
+        .from("counseling_walkins")
+        .select("id")
+        .eq("preferred_time", slotLabel)
+        .like("content", "[정식상담]%")
+        .order("created_at", { ascending: true })
+        .order("id", { ascending: true });
+
+      const firstReservation = ((reservations as Pick<WalkIn, "id">[] | null) ?? [])[0];
+      if (insertedId && firstReservation && firstReservation.id !== insertedId) {
+        await supabase.from("counseling_walkins").delete().eq("id", insertedId);
+        return { ok: false, message: takenMessage };
+      }
+
+      return { ok: true, message: "" };
+    }
+
+    const { data: updatedSlot, error: updateError } = await supabase
+      .from("counseling_slots")
+      .update({ is_available: false })
+      .eq("id", slot.id)
+      .eq("is_available", true)
+      .select("id")
+      .maybeSingle();
+
+    if (updateError) return { ok: false, message: "상담 신청 실패: " + updateError.message };
+    if (!updatedSlot) return { ok: false, message: takenMessage };
+
+    const { error } = await supabase.from("counseling_applications").insert({
+      slot_id: slot.id,
+      student_no: studentNo,
+      name,
+      reason,
+      is_private: isPrivate,
+    });
+
+    if (error) {
+      await supabase.from("counseling_slots").update({ is_available: true }).eq("id", slot.id);
+      return { ok: false, message: "상담 신청 실패: " + error.message };
+    }
+
+    return { ok: true, message: "" };
+  }
+
   // 사전 설문 제출
   async function submitPrep() {
     if (!gateNo.trim() || !gateName.trim()) { alert("학번을 다시 확인해주세요."); return; }
+    if (!selectedSlot) { alert("먼저 상담 시간을 선택해주세요."); return; }
     setPrepSubmitting(true);
+
+    const studentNo = gateNo.trim();
+    const name = gateName.trim();
+    const reason = formatPrepApplicationReason(prepForm).trim() || null;
+    const reservation = await reserveCounselingSlot(selectedSlot, studentNo, name, reason, true);
+
+    if (!reservation.ok) {
+      setPrepSubmitting(false);
+      alert(reservation.message);
+      await load(); setSelectedSlot(null); return;
+    }
 
     const surveyContent = formatMidtermSurvey(prepForm);
     const { error: surveyError } = await supabase.from("counseling_walkins").insert({
-      student_no: gateNo.trim(),
-      name: gateName.trim(),
+      student_no: studentNo,
+      name,
       content: surveyContent,
       preferred_time: MIDTERM_SURVEY_MARKER,
       is_private: true,
@@ -346,12 +428,13 @@ export default function CounselingPage() {
 
     if (surveyError) {
       setPrepSubmitting(false);
-      alert("설문 제출 실패: " + surveyError.message);
+      await load();
+      alert("상담 신청은 완료됐지만 설문 저장에 실패했어요: " + surveyError.message);
       return;
     }
 
     await supabase.from("counseling_prep_surveys").upsert({
-      student_no: gateNo.trim(), name: gateName.trim(),
+      student_no: studentNo, name,
       feeling: prepForm.feeling.trim() || null,
       effort_score: prepForm.effort_score.trim() ? Number(prepForm.effort_score) : null,
       hardest_subject: prepForm.hardest_subject.trim() || null,
@@ -373,10 +456,12 @@ export default function CounselingPage() {
     }, { onConflict: "student_no" });
 
     setPrepSubmitting(false);
-    setSNo(gateNo.trim()); setSName(gateName.trim());
-    setGateStatus("checked-exists");
+    setSelectedSlot(null);
+    setGateNo(""); setGateName(""); setGateStatus("idle");
+    setSNo(""); setSName("");
     setPrepForm(EMPTY_PREP_FORM);
-    alert("설문 제출 완료! 이제 상담 시간을 선택할 수 있어요 🙂");
+    await load();
+    alert("설문과 상담 신청이 완료됐어요. 선생님이 확인하실 거예요 🙂");
   }
 
   // 관리자: 학생 사전 설문 열람/접기
@@ -407,51 +492,21 @@ export default function CounselingPage() {
     if (!selectedSlot || !sNo.trim() || !sName.trim()) return;
     setSubmitting(true);
 
-    if (isFixedCounselingSlot(selectedSlot.id)) {
-      const slotLabel = fixedSlotLabel(selectedSlot);
-      const { data: freshWalkIn } = await supabase
-        .from("counseling_walkins")
-        .select("id")
-        .eq("preferred_time", slotLabel)
-        .like("content", "[정식상담]%")
-        .maybeSingle();
+    const reservation = await reserveCounselingSlot(
+      selectedSlot,
+      sNo.trim(),
+      sName.trim(),
+      sReason.trim() || null,
+      sPrivate
+    );
 
-      if (freshWalkIn) {
-        setSubmitting(false);
-        alert("방금 다른 학생이 신청했어요 😢\n다른 시간을 선택해주세요!");
-        await load(); setSelectedSlot(null); return;
-      }
+    setSubmitting(false);
 
-      const { error } = await supabase.from("counseling_walkins").insert({
-        student_no: sNo.trim(),
-        name: sName.trim(),
-        content: sReason.trim() ? `[정식상담] ${sReason.trim()}` : "[정식상담]",
-        preferred_time: slotLabel,
-        is_private: sPrivate,
-        is_checked: false,
-      });
-
-      setSubmitting(false);
-      if (error) { alert("상담 신청 실패: " + error.message); return; }
-      setSelectedSlot(null); setSNo(""); setSName(""); setSReason(""); setSPrivate(false);
-      await load();
-      alert("신청 완료! 선생님이 확인하실 거예요 🙂");
-      return;
-    }
-
-    const { data: freshSlot } = await supabase.from("counseling_slots").select("is_available").eq("id", selectedSlot.id).single();
-    if (!freshSlot?.is_available) {
-      setSubmitting(false);
-      alert("방금 다른 학생이 신청했어요 😢\n다른 시간을 선택해주세요!");
+    if (!reservation.ok) {
+      alert(reservation.message);
       await load(); setSelectedSlot(null); return;
     }
-    await supabase.from("counseling_slots").update({ is_available: false }).eq("id", selectedSlot.id);
-    const { error } = await supabase.from("counseling_applications").insert({
-      slot_id: selectedSlot.id, student_no: sNo.trim(), name: sName.trim(),
-      reason: sReason.trim() || null, is_private: sPrivate,
-    });
-    setSubmitting(false);
-    if (error) { alert("상담 신청 실패: " + error.message); return; }
+
     setSelectedSlot(null); setSNo(""); setSName(""); setSReason(""); setSPrivate(false);
     await load();
     alert("신청 완료! 선생님이 확인하실 거예요 🙂");
@@ -679,7 +734,7 @@ export default function CounselingPage() {
 
           {!isAdmin && gateStatus !== "checked-exists" && availableSlotCount > 0 && (
             <div className="hy-card" style={{ padding:"18px 20px" }}>
-              <h3 style={{ fontSize:14, fontWeight:900, color:"var(--text)", margin:"0 0 10px" }}>🕐 지금 신청 가능한 시간 ({availableSlotCount}개)</h3>
+              <h3 style={{ fontSize:14, fontWeight:900, color:"var(--text)", margin:"0 0 10px" }}>🕐 먼저 상담 시간을 선택해주세요 ({availableSlotCount}개)</h3>
               <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
                 {Object.entries(allGroupedSlots).map(([date, daySlots]) => {
                   const openSlots = daySlots.filter(s => s.is_available);
@@ -688,18 +743,27 @@ export default function CounselingPage() {
                     <div key={date}>
                       <p style={{ fontSize:12, fontWeight:800, color:"var(--text-muted)", margin:"0 0 6px" }}>📅 {fmtDate(date)}</p>
                       <div style={{ display:"flex", flexWrap:"wrap", gap:6 }}>
-                        {openSlots.map(s => (
-                          <span key={s.id} style={{ fontSize:12, fontWeight:700, padding:"6px 12px", borderRadius:999, background:"#f0fdf4", border:"1.5px solid #86efac", color:"#15803d" }}>
-                            {s.time}
-                          </span>
-                        ))}
+                        {openSlots.map(s => {
+                          const isSelected = selectedSlot?.id === s.id;
+                          return (
+                            <button key={s.id}
+                              onClick={() => setSelectedSlot(isSelected ? null : s)}
+                              style={{ fontSize:12, fontWeight:800, padding:"7px 13px", borderRadius:999, border:"1.5px solid",
+                                borderColor: isSelected ? "var(--primary)" : "#86efac",
+                                background: isSelected ? "var(--primary-light)" : "#f0fdf4",
+                                color: isSelected ? "var(--primary)" : "#15803d",
+                                cursor:"pointer", fontFamily:"inherit" }}>
+                              {s.time}
+                            </button>
+                          );
+                        })}
                       </div>
                     </div>
                   );
                 })}
               </div>
-              <p style={{ fontSize:11, color:"var(--text-subtle)", fontWeight:600, margin:"12px 0 0" }}>
-                이 중에 가능한 시간이 있으면 아래 설문을 작성해주세요. 없다면 굳이 안 써도 돼요 🙂
+              <p style={{ fontSize:11, color:"var(--text-subtle)", fontWeight:600, margin:"12px 0 0", lineHeight:1.6 }}>
+                시간을 먼저 고르고, 짧은 설문을 제출하면 바로 신청돼요. 제출 직전에 같은 시간이 이미 신청됐는지 한 번 더 확인해요.
               </p>
             </div>
           )}
@@ -709,7 +773,7 @@ export default function CounselingPage() {
               <h3 style={{ fontSize:15, fontWeight:900, color:"var(--text)", margin:"0 0 4px" }}>📝 중간고사 이후 상담 설문 (상담 전 필수)</h3>
               <p style={{ fontSize:13, color:"var(--text-muted)", margin:"0 0 16px", lineHeight:1.7 }}>
                 중간고사를 돌아보고 남은 기말고사 계획을 세우기 위한 설문이에요.<br/>
-                작성 후 상담 시간을 선택할 수 있고, 선생님이 상담할 때 함께 보면서 이야기 나눌 거예요 🙂
+                시간을 먼저 선택하고 짧게 적으면, 설문 제출과 동시에 상담 신청이 완료돼요 🙂
               </p>
 
               <div style={{ position:"relative", marginBottom:10 }}>
@@ -731,52 +795,27 @@ export default function CounselingPage() {
 
               {gateStatus === "checked-missing" && (
                 <div style={{ display:"flex", flexDirection:"column", gap:14, marginTop:20, paddingTop:16, borderTop:"1.5px dashed var(--border)" }}>
-                  <PrepField label="1. 중간고사가 끝난 뒤 나의 느낌/감정" value={prepForm.feeling} onChange={v=>setPrepForm(p=>({...p, feeling:v}))}/>
-                  <div>
-                    <label style={{ fontSize:12, fontWeight:700, color:"var(--text-muted)", display:"block", marginBottom:6 }}>2. 중간고사 준비에 내가 최선을 다한 정도를 점수 매기면? (100점 만점)</label>
-                    <input type="number" min={0} max={100} placeholder="예: 85" value={prepForm.effort_score}
-                      onChange={e=>setPrepForm(p=>({...p, effort_score:e.target.value}))} className="hy-input" style={{ width:100 }}/>
-                  </div>
-                  <PrepField label="3. 이번에 가장 열심히 준비했던 과목" value={prepForm.hardest_subject} onChange={v=>setPrepForm(p=>({...p, hardest_subject:v}))}/>
-                  <PrepField label="4. 이번에 가장 시간투자와 노력이 적었던 과목" value={prepForm.least_effort_subject} onChange={v=>setPrepForm(p=>({...p, least_effort_subject:v}))}/>
-                  <PrepField label="5. 이것만큼은 샘께 자랑하고 싶다!" value={prepForm.proud} onChange={v=>setPrepForm(p=>({...p, proud:v}))}/>
-                  <PrepField label="6. 이건 진짜 아쉽다! 이건 내가 진짜 후회한다!" value={prepForm.regret} onChange={v=>setPrepForm(p=>({...p, regret:v}))}/>
-                  <PrepField label="7. 과목별 밸런스는? (시간 투자/노력 면)" value={prepForm.subject_balance} onChange={v=>setPrepForm(p=>({...p, subject_balance:v}))}/>
-
-                  <div>
-                    <label style={{ fontSize:12, fontWeight:700, color:"var(--text-muted)", display:"block", marginBottom:6 }}>8. 과목별로 느낀점</label>
-                    <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(150px,1fr))", gap:8 }}>
-                      {PREP_SUBJECTS.map(s => (
-                        <div key={s.key}>
-                          <p style={{ fontSize:11, fontWeight:700, color:"var(--text-subtle)", margin:"0 0 4px" }}>{s.label}</p>
-                          <textarea value={prepForm[s.key]} onChange={e=>setPrepForm(p=>({...p, [s.key]: e.target.value}))}
-                            className="hy-input" style={{ minHeight:60, resize:"vertical", fontSize:12, width:"100%" }}/>
-                        </div>
-                      ))}
+                  {selectedSlot ? (
+                    <div style={{ padding:"12px 14px", borderRadius:12, background:"#eef2ff", border:"1.5px solid #c7d2fe" }}>
+                      <p style={{ fontSize:12, fontWeight:800, color:"var(--primary)", margin:0 }}>
+                        선택한 시간: {fmtDate(selectedSlot.date)} {selectedSlot.time}
+                      </p>
                     </div>
-                  </div>
-
-                  <div>
-                    <label style={{ fontSize:12, fontWeight:700, color:"var(--text-muted)", display:"block", marginBottom:6 }}>9. 남은 기말고사까지 더 보완해야 할 점</label>
-                    <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:8 }}>
-                      <div>
-                        <p style={{ fontSize:11, fontWeight:700, color:"var(--text-subtle)", margin:"0 0 4px" }}>학습 방법</p>
-                        <textarea value={prepForm.improve_method} onChange={e=>setPrepForm(p=>({...p, improve_method:e.target.value}))} className="hy-input" style={{ minHeight:60, resize:"vertical", width:"100%" }}/>
-                      </div>
-                      <div>
-                        <p style={{ fontSize:11, fontWeight:700, color:"var(--text-subtle)", margin:"0 0 4px" }}>생활 습관/노력의 정도</p>
-                        <textarea value={prepForm.improve_habit} onChange={e=>setPrepForm(p=>({...p, improve_habit:e.target.value}))} className="hy-input" style={{ minHeight:60, resize:"vertical", width:"100%" }}/>
-                      </div>
+                  ) : (
+                    <div style={{ padding:"12px 14px", borderRadius:12, background:"#fff7ed", border:"1.5px solid #fed7aa" }}>
+                      <p style={{ fontSize:12, fontWeight:800, color:"#c2410c", margin:0 }}>
+                        위에서 상담 시간을 먼저 선택해주세요.
+                      </p>
                     </div>
-                  </div>
+                  )}
 
-                  <PrepField label="10. 남은 기말고사까지의 계획" value={prepForm.vacation_plan} onChange={v=>setPrepForm(p=>({...p, vacation_plan:v}))}/>
-                  <PrepField label="11. 요즘 나의 상태" value={prepForm.psych_state} onChange={v=>setPrepForm(p=>({...p, psych_state:v}))}/>
-                  <PrepField label="12. 지금 가장 고민되는 부분" value={prepForm.emotional_concern} onChange={v=>setPrepForm(p=>({...p, emotional_concern:v}))}/>
-                  <PrepField label="13. 선생님과 꼭 이야기하고 싶은 내용" value={prepForm.record_concern} onChange={v=>setPrepForm(p=>({...p, record_concern:v}))}/>
+                  <PrepField label="1. 중간고사 이후 지금 내 상태" value={prepForm.feeling} onChange={v=>setPrepForm(p=>({...p, feeling:v}))}/>
+                  <PrepField label="2. 남은 기말고사까지의 계획" value={prepForm.vacation_plan} onChange={v=>setPrepForm(p=>({...p, vacation_plan:v}))}/>
+                  <PrepField label="3. 지금 가장 고민되는 부분" value={prepForm.emotional_concern} onChange={v=>setPrepForm(p=>({...p, emotional_concern:v}))}/>
+                  <PrepField label="4. 선생님과 꼭 이야기하고 싶은 내용" value={prepForm.record_concern} onChange={v=>setPrepForm(p=>({...p, record_concern:v}))}/>
 
-                  <button onClick={submitPrep} disabled={prepSubmitting} className="hy-btn hy-btn-primary" style={{ fontSize:14 }}>
-                    {prepSubmitting ? "제출 중..." : "설문 제출하고 상담 신청하러 가기"}
+                  <button onClick={submitPrep} disabled={prepSubmitting || !selectedSlot} className="hy-btn hy-btn-primary" style={{ fontSize:14, opacity: selectedSlot ? 1 : 0.5 }}>
+                    {prepSubmitting ? "제출 중..." : "설문 제출하고 이 시간으로 상담 신청하기"}
                   </button>
                 </div>
               )}
