@@ -53,7 +53,7 @@ export default function AlbumPage() {
       .select("*")
       .order("date", { ascending: false })
       .order("created_at", { ascending: false });
-    setPosts(((data as AlbumPost[]) ?? []).filter(post => !post.tags?.includes("길동검증보관")));
+    setPosts(((data as AlbumPost[]) ?? []).filter(post => !post.tags?.includes("길동검증보관") && !post.tags?.includes("길동댓글2026")));
   }
 
   useEffect(() => { load(); }, []);

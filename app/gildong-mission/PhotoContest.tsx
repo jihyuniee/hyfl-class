@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/components/lib/supabaseClient";
+import PhotoComments from "./PhotoComments";
 import PhotoUpload, { photoTag, photoMissions } from "./PhotoUpload";
 
 type Photo = { id: string; title: string; author: string; description: string | null; image_url: string; likes: number; created_at: string; tags: string[] };
@@ -73,16 +74,17 @@ export default function PhotoContest() {
   return (
     <section id="photo-contest" style={{ minWidth: 0, padding: "20px 0" }}>
       <p className="hy-section-label">1반 · 2반</p>
-      <h2 style={{ fontSize: 26, margin: "6px 0 10px" }}>우리의 가을 사진첩</h2>
-      <p style={{ color: "var(--text-subtle)", lineHeight: 1.7 }}>짝과 어울리는 식물, 친구의 모습, 함께 걸었던 순간을 남겨요. 다른 반 사진도 함께 볼 수 있어요.</p>
+      <h2 style={{ fontSize: 26, margin: "6px 0 10px" }}>우리의 가을 사진 콘테스트</h2>
+      <p style={{ color: "var(--text-subtle)", lineHeight: 1.7 }}>짝과 어울리는 식물, 친구의 모습, 함께 걸었던 순간을 남겨요. 점프샷이나 컨셉 사진도 좋아요. 사진을 눌러 좋아요와 댓글로 응원해 주세요.</p>
       <div style={{ display: "flex", flexWrap: "wrap", gap: 10, alignItems: "center", marginBottom: 16 }}>
         <button className="hy-btn hy-btn-primary" onClick={() => setOpen(!open)} aria-expanded={open}>{open ? "등록 닫기" : "사진 올리기"}</button>
         <label>정렬 <select aria-label="사진 정렬" value={sort} onChange={(e) => setSort(e.target.value)} style={{ padding: 10 }}><option value="new">최신순</option><option value="likes">좋아요순</option></select></label>
         <span style={{ fontSize: 13 }}>{ordered.length}장</span>
       </div>
       {error && <div role="alert" style={{ color: "#b42318", marginBottom: 12 }}>{error} <button className="hy-btn" onClick={() => { setError(""); void load(); }}>다시 불러오기</button></div>}
+      <p className="contest-tip">촬영 아이디어: 점프샷 · 앨범 커버 · 영화의 한 장면 · 짝꿍 포즈. 점프샷은 안전한 평지에서, 통행을 방해하지 않게 찍어요.</p>
       <div className="class-tabs" role="group" aria-label="반별 사진첩">{["전체", "1", "2", ...(photos.some(p => !p.tags?.some(t => t.startsWith("길동반:"))) ? ["미분류"] : [])].map(c => <button key={c} aria-pressed={classTab === c} onClick={() => setClassTab(c)}>{c === "1" || c === "2" ? `${c}반` : c === "미분류" ? "이전 사진" : "함께 보기"}</button>)}</div>
-      {open && <div style={{ maxWidth: 600, marginBottom: 22 }}><PhotoUpload key={classTab} allowMissionChoice mission="짝과 어울리는 식물" classNumber={classTab === "2" ? "2" : "1"} /></div>}
+      {open && <div style={{ maxWidth: 600, marginBottom: 22 }}><PhotoUpload key={classTab} allowMissionChoice mission="컨셉 사진" classNumber={classTab === "2" ? "2" : "1"} /></div>}
       <div className="photo-filters" role="group" aria-label="미션 사진 필터">{["전체", ...photoMissions].map(name => <button key={name} className="hy-btn" aria-pressed={filter === name} onClick={() => setFilter(name)}>{name}</button>)}</div>
       {loading ? <p role="status">사진을 불러오는 중…</p> : ordered.length === 0 ? <p style={{ padding: "30px 0", color: "var(--text-subtle)" }}>아직 이곳에 사진이 없어요. 우리 둘의 첫 장면을 남겨 주세요.</p> : <div className="instagram-grid">
         {ordered.map((photo) => <button key={photo.id} className="photo-tile" onClick={() => setSelected(photo)} aria-label={`${photo.title} · ${photo.author} · 좋아요 ${photo.likes}개 · 사진 크게 보기`}>
@@ -95,6 +97,7 @@ export default function PhotoContest() {
         <header className="photo-dialog-header"><div><b>{selected.author}</b><span>{selected.tags?.includes("길동반:1") ? "1반" : selected.tags?.includes("길동반:2") ? "2반" : "함께 보기"} · {selected.tags?.find(t => t.startsWith("길동미션:"))?.replace("길동미션:", "") ?? "가을 사진"}</span></div><button autoFocus className="hy-btn" onClick={() => setSelected(null)} aria-label="사진 상세 닫기">닫기 ×</button></header>
         <img className="photo-original" src={selected.image_url} alt={selected.title} />
         <div className="photo-dialog-body"><button className="hy-btn" aria-pressed={liked.includes(selected.id)} disabled={voting.includes(selected.id)} onClick={() => void vote(photos.find(p => p.id === selected.id) ?? selected)}>{liked.includes(selected.id) ? "♥" : "♡"} {photos.find(p => p.id === selected.id)?.likes ?? selected.likes} 좋아요</button><h3>{selected.title}</h3>{selected.description && <p>{selected.description}</p>}</div>
+        <PhotoComments key={selected.id} photoId={selected.id} />
       </dialog>}
     </section>
   );
