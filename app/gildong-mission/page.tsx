@@ -1,12 +1,11 @@
 import ParkMap from "./ParkMap";
 import PhotoContest from "./PhotoContest";
 import MissionCards from "./MissionCards";
-import WalkIcon from "./WalkIcon";
 
 const guideUrl = "https://ebook.seoul.go.kr/Viewer/9IOSDTW1G7SP";
 export default function GildongMissionPage() {
   return <>
-    <header className="park-header"><a className="park-brand" href="#home"><WalkIcon name="plant" />중어과의 2026 가을</a><span className="header-date">10월 14일 · 수요일</span></header>
+    <header className="park-header"><a className="park-brand" href="#home">중어과의 2026 가을</a><span className="header-date">10월 14일 · 수요일</span></header>
     <div className="park-content">
       <section id="home" className="walk-cover">
         <p className="cover-meta">한영외고 2학년 1·2반</p>
@@ -14,7 +13,7 @@ export default function GildongMissionPage() {
         <p className="cover-description">오늘 함께 걸은 길이, 오래 기억할 가을이 되도록.</p>
         <dl className="outing-schedule"><div><dt>출발</dt><dd>오후 2시 · 학교에서 출발</dd></div><div><dt>출석 확인</dt><dd>오후 2시 30분 · 공원 정문</dd></div><div><dt>자유 산책</dt><dd>오후 2시 30분–3시 40분 · 1시간 10분</dd></div><div><dt>재집합</dt><dd>오후 3시 40분 · 공원에서 다시 모이기</dd></div></dl>
         <p className="walk-note">짝과 함께 걸으며 가을을 즐겨요. 다시 모일 장소는 현장에서 선생님이 안내해요.</p>
-        <nav className="quick-links" aria-label="산책 바로가기"><a href="#park-map"><WalkIcon name="map" />지도·길찾기 <span>↗</span></a><a href="#plant-guide"><WalkIcon name="plant" />식물 안내서 <span>↗</span></a><a href="#photo-contest"><WalkIcon name="camera" />사진·영상 <span>↗</span></a></nav>
+        <nav className="quick-links" aria-label="산책 바로가기"><a href="#park-map">지도·길찾기 <span>↗</span></a><a href="#plant-guide">식물 안내서 <span>↗</span></a><a href="#photo-contest">사진·영상 <span>↗</span></a></nav>
       </section>
       <section id="park-map" className="park-section"><div className="section-title"><h2>어디로 가면 될까요?</h2><span>지도</span></div>
         <div className="route-links"><a href="https://map.naver.com/p/search/길동생태공원" target="_blank" rel="noopener noreferrer"><b>공원으로 가는 길</b><span>네이버 지도 열기 ↗</span></a><a href="https://map.naver.com/p/search/한영외국어고등학교" target="_blank" rel="noopener noreferrer"><b>학교로 돌아가는 길</b><span>네이버 지도 열기 ↗</span></a></div>
@@ -36,6 +35,6 @@ export default function GildongMissionPage() {
       <PhotoContest />
       <details className="share-link"><summary>친구에게 링크·QR 공유하기</summary><p>1반과 2반 모두 같은 링크로 들어올 수 있어요.</p><img src="/gildong-mission/gildong-mission-qr.png" alt="가을 산책 사진첩 참여 QR 코드" width="136" height="136" /></details>
       <p className="autumn-keepsake">같은 길을 걸었던 우리.<br />오늘의 가을은 이곳에 남겨둘게요.</p><footer className="park-footer"><span>2026. 10. 14 · 길동생태공원</span><a href="#home">위로 ↑</a></footer>
-    </div><nav className="park-mobile-nav" aria-label="빠른 이동"><a href="#park-map"><WalkIcon name="map" />지도</a><a href="#plant-guide"><WalkIcon name="plant" />식물 안내서</a><a href="#photo-contest"><WalkIcon name="camera" />사진첩</a></nav>
+    </div><nav className="park-mobile-nav" aria-label="빠른 이동"><a href="#park-map">지도</a><a href="#plant-guide">식물 안내서</a><a href="#photo-contest">사진첩</a></nav>
   </>;
 }
