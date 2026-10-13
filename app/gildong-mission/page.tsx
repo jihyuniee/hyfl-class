@@ -1,5 +1,6 @@
 import ParkMap from "./ParkMap";
 import PhotoContest from "./PhotoContest";
+import MissionCards from "./MissionCards";
 
 const guideUrl = "https://ebook.seoul.go.kr/Viewer/9IOSDTW1G7SP";
 export default function GildongMissionPage() {
@@ -19,6 +20,7 @@ export default function GildongMissionPage() {
         <p className="walk-note">네이버 지도에서 길찾기 → 도보를 선택하세요. 입구와 모일 장소는 선생님 안내를 따라요.</p>
         <h3 className="map-caption">이 지도에서, 우리의 산책을 시작해요</h3><ParkMap /><p className="walk-note">습지의 물빛, 생태숲의 나뭇잎, 짝과 함께 걷는 길. 마음이 가는 곳을 골라 걸어봐요. 표시된 탐방로를 따라 이동해요.</p>
       </section>
+      <MissionCards />
       <section id="plant-guide" className="park-section"><div className="section-title"><h2>이 식물, 이름이 뭘까?</h2><span>안내서</span></div>
         <p className="section-copy">궁금한 식물이 보이면 사진과 설명을 찾아보세요. 서울시 안내서에 공원의 식물·새·곤충이 담겨 있어요.</p>
         <a className="leaflet-link" href={guideUrl} target="_blank" rel="noopener noreferrer"><span className="leaflet-book" aria-hidden="true">길동<br />생태공원<br /><small>사용설명서</small></span><span><b>식물 안내서 전체 보기</b><small>사진과 특징으로 살펴보는 동식물 50종</small><em>새 창에서 펼치기 ↗</em></span></a>
@@ -26,7 +28,7 @@ export default function GildongMissionPage() {
       </section>
       <section id="walk-guide" className="park-section"><div className="section-title"><h2>오늘의 짝꿍과 함께</h2><span>활동 안내</span></div>
         <ol className="walk-list"><li><b>명찰을 받고 짝 찾기</b><p>선생님이 준비한 이름과 이어지는 짝을 찾아요.</p></li><li><b>걸으면서 이야기하기</b><p>각자의 질문지로 서로 이야기하고 펜으로 기록해요. 답을 듣고 궁금한 점을 더 물어봐도 좋아요.</p></li><li><b>우리 둘의 가을 즐기기</b><p>짝과 산책하고, 마음에 드는 곳에서 사진도 찍어요. 숏츠를 찍고 싶으면 20~30초로 오늘의 장면을 남겨도 좋아요.</p></li></ol>
-        <details className="paper-questions"><summary>뭘 해볼까? · 가볍게 골라 보기</summary><ul><li><b>짝과 닮은 식물 찾기</b> — 짝과 닮았거나 어울리는 식물을 골라요. 사진 제목은 ‘내 짝은 ○○ 같다’, 이유는 한 줄이면 충분해요.</li><li><b>둘만의 컨셉 사진</b> — 점프샷, 앨범 커버, 영화 포스터처럼 한 장 찍어봐요.</li><li><b>20초 가을 영상</b> — 발걸음, 나뭇잎, 짝의 한마디를 휴대폰 영상으로 남겨요.</li></ul><p>하고 싶은 것만 골라요. 천천히 걷고 이야기하는 것만으로도 좋아요.</p></details>
+        <a className="hy-btn mission-return-link" href="#walk-missions">산책 미션 다시 보기 ↑</a>
         <details className="paper-questions"><summary>질문지 예시 보기</summary><ol><li>학교 끝나고 집에 돌아가면 주로 무엇을 하면서 시간을 보내?</li><li>최근에 본 책이나 영화, 영상 중에서 다른 사람에게 꼭 추천하고 싶은 것이 있어?</li><li>앞으로 꼭 도전해 보고 싶은 일이 있어?</li><li>5년 후의 내가 지금의 나에게 편지를 쓴다면 어떤 말이 꼭 듣고 싶어?</li></ol><p>‘지킬 박사’ 질문지 예시입니다. 실제로 받은 종이의 질문을 따라 주세요. 말하기 어려운 질문은 건너뛰어도 돼요.</p></details>
         <p className="walk-note">인터뷰 답변은 종이에만 남겨요. 사진을 올리기 전에는 친구에게 공유해도 되는지 물어봐 주세요. 오후 3시 40분에는 안내받은 장소로 돌아와요.</p>
       </section>
