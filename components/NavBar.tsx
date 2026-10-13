@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
 import { supabase } from "@/components/lib/supabaseClient";
+import styles from "./NavBar.module.css";
 
 const NAV_GROUPS = [
   {
@@ -62,224 +63,236 @@ const NAV_GROUPS = [
   },
 ];
 
+const QUICK_LINKS = [
+  { href: "/", label: "홈", icon: "home" },
+  { href: "/notice", label: "공지", icon: "notice" },
+  { href: "/schedule", label: "일정", icon: "calendar" },
+  { href: "/meal", label: "급식", icon: "meal" },
+  { href: "/counseling", label: "상담", icon: "chat" },
+];
+
+function MenuIcon({ name }: { name: string }) {
+  return (
+    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      {name === "home" && <><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1Z" /></>}
+      {name === "notice" && <><path d="M4 10v5h4l11 4V5L8 10Z" /><path d="m8 15 1 6H6l-1-6M8 10v5" /></>}
+      {name === "calendar" && <><rect x="3" y="5" width="18" height="16" rx="3" /><path d="M7 3v4m10-4v4M3 11h18m-13 5h2m4 0h2" /></>}
+      {name === "meal" && <><path d="M5 3v6m3-6v6M5 7h3m-1.5 2v12M18 3c-3 3-3 8 0 8V3Zm0 8v10" /></>}
+      {name === "chat" && <><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5H4l-2 2v-10A9 9 0 0 1 21 11.5Z" /><path d="M7 11h10m-10 4h6" /></>}
+      {name === "menu" && <path d="M4 6h16M4 12h16M4 18h16" />}
+      {name === "close" && <path d="m6 6 12 12M6 18 18 6" />}
+    </svg>
+  );
+}
+
 export default function NavBar() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openGroup, setOpenGroup] = useState<string | null>(null);
-  const [scrolled, setScrolled] = useState(false);
+  const [previousPathname, setPreviousPathname] = useState(pathname);
   const [newNoticeCount, setNewNoticeCount] = useState(0);
+  const headerRef = useRef<HTMLElement>(null);
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  useEffect(() => {
-    const threeDaysAgo = new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString();
-    supabase
-      .from("notices")
-      .select("id", { count: "exact", head: true })
-      .gt("created_at", threeDaysAgo)
-      .then(({ count }) => setNewNoticeCount(count ?? 0));
-  }, []);
-
-  useEffect(() => {
+  // Reset disclosures for browser history and programmatic navigation as well as link clicks.
+  if (previousPathname !== pathname) {
+    setPreviousPathname(pathname);
     setMobileOpen(false);
     setOpenGroup(null);
-  }, [pathname]);
+  }
+
+  useEffect(() => {
+    let active = true;
+    const loadNoticeCount = async () => {
+      try {
+        const threeDaysAgo = new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString();
+        const { count } = await supabase
+          .from("notices")
+          .select("id", { count: "exact", head: true })
+          .gt("created_at", threeDaysAgo);
+        if (active) setNewNoticeCount(count ?? 0);
+      } catch {
+        // Navigation remains usable when the optional notice badge cannot load.
+      }
+    };
+    void loadNoticeCount();
+    return () => { active = false; };
+  }, []);
+
+  useEffect(() => {
+    const breakpoint = window.matchMedia("(min-width: 1024px)");
+    const onBreakpointChange = (event: MediaQueryListEvent) => {
+      setOpenGroup(null);
+      if (event.matches) setMobileOpen(false);
+    };
+    const onPointerDown = (event: PointerEvent) => {
+      if (!headerRef.current?.contains(event.target as Node)) setOpenGroup(null);
+    };
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== "Escape" || !breakpoint.matches) return;
+      const trigger = headerRef.current?.querySelector<HTMLButtonElement>('button[aria-expanded="true"]');
+      setOpenGroup(null);
+      trigger?.focus();
+    };
+    breakpoint.addEventListener("change", onBreakpointChange);
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      breakpoint.removeEventListener("change", onBreakpointChange);
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+    const previousOverflow = document.body.style.overflow;
+    dialog.showModal();
+    document.body.style.overflow = "hidden";
+    closeButtonRef.current?.focus();
+    return () => {
+      dialog.close();
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [mobileOpen]);
 
   const handleEnter = (label: string) => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
     setOpenGroup(label);
   };
-
-  const handleLeave = () => {
-    timeoutRef.current = setTimeout(() => setOpenGroup(null), 120);
+  const handleLeave = (groupElement: HTMLDivElement) => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    timeoutRef.current = setTimeout(() => {
+      if (!groupElement.contains(document.activeElement)) setOpenGroup(null);
+    }, 160);
   };
-
+  const closeMenus = () => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    setMobileOpen(false);
+    setOpenGroup(null);
+  };
   const isActive = (href: string) =>
-    href === "/" ? pathname === "/" : pathname.startsWith(href);
+    href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`);
+  const noticeBadge = (href: string) => href === "/notice" && newNoticeCount > 0 ? (
+    <span className={styles.noticeBadge} aria-label={`새 공지 ${newNoticeCount}개`}>
+      {newNoticeCount > 99 ? "99+" : newNoticeCount}
+    </span>
+  ) : null;
 
   return (
-    <header style={{
-      position: "sticky", top: 0, zIndex: 100,
-      background: scrolled ? "rgba(255,249,255,0.96)" : "#fff",
-      backdropFilter: "blur(16px)",
-      borderBottom: "1.5px solid #f0e6f6",
-      boxShadow: scrolled ? "0 4px 20px rgba(192,132,252,0.12)" : "none",
-      transition: "box-shadow 0.2s, background 0.2s",
-    }}>
-      <nav style={{
-        maxWidth: 1120, margin: "0 auto", padding: "0 20px",
-        height: 64, display: "flex", alignItems: "center",
-        justifyContent: "space-between", gap: 12,
-      }}>
-        {/* Logo */}
-        <Link href="/" style={{ display:"flex", alignItems:"center", gap:10, textDecoration:"none", flexShrink:0 }}>
-          <div style={{
-            width:38, height:38, borderRadius:13,
-            background:"linear-gradient(135deg,#f472b6,#a78bfa)",
-            display:"flex", alignItems:"center", justifyContent:"center",
-            color:"#fff", fontWeight:900, fontSize:13,
-            boxShadow:"0 4px 12px rgba(244,114,182,0.4)",
-            letterSpacing:"-0.5px", flexShrink:0,
-          }}>2·2</div>
-          <span style={{ fontWeight:900, fontSize:16, color:"var(--text)", letterSpacing:"-0.4px" }}>
-            우리반 🌸
-          </span>
-        </Link>
-
-        {/* Desktop Nav */}
-        <div style={{ display:"flex", alignItems:"center", gap:2, flex:1, justifyContent:"center" }}
-          className="desktop-only">
-          {NAV_GROUPS.map((group) => (
-            <div key={group.label} style={{ position:"relative" }}
-              onMouseEnter={() => handleEnter(group.label)}
-              onMouseLeave={handleLeave}>
-              <button style={{
-                display:"flex", alignItems:"center", gap:5,
-                padding:"8px 14px", borderRadius:12, border:"none",
-                background: openGroup===group.label ? "var(--primary-light)" : "transparent",
-                color: openGroup===group.label ? "var(--primary)" : "var(--text-muted)",
-                fontWeight:700, fontSize:14, cursor:"pointer",
-                transition:"all 0.15s", fontFamily:"inherit",
-              }}>
-                <span>{group.emoji}</span>
-                <span>{group.label}</span>
-                <span style={{ fontSize:9, opacity:0.5, marginLeft:2 }}>▾</span>
-              </button>
-
-              {openGroup===group.label && (
-                <div
-                  onMouseEnter={() => handleEnter(group.label)}
-                  onMouseLeave={handleLeave}
-                  style={{
-                    position:"absolute", top:"calc(100% + 6px)",
-                    left:"50%", transform:"translateX(-50%)",
-                    background:"#fff", border:"1.5px solid #f0e6f6",
-                    borderRadius:16, boxShadow:"0 12px 40px rgba(192,132,252,0.18)",
-                    padding:"6px", minWidth:148,
-                    animation:"dropIn 0.15s ease",
-                  }}>
-                  {group.items.map((item) => (
-                    <Link key={item.href} href={item.href} style={{
-                      display:"flex", alignItems:"center", gap:6,
-                      padding:"9px 14px", borderRadius:10,
-                      color: isActive(item.href) ? "var(--primary)" : "var(--text)",
-                      background: isActive(item.href) ? "var(--primary-light)" : "transparent",
-                      fontSize:14, fontWeight: isActive(item.href) ? 800 : 500,
-                      textDecoration:"none", whiteSpace:"nowrap", transition:"background 0.1s",
-                    }}
-                      onMouseEnter={e => !isActive(item.href) && (e.currentTarget.style.background="#fdf2f8")}
-                      onMouseLeave={e => !isActive(item.href) && (e.currentTarget.style.background="transparent")}
-                    >
-                      {item.label}
-                      {item.href === "/notice" && newNoticeCount > 0 && (
-                        <span style={{
-                          display:"inline-flex", alignItems:"center", justifyContent:"center",
-                          minWidth:18, height:18, borderRadius:999, padding:"0 5px",
-                          background:"#ef4444", color:"#fff",
-                          fontSize:10, fontWeight:800, lineHeight:1,
-                        }}>{newNoticeCount}</span>
-                      )}
-                    </Link>
-                  ))}
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-
-        {/* Right */}
-        <div style={{ display:"flex", alignItems:"center", gap:8, flexShrink:0 }}>
-          <Link href="/schedule" style={{
-            padding:"9px 18px", borderRadius:999,
-            background:"linear-gradient(135deg,#f472b6,#a78bfa)",
-            color:"#fff", fontWeight:800, fontSize:13,
-            textDecoration:"none",
-            boxShadow:"0 4px 14px rgba(244,114,182,0.35)",
-            whiteSpace:"nowrap", letterSpacing:"-0.2px",
-          }}>
-            오늘의 일정 ✨
+    <>
+      <header ref={headerRef} className={styles.header}>
+        <nav className={styles.headerBar} aria-label="주 메뉴">
+          <Link href="/" onClick={closeMenus} className={styles.brand} aria-label="2학년 2반 우리반 홈">
+            <span className={styles.brandMark}>2·2</span>
+            <span className={styles.brandText}>우리반 <span aria-hidden="true">🌸</span></span>
           </Link>
 
-          <button onClick={() => setMobileOpen(!mobileOpen)}
-            className="mobile-only"
-            style={{
-              width:42, height:42, borderRadius:13,
-              border:"1.5px solid #f0e6f6",
-              background: mobileOpen ? "var(--primary-light)" : "#fff",
-              cursor:"pointer", display:"flex", flexDirection:"column",
-              alignItems:"center", justifyContent:"center", gap:5, flexShrink:0,
-            }}>
-            {[0,1,2].map(i => (
-              <span key={i} style={{
-                display:"block", width:16, height:2.5, borderRadius:2,
-                background: mobileOpen ? "var(--primary)" : "var(--text-muted)",
-                transition:"all 0.2s",
-                transform: mobileOpen&&i===0 ? "rotate(45deg) translate(5px,5px)"
-                  : mobileOpen&&i===2 ? "rotate(-45deg) translate(5px,-5px)" : "none",
-                opacity: mobileOpen&&i===1 ? 0 : 1,
-              }}/>
+          <div className={styles.desktopNav}>
+            {NAV_GROUPS.map((group, index) => (
+              <div key={group.label} className={styles.desktopGroup}
+                onPointerEnter={event => { if (event.pointerType === "mouse") handleEnter(group.label); }}
+                onPointerLeave={event => { if (event.pointerType === "mouse") handleLeave(event.currentTarget); }}
+                onFocus={() => { if (timeoutRef.current) clearTimeout(timeoutRef.current); }}
+                onBlur={event => {
+                  if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setOpenGroup(null);
+                }}
+              >
+                <button type="button" className={styles.desktopButton}
+                  aria-expanded={openGroup === group.label}
+                  aria-controls={`desktop-menu-${index}`}
+                  data-active={group.items.some(item => isActive(item.href)) || undefined}
+                  onClick={() => {
+                    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+                    setOpenGroup(current => current === group.label ? null : group.label);
+                  }}
+                >
+                  <span aria-hidden="true">{group.emoji}</span>
+                  <span>{group.label}</span>
+                  <span className={styles.chevron} aria-hidden="true">▾</span>
+                </button>
+                {openGroup === group.label && (
+                  <div id={`desktop-menu-${index}`} className={styles.desktopDropdown}>
+                    {group.items.map(item => (
+                      <Link key={item.href} href={item.href} onClick={closeMenus}
+                        className={styles.desktopLink} aria-current={isActive(item.href) ? "page" : undefined}>
+                        <span>{item.label}</span>
+                        {noticeBadge(item.href)}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
             ))}
+          </div>
+
+          <div className={styles.headerActions}>
+            <Link href="/schedule" className={styles.todayLink}>오늘의 일정 <span aria-hidden="true">✨</span></Link>
+            <button type="button" onClick={() => setMobileOpen(true)} className={styles.menuButton}
+              aria-haspopup="dialog" aria-expanded={mobileOpen} aria-controls="mobile-navigation">
+              <MenuIcon name="menu" />
+              <span>전체 메뉴</span>
+            </button>
+          </div>
+        </nav>
+
+        <nav className={styles.quickNav} aria-label="자주 사용하는 메뉴">
+          {QUICK_LINKS.map(item => (
+            <Link key={item.href} href={item.href} onClick={closeMenus} className={styles.quickLink}
+              aria-current={isActive(item.href) ? "page" : undefined}>
+              <MenuIcon name={item.icon} />
+              <span>{item.label}</span>
+              {item.href === "/notice" && newNoticeCount > 0 && (
+                <span className={styles.unreadDot} aria-label={`새 공지 ${newNoticeCount}개`} />
+              )}
+            </Link>
+          ))}
+        </nav>
+      </header>
+
+      <dialog id="mobile-navigation" ref={dialogRef} className={styles.mobileDialog}
+        aria-labelledby="mobile-navigation-title" onClose={() => setMobileOpen(false)}
+        onClick={event => {
+          if (event.target !== event.currentTarget) return;
+          const bounds = event.currentTarget.getBoundingClientRect();
+          if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) {
+            setMobileOpen(false);
+          }
+        }}>
+        <div className={styles.dialogHeader}>
+          <div>
+            <p className={styles.dialogEyebrow}>2학년 2반</p>
+            <h2 id="mobile-navigation-title" className={styles.dialogTitle}>전체 메뉴</h2>
+          </div>
+          <button ref={closeButtonRef} type="button" className={styles.closeButton}
+            onClick={() => setMobileOpen(false)} aria-label="전체 메뉴 닫기">
+            <MenuIcon name="close" /><span>닫기</span>
           </button>
         </div>
-      </nav>
-
-      {/* Mobile Drawer */}
-      {mobileOpen && (
-        <div className="mobile-only" style={{
-          borderTop:"1.5px solid #f0e6f6",
-          background:"#fff", padding:"12px 20px 24px",
-        }}>
-          {NAV_GROUPS.map((group) => (
-            <div key={group.label} style={{ marginBottom:18 }}>
-              <div style={{ display:"flex", alignItems:"center", gap:6, marginBottom:8 }}>
-                <span style={{ fontSize:14 }}>{group.emoji}</span>
-                <span style={{ fontSize:11, fontWeight:800, color:"var(--text-subtle)", letterSpacing:"0.08em", textTransform:"uppercase" }}>
-                  {group.label}
-                </span>
-              </div>
-              <div style={{ display:"flex", flexWrap:"wrap", gap:6 }}>
-                {group.items.map((item) => (
-                  <Link key={item.href} href={item.href} style={{
-                    display:"inline-flex", alignItems:"center", gap:5,
-                    padding:"7px 16px", borderRadius:999,
-                    background: isActive(item.href) ? "linear-gradient(135deg,#f472b6,#a78bfa)" : "#fdf2f8",
-                    color: isActive(item.href) ? "#fff" : "var(--text-muted)",
-                    fontSize:13, fontWeight:700, textDecoration:"none",
-                  }}>
-                    {item.label}
-                    {item.href === "/notice" && newNoticeCount > 0 && (
-                      <span style={{
-                        display:"inline-flex", alignItems:"center", justifyContent:"center",
-                        minWidth:16, height:16, borderRadius:999, padding:"0 4px",
-                        background: isActive(item.href) ? "rgba(255,255,255,0.35)" : "#ef4444",
-                        color:"#fff", fontSize:9, fontWeight:800, lineHeight:1,
-                      }}>{newNoticeCount}</span>
-                    )}
+        <nav className={styles.dialogBody} aria-label="전체 메뉴">
+          {NAV_GROUPS.map((group, index) => (
+            <section key={group.label} className={styles.menuGroup} aria-labelledby={`mobile-group-${index}`}>
+              <h3 id={`mobile-group-${index}`} className={styles.groupTitle}>
+                <span aria-hidden="true">{group.emoji}</span>{group.label}
+              </h3>
+              <div className={styles.menuGrid} data-single={group.items.length === 1 || undefined}>
+                {group.items.map(item => (
+                  <Link key={item.href} href={item.href} onClick={closeMenus} className={styles.menuLink}
+                    aria-current={isActive(item.href) ? "page" : undefined}>
+                    <span>{item.label}</span>
+                    {noticeBadge(item.href)}
                   </Link>
                 ))}
               </div>
-            </div>
+            </section>
           ))}
-        </div>
-      )}
-
-      <style>{`
-        .desktop-only { display: flex !important; }
-        .mobile-only  { display: none  !important; }
-        @media (max-width: 768px) {
-          .desktop-only { display: none  !important; }
-          .mobile-only  { display: flex  !important; }
-        }
-        @keyframes dropIn {
-          from { opacity:0; transform:translateX(-50%) translateY(-8px); }
-          to   { opacity:1; transform:translateX(-50%) translateY(0); }
-        }
-      `}</style>
-    </header>
+        </nav>
+      </dialog>
+    </>
   );
 }

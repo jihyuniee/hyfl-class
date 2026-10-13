@@ -1,0 +1,522 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  min-width: 0;
+}
+
+.hero {
+  position: relative;
+  isolation: isolate;
+  min-height: 520px;
+  aspect-ratio: 16 / 7.5;
+  overflow: hidden;
+  border-radius: 28px;
+  background: #fff;
+}
+
+.heroContent {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 26px 36px;
+}
+
+.heroCopy {
+  min-width: 0;
+}
+
+.heroBrand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #16131a;
+  word-break: keep-all;
+}
+
+.brandDot {
+  width: 7px;
+  height: 7px;
+  flex: 0 0 7px;
+  border-radius: 50%;
+  background: #ff3d86;
+}
+
+.heroTitle {
+  margin: 12px 0 0;
+  color: #16131a;
+  font-family: "Inter", sans-serif;
+  font-size: clamp(28px, 3vw, 48px);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.045em;
+}
+
+.heroSubtitle {
+  margin-top: 10px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #5a5160;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+.heroStatus {
+  display: flex;
+  flex: 0 1 auto;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.daySummary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  max-width: 100%;
+  padding: 12px 18px;
+  border-radius: 16px;
+  background: rgba(250, 246, 242, 0.95);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+}
+
+.heroActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px;
+  max-width: 100%;
+}
+
+.heroAction {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  text-align: center;
+  word-break: keep-all;
+}
+
+.studentAction {
+  background: #ffd93d;
+  color: #16131a;
+}
+
+.scheduleAction {
+  background: #16131a;
+  color: #fff;
+}
+
+.heroMotto {
+  max-width: 100%;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: #16131a;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  word-break: keep-all;
+}
+
+.heroPhoto {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+}
+
+.heroImage {
+  object-fit: cover;
+  object-position: 30% center;
+}
+
+.heroGradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.97) 0%, rgba(255, 255, 255, 0.9) 28%, rgba(255, 255, 255, 0.4) 48%, transparent 62%);
+  pointer-events: none;
+}
+
+.heroDecoration {
+  position: absolute;
+  z-index: 0;
+  top: 26px;
+  right: 32px;
+  width: 72px;
+  height: 72px;
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.shortcutHeading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  margin-bottom: 14px;
+}
+
+.shortcutTitle {
+  margin: 0;
+  color: #16131a;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.035em;
+}
+
+.shortcutCount {
+  flex-shrink: 0;
+  color: #7c6b8a;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.quickGrid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.quickLink {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  min-width: 0;
+  min-height: 116px;
+  padding: 18px 14px;
+  border: 1px solid #e8e1db;
+  border-radius: 20px;
+  background: #fff;
+  text-decoration: none;
+  transition: transform 0.18s, border-color 0.18s, box-shadow 0.18s;
+}
+
+.shortcutIcon {
+  display: grid;
+  flex: 0 0 28px;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  color: #16131a;
+}
+
+.shortcutText {
+  min-width: 0;
+  margin-top: auto;
+}
+
+.shortcutLabel {
+  color: #16131a;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: -0.005em;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+.shortcutSubtitle {
+  margin-top: 4px;
+  color: #9c95a0;
+  font-family: "Inter", sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+
+.featureGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.featureCard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-width: 0;
+  min-height: 220px;
+  overflow: hidden;
+  padding: 28px 24px;
+  border-radius: 28px;
+  text-decoration: none;
+  transition: transform 0.2s;
+}
+
+.featureTitle {
+  margin: 10px 0 8px;
+  font-family: "Inter", sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: -0.035em;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+.featureDescription {
+  max-width: 240px;
+  font-size: 13px;
+  line-height: 1.55;
+  opacity: 0.85;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+.featureArrow {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 24px;
+}
+
+.bottomGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  align-items: start;
+  gap: 16px;
+}
+
+.bottomGrid > * {
+  min-width: 0;
+}
+
+.heroAction:focus-visible,
+.quickLink:focus-visible,
+.featureCard:focus-visible {
+  outline: 3px solid #7c3aed;
+  outline-offset: 3px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .quickLink:hover {
+    transform: translateY(-3px);
+    border-color: #ffb5c9;
+    box-shadow: 0 8px 24px rgba(255, 61, 134, 0.1);
+  }
+
+  .featureCard:hover {
+    transform: translateY(-3px);
+  }
+}
+
+@media (max-width: 980px) {
+  .quickGrid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 880px) {
+  .hero {
+    min-height: 0;
+    aspect-ratio: auto;
+  }
+
+  .heroContent {
+    gap: 20px;
+    padding: 24px;
+  }
+
+  .heroPhoto {
+    position: relative;
+    inset: auto;
+    aspect-ratio: 16 / 7.5;
+  }
+
+  .heroImage {
+    object-position: center bottom;
+  }
+
+  .heroGradient,
+  .heroDecoration {
+    display: none;
+  }
+
+  .featureGrid {
+    gap: 12px;
+  }
+
+  .featureCard {
+    padding: 24px 20px;
+  }
+
+  .featureTitle {
+    font-size: 24px;
+  }
+
+  .bottomGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .page {
+    gap: 20px;
+  }
+
+  .hero {
+    border-radius: 22px;
+  }
+
+  .heroContent {
+    flex-direction: column;
+    gap: 16px;
+    padding: 20px;
+  }
+
+  .heroBrand {
+    font-size: 10px;
+    letter-spacing: 0.04em;
+  }
+
+  .heroTitle {
+    margin-top: 10px;
+    font-size: clamp(28px, 6.5vw, 34px);
+    line-height: 1.12;
+  }
+
+  .heroTitleBreak,
+  .featureTitleBreak {
+    display: none;
+  }
+
+  .heroSubtitle {
+    margin-top: 8px;
+    font-size: 12px;
+  }
+
+  .heroStatus {
+    align-items: stretch;
+    width: 100%;
+    gap: 8px;
+  }
+
+  .daySummary {
+    gap: 12px;
+    padding: 10px 14px;
+  }
+
+  .heroActions {
+    gap: 8px;
+  }
+
+  .heroAction {
+    flex: 1 1 0;
+    gap: 6px;
+    padding: 10px;
+    font-size: 12px;
+  }
+
+  .heroMotto {
+    align-self: flex-start;
+    padding: 7px 12px;
+    font-size: 10px;
+  }
+
+  .heroPhoto {
+    aspect-ratio: 1.85;
+  }
+
+  .shortcutHeading {
+    margin-bottom: 12px;
+  }
+
+  .shortcutTitle {
+    font-size: 20px;
+  }
+
+  .quickGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .quickLink {
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    min-height: 60px;
+    padding: 12px;
+    border-radius: 16px;
+  }
+
+  .shortcutIcon {
+    flex-basis: 24px;
+    width: 24px;
+    height: 24px;
+  }
+
+  .shortcutText {
+    margin-top: 0;
+  }
+
+  .shortcutLabel {
+    font-size: 13px;
+  }
+
+  .shortcutSubtitle {
+    display: none;
+  }
+
+  .featureGrid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+  }
+
+  .featureCard {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 12px;
+    min-height: 120px;
+    padding: 18px;
+    border-radius: 20px;
+  }
+
+  .featureTitle {
+    margin: 6px 0;
+    font-size: 21px;
+    line-height: 1.25;
+  }
+
+  .featureDescription {
+    max-width: none;
+    font-size: 12px;
+  }
+
+  .featureArrow {
+    margin-top: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .quickLink,
+  .featureCard {
+    transition: none;
+  }
+
+  .quickLink:hover,
+  .featureCard:hover {
+    transform: none;
+  }
+}
