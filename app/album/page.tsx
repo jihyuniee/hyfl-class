@@ -276,8 +276,8 @@ export default function AlbumPage() {
                   onMouseEnter={e=>(e.currentTarget.style.transform="translateY(-3px)")}
                   onMouseLeave={e=>(e.currentTarget.style.transform="translateY(0)")}>
                   <div style={{ position:"relative",paddingTop:"75%",background:"#f3f4f6" }}>
-                    <img src={post.image_url} alt={post.title}
-                      style={{ position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover" }}/>
+                    {post.tags?.includes("길동영상2026") ? <video src={`${post.image_url}#t=0.1`} muted playsInline preload="metadata" aria-label={post.title} style={{ position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",pointerEvents:"none" }}/> : <img src={post.image_url} alt={post.title}
+                      style={{ position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover" }}/>}
                   </div>
                   <div style={{ padding:"10px 14px" }}>
                     <p style={{ fontSize:13,fontWeight:800,color:"var(--text)",margin:"0 0 4px",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap" }}>
@@ -308,8 +308,8 @@ export default function AlbumPage() {
           style={{ position:"fixed",inset:0,background:"rgba(0,0,0,0.88)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:1000,padding:16 }}>
           <div onClick={e=>e.stopPropagation()}
             style={{ background:"#fff",borderRadius:24,overflow:"hidden",maxWidth:600,width:"100%",maxHeight:"92vh",display:"flex",flexDirection:"column" }}>
-            <img src={lightbox.image_url} alt={lightbox.title}
-              style={{ width:"100%",maxHeight:"58vh",objectFit:"contain",background:"#111" }}/>
+            {lightbox.tags?.includes("길동영상2026") ? <video src={lightbox.image_url} controls playsInline preload="metadata" aria-label={lightbox.title} style={{ width:"100%",maxHeight:"58vh",background:"#111" }}/> : <img src={lightbox.image_url} alt={lightbox.title}
+              style={{ width:"100%",maxHeight:"58vh",objectFit:"contain",background:"#111" }}/>}
             <div style={{ padding:"18px 22px",overflowY:"auto" }}>
               <div style={{ display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:6 }}>
                 <h3 style={{ fontSize:16,fontWeight:900,color:"var(--text)",margin:0 }}>{lightbox.title}</h3>
