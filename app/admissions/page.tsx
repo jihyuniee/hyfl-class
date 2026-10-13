@@ -61,6 +61,8 @@ const REGIONS = [
 ];
 
 const TRACKS = ["전체", "인문", "자연", "공통"];
+const REACH_STANDARD_GAP = 12;
+const REACH_PERCENTILE_SUM_GAP = 9;
 
 // 진학 상담에서 흔히 사용하는 인서울 대학군 순서입니다.
 // 공식 대학 서열이 아니라 결과 탐색용 우선순위이며, 같은 대학 안에서는
@@ -305,6 +307,32 @@ function numberText(value: number) {
   return Number.isInteger(value) ? String(value) : value.toFixed(1);
 }
 
+function normalizePercentileInput(value: number) {
+  return value <= 100 ? value * 3 : value;
+}
+
+function averagePercentile(value: number) {
+  return value / 3;
+}
+
+function scoreStatus(row: AdmissionRow, studentStandard: number, studentPercentileSum: number) {
+  const standardGap = row.s - studentStandard;
+  const percentileGap = row.p - studentPercentileSum;
+
+  if (standardGap <= 0 && percentileGap <= 0) {
+    const minimumMargin = Math.min(studentStandard - row.s, studentPercentileSum - row.p);
+    if (minimumMargin >= 15) return { label: "안정", className: "is-safe" };
+    if (minimumMargin >= 5) return { label: "적정", className: "is-fit" };
+    return { label: "가능", className: "is-possible" };
+  }
+
+  if (Math.max(0, standardGap) <= 4 && Math.max(0, percentileGap) <= 3) {
+    return { label: "소신", className: "is-close" };
+  }
+
+  return { label: "상향", className: "is-reach" };
+}
+
 function universitySortBucket(row: AdmissionRow) {
   const seoulRank = row.r === "서울" ? SEOUL_UNIVERSITY_RANK.get(row.u) : undefined;
   if (seoulRank != null) return seoulRank;
@@ -367,8 +395,8 @@ function ScoreCalculator({
       return;
     }
     const standard = values.ks + values.ms + values.ss + values.ns;
-    const percentile = values.kp + values.mp + (values.sp + values.np) / 2;
-    onApply(standard, percentile);
+    const percentileSum = values.kp + values.mp + (values.sp + values.np) / 2;
+    onApply(standard, averagePercentile(percentileSum));
   };
 
   return (
@@ -409,7 +437,7 @@ function ScoreCalculator({
           합계 계산해서 적용
         </button>
         <p className="ad-help">
-          표준점수는 네 과목을 모두 더하고, 백분위는 국어 + 수학 + 두 탐구 백분위의 평균으로 계산합니다.
+          표준점수는 네 과목을 모두 더하고, 백분위는 국어 + 수학 + 두 탐구 백분위 평균을 다시 평균값으로 환산합니다.
         </p>
       </div>
     </details>
@@ -450,15 +478,19 @@ function ResultCard({
   favorite,
   onToggle,
   studentStandard,
-  studentPercentile,
+  studentPercentileSum,
 }: {
   row: AdmissionRow;
   favorite: boolean;
   onToggle: () => void;
   studentStandard?: number;
-  studentPercentile?: number;
+  studentPercentileSum?: number;
 }) {
-  const hasStudentScore = studentStandard != null && studentPercentile != null;
+  const hasStudentScore = studentStandard != null && studentPercentileSum != null;
+  const status = hasStudentScore ? scoreStatus(row, studentStandard, studentPercentileSum) : undefined;
+  const standardGap = hasStudentScore ? row.s - studentStandard : 0;
+  const percentileGap = hasStudentScore ? row.p - studentPercentileSum : 0;
+  const needsMore = standardGap > 0 || percentileGap > 0;
 
   return (
     <article className="ad-result-card">
@@ -489,14 +521,19 @@ function ResultCard({
         </p>
       </div>
       <div className="ad-cutline">
-        <p>지원 참고 점수</p>
+        <div className="ad-cutline-title">
+          <p>지원 참고 점수</p>
+          {status && <em className={status.className}>{status.label}</em>}
+        </div>
         <div>
           <span><b>{numberText(row.s)}</b> 표준</span>
-          <span><b>{numberText(row.p)}</b> 백분위</span>
+          <span><b>{numberText(averagePercentile(row.p))}</b> 평균백분위</span>
         </div>
         {hasStudentScore && (
-          <small>
-            내 점수 여유: 표준 +{numberText(studentStandard - row.s)} · 백분위 +{numberText(studentPercentile - row.p)}
+          <small className={needsMore ? "needs-points" : ""}>
+            {needsMore ? "상향까지 필요" : "내 점수 여유"}: 표준 +{numberText(Math.max(0, needsMore ? standardGap : -standardGap))}
+            {" · "}
+            백분위 평균 +{numberText(averagePercentile(Math.max(0, needsMore ? percentileGap : -percentileGap)))}
           </small>
         )}
       </div>
@@ -512,7 +549,7 @@ function ResultList({
   onMore,
   emptyText,
   studentStandard,
-  studentPercentile,
+  studentPercentileSum,
 }: {
   rows: AdmissionRow[];
   favorites: Set<string>;
@@ -521,7 +558,7 @@ function ResultList({
   onMore: () => void;
   emptyText: string;
   studentStandard?: number;
-  studentPercentile?: number;
+  studentPercentileSum?: number;
 }) {
   if (rows.length === 0) {
     return (
@@ -542,7 +579,7 @@ function ResultList({
             favorite={favorites.has(rowKey(row))}
             onToggle={() => onToggle(row)}
             studentStandard={studentStandard}
-            studentPercentile={studentPercentile}
+            studentPercentileSum={studentPercentileSum}
           />
         ))}
       </div>
@@ -552,6 +589,59 @@ function ResultList({
         </button>
       )}
     </>
+  );
+}
+
+function ScoreOverview({
+  rows,
+  studentStandard,
+  studentPercentileSum,
+}: {
+  rows: AdmissionRow[];
+  studentStandard: number;
+  studentPercentileSum: number;
+}) {
+  const items = SEOUL_UNIVERSITY_ORDER
+    .map((university) => rows
+      .filter((row) => row.u === university)
+      .sort((a, b) => b.s - a.s || b.p - a.p || a.d.localeCompare(b.d, "ko"))[0])
+    .filter((row): row is AdmissionRow => Boolean(row))
+    .slice(0, 12)
+    .map((row) => {
+      const status = scoreStatus(row, studentStandard, studentPercentileSum);
+      return {
+        row,
+        status,
+        standardNeed: Math.max(0, row.s - studentStandard),
+        percentileNeed: averagePercentile(Math.max(0, row.p - studentPercentileSum)),
+      };
+    });
+
+  if (items.length === 0) return null;
+
+  return (
+    <div className="ad-school-overview">
+      <div className="ad-school-overview-title">
+        <b>주요 대학 빠른 보기</b>
+        <span>학교별로 현재 점수와 가까운 상향 모집단위를 대표로 보여 줍니다.</span>
+      </div>
+      <div className="ad-school-overview-list">
+        {items.map((item) => (
+          <article key={item.row.u}>
+            <div>
+              <strong>{item.row.u}</strong>
+              <em className={item.status.className}>{item.status.label}</em>
+            </div>
+            <p>{item.row.d}</p>
+            {item.standardNeed > 0 || item.percentileNeed > 0 ? (
+              <small>상향까지 표준 +{numberText(item.standardNeed)} · 백분위 평균 +{numberText(item.percentileNeed)}</small>
+            ) : (
+              <small>현재 점수로 가능권에 들어옵니다.</small>
+            )}
+          </article>
+        ))}
+      </div>
+    </div>
   );
 }
 
@@ -890,13 +980,18 @@ export default function AdmissionsPage() {
   }, [planField, planCategory, planMinimum, planInterview, planKeyword]);
 
   const studentStandard = Number(standardInput);
-  const studentPercentile = Number(percentileInput);
+  const studentPercentileInput = Number(percentileInput);
+  const studentPercentileSum = Number.isFinite(studentPercentileInput)
+    ? normalizePercentileInput(studentPercentileInput)
+    : Number.NaN;
   const validScore = Number.isFinite(studentStandard)
-    && Number.isFinite(studentPercentile)
+    && Number.isFinite(studentPercentileInput)
+    && Number.isFinite(studentPercentileSum)
     && studentStandard > 0
     && studentStandard <= 440
-    && studentPercentile > 0
-    && studentPercentile <= 300;
+    && studentPercentileInput > 0
+    && studentPercentileInput <= 300
+    && studentPercentileSum <= 300;
 
   const filteredBase = useMemo(() => rows.filter((row) => (
     (region === "전체" || row.r === region)
@@ -917,9 +1012,12 @@ export default function AdmissionsPage() {
   const scoreResults = useMemo(() => {
     if (!scoreSearched || !validScore) return [];
     return filteredBase
-      .filter((row) => row.s <= studentStandard && row.p <= studentPercentile)
+      .filter((row) => (
+        row.s - studentStandard <= REACH_STANDARD_GAP
+        && row.p - studentPercentileSum <= REACH_PERCENTILE_SUM_GAP
+      ))
       .sort((a, b) => compareAdmissionRows(a, b, universityPeaks));
-  }, [filteredBase, scoreSearched, studentStandard, studentPercentile, universityPeaks, validScore]);
+  }, [filteredBase, scoreSearched, studentStandard, studentPercentileSum, universityPeaks, validScore]);
 
   const searchResults = useMemo(() => {
     const query = keyword.trim().toLocaleLowerCase("ko");
@@ -967,7 +1065,7 @@ export default function AdmissionsPage() {
 
   const searchByScore = () => {
     if (!validScore) {
-      alert("표준점수 합계는 1~440, 백분위 합계는 1~300 사이로 입력해 주세요.");
+      alert("표준점수 합계는 1~440, 평균 백분위는 1~100 사이로 입력해 주세요. 기존 백분위 합계값은 1~300까지 입력할 수 있습니다.");
       return;
     }
     setScoreSearched(true);
@@ -1056,25 +1154,32 @@ export default function AdmissionsPage() {
                 <small>국어 + 수학 + 통합사회 + 통합과학</small>
               </label>
               <label>
-                <span>백분위 합계</span>
+                <span>평균 백분위</span>
                 <input
                   type="number"
                   inputMode="decimal"
                   min="1"
                   max="300"
-                  placeholder="예: 270"
+                  placeholder="예: 98.39"
                   value={percentileInput}
                   onChange={(event) => {
                     setPercentileInput(event.target.value);
                     setScoreSearched(false);
                   }}
                 />
-                <small>국어 + 수학 + 탐구 2과목 평균</small>
+                <small>성적표 평균 백분위 그대로 입력 가능</small>
               </label>
               <button type="button" className="hy-btn hy-btn-primary ad-search-button" onClick={searchByScore}>
                 지원 가능 대학 검색
               </button>
             </div>
+            {Number.isFinite(studentPercentileInput) && studentPercentileInput > 0 && (
+              <p className="ad-score-note">
+                백분위 비교 기준: 평균 {numberText(averagePercentile(studentPercentileSum))}점
+                {" "}
+                <span>(자료 환산 합계 {numberText(studentPercentileSum)}점)</span>
+              </p>
+            )}
             <ScoreCalculator onApply={(standard, percentile) => {
               setStandardInput(numberText(standard));
               setPercentileInput(numberText(percentile));
@@ -1087,19 +1192,24 @@ export default function AdmissionsPage() {
               <div className="ad-result-header">
                 <div>
                   <h3>검색 결과 <b>{scoreResults.length.toLocaleString()}개</b></h3>
-                  <p>주요 인서울 대학을 우선 배치하고, 같은 대학에서는 지원 참고점수가 높은 모집단위부터 보여 줍니다.</p>
+                  <p>주요 인서울 대학을 우선 배치하고, 현재 가능권과 상향 참고권을 함께 보여 줍니다.</p>
                 </div>
                 <Filters region={region} track={track} onRegion={setRegion} onTrack={setTrack} />
               </div>
+              <ScoreOverview
+                rows={scoreResults}
+                studentStandard={studentStandard}
+                studentPercentileSum={studentPercentileSum}
+              />
               <ResultList
                 rows={scoreResults}
                 favorites={favorites}
                 onToggle={toggleFavorite}
                 visibleCount={visibleCount}
                 onMore={() => setVisibleCount((count) => count + 40)}
-                emptyText="두 점수를 모두 충족하는 모집단위가 없습니다. 점수 합계와 필터를 다시 확인해 주세요."
+                emptyText="점수와 가까운 모집단위가 없습니다. 평균 백분위와 필터를 다시 확인해 주세요."
                 studentStandard={studentStandard}
-                studentPercentile={studentPercentile}
+                studentPercentileSum={studentPercentileSum}
               />
             </>
           )}
@@ -1446,6 +1556,8 @@ export default function AdmissionsPage() {
         .ad-score-inputs input:focus { border-color:var(--primary); box-shadow:0 0 0 3px rgba(244,114,182,.12); }
         .ad-score-inputs small { display:block; margin-top:6px; color:var(--text-subtle); font-size:10px; }
         .ad-search-button { height:48px; white-space:nowrap; margin-bottom:20px; }
+        .ad-score-note { margin:12px 0 0; padding:10px 12px; border-radius:12px; background:#f8fafc; color:#64748b; font-size:10px; font-weight:800; }
+        .ad-score-note span { color:#94a3b8; font-weight:700; }
         .ad-calculator { margin-top:16px; border-top:1px dashed var(--border); padding-top:14px; }
         .ad-calculator summary { color:var(--primary-dark); font-size:12px; font-weight:800; cursor:pointer; }
         .ad-calculator-body { margin-top:14px; padding:16px; border-radius:16px; background:linear-gradient(135deg,#fdf2f8,#f5f3ff); }
@@ -1467,6 +1579,22 @@ export default function AdmissionsPage() {
         .ad-filters { display:flex; gap:8px; }
         .ad-filters label > span { display:inline; margin-right:5px; font-size:10px; }
         .ad-filters select { padding:8px 30px 8px 11px; border-radius:10px; border:1px solid var(--border); background:#fff; color:var(--text-muted); font:700 11px inherit; outline:none; }
+        .ad-school-overview { padding:16px; border-radius:18px; border:1.5px solid #ddd6fe; background:linear-gradient(135deg,#fff,#faf5ff); box-shadow:var(--shadow-sm); }
+        .ad-school-overview-title { display:flex; align-items:end; justify-content:space-between; gap:12px; margin-bottom:11px; }
+        .ad-school-overview-title b { color:var(--text); font-size:13px; font-weight:900; }
+        .ad-school-overview-title span { color:var(--text-subtle); font-size:10px; }
+        .ad-school-overview-list { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:8px; }
+        .ad-school-overview article { min-width:0; padding:12px; border-radius:14px; border:1px solid #ede9fe; background:#fff; }
+        .ad-school-overview article > div { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+        .ad-school-overview strong { min-width:0; color:var(--text); font-size:13px; font-weight:900; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+        .ad-school-overview em { flex:0 0 auto; padding:3px 7px; border-radius:999px; font-size:8px; font-style:normal; font-weight:900; }
+        .ad-school-overview em.is-safe { background:#dcfce7; color:#15803d; }
+        .ad-school-overview em.is-fit { background:#e0f2fe; color:#0369a1; }
+        .ad-school-overview em.is-possible { background:#ede9fe; color:#7c3aed; }
+        .ad-school-overview em.is-close { background:#fef3c7; color:#b45309; }
+        .ad-school-overview em.is-reach { background:#ffe4e6; color:#be123c; }
+        .ad-school-overview p { margin:7px 0 4px; color:var(--text-muted); font-size:10px; font-weight:800; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+        .ad-school-overview small { color:#64748b; font-size:9px; line-height:1.45; }
         .ad-results { display:flex; flex-direction:column; gap:9px; }
         .ad-result-card { display:grid; grid-template-columns:minmax(0,1fr) 245px; border-radius:19px; border:1.5px solid var(--border); background:#fff; box-shadow:var(--shadow-sm); overflow:hidden; transition:.18s ease; }
         .ad-result-card:hover { transform:translateY(-2px); border-color:#f9a8d4; box-shadow:var(--shadow-md); }
@@ -1480,11 +1608,19 @@ export default function AdmissionsPage() {
         .ad-heart { width:38px; height:38px; border-radius:12px; border:1px solid var(--border); background:#fff; color:#f9a8d4; cursor:pointer; font-size:22px; line-height:1; flex:0 0 auto; }
         .ad-heart:hover, .ad-heart.is-saved { border-color:#f9a8d4; color:#ec4899; background:#fdf2f8; }
         .ad-cutline { display:flex; flex-direction:column; justify-content:center; padding:15px 17px; border-left:1px dashed #ddd6fe; background:linear-gradient(135deg,#faf5ff,#fdf2f8); }
-        .ad-cutline > p { margin:0 0 6px; color:var(--text-subtle); font-size:9px; font-weight:800; letter-spacing:.06em; }
+        .ad-cutline-title { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:6px; }
+        .ad-cutline-title p { margin:0; color:var(--text-subtle); font-size:9px; font-weight:800; letter-spacing:.06em; }
+        .ad-cutline-title em { flex:0 0 auto; padding:3px 7px; border-radius:999px; font-size:9px; font-style:normal; font-weight:900; }
+        .ad-cutline-title em.is-safe { background:#dcfce7; color:#15803d; }
+        .ad-cutline-title em.is-fit { background:#e0f2fe; color:#0369a1; }
+        .ad-cutline-title em.is-possible { background:#ede9fe; color:#7c3aed; }
+        .ad-cutline-title em.is-close { background:#fef3c7; color:#b45309; }
+        .ad-cutline-title em.is-reach { background:#ffe4e6; color:#be123c; }
         .ad-cutline > div { display:flex; gap:9px; }
         .ad-cutline > div span { color:var(--text-muted); font-size:10px; }
         .ad-cutline b { color:var(--text); font-size:17px; }
         .ad-cutline small { margin-top:7px; color:#059669; font-size:9px; font-weight:700; }
+        .ad-cutline small.needs-points { color:#be123c; }
         .ad-more { align-self:center; min-width:190px; }
         .ad-empty { padding:46px 22px; border-radius:20px; border:1.5px dashed var(--border); background:#fff; text-align:center; }
         .ad-empty > span { display:block; font-size:34px; margin-bottom:8px; }
@@ -1649,6 +1785,8 @@ export default function AdmissionsPage() {
           .ad-search-button { grid-column:1/-1; width:100%; margin:2px 0 0; }
           .ad-tip-grid { grid-template-columns:1fr; }
           .ad-result-header { align-items:flex-start; flex-direction:column; }
+          .ad-school-overview-title { align-items:flex-start; flex-direction:column; gap:3px; }
+          .ad-school-overview-list { grid-template-columns:repeat(2,minmax(0,1fr)); }
           .ad-result-card { grid-template-columns:1fr; }
           .ad-cutline { border-left:0; border-top:1px dashed #ddd6fe; }
           .ad-keyword-panel { align-items:stretch; flex-direction:column; }
@@ -1680,6 +1818,7 @@ export default function AdmissionsPage() {
           .ad-search-button { grid-column:auto; }
           .ad-tabs { grid-template-columns:repeat(2,1fr); }
           .ad-tabs button { font-size:11px; padding:10px 5px; }
+          .ad-school-overview-list { grid-template-columns:1fr; }
           .ad-field-selector { grid-template-columns:repeat(2,1fr); }
           .ad-plan-toolbar { grid-template-columns:1fr; }
           .ad-plan-toolbar .ad-keyword-input { grid-column:auto; }
