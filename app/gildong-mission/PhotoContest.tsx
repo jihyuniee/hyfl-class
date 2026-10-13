@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/components/lib/supabaseClient";
 import PhotoComments from "./PhotoComments";
 import PhotoDelete from "./PhotoDelete";
+import PhotoSave from "./PhotoSave";
 import PhotoUpload, { photoTag, photoMissions } from "./PhotoUpload";
 
 type Photo = { id: string; title: string; author: string; description: string | null; image_url: string; likes: number; created_at: string; tags: string[] };
@@ -19,6 +20,7 @@ export default function PhotoContest() {
   const voteLock = useRef(new Set<string>());
   const [sort, setSort] = useState("new");
   const [open, setOpen] = useState(false);
+  const [activeMission, setActiveMission] = useState("컨셉 사진");
   const [notice, setNotice] = useState("");
   const [filter, setFilter] = useState("전체");
   const [classTab, setClassTab] = useState("전체");
@@ -31,6 +33,17 @@ export default function PhotoContest() {
     document.body.style.overflow = "hidden";
     return () => { document.body.style.overflow = previous; };
   }, [selected]);
+
+  useEffect(() => {
+    const start = (event: Event) => {
+      const mission = (event as CustomEvent<{ mission?: string }>).detail?.mission;
+      if (!mission || !photoMissions.includes(mission)) return;
+      setActiveMission(mission); setOpen(true);
+      setNotice(`‘${mission}’을 골랐어요. 사진·영상을 선택하고 제목을 남겨 주세요.`);
+    };
+    window.addEventListener("gildong-start-mission", start);
+    return () => window.removeEventListener("gildong-start-mission", start);
+  }, []);
 
   async function load() {
     const { data, error: issue } = await supabase.from("album_posts").select("*").contains("tags", [tag]).order("created_at", { ascending: false });
@@ -99,7 +112,7 @@ export default function PhotoContest() {
       {notice && <div className="photo-confirmation"><p role="status" aria-live="polite">✓ {notice}</p><button className="hy-btn" onClick={() => setNotice("")} aria-label="등록 확인 메시지 닫기">확인</button></div>}
       <p className="contest-tip">촬영 아이디어: 점프샷 · 앨범 커버 · 영화의 한 장면 · 짝꿍 포즈. 점프샷은 안전한 평지에서, 통행을 방해하지 않게 찍어요.</p>
       <div className="class-tabs" role="group" aria-label="반별 사진첩">{["전체", "1", "2", ...(photos.some(p => !p.tags?.some(t => t.startsWith("길동반:"))) ? ["미분류"] : [])].map(c => <button key={c} aria-pressed={classTab === c} onClick={() => setClassTab(c)}>{c === "1" || c === "2" ? `${c}반` : c === "미분류" ? "이전 사진" : "함께 보기"}</button>)}</div>
-      {open && <div style={{ maxWidth: 600, marginBottom: 22 }}><PhotoUpload key={classTab} allowMissionChoice mission="컨셉 사진" classNumber={classTab === "2" ? "2" : "1"} onSuccess={classNumber => { void uploadSucceeded(classNumber); }} /></div>}
+      {open && <div style={{ maxWidth: 600, marginBottom: 22 }}><PhotoUpload key={classTab} allowMissionChoice mission={activeMission} onMissionChange={setActiveMission} classNumber={classTab === "2" ? "2" : "1"} onSuccess={classNumber => { void uploadSucceeded(classNumber); }} /></div>}
       <div className="photo-filters" role="group" aria-label="미션 사진 필터">{["전체", ...photoMissions].map(name => <button key={name} className="hy-btn" aria-pressed={filter === name} onClick={() => setFilter(name)}>{name}</button>)}</div>
       {loading ? <p role="status">사진을 불러오는 중…</p> : ordered.length === 0 ? <p style={{ padding: "30px 0", color: "var(--text-subtle)" }}>아직 이곳에 사진이 없어요. 우리 둘의 첫 장면을 남겨 주세요.</p> : <div className="instagram-grid">
         {ordered.map((photo) => <button key={photo.id} className="photo-tile" onClick={() => setSelected(photo)} aria-label={`${photo.title} · ${photo.author} · 좋아요 ${photo.likes}개 · 사진 크게 보기`}>
@@ -112,6 +125,7 @@ export default function PhotoContest() {
         <header className="photo-dialog-header"><div><b>{selected.author}</b><span>{selected.tags?.includes("길동반:1") ? "1반" : selected.tags?.includes("길동반:2") ? "2반" : "함께 보기"} · {selected.tags?.find(t => t.startsWith("길동미션:"))?.replace("길동미션:", "") ?? "가을 사진"}</span></div><button autoFocus className="hy-btn" onClick={() => setSelected(null)} aria-label="사진 상세 닫기">닫기 ×</button></header>
         {selected.tags?.includes("길동영상2026") ? <video className="photo-original" src={selected.image_url} controls playsInline preload="metadata" aria-label={selected.title} /> : <img className="photo-original" src={selected.image_url} alt={selected.title} />}
         <div className="photo-dialog-body"><button className="hy-btn" aria-pressed={liked.includes(selected.id)} disabled={voting.includes(selected.id)} onClick={() => void vote(photos.find(p => p.id === selected.id) ?? selected)}>{liked.includes(selected.id) ? "♥" : "♡"} {photos.find(p => p.id === selected.id)?.likes ?? selected.likes} 좋아요</button><h3>{selected.title}</h3>{selected.description && <p>{selected.description}</p>}</div>
+        <PhotoSave key={`save-${selected.id}`} url={selected.image_url} title={selected.title} />
         <PhotoComments key={selected.id} photoId={selected.id} />
         <PhotoDelete key={`delete-${selected.id}`} id={selected.id} title={selected.title} onDeleted={cleanupPending => {
           const deletedId = selected.id;
