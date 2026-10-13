@@ -50,10 +50,10 @@ export default function ParkExperience({ home, map, missions, album }: { home: R
   return <div className="park-experience" onClickCapture={follow}>
     <header className="park-header"><a className="park-brand" href="#home">중어과의 2026 가을</a><span className="header-date">10월 14일 · 수요일</span></header>
     <main className="park-content">
-      <div hidden={view !== "home"}>{home}</div>
-      <div hidden={view !== "map"}>{map}</div>
-      <div hidden={view !== "missions"}>{missions}</div>
-      <div hidden={view !== "album"}>{album}</div>
+      <div>{home}</div>
+      <div>{map}</div>
+      <div>{missions}</div>
+      <div>{album}</div>
       <footer className="park-footer"><span>2026. 10. 14 · 길동생태공원</span><a href="#home">처음으로 ↑</a></footer>
     </main>
     <nav className="park-mobile-nav" aria-label="산책 메뉴" hidden={keyboardOpen}>{[{view:"map",target:"park-map",label:"지도"},{view:"missions",target:"walk-missions",label:"미션"},{view:"album",target:"photo-contest",label:"사진첩"}].map(item => <a key={item.view} href={`#${item.target}`} aria-current={view === item.view ? "page" : undefined}>{item.label}</a>)}</nav>
