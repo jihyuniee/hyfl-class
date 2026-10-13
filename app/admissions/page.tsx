@@ -63,6 +63,14 @@ const REGIONS = [
 const TRACKS = ["전체", "인문", "자연", "공통"];
 const REACH_STANDARD_GAP = 12;
 const REACH_PERCENTILE_SUM_GAP = 9;
+const SCORE_RESULT_LIMIT_PER_STATUS = 32;
+const SCORE_STATUS_ORDER = new Map([
+  ["상향", 0],
+  ["소신", 1],
+  ["가능", 2],
+  ["적정", 3],
+  ["안정", 4],
+]);
 
 // 진학 상담에서 흔히 사용하는 인서울 대학군 순서입니다.
 // 공식 대학 서열이 아니라 결과 탐색용 우선순위이며, 같은 대학 안에서는
@@ -358,6 +366,37 @@ function compareAdmissionRows(
   }
 
   return b.s - a.s || b.p - a.p || a.d.localeCompare(b.d, "ko");
+}
+
+function compareScoreAdmissionRows(
+  a: AdmissionRow,
+  b: AdmissionRow,
+  studentStandard: number,
+  studentPercentileSum: number,
+  universityPeaks: Map<string, { standard: number; percentile: number }>
+) {
+  const aStatus = scoreStatus(a, studentStandard, studentPercentileSum);
+  const bStatus = scoreStatus(b, studentStandard, studentPercentileSum);
+  const statusDifference = (SCORE_STATUS_ORDER.get(aStatus.label) ?? 99)
+    - (SCORE_STATUS_ORDER.get(bStatus.label) ?? 99);
+  if (statusDifference !== 0) return statusDifference;
+
+  return compareAdmissionRows(a, b, universityPeaks);
+}
+
+function limitScoreResultsByStatus(
+  rows: AdmissionRow[],
+  studentStandard: number,
+  studentPercentileSum: number
+) {
+  const counts = new Map<string, number>();
+  return rows.filter((row) => {
+    const status = scoreStatus(row, studentStandard, studentPercentileSum).label;
+    const count = counts.get(status) ?? 0;
+    if (count >= SCORE_RESULT_LIMIT_PER_STATUS) return false;
+    counts.set(status, count + 1);
+    return true;
+  });
 }
 
 function comparePlanRecords(a: Admission2028Record, b: Admission2028Record) {
@@ -906,7 +945,7 @@ export default function AdmissionsPage() {
   const [scoreSearched, setScoreSearched] = useState(false);
   const [keyword, setKeyword] = useState("");
   const [region, setRegion] = useState("전체");
-  const [track, setTrack] = useState("전체");
+  const [track, setTrack] = useState("인문");
   const [visibleCount, setVisibleCount] = useState(40);
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
   const [favoritesReady, setFavoritesReady] = useState(false);
@@ -1011,12 +1050,19 @@ export default function AdmissionsPage() {
 
   const scoreResults = useMemo(() => {
     if (!scoreSearched || !validScore) return [];
-    return filteredBase
+    const sortedCandidates = filteredBase
       .filter((row) => (
         row.s - studentStandard <= REACH_STANDARD_GAP
         && row.p - studentPercentileSum <= REACH_PERCENTILE_SUM_GAP
       ))
-      .sort((a, b) => compareAdmissionRows(a, b, universityPeaks));
+      .sort((a, b) => compareScoreAdmissionRows(
+        a,
+        b,
+        studentStandard,
+        studentPercentileSum,
+        universityPeaks
+      ));
+    return limitScoreResultsByStatus(sortedCandidates, studentStandard, studentPercentileSum);
   }, [filteredBase, scoreSearched, studentStandard, studentPercentileSum, universityPeaks, validScore]);
 
   const searchResults = useMemo(() => {
@@ -1192,7 +1238,7 @@ export default function AdmissionsPage() {
               <div className="ad-result-header">
                 <div>
                   <h3>검색 결과 <b>{scoreResults.length.toLocaleString()}개</b></h3>
-                  <p>주요 인서울 대학을 우선 배치하고, 현재 가능권과 상향 참고권을 함께 보여 줍니다.</p>
+                  <p>외고 상담에 맞춰 인문 계열을 기본으로 보고, 상향부터 안정권까지 구간별 주요 결과만 보여 줍니다.</p>
                 </div>
                 <Filters region={region} track={track} onRegion={setRegion} onTrack={setTrack} />
               </div>
