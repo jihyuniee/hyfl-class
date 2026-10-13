@@ -53,7 +53,7 @@ export default function AlbumPage() {
       .select("*")
       .order("date", { ascending: false })
       .order("created_at", { ascending: false });
-    setPosts((data as AlbumPost[]) ?? []);
+    setPosts(((data as AlbumPost[]) ?? []).filter(post => !post.tags?.includes("길동검증보관")));
   }
 
   useEffect(() => { load(); }, []);
@@ -335,3 +335,4 @@ export default function AlbumPage() {
     </div>
   );
 }
+
