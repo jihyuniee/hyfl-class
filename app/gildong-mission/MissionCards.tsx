@@ -16,7 +16,7 @@ export default function MissionCards() {
     <p className="section-copy">다 하지 않아도 괜찮아요. 지도에서 걷고 싶은 길을 고르고, 하고 싶은 것 하나만 골라봐요.</p>
     <div className="walk-mission-cards">{missions.map(m => <article key={m.number} className={`walk-mission-card mission-${m.number}`}>
       <div className="mission-card-meta"><span>{m.number}</span><small>{m.where}</small></div>
-      <h3>{m.title}</h3><p>{m.copy}</p><blockquote>{m.example}</blockquote>
+      <h3>{m.title}</h3><p>{m.copy}</p><details className="mission-example"><summary>예시 보기</summary><blockquote>{m.example}</blockquote></details>
       <div className="mission-card-actions"><button className="hy-btn" onClick={() => choose(m.kind)}>{m.action} <span aria-hidden="true">↗</span></button>{m.number === "01" && <a href="#plant-guide">식물 안내서 보기</a>}</div>
     </article>)}</div>
     <p className="walk-note">미션 없이 천천히 걷고 이야기해도 좋아요. 오후 3시 40분에는 안내받은 장소로 돌아와요.</p>

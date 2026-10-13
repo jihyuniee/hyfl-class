@@ -35,6 +35,7 @@ export default function PhotoContest() {
   }, [selected]);
 
   useEffect(() => {
+    const openUpload = () => { setOpen(true); };
     const start = (event: Event) => {
       const mission = (event as CustomEvent<{ mission?: string }>).detail?.mission;
       if (!mission || !photoMissions.includes(mission)) return;
@@ -42,7 +43,8 @@ export default function PhotoContest() {
       setNotice(`‘${mission}’을 골랐어요. 사진·영상을 선택하고 제목을 남겨 주세요.`);
     };
     window.addEventListener("gildong-start-mission", start);
-    return () => window.removeEventListener("gildong-start-mission", start);
+    window.addEventListener("gildong-open-upload", openUpload);
+    return () => { window.removeEventListener("gildong-start-mission", start); window.removeEventListener("gildong-open-upload", openUpload); };
   }, []);
 
   async function load() {
@@ -102,18 +104,18 @@ export default function PhotoContest() {
     <section id="photo-contest" style={{ minWidth: 0, padding: "20px 0" }}>
       <p className="hy-section-label">1반 · 2반</p>
       <h2 style={{ fontSize: 26, margin: "6px 0 10px" }}>우리의 가을 사진 콘테스트</h2>
-      <p style={{ color: "var(--text-subtle)", lineHeight: 1.7 }}>짝과 어울리는 식물, 친구의 모습, 함께 걸었던 순간을 남겨요. 점프샷이나 컨셉 사진도 좋아요. 사진을 눌러 좋아요와 댓글로 응원해 주세요.</p>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: 10, alignItems: "center", marginBottom: 16 }}>
+      <p className="album-intro">함께 걸었던 순간을 모아요. 사진을 누르면 좋아요·댓글·저장을 할 수 있어요.</p>
+      <div className="album-toolbar">
         <button className="hy-btn hy-btn-primary" onClick={() => setOpen(!open)} aria-expanded={open}>{open ? "등록 닫기" : "사진 · 영상 올리기"}</button>
         <label>정렬 <select aria-label="사진 정렬" value={sort} onChange={(e) => setSort(e.target.value)} style={{ padding: 10 }}><option value="new">최신순</option><option value="likes">좋아요순</option></select></label>
         <span style={{ fontSize: 13 }}>{ordered.length}장</span>
       </div>
       {error && <div role="alert" style={{ color: "#b42318", marginBottom: 12 }}>{error} <button className="hy-btn" onClick={() => { setError(""); void load(); }}>다시 불러오기</button></div>}
       {notice && <div className="photo-confirmation"><p role="status" aria-live="polite">✓ {notice}</p><button className="hy-btn" onClick={() => setNotice("")} aria-label="등록 확인 메시지 닫기">확인</button></div>}
-      <p className="contest-tip">촬영 아이디어: 점프샷 · 앨범 커버 · 영화의 한 장면 · 짝꿍 포즈. 점프샷은 안전한 평지에서, 통행을 방해하지 않게 찍어요.</p>
+      <details className="album-help"><summary>사진전 안내 · 촬영 아이디어</summary><p>짝과 어울리는 식물, 친구의 모습, 함께 걸었던 순간을 남겨요. 점프샷이나 컨셉 사진도 좋아요.</p><p className="contest-tip">촬영 아이디어: 점프샷 · 앨범 커버 · 영화의 한 장면 · 짝꿍 포즈. 점프샷은 안전한 평지에서, 통행을 방해하지 않게 찍어요.</p></details>
       <div className="class-tabs" role="group" aria-label="반별 사진첩">{["전체", "1", "2", ...(photos.some(p => !p.tags?.some(t => t.startsWith("길동반:"))) ? ["미분류"] : [])].map(c => <button key={c} aria-pressed={classTab === c} onClick={() => setClassTab(c)}>{c === "1" || c === "2" ? `${c}반` : c === "미분류" ? "이전 사진" : "함께 보기"}</button>)}</div>
       {open && <div style={{ maxWidth: 600, marginBottom: 22 }}><PhotoUpload key={classTab} allowMissionChoice mission={activeMission} onMissionChange={setActiveMission} classNumber={classTab === "2" ? "2" : "1"} onSuccess={classNumber => { void uploadSucceeded(classNumber); }} /></div>}
-      <div className="photo-filters" role="group" aria-label="미션 사진 필터">{["전체", ...photoMissions].map(name => <button key={name} className="hy-btn" aria-pressed={filter === name} onClick={() => setFilter(name)}>{name}</button>)}</div>
+      <details className="album-help"><summary>사진 종류로 골라 보기{filter !== "전체" ? ` · ${filter}` : ""}</summary><div className="photo-filters" role="group" aria-label="미션 사진 필터">{["전체", ...photoMissions].map(name => <button key={name} className="hy-btn" aria-pressed={filter === name} onClick={() => setFilter(name)}>{name}</button>)}</div></details>
       {loading ? <p role="status">사진을 불러오는 중…</p> : ordered.length === 0 ? <p style={{ padding: "30px 0", color: "var(--text-subtle)" }}>아직 이곳에 사진이 없어요. 우리 둘의 첫 장면을 남겨 주세요.</p> : <div className="instagram-grid">
         {ordered.map((photo) => <button key={photo.id} className="photo-tile" onClick={() => setSelected(photo)} aria-label={`${photo.title} · ${photo.author} · 좋아요 ${photo.likes}개 · 사진 크게 보기`}>
           {photo.tags?.includes("길동영상2026") ? <><video src={`${photo.image_url}#t=0.1`} muted playsInline preload="metadata" aria-label={photo.title} style={{ width: "100%", height: "100%", objectFit: "cover", pointerEvents: "none" }} /><span className="tile-video" aria-hidden="true">▶ 영상</span></> : <img src={photo.image_url} alt={photo.title} loading="lazy" />}
