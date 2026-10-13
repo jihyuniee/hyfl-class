@@ -1,18 +1,22 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { supabase } from "@/components/lib/supabaseClient";
 import PhotoComments from "./PhotoComments";
 import PhotoDelete from "./PhotoDelete";
 import PhotoSave from "./PhotoSave";
+import HomePhotoPreview from "./HomePhotoPreview";
 import PhotoUpload, { photoTag, photoMissions } from "./PhotoUpload";
 
-type Photo = { id: string; title: string; author: string; description: string | null; image_url: string; likes: number; created_at: string; tags: string[] };
+export type Photo = { id: string; title: string; author: string; description: string | null; image_url: string; likes: number; created_at: string; tags: string[] };
 const tag = photoTag;
 const voteKey = "gildong-photo-likes-2026";
 
 export default function PhotoContest() {
   const [photos, setPhotos] = useState<Photo[]>([]);
+  const [previewHost, setPreviewHost] = useState<HTMLElement | null>(null);
+  useEffect(() => { setPreviewHost(document.getElementById("home-photo-preview")); }, []);
   const [liked, setLiked] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -100,7 +104,8 @@ export default function PhotoContest() {
 
   const classPhotos = photos.filter(photo => classTab === "전체" || (classTab === "미분류" ? !photo.tags?.some(t => t.startsWith("길동반:")) : photo.tags?.includes(`길동반:${classTab}`)));
   const ordered = classPhotos.filter(photo => filter === "전체" || photo.tags?.includes(`길동미션:${filter}`) || (filter === "가을 사진" && !photo.tags?.some(t => t.startsWith("길동미션:")))).sort((a, b) => sort === "likes" ? b.likes - a.likes || b.created_at.localeCompare(a.created_at) : b.created_at.localeCompare(a.created_at));
-  return (
+  return <>
+    {previewHost && createPortal(<HomePhotoPreview photos={photos} loading={loading} error={error} onOpen={setSelected} />, previewHost)}
     <section id="photo-contest" style={{ minWidth: 0, padding: "20px 0" }}>
       <p className="hy-section-label">1반 · 2반</p>
       <h2 style={{ fontSize: 26, margin: "6px 0 10px" }}>우리의 가을 사진 콘테스트</h2>
@@ -137,5 +142,5 @@ export default function PhotoContest() {
         }} />
       </dialog>}
     </section>
-  );
+  </>;
 }
