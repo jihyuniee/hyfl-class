@@ -8,12 +8,17 @@ export default function GildongMissionPage() {
     <div className="park-content">
       <section id="home" className="walk-cover">
         <p className="cover-meta">한영외고 2학년 1·2반</p>
+        <div className="autumn-date" aria-hidden="true"><span>OCTOBER</span><b>14</b><span>2026 · WED</span></div>
         <h1>길동생태공원<br />가을 산책</h1>
-        <p className="cover-description">짝꿍과 이야기하고, 마음에 드는 장면을 남겨요.</p>
-        <dl className="outing-schedule"><div><dt>출발</dt><dd>오후 2시 · 학교에서 출발</dd></div><div><dt>출석 확인</dt><dd>오후 2시 30분 · 공원 정문</dd></div><div><dt>자유 산책</dt><dd>오후 2시 30분–3시 40분 · 1시간 10분</dd></div><div><dt>재집합</dt><dd>오후 3시 40분 · 공원에서 다시 모이기</dd></div></dl>
-        <p className="walk-note">짝과 함께 걸으며 가을을 즐겨요. 다시 모일 장소는 현장에서 선생님이 안내해요.</p>
-        <nav className="quick-links" aria-label="산책 바로가기"><a href="#park-map">지도·길찾기 <span>↗</span></a><a href="#plant-guide">식물 안내서 <span>↗</span></a><a href="#photo-contest">사진 올리기 <span>↗</span></a></nav>
+        <p className="cover-description">오늘은, 조금 천천히.<br />짝꿍과 걷고 이야기하며 우리의 가을을 남겨요.</p>
+        <p className="cover-footnote">2026. 10. 14 &nbsp; / &nbsp; 길동생태공원</p>
       </section>
+      <nav className="quick-links" aria-label="산책 바로가기"><a href="#park-map"><small>01</small>지도·길찾기 <span>↗</span></a><a href="#plant-guide"><small>02</small>식물 안내서 <span>↗</span></a><a href="#photo-contest"><small>03</small>사진·영상 <span>↗</span></a></nav>
+      <section className="outing-panel" aria-labelledby="outing-title"><div className="section-title"><h2 id="outing-title">오늘의 산책</h2><span>우리의 약속 시간</span></div>
+        <dl className="outing-schedule"><div><dt>14:00</dt><dd><b>학교에서 출발</b><span>짝과 함께 공원으로 걸어가요.</span></dd></div><div><dt>14:30</dt><dd><b>정문에서 만나기</b><span>출석 확인 후 자유 산책 · 오후 3시 40분까지</span></dd></div><div className="rest-time"><dt>15:05</dt><dd><b>잠깐 쉬어가는 시간</b><span>3시 5분–15분 · 쉼터에서 만나 인원 확인하고 쉬어요.</span></dd></div><div><dt>15:15</dt><dd><b>다시, 우리 둘의 산책</b><span>사진도 찍고, 아직 못 나눈 이야기도 나눠요.</span></dd></div><div><dt>15:40</dt><dd><b>공원에서 다시 모이기</b><span>최종 집합 · 선생님이 안내한 장소로 돌아와요.</span></dd></div></dl>
+        <p className="walk-note">쉼터와 최종 집합 장소는 현장에서 선생님이 안내해요.</p>
+      </section>
+      <aside className="pair-plant-card" aria-labelledby="pair-plant-title"><img src="/gildong-mission/plant-sukryeong.webp" alt="가을빛 수크령 꽃이삭" width={848} height={589} loading="lazy" /><div><p className="mission-eyebrow">산책하다 마음이 가면</p><h2 id="pair-plant-title">내 짝은<br />어떤 식물 같을까?</h2><p>짝과 닮았거나 잘 어울리는 식물을 한 가지 골라요. 이름을 몰라도 괜찮아요.</p><p className="plant-caption-example">“내 짝은 ○○ 같다”<br /><span>사진 한 장과 이유 한 줄이면 충분해요.</span></p><a href="#plant-guide">식물 사진 살펴보기 <span>↗</span></a></div></aside>
       <section id="park-map" className="park-section"><div className="section-title"><h2>어디로 가면 될까요?</h2><span>지도</span></div>
         <div className="route-links"><a href="https://map.naver.com/p/search/길동생태공원" target="_blank" rel="noopener noreferrer"><b>공원으로 가는 길</b><span>네이버 지도 열기 ↗</span></a><a href="https://map.naver.com/p/search/한영외국어고등학교" target="_blank" rel="noopener noreferrer"><b>학교로 돌아가는 길</b><span>네이버 지도 열기 ↗</span></a></div>
         <p className="walk-note">네이버 지도에서 길찾기 → 도보를 선택하세요. 입구와 모일 장소는 선생님 안내를 따라요.</p>
