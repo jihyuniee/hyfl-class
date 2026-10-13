@@ -64,9 +64,9 @@ export default function PhotoContest() {
   const ordered = classPhotos.filter(photo => filter === "전체" || photo.tags?.includes(`길동미션:${filter}`) || (filter === "가을 사진" && !photo.tags?.some(t => t.startsWith("길동미션:")))).sort((a, b) => sort === "likes" ? b.likes - a.likes || b.created_at.localeCompare(a.created_at) : b.created_at.localeCompare(a.created_at));
   return (
     <section id="photo-contest" style={{ minWidth: 0, padding: "20px 0" }}>
-      <p className="hy-section-label">OUR SHARED MOMENTS</p>
+      <p className="hy-section-label">1반 · 2반</p>
       <h2 style={{ fontSize: 26, margin: "6px 0 10px" }}>우리의 가을 사진첩</h2>
-      <p style={{ color: "var(--text-subtle)", lineHeight: 1.7 }}>짝과 어울리는 식물, 친구의 모습, 함께 걸었던 순간을 모아요. 1반과 2반 사진을 자유롭게 구경해 보세요.</p>
+      <p style={{ color: "var(--text-subtle)", lineHeight: 1.7 }}>짝과 어울리는 식물, 친구의 모습, 함께 걸었던 순간을 남겨요. 다른 반 사진도 함께 볼 수 있어요.</p>
       <div style={{ display: "flex", flexWrap: "wrap", gap: 10, alignItems: "center", marginBottom: 16 }}>
         <button className="hy-btn hy-btn-primary" onClick={() => setOpen(!open)} aria-expanded={open}>{open ? "등록 닫기" : "사진 올리기"}</button>
         <label>정렬 <select aria-label="사진 정렬" value={sort} onChange={(e) => setSort(e.target.value)} style={{ padding: 10 }}><option value="new">최신순</option><option value="likes">좋아요순</option></select></label>
