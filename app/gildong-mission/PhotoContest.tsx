@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/components/lib/supabaseClient";
 import PhotoComments from "./PhotoComments";
+import PhotoDelete from "./PhotoDelete";
 import PhotoUpload, { photoTag, photoMissions } from "./PhotoUpload";
 
 type Photo = { id: string; title: string; author: string; description: string | null; image_url: string; likes: number; created_at: string; tags: string[] };
@@ -112,6 +113,12 @@ export default function PhotoContest() {
         {selected.tags?.includes("길동영상2026") ? <video className="photo-original" src={selected.image_url} controls playsInline preload="metadata" aria-label={selected.title} /> : <img className="photo-original" src={selected.image_url} alt={selected.title} />}
         <div className="photo-dialog-body"><button className="hy-btn" aria-pressed={liked.includes(selected.id)} disabled={voting.includes(selected.id)} onClick={() => void vote(photos.find(p => p.id === selected.id) ?? selected)}>{liked.includes(selected.id) ? "♥" : "♡"} {photos.find(p => p.id === selected.id)?.likes ?? selected.likes} 좋아요</button><h3>{selected.title}</h3>{selected.description && <p>{selected.description}</p>}</div>
         <PhotoComments key={selected.id} photoId={selected.id} />
+        <PhotoDelete key={`delete-${selected.id}`} id={selected.id} title={selected.title} onDeleted={cleanupPending => {
+          const deletedId = selected.id;
+          setSelected(null); setPhotos(items => items.filter(item => item.id !== deletedId));
+          setNotice(cleanupPending ? "게시글을 삭제했어요. 원본 파일 또는 댓글 정리는 Supabase에서 확인해 주세요." : "사진·영상과 댓글을 삭제했어요.");
+          void load();
+        }} />
       </dialog>}
     </section>
   );
