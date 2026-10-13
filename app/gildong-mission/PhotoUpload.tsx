@@ -5,7 +5,7 @@ import { supabase } from "@/components/lib/supabaseClient";
 
 export const photoTag = "길동사진컨테스트2026";
 export const photoMissions = ["짝과 어울리는 식물", "짝꿍 사진", "가을 풍경", "점프샷", "컨셉 사진"];
-export default function PhotoUpload({ mission = "가을 사진", pair = "", caption = "", allowMissionChoice = false, classNumber = "1", onSuccess }: { mission?: string; pair?: string; caption?: string; allowMissionChoice?: boolean; classNumber?: string; onSuccess?: () => void }) {
+export default function PhotoUpload({ mission = "가을 사진", pair = "", caption = "", allowMissionChoice = false, classNumber = "1", onSuccess }: { mission?: string; pair?: string; caption?: string; allowMissionChoice?: boolean; classNumber?: string; onSuccess?: (classNumber: string) => void }) {
   const [busy, setBusy] = useState(false);
   const [preparing, setPreparing] = useState(false);
   const [prepared, setPrepared] = useState<File | null>(null);
@@ -48,8 +48,8 @@ export default function PhotoUpload({ mission = "가을 사진", pair = "", capt
       if (issue) throw new Error("게시글 저장 실패: " + issue.message);
       form.current?.reset(); setPreview(""); setPrepared(null); setSuccess(true);
       try { localStorage.setItem("gildong-photo-author", author.trim()); } catch { /* Optional prefill. */ }
-      window.dispatchEvent(new Event("gildong-photos-updated"));
-      onSuccess?.();
+      if (onSuccess) onSuccess(selectedClass);
+      else window.dispatchEvent(new Event("gildong-photos-updated"));
     } catch (issue) {
       if (uploaded) await supabase.storage.from("uploads").remove([path]);
       setError((issue instanceof Error ? issue.message : "사진을 공유하지 못했어요.") + " 입력한 내용은 그대로 있어요. 연결 상태를 확인하고 다시 눌러 주세요.");
