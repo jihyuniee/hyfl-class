@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useEffect, useState, useSyncExternalStore } from "react";
 import { supabase } from "@/components/lib/supabaseClient";
 import { nextSchoolExam, examDdayLabel, examStatusText, toKSTDateStr } from "@/components/lib/semester";
+import styles from "./Home.module.css";
 
 type Notice = {
   id: string;
@@ -123,66 +124,32 @@ export default function Home() {
   const newCount = notices.filter(n => isNew(n.created_at)).length;
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 22 }}>
+    <div className={styles.page}>
 
       {/* ════════ HERO — 풀너비 사진 + 상단 텍스트 바 ════════ */}
-      <section style={{ position: "relative", borderRadius: 28, overflow: "hidden", minHeight: 520, aspectRatio: "16/7.5" }}>
-
-        {/* 사진 — 그룹 중심 크롭 (양쪽 배경 자름) */}
-        <Image
-          src={heroSrc} alt="2-2 우리반 단체사진" fill priority
-          style={{ objectFit: "cover", objectPosition: "30% center" }}
-          onError={() => setHeroSrc("/class-photo.jpg")}
-        />
-
-        {/* 상단 그라디언트 — 위에서 아래로 페이드 */}
-        <div style={{
-          position: "absolute", inset: 0,
-          background: "linear-gradient(to bottom, rgba(255,255,255,0.97) 0%, rgba(255,255,255,0.9) 28%, rgba(255,255,255,0.4) 48%, transparent 62%)",
-          pointerEvents: "none",
-        }}/>
-
-        {/* 텍스트 바 — 상단 전체 너비, 좌우로 배치 */}
-        <div style={{
-          position: "absolute", top: 0, left: 0, right: 0,
-          display: "flex", justifyContent: "space-between", alignItems: "flex-start",
-          padding: "26px 36px",
-          gap: 24,
-        }}>
+      <section className={styles.hero}>
+        {/* 좁은 화면에서는 소개, 오늘의 정보, 사진이 순서대로 배치됩니다. */}
+        <div className={styles.heroContent}>
           {/* 왼쪽: 브랜딩 + 제목 + 부제 */}
-          <div>
-            <div style={{
-              display: "inline-flex", alignItems: "center", gap: 8,
-              fontSize: 11, fontWeight: 700, letterSpacing: "0.18em",
-              textTransform: "uppercase", color: "#16131A",
-            }}>
+          <div className={styles.heroCopy}>
+            <div className={styles.heroBrand}>
               {todayStr?.slice(0, 4) ?? "2026"} 2학기 · 한영외고 2학년 2반
-              <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#FF3D86" }}/>
+              <span aria-hidden="true" className={styles.brandDot}/>
             </div>
-            <h1 style={{
-              fontFamily: "'Inter', sans-serif",
-              fontWeight: 800, fontSize: "clamp(28px, 3vw, 48px)",
-              lineHeight: 0.98, letterSpacing: "-0.045em",
-              margin: "12px 0 0", color: "#16131A",
-            }}>
-              New Day,<br/>
+            <h1 className={styles.heroTitle}>
+              New Day,<br className={styles.heroTitleBreak}/>{" "}
               <span style={{ fontStyle: "italic", fontWeight: 500, color: "#FF3D86" }}>New Us.</span>
             </h1>
-            <div style={{ marginTop: 10, fontSize: 13, color: "#5A5160", lineHeight: 1.6 }}>
+            <div className={styles.heroSubtitle}>
               <b style={{ color: "#16131A" }}>2학기, 다시 함께 시작합니다 🍂</b><br/>
               함께여서 더 빛나는 우리반 23명. 오늘도 2-2의 하루가 시작됐어요.
             </div>
           </div>
 
           {/* 오른쪽: D-day + 버튼 + 급훈 */}
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 10, flexShrink: 0 }}>
+          <div className={styles.heroStatus}>
             {/* D-day 위젯 */}
-            <div style={{
-              background: "rgba(250,246,242,0.95)", borderRadius: 16,
-              padding: "12px 18px",
-              display: "inline-flex", gap: 16, alignItems: "center",
-              boxShadow: "0 2px 10px rgba(0,0,0,0.06)",
-            }}>
+            <div className={styles.daySummary}>
               {ddayData.map(item => (
                 <div key={item.label} style={{ display: "contents" }}>
                   <div>
@@ -203,35 +170,72 @@ export default function Home() {
             </div>
 
             {/* 버튼 행 */}
-            <div style={{ display: "flex", gap: 10 }}>
-              <Link href="/wall" style={{
-                background: "#FFD93D", color: "#16131A",
-                padding: "11px 18px", borderRadius: 999,
-                fontWeight: 700, fontSize: 13, textDecoration: "none",
-              }}>학생 소개 23명</Link>
-              <Link href="/schedule" style={{
-                background: "#16131A", color: "#fff",
-                padding: "11px 20px", borderRadius: 999,
-                fontWeight: 600, fontSize: 13, textDecoration: "none",
-                display: "inline-flex", alignItems: "center", gap: 8,
-              }}>오늘 일정 보기 <span style={{ fontSize: 14 }}>→</span></Link>
+            <div className={styles.heroActions}>
+              <Link href="/wall" className={`${styles.heroAction} ${styles.studentAction}`}>
+                학생 소개 23명
+              </Link>
+              <Link href="/schedule" className={`${styles.heroAction} ${styles.scheduleAction}`}>
+                오늘 일정 보기 <span aria-hidden="true" style={{ fontSize: 14 }}>→</span>
+              </Link>
             </div>
 
             {/* 급훈 */}
-            <div style={{
-              background: "#16131A", color: "#fff",
-              padding: "8px 16px", borderRadius: 999,
-              fontSize: 11, fontWeight: 700, letterSpacing: "0.08em",
-            }}>
+            <div className={styles.heroMotto}>
               ✦ Oh, my God! 오 내 신!
             </div>
           </div>
         </div>
 
+        <div className={styles.heroPhoto}>
+          <Image
+            src={heroSrc} alt="2-2 우리반 단체사진" fill priority
+            sizes="(max-width: 640px) calc(100vw - 28px), (max-width: 1100px) 92vw, 1020px"
+            className={styles.heroImage}
+            onError={() => setHeroSrc("/class-photo.jpg")}
+          />
+          <div className={styles.heroGradient}/>
+        </div>
+
         {/* 시안 도넛 장식 */}
-        <svg style={{ position: "absolute", right: 32, top: 26, width: 72, height: 72, pointerEvents: "none" }} viewBox="0 0 100 100">
+        <svg className={styles.heroDecoration} aria-hidden="true" viewBox="0 0 100 100">
           <circle cx="50" cy="50" r="40" fill="none" stroke="#39C9E5" strokeWidth="14"/>
         </svg>
+      </section>
+
+      {/* ════════ Quick links ════════ */}
+      <section aria-labelledby="home-shortcuts-title">
+        <div className={styles.shortcutHeading}>
+          <h2 id="home-shortcuts-title" className={styles.shortcutTitle}>
+            자주 찾는 <span style={{ color: "#FF3D86" }}>메뉴</span>
+          </h2>
+          <span className={styles.shortcutCount}>{QUICK_LINKS.length}개 메뉴</span>
+        </div>
+
+        <div className={styles.quickGrid}>
+          {QUICK_LINKS.map(item => (
+            <Link key={item.href} href={item.href} className={styles.quickLink}>
+              {item.href === "/notice" && newCount > 0 && (
+                <span style={{
+                  position: "absolute", top: 12, right: 12,
+                  fontFamily: "'Inter',sans-serif", fontSize: 10, fontWeight: 700,
+                  background: "#FF3D86", color: "#fff",
+                  padding: "2px 7px", borderRadius: 999,
+                }}>{newCount}</span>
+              )}
+              <div className={styles.shortcutIcon} aria-hidden="true">
+                <ShortcutIcon name={item.href} />
+              </div>
+              <div className={styles.shortcutText}>
+                <div className={styles.shortcutLabel}>
+                  {item.label}
+                </div>
+                <div className={styles.shortcutSubtitle}>
+                  {item.sub}
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
       </section>
 
       {/* ════════ 현재/다음 시험 상태 배너 ════════ */}
@@ -250,44 +254,31 @@ export default function Home() {
       )}
 
       {/* ════════ 컬러 블록 3-up ════════ */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 16 }} className="block-grid">
+      <div className={styles.featureGrid}>
         {HERO_BLOCKS.map(b => {
           const t = TONE[b.tone];
           return (
-            <Link key={b.href} href={b.href} style={{
-              textDecoration: "none",
-              borderRadius: 28, padding: "28px 24px",
-              minHeight: 220, position: "relative", overflow: "hidden",
-              display: "flex", flexDirection: "column", justifyContent: "space-between",
-              background: t.bg, color: t.ink,
-              transition: "transform 0.25s ease",
-            }}
-              onMouseEnter={e => (e.currentTarget.style.transform = "translateY(-3px)")}
-              onMouseLeave={e => (e.currentTarget.style.transform = "none")}
-            >
+            <Link key={b.href} href={b.href} className={styles.featureCard}
+              style={{ background: t.bg, color: t.ink }}>
               <div>
                 <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.18em", textTransform: "uppercase", opacity: 0.85 }}>
                   {b.eyebrow}
                 </div>
-                <h3 style={{
-                  fontFamily: "'Inter',sans-serif", fontWeight: 700,
-                  fontSize: 28, lineHeight: 1.05, letterSpacing: "-0.035em",
-                  margin: "10px 0 8px",
-                }}>
-                  {b.title[0]}<br/>{b.title[1]}
+                <h3 className={styles.featureTitle}>
+                  {b.title[0]}<br className={styles.featureTitleBreak}/>{" "}{b.title[1]}
                 </h3>
-                <div style={{ fontSize: 13, lineHeight: 1.55, opacity: 0.85, maxWidth: 240 }}>
+                <div className={styles.featureDescription}>
                   {b.sub}
                 </div>
               </div>
-              <div style={{ marginTop: 24, display: "flex", alignItems: "center", justifyContent: "flex-end" }}>
+              <div className={styles.featureArrow} aria-hidden="true">
                 <div style={{
                   width: 38, height: 38, borderRadius: "50%",
                   background: t.arrow, display: "grid", placeItems: "center",
                   color: t.ink, fontSize: 16,
                 }}>→</div>
               </div>
-              <div style={{
+              <div aria-hidden="true" style={{
                 position: "absolute", right: -10, top: -10, fontSize: 84,
                 lineHeight: 1, opacity: 0.18, pointerEvents: "none",
               }}>✦</div>
@@ -380,77 +371,8 @@ export default function Home() {
         </div>
       </div>
 
-      {/* ════════ Quick links ════════ */}
-      <div>
-        <div style={{
-          display: "flex", alignItems: "flex-end", justifyContent: "space-between",
-          marginBottom: 16, gap: 14,
-        }}>
-          <h2 style={{
-            fontFamily: "'Inter',sans-serif", fontSize: 24, fontWeight: 700,
-            letterSpacing: "-0.035em", margin: 0, color: "#16131A",
-          }}>
-            Quick <span style={{ fontStyle: "italic", fontWeight: 500, color: "#FF3D86" }}>shortcuts.</span>
-          </h2>
-          <span style={{
-            fontSize: 11, fontWeight: 600, color: "#9C95A0",
-            letterSpacing: "0.1em", textTransform: "uppercase",
-          }}>6 menus</span>
-        </div>
-
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(6,1fr)", gap: 12 }} className="quick-grid">
-          {QUICK_LINKS.map(item => (
-            <Link key={item.href} href={item.href} style={{
-              textDecoration: "none", position: "relative",
-              background: "#fff", border: "1px solid #E8E1DB",
-              borderRadius: 22, padding: "20px 16px",
-              display: "flex", flexDirection: "column", alignItems: "flex-start",
-              gap: 14, minHeight: 120, cursor: "pointer",
-              transition: "transform 0.18s, border-color 0.18s, box-shadow 0.18s",
-            }}
-              onMouseEnter={e => {
-                e.currentTarget.style.transform = "translateY(-3px)";
-                e.currentTarget.style.borderColor = "#FFB5C9";
-                e.currentTarget.style.boxShadow = "0 8px 24px rgba(255,61,134,0.10)";
-              }}
-              onMouseLeave={e => {
-                e.currentTarget.style.transform = "none";
-                e.currentTarget.style.borderColor = "#E8E1DB";
-                e.currentTarget.style.boxShadow = "none";
-              }}
-            >
-              {item.href === "/notice" && newCount > 0 && (
-                <span style={{
-                  position: "absolute", top: 12, right: 12,
-                  fontFamily: "'Inter',sans-serif", fontSize: 10, fontWeight: 700,
-                  background: "#FF3D86", color: "#fff",
-                  padding: "2px 7px", borderRadius: 999,
-                }}>{newCount}</span>
-              )}
-              <div style={{
-                width: 28, height: 28, display: "grid", placeItems: "center", color: "#16131A",
-              }}>
-                <ShortcutIcon name={item.href} />
-              </div>
-              <div style={{ marginTop: "auto" }}>
-                <div style={{ fontSize: 14, fontWeight: 600, color: "#16131A", letterSpacing: "-0.005em" }}>
-                  {item.label}
-                </div>
-                <div style={{
-                  fontFamily: "'Inter',sans-serif",
-                  fontSize: 10, fontWeight: 500, letterSpacing: "0.1em", textTransform: "uppercase",
-                  color: "#9C95A0", marginTop: 4,
-                }}>
-                  {item.sub}
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </div>
-
       {/* ════════ 공지 + TODO ════════ */}
-      <div style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr", gap: 16, alignItems: "start" }} className="bottom-grid">
+      <div className={styles.bottomGrid}>
         <div style={{
           background: "#fff", borderRadius: 28,
           border: "1px solid #E8E1DB", overflow: "hidden",
@@ -574,16 +496,6 @@ export default function Home() {
         </Link>
       </div>
 
-      <style jsx>{`
-        @media (max-width: 880px) {
-          .block-grid   { grid-template-columns: 1fr !important; }
-          .bottom-grid  { grid-template-columns: 1fr !important; }
-          .quick-grid   { grid-template-columns: repeat(3,1fr) !important; }
-        }
-        @media (max-width: 520px) {
-          .quick-grid   { grid-template-columns: repeat(2,1fr) !important; }
-        }
-      `}</style>
     </div>
   );
 }

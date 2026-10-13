@@ -5,7 +5,6 @@ import SiteFrame from "@/components/SiteFrame";
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  maximumScale: 1,
   themeColor: "#c084fc",
 };
 
