@@ -44,10 +44,10 @@ export default function PhotoContest() {
     setClassTab(classNumber);
     setFilter("전체");
     setSort("new");
-    setNotice("사진을 등록했어요! 사진첩을 업데이트하고 있어요…");
+    setNotice("등록했어요! 사진첩을 업데이트하고 있어요…");
     document.getElementById("photo-contest")?.scrollIntoView({ behavior: "smooth", block: "start" });
     const refreshed = await load();
-    setNotice(refreshed ? "사진을 등록했어요! 새 사진이 사진첩에 바로 반영됐어요." : "사진은 등록됐어요. 사진첩을 다시 불러오면 확인할 수 있어요.");
+    setNotice(refreshed ? "등록했어요! 새 사진·영상이 사진첩에 바로 반영됐어요." : "등록은 완료됐어요. 사진첩을 다시 불러오면 확인할 수 있어요.");
   }
 
   useEffect(() => {
@@ -90,7 +90,7 @@ export default function PhotoContest() {
       <h2 style={{ fontSize: 26, margin: "6px 0 10px" }}>우리의 가을 사진 콘테스트</h2>
       <p style={{ color: "var(--text-subtle)", lineHeight: 1.7 }}>짝과 어울리는 식물, 친구의 모습, 함께 걸었던 순간을 남겨요. 점프샷이나 컨셉 사진도 좋아요. 사진을 눌러 좋아요와 댓글로 응원해 주세요.</p>
       <div style={{ display: "flex", flexWrap: "wrap", gap: 10, alignItems: "center", marginBottom: 16 }}>
-        <button className="hy-btn hy-btn-primary" onClick={() => setOpen(!open)} aria-expanded={open}>{open ? "등록 닫기" : "사진 올리기"}</button>
+        <button className="hy-btn hy-btn-primary" onClick={() => setOpen(!open)} aria-expanded={open}>{open ? "등록 닫기" : "사진 · 영상 올리기"}</button>
         <label>정렬 <select aria-label="사진 정렬" value={sort} onChange={(e) => setSort(e.target.value)} style={{ padding: 10 }}><option value="new">최신순</option><option value="likes">좋아요순</option></select></label>
         <span style={{ fontSize: 13 }}>{ordered.length}장</span>
       </div>
@@ -102,14 +102,14 @@ export default function PhotoContest() {
       <div className="photo-filters" role="group" aria-label="미션 사진 필터">{["전체", ...photoMissions].map(name => <button key={name} className="hy-btn" aria-pressed={filter === name} onClick={() => setFilter(name)}>{name}</button>)}</div>
       {loading ? <p role="status">사진을 불러오는 중…</p> : ordered.length === 0 ? <p style={{ padding: "30px 0", color: "var(--text-subtle)" }}>아직 이곳에 사진이 없어요. 우리 둘의 첫 장면을 남겨 주세요.</p> : <div className="instagram-grid">
         {ordered.map((photo) => <button key={photo.id} className="photo-tile" onClick={() => setSelected(photo)} aria-label={`${photo.title} · ${photo.author} · 좋아요 ${photo.likes}개 · 사진 크게 보기`}>
-          <img src={photo.image_url} alt={photo.title} loading="lazy" />
+          {photo.tags?.includes("길동영상2026") ? <><video src={`${photo.image_url}#t=0.1`} muted playsInline preload="metadata" aria-label={photo.title} style={{ width: "100%", height: "100%", objectFit: "cover", pointerEvents: "none" }} /><span className="tile-video" aria-hidden="true">▶ 영상</span></> : <img src={photo.image_url} alt={photo.title} loading="lazy" />}
           <span className="tile-likes" aria-hidden="true">♡ {photo.likes}</span>
         </button>)}
       </div>}
       <p style={{ fontSize: 12, color: "var(--text-subtle)", marginTop: 14 }}>좋아요는 이 브라우저에서 작품당 한 번, 다시 누르면 취소돼요.</p>
       {selected && <dialog ref={dialog} className="photo-dialog" aria-label={selected.title} onCancel={() => setSelected(null)} onClick={e => { if (e.target === e.currentTarget) setSelected(null); }}>
         <header className="photo-dialog-header"><div><b>{selected.author}</b><span>{selected.tags?.includes("길동반:1") ? "1반" : selected.tags?.includes("길동반:2") ? "2반" : "함께 보기"} · {selected.tags?.find(t => t.startsWith("길동미션:"))?.replace("길동미션:", "") ?? "가을 사진"}</span></div><button autoFocus className="hy-btn" onClick={() => setSelected(null)} aria-label="사진 상세 닫기">닫기 ×</button></header>
-        <img className="photo-original" src={selected.image_url} alt={selected.title} />
+        {selected.tags?.includes("길동영상2026") ? <video className="photo-original" src={selected.image_url} controls playsInline preload="metadata" aria-label={selected.title} /> : <img className="photo-original" src={selected.image_url} alt={selected.title} />}
         <div className="photo-dialog-body"><button className="hy-btn" aria-pressed={liked.includes(selected.id)} disabled={voting.includes(selected.id)} onClick={() => void vote(photos.find(p => p.id === selected.id) ?? selected)}>{liked.includes(selected.id) ? "♥" : "♡"} {photos.find(p => p.id === selected.id)?.likes ?? selected.likes} 좋아요</button><h3>{selected.title}</h3>{selected.description && <p>{selected.description}</p>}</div>
         <PhotoComments key={selected.id} photoId={selected.id} />
       </dialog>}
