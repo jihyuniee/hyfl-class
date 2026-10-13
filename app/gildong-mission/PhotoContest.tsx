@@ -18,6 +18,7 @@ export default function PhotoContest() {
   const voteLock = useRef(new Set<string>());
   const [sort, setSort] = useState("new");
   const [open, setOpen] = useState(false);
+  const [notice, setNotice] = useState("");
   const [filter, setFilter] = useState("전체");
   const [classTab, setClassTab] = useState("전체");
   const [selected, setSelected] = useState<Photo | null>(null);
@@ -35,6 +36,18 @@ export default function PhotoContest() {
     if (issue) setError("사진을 불러오지 못했어요. 잠시 후 다시 시도해 주세요.");
     else { setPhotos(data ?? []); setError(""); }
     setLoading(false);
+    return !issue;
+  }
+
+  async function uploadSucceeded(classNumber: string) {
+    setOpen(false);
+    setClassTab(classNumber);
+    setFilter("전체");
+    setSort("new");
+    setNotice("사진을 등록했어요! 사진첩을 업데이트하고 있어요…");
+    document.getElementById("photo-contest")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    const refreshed = await load();
+    setNotice(refreshed ? "사진을 등록했어요! 새 사진이 사진첩에 바로 반영됐어요." : "사진은 등록됐어요. 사진첩을 다시 불러오면 확인할 수 있어요.");
   }
 
   useEffect(() => {
@@ -82,9 +95,10 @@ export default function PhotoContest() {
         <span style={{ fontSize: 13 }}>{ordered.length}장</span>
       </div>
       {error && <div role="alert" style={{ color: "#b42318", marginBottom: 12 }}>{error} <button className="hy-btn" onClick={() => { setError(""); void load(); }}>다시 불러오기</button></div>}
+      {notice && <div className="photo-confirmation"><p role="status" aria-live="polite">✓ {notice}</p><button className="hy-btn" onClick={() => setNotice("")} aria-label="등록 확인 메시지 닫기">확인</button></div>}
       <p className="contest-tip">촬영 아이디어: 점프샷 · 앨범 커버 · 영화의 한 장면 · 짝꿍 포즈. 점프샷은 안전한 평지에서, 통행을 방해하지 않게 찍어요.</p>
       <div className="class-tabs" role="group" aria-label="반별 사진첩">{["전체", "1", "2", ...(photos.some(p => !p.tags?.some(t => t.startsWith("길동반:"))) ? ["미분류"] : [])].map(c => <button key={c} aria-pressed={classTab === c} onClick={() => setClassTab(c)}>{c === "1" || c === "2" ? `${c}반` : c === "미분류" ? "이전 사진" : "함께 보기"}</button>)}</div>
-      {open && <div style={{ maxWidth: 600, marginBottom: 22 }}><PhotoUpload key={classTab} allowMissionChoice mission="컨셉 사진" classNumber={classTab === "2" ? "2" : "1"} /></div>}
+      {open && <div style={{ maxWidth: 600, marginBottom: 22 }}><PhotoUpload key={classTab} allowMissionChoice mission="컨셉 사진" classNumber={classTab === "2" ? "2" : "1"} onSuccess={classNumber => { void uploadSucceeded(classNumber); }} /></div>}
       <div className="photo-filters" role="group" aria-label="미션 사진 필터">{["전체", ...photoMissions].map(name => <button key={name} className="hy-btn" aria-pressed={filter === name} onClick={() => setFilter(name)}>{name}</button>)}</div>
       {loading ? <p role="status">사진을 불러오는 중…</p> : ordered.length === 0 ? <p style={{ padding: "30px 0", color: "var(--text-subtle)" }}>아직 이곳에 사진이 없어요. 우리 둘의 첫 장면을 남겨 주세요.</p> : <div className="instagram-grid">
         {ordered.map((photo) => <button key={photo.id} className="photo-tile" onClick={() => setSelected(photo)} aria-label={`${photo.title} · ${photo.author} · 좋아요 ${photo.likes}개 · 사진 크게 보기`}>
