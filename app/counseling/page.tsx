@@ -57,6 +57,11 @@ const FIXED_COUNSELING_SLOTS: Slot[] = [
   { id: "20261016-1620-4000-8000-000000000005", date: "2026-10-16", time: "16:20~17:00", is_available: true },
   { id: "20261016-1700-4000-8000-000000000006", date: "2026-10-16", time: "17:00~17:40", is_available: true },
   { id: "20261016-1740-4000-8000-000000000007", date: "2026-10-16", time: "17:40~18:20", is_available: true },
+  { id: "20261019-1240-4000-8000-000000000008", date: "2026-10-19", time: "12:40~13:10", is_available: true },
+  { id: "20261019-1620-4000-8000-000000000009", date: "2026-10-19", time: "16:20~17:00", is_available: true },
+  { id: "20261019-1700-4000-8000-000000000010", date: "2026-10-19", time: "17:00~17:40", is_available: true },
+  { id: "20261019-1800-4000-8000-000000000011", date: "2026-10-19", time: "18:00~18:30", is_available: true },
+  { id: "20261019-1830-4000-8000-000000000012", date: "2026-10-19", time: "18:30~19:00", is_available: true },
 ];
 
 function isFixedCounselingSlot(slotId: string) {
