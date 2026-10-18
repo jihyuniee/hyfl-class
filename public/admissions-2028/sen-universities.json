@@ -1,0 +1,494 @@
+[
+  {
+    "name": "가천대",
+    "page": 98,
+    "endPage": 102,
+    "searchName": "가천대"
+  },
+  {
+    "name": "가톨릭대",
+    "page": 103,
+    "endPage": 106,
+    "searchName": "가톨릭대"
+  },
+  {
+    "name": "강남대",
+    "page": 107,
+    "endPage": 108,
+    "searchName": "강남대"
+  },
+  {
+    "name": "강서대",
+    "page": 109,
+    "endPage": 109,
+    "searchName": "강서대"
+  },
+  {
+    "name": "강원대",
+    "page": 110,
+    "endPage": 115,
+    "searchName": "강원대"
+  },
+  {
+    "name": "건국대",
+    "page": 116,
+    "endPage": 118,
+    "searchName": "건국대"
+  },
+  {
+    "name": "건국대(글로컬)",
+    "page": 119,
+    "endPage": 120,
+    "searchName": "건국대(글로컬)"
+  },
+  {
+    "name": "경기대",
+    "page": 121,
+    "endPage": 123,
+    "searchName": "경기대"
+  },
+  {
+    "name": "경동대(메트로폴)",
+    "page": 124,
+    "endPage": 125,
+    "searchName": "경동대(메트로폴)"
+  },
+  {
+    "name": "경북대",
+    "page": 126,
+    "endPage": 129,
+    "searchName": "경북대"
+  },
+  {
+    "name": "경상국립대",
+    "page": 130,
+    "endPage": 133,
+    "searchName": "경상국립대"
+  },
+  {
+    "name": "경희대",
+    "page": 134,
+    "endPage": 137,
+    "searchName": "경희대"
+  },
+  {
+    "name": "고려대",
+    "page": 138,
+    "endPage": 140,
+    "searchName": "고려대"
+  },
+  {
+    "name": "고려대(세종)",
+    "page": 141,
+    "endPage": 143,
+    "searchName": "고려대(세종)"
+  },
+  {
+    "name": "광운대",
+    "page": 144,
+    "endPage": 146,
+    "searchName": "광운대"
+  },
+  {
+    "name": "국립공주대",
+    "page": 147,
+    "endPage": 150,
+    "searchName": "국립공주대"
+  },
+  {
+    "name": "국민대",
+    "page": 151,
+    "endPage": 153,
+    "searchName": "국민대"
+  },
+  {
+    "name": "단국대",
+    "page": 154,
+    "endPage": 155,
+    "searchName": "단국대"
+  },
+  {
+    "name": "단국대(천안)",
+    "page": 156,
+    "endPage": 158,
+    "searchName": "단국대(천안)"
+  },
+  {
+    "name": "대진대",
+    "page": 159,
+    "endPage": 160,
+    "searchName": "대진대"
+  },
+  {
+    "name": "덕성여대",
+    "page": 161,
+    "endPage": 163,
+    "searchName": "덕성여대"
+  },
+  {
+    "name": "동국대",
+    "page": 164,
+    "endPage": 167,
+    "searchName": "동국대"
+  },
+  {
+    "name": "동국대(WISE)",
+    "page": 168,
+    "endPage": 170,
+    "searchName": "동국대(WISE)"
+  },
+  {
+    "name": "동덕여대",
+    "page": 171,
+    "endPage": 172,
+    "searchName": "동덕여대"
+  },
+  {
+    "name": "동양대(북서울)",
+    "page": 173,
+    "endPage": 173,
+    "searchName": "동양대(북서울)"
+  },
+  {
+    "name": "명지대",
+    "page": 174,
+    "endPage": 177,
+    "searchName": "명지대"
+  },
+  {
+    "name": "부산대",
+    "page": 178,
+    "endPage": 181,
+    "searchName": "부산대"
+  },
+  {
+    "name": "삼육대",
+    "page": 182,
+    "endPage": 184,
+    "searchName": "삼육대"
+  },
+  {
+    "name": "상명대",
+    "page": 185,
+    "endPage": 186,
+    "searchName": "상명대"
+  },
+  {
+    "name": "상명대(천안)",
+    "page": 187,
+    "endPage": 188,
+    "searchName": "상명대(천안)"
+  },
+  {
+    "name": "서강대",
+    "page": 189,
+    "endPage": 191,
+    "searchName": "서강대"
+  },
+  {
+    "name": "서경대",
+    "page": 192,
+    "endPage": 193,
+    "searchName": "서경대"
+  },
+  {
+    "name": "서울과학기술대",
+    "page": 194,
+    "endPage": 196,
+    "searchName": "서울과학기술대"
+  },
+  {
+    "name": "서울대",
+    "page": 197,
+    "endPage": 200,
+    "searchName": "서울대"
+  },
+  {
+    "name": "서울시립대",
+    "page": 201,
+    "endPage": 203,
+    "searchName": "서울시립대"
+  },
+  {
+    "name": "서울여대",
+    "page": 204,
+    "endPage": 206,
+    "searchName": "서울여대"
+  },
+  {
+    "name": "성결대",
+    "page": 207,
+    "endPage": 209,
+    "searchName": "성결대"
+  },
+  {
+    "name": "성공회대",
+    "page": 210,
+    "endPage": 211,
+    "searchName": "성공회대"
+  },
+  {
+    "name": "성균관대",
+    "page": 212,
+    "endPage": 216,
+    "searchName": "성균관대"
+  },
+  {
+    "name": "성신여대",
+    "page": 217,
+    "endPage": 219,
+    "searchName": "성신여대"
+  },
+  {
+    "name": "세종대",
+    "page": 220,
+    "endPage": 223,
+    "searchName": "세종대"
+  },
+  {
+    "name": "수원대",
+    "page": 224,
+    "endPage": 225,
+    "searchName": "수원대"
+  },
+  {
+    "name": "숙명여대",
+    "page": 226,
+    "endPage": 228,
+    "searchName": "숙명여대"
+  },
+  {
+    "name": "숭실대",
+    "page": 229,
+    "endPage": 231,
+    "searchName": "숭실대"
+  },
+  {
+    "name": "신한대",
+    "page": 232,
+    "endPage": 234,
+    "searchName": "신한대"
+  },
+  {
+    "name": "아주대",
+    "page": 235,
+    "endPage": 238,
+    "searchName": "아주대"
+  },
+  {
+    "name": "안양대",
+    "page": 239,
+    "endPage": 240,
+    "searchName": "안양대"
+  },
+  {
+    "name": "연세대",
+    "page": 241,
+    "endPage": 245,
+    "searchName": "연세대"
+  },
+  {
+    "name": "연세대(미래)",
+    "page": 246,
+    "endPage": 248,
+    "searchName": "연세대(미래)"
+  },
+  {
+    "name": "용인대",
+    "page": 249,
+    "endPage": 250,
+    "searchName": "용인대"
+  },
+  {
+    "name": "을지대",
+    "page": 251,
+    "endPage": 252,
+    "searchName": "을지대"
+  },
+  {
+    "name": "이화여대",
+    "page": 253,
+    "endPage": 255,
+    "searchName": "이화여대"
+  },
+  {
+    "name": "인천가톨릭대",
+    "page": 256,
+    "endPage": 256,
+    "searchName": "인천가톨릭대"
+  },
+  {
+    "name": "인천대",
+    "page": 257,
+    "endPage": 258,
+    "searchName": "인천대"
+  },
+  {
+    "name": "인하대",
+    "page": 259,
+    "endPage": 261,
+    "searchName": "인하대"
+  },
+  {
+    "name": "전남대",
+    "page": 262,
+    "endPage": 265,
+    "searchName": "전남대"
+  },
+  {
+    "name": "전북대",
+    "page": 266,
+    "endPage": 268,
+    "searchName": "전북대"
+  },
+  {
+    "name": "제주대",
+    "page": 269,
+    "endPage": 271,
+    "searchName": "제주대"
+  },
+  {
+    "name": "중부대(고양)",
+    "page": 272,
+    "endPage": 273,
+    "searchName": "중부대(고양)"
+  },
+  {
+    "name": "중앙대",
+    "page": 274,
+    "endPage": 277,
+    "searchName": "중앙대"
+  },
+  {
+    "name": "차 의과학대",
+    "page": 278,
+    "endPage": 279,
+    "searchName": "차 의과학대"
+  },
+  {
+    "name": "총신대",
+    "page": 280,
+    "endPage": 281,
+    "searchName": "총신대"
+  },
+  {
+    "name": "충남대",
+    "page": 282,
+    "endPage": 289,
+    "searchName": "충남대"
+  },
+  {
+    "name": "충북대",
+    "page": 290,
+    "endPage": 292,
+    "searchName": "충북대"
+  },
+  {
+    "name": "평택대",
+    "page": 293,
+    "endPage": 294,
+    "searchName": "평택대"
+  },
+  {
+    "name": "한경국립대",
+    "page": 295,
+    "endPage": 297,
+    "searchName": "한경국립대"
+  },
+  {
+    "name": "한국공학대",
+    "page": 298,
+    "endPage": 300,
+    "searchName": "한국공학대"
+  },
+  {
+    "name": "한국교원대",
+    "page": 301,
+    "endPage": 302,
+    "searchName": "한국교원대"
+  },
+  {
+    "name": "한국교통대",
+    "page": 303,
+    "endPage": 304,
+    "searchName": "한국교통대"
+  },
+  {
+    "name": "한국기술교대",
+    "page": 305,
+    "endPage": 306,
+    "searchName": "한국기술교대"
+  },
+  {
+    "name": "한국성서대",
+    "page": 307,
+    "endPage": 308,
+    "searchName": "한국성서대"
+  },
+  {
+    "name": "한국외국어대",
+    "page": 309,
+    "endPage": 311,
+    "searchName": "한국외대"
+  },
+  {
+    "name": "한국항공대",
+    "page": 312,
+    "endPage": 313,
+    "searchName": "한국항공대"
+  },
+  {
+    "name": "한성대",
+    "page": 314,
+    "endPage": 315,
+    "searchName": "한성대"
+  },
+  {
+    "name": "한세대",
+    "page": 316,
+    "endPage": 317,
+    "searchName": "한세대"
+  },
+  {
+    "name": "한신대",
+    "page": 318,
+    "endPage": 319,
+    "searchName": "한신대"
+  },
+  {
+    "name": "한양대",
+    "page": 320,
+    "endPage": 323,
+    "searchName": "한양대"
+  },
+  {
+    "name": "한양대(ERICA)",
+    "page": 324,
+    "endPage": 326,
+    "searchName": "한양대(ERICA)"
+  },
+  {
+    "name": "협성대",
+    "page": 327,
+    "endPage": 328,
+    "searchName": "협성대"
+  },
+  {
+    "name": "홍익대",
+    "page": 329,
+    "endPage": 330,
+    "searchName": "홍익대"
+  },
+  {
+    "name": "홍익대(세종)",
+    "page": 331,
+    "endPage": 332,
+    "searchName": "홍익대(세종)"
+  },
+  {
+    "name": "화성의과학대",
+    "page": 333,
+    "endPage": 334,
+    "searchName": "화성의과학대"
+  }
+]

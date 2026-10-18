@@ -1,7 +1,7 @@
 {
-  "source": "인천광역시교육청 2028 대입전형 프리뷰",
-  "updated": "2026-07-15",
-  "notice": "일부 대학의 2028학년도 대입전형시행계획을 정리한 자료이며 최종 모집요강에서 변경될 수 있습니다.",
+  "source": "서울특별시교육청 쎈(SEN)진학 프리뷰 10월14일 + 인천교육청 7월 자료",
+  "updated": "2026-10-14",
+  "notice": "주요 15개 대학 검색자료를 SEN 대학별 상세표와 대조했습니다. 나머지 검색 카드는 인천교육청 7월 자료이며, SEN 원문 바로가기에서 새 자료를 확인할 수 있습니다. PDF 내부 불일치는 별도 표시합니다.",
   "records": [
     {
       "id": "2028-2-001",
@@ -19,7 +19,10 @@
         "의약"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-2-002",
@@ -36,7 +39,10 @@
         "자연·공학"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-2-003",
@@ -54,7 +60,10 @@
         "의약"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-2-004",
@@ -72,7 +81,10 @@
         "의약"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-2-005",
@@ -91,7 +103,10 @@
         "예체능"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-2-006",
@@ -108,7 +123,10 @@
         "자연·공학"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-2-007",
@@ -125,7 +143,10 @@
         "자연·공학"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-2-008",
@@ -142,7 +163,10 @@
         "자연·공학"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-2-009",
@@ -159,7 +183,10 @@
         "자연·공학"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-2-010",
@@ -177,7 +204,10 @@
         "의약"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-2-011",
@@ -194,7 +224,10 @@
         "자연·공학"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-2-012",
@@ -211,7 +244,10 @@
         "자연·공학"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-2-013",
@@ -228,7 +264,10 @@
         "자연·공학"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-2-014",
@@ -245,7 +284,10 @@
         "자연·공학"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-2-015",
@@ -262,7 +304,10 @@
         "자연·공학"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-2-016",
@@ -280,7 +325,10 @@
         "의약"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-2-017",
@@ -298,7 +346,10 @@
         "의약"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-2-018",
@@ -316,7 +367,10 @@
         "의약"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-2-019",
@@ -334,7 +388,10 @@
         "의약"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-2-020",
@@ -351,7 +408,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-2-021",
@@ -368,7 +428,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-2-022",
@@ -385,7 +448,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-2-023",
@@ -402,7 +468,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-2-024",
@@ -419,7 +488,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-2-025",
@@ -436,7 +508,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-2-026",
@@ -453,7 +528,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-2-027",
@@ -470,7 +548,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-2-028",
@@ -487,7 +568,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-2-029",
@@ -504,7 +588,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-2-030",
@@ -521,7 +608,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-2-031",
@@ -538,7 +628,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-2-032",
@@ -555,7 +648,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-2-033",
@@ -573,7 +669,10 @@
         "의약"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-2-034",
@@ -590,7 +689,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-2-035",
@@ -607,7 +709,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-2-036",
@@ -625,7 +730,10 @@
         "의약"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-2-037",
@@ -642,7 +750,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-2-038",
@@ -650,8 +761,8 @@
       "category": "학생부교과",
       "admission": "학생부교과(추천형)",
       "method": "학생부(교과) 100% (5배수)\n1단계 성적 80% +\n서류평가 20%",
-      "minimum": "• 국 , 수, 사탐, 과탐 중 국,수 중 1개 과목을\n포함하여 2개 과목 등급 합 4\n• 국 , 수, 사탐, 과탐 중 수학 포함하여 2개\n과목 등급 합 5\n• 의 예/치의예/약학 → 국, 수, 사탐, 과탐\n중 수 포함 1등급 2개 이상\n• 통 합(상경계열/응용통계학과/생활과학대학/간호대학) → 인문 또는 자연계열(일반)의\n최저학력기준 중 하나 만족",
-      "notes": "• [공통] 영어 3등급 이내, 한국사 4등급 이내\n• 고교별 10명 이내 추천\n• 서 류평가 → 학교생활기록부 교과 학습 발달 상황\n(등급,성취도 제외)과 출결 등을 바탕으로 정성 평가함",
+      "minimum": "인문: 국·수·사·과 중 2개 합 4(국어 또는 수학 포함)\n자연 일반: 국·수·사·과 중 2개 합 5(수학 포함)\n의예·치의예·약학: 수학 포함 1등급 2개\n통합계열: 인문 또는 자연 일반 기준 중 하나 충족\n공통: 영어 3등급·한국사 4등급 이내, 탐구 반영은 원문 확인",
+      "notes": "• [공통] 영어 3등급 이내, 한국사 4등급 이내\n• 고교별 10명 이내 추천\n• 서 류평가 → 학교생활기록부 교과 학습 발달 상황\n(등급,성취도 제외)과 출결 등을 바탕으로 정성 평가함\nSEN 10월 14일 대학별 상세표와 대조. 모집인원은 계약학과·캠퍼스 포함 여부에 따라 달라 이 카드에서는 합산하지 않습니다.",
       "page": 2,
       "fields": [
         "인문·어문",
@@ -660,7 +771,12 @@
         "의약"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "sen-20261014",
+      "sourceLabel": "SEN 10.14 대조",
+      "reviewedAt": "2026-10-14",
+      "sourcePage": 241,
+      "sourceUrl": "/admissions-2028/sen-preview-20261014.pdf"
     },
     {
       "id": "2028-2-039",
@@ -678,7 +794,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-3-040",
@@ -696,7 +815,10 @@
         "의약"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-3-041",
@@ -713,7 +835,10 @@
         "자연·공학"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-3-042",
@@ -722,7 +847,7 @@
       "admission": "KU지역균형",
       "method": "교과 70%\n(교과정량)\n비교과 30%\n(교과정성)",
       "minimum": "• 국, 수, 영, 사/과(1), 한국사 중 3개 영역 등급 합 8\n• 수의예과 → 국, 수, 영, 사/과(2), 한국사 중 3개 영역 등급 합 4",
-      "notes": "• 탐구영역 : 2과목 평균 •고교별 추천인원 제한 없음\n• 학생부평가30% → 학교생활기록부 교과학습발달상황 항목",
+      "notes": "• 탐구영역 : 2과목 평균 •고교별 추천인원 제한 없음\n• 학생부평가30% → 학교생활기록부 교과학습발달상황 항목\nSEN 10월 14일 대학별 상세표와 대조. 모집인원은 계약학과·캠퍼스 포함 여부에 따라 달라 이 카드에서는 합산하지 않습니다.",
       "page": 3,
       "fields": [
         "인문·어문",
@@ -731,7 +856,12 @@
         "의약"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "sen-20261014",
+      "sourceLabel": "SEN 10.14 대조",
+      "reviewedAt": "2026-10-14",
+      "sourcePage": 116,
+      "sourceUrl": "/admissions-2028/sen-preview-20261014.pdf"
     },
     {
       "id": "2028-3-043",
@@ -748,16 +878,19 @@
         "자연·공학"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-3-044",
       "university": "경희대",
       "category": "학생부교과",
       "admission": "지역균형",
-      "method": "교과 70%\n(교과+출결ㆍ봉사)\n비교과 30%\n(교과종합평가)",
+      "method": "교과 56% + 출결 7% + 봉사 7% + 교과종합평가 30%",
       "minimum": "• 국, 수, 영, 사/과(1) 중 2개 영역 등급 합 5, 한국사 5등급 이내\n• 의예/치의예/약학/한의예과(인문/자연) : 국, 수, 영, 사/과(1) 중 3개 영역 등급 합 4, 한국사 5등급 이내\n• 예술·체육 → 국, 수, 영, 사/과(2) 중 1개 영역 이상 3등급 이내",
-      "notes": "• 교 과종합평가 → 학교생활기록부교과학습발달상황 (교과성적, 세부 능력 및\n특기사항)을 학업역량과 진로역량으로 종합 평가\n• 고교별 추천인원 제한 없음",
+      "notes": "• 교 과종합평가 → 학교생활기록부교과학습발달상황 (교과성적, 세부 능력 및\n특기사항)을 학업역량과 진로역량으로 종합 평가\n• 고교별 추천인원 제한 없음\nSEN 10월 14일 대학별 상세표와 대조. 모집인원은 계약학과·캠퍼스 포함 여부에 따라 달라 이 카드에서는 합산하지 않습니다.",
       "page": 3,
       "fields": [
         "인문·어문",
@@ -767,7 +900,12 @@
         "예체능"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "sen-20261014",
+      "sourceLabel": "SEN 10.14 대조",
+      "reviewedAt": "2026-10-14",
+      "sourcePage": 134,
+      "sourceUrl": "/admissions-2028/sen-preview-20261014.pdf"
     },
     {
       "id": "2028-3-045",
@@ -784,7 +922,10 @@
         "자연·공학"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-3-046",
@@ -801,7 +942,10 @@
         "자연·공학"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-3-047",
@@ -820,7 +964,10 @@
         "예체능"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-3-048",
@@ -838,7 +985,10 @@
         "의약"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-3-049",
@@ -855,7 +1005,10 @@
         "자연·공학"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-3-050",
@@ -873,7 +1026,10 @@
         "의약"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-3-051",
@@ -882,7 +1038,7 @@
       "admission": "지역균형선발",
       "method": "교과 90%\n비교과 10% (출결)",
       "minimum": "• 국,수,영,사/과(1) 중 3개 영역 각 3등급 이내, 한국사 4등급 이내",
-      "notes": "• 출결일수 = 결석일수 + (지각일수+조퇴일수+결과일수)/3\n• 고교별 추천인원 제한 없음",
+      "notes": "• 출결일수 = 결석일수 + (지각일수+조퇴일수+결과일수)/3\n• 고교별 추천인원 제한 없음\nSEN 10월 14일 대학별 상세표와 대조. 모집인원은 계약학과·캠퍼스 포함 여부에 따라 달라 이 카드에서는 합산하지 않습니다.",
       "page": 3,
       "fields": [
         "인문·어문",
@@ -890,7 +1046,12 @@
         "자연·공학"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "sen-20261014",
+      "sourceLabel": "SEN 10.14 대조",
+      "reviewedAt": "2026-10-14",
+      "sourcePage": 189,
+      "sourceUrl": "/admissions-2028/sen-preview-20261014.pdf"
     },
     {
       "id": "2028-3-052",
@@ -899,7 +1060,7 @@
       "admission": "지역균형선발",
       "method": "교과 60%\n비교과 40%\n(서류)",
       "minimum": "• 국, 수, 영, 사/과(1) 중 3개 영역 등급 합 7, 한국사 4등급 이내",
-      "notes": "• 서류40% → 교과 영역 및 출결 상황을 중심으로 학업역량과 성실성 평가\n• 고교별 추천 인원 제한없음",
+      "notes": "• 서류40% → 교과 영역 및 출결 상황을 중심으로 학업역량과 성실성 평가\n• 고교별 추천 인원 제한없음\nSEN 10월 14일 대학별 상세표와 대조. 모집인원은 계약학과·캠퍼스 포함 여부에 따라 달라 이 카드에서는 합산하지 않습니다.",
       "page": 3,
       "fields": [
         "인문·어문",
@@ -907,16 +1068,21 @@
         "자연·공학"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "sen-20261014",
+      "sourceLabel": "SEN 10.14 대조",
+      "reviewedAt": "2026-10-14",
+      "sourcePage": 201,
+      "sourceUrl": "/admissions-2028/sen-preview-20261014.pdf"
     },
     {
       "id": "2028-3-053",
       "university": "성균관대",
       "category": "학생부교과",
       "admission": "추천인재",
-      "method": "교과 70%\n비교과 30%\n(정성평가)",
+      "method": "학생부 100%: 정량평가 70% + 정성평가 30%",
       "minimum": "• 국, 수, 영, 사탐, 과탐 중 3개 등급 합 7\n• 글 로벌리더, 글로벌경영, 글로벌경제, 자유전공계열, 전자전기정보, 컴퓨터공학, 반도체융합공학,\n글로벌바이오메디컬공학, 에너지학 → 국, 수, 영, 사탐, 과탐 중3개 등급합 6",
-      "notes": "• 정량평가 70% → 공통과목 35%+석차등급 표시된 선택과목 35%\n• 정 성평가 30% → 학생부 교과학습 발달상황(전체과목) 및 출결사항만 반영 (그외\n항목 미반영)\n• 고교별 추천 인원 제한없음",
+      "notes": "• 정량평가 70% → 공통과목 35%+석차등급 표시된 선택과목 35%\n• 정 성평가 30% → 학생부 교과학습 발달상황(전체과목) 및 출결사항만 반영 (그외\n항목 미반영)\n• 고교별 추천 인원 제한없음\nSEN 10월 14일 대학별 상세표와 대조. 모집인원은 계약학과·캠퍼스 포함 여부에 따라 달라 이 카드에서는 합산하지 않습니다.",
       "page": 3,
       "fields": [
         "인문·어문",
@@ -925,7 +1091,12 @@
         "의약"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "sen-20261014",
+      "sourceLabel": "SEN 10.14 대조",
+      "reviewedAt": "2026-10-14",
+      "sourcePage": 212,
+      "sourceUrl": "/admissions-2028/sen-preview-20261014.pdf"
     },
     {
       "id": "2028-3-054",
@@ -942,7 +1113,10 @@
         "자연·공학"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-3-055",
@@ -960,7 +1134,10 @@
         "자연·공학"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-3-056",
@@ -977,7 +1154,10 @@
         "자연·공학"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-3-057",
@@ -995,16 +1175,19 @@
         "의약"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-3-058",
       "university": "이화여대",
       "category": "학생부교과",
       "admission": "고교추천",
-      "method": "교과 80%\n비교과 5%(출결)+15%(서류)",
+      "method": "교과·출결 85% + 서류 15%",
       "minimum": "• 국, 수, 영, 사/과(1) 중 3개 영역 등급 합 7",
-      "notes": "• 서류15% →교과정성평가(학업역량, 진로역량 등 종합평가)\n• 고교별 20명 이내 추천",
+      "notes": "• 서류15% →교과정성평가(학업역량, 진로역량 등 종합평가)\n• 고교별 20명 이내 추천\nSEN 10월 14일 대학별 상세표와 대조. 모집인원은 계약학과·캠퍼스 포함 여부에 따라 달라 이 카드에서는 합산하지 않습니다.",
       "page": 3,
       "fields": [
         "인문·어문",
@@ -1012,7 +1195,13 @@
         "자연·공학"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "sen-20261014",
+      "sourceLabel": "SEN 10.14 대조",
+      "reviewedAt": "2026-10-14",
+      "sourcePage": 253,
+      "sourceUrl": "/admissions-2028/sen-preview-20261014.pdf",
+      "verificationNote": "SEN 3쪽은 교과80+출결5+서류15, 253쪽은 학생부(교과)85+서류15로 묶어 표기합니다. 교과·출결 세부 산식은 모집요강 확인이 필요합니다."
     },
     {
       "id": "2028-3-059",
@@ -1029,7 +1218,10 @@
         "자연·공학"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-3-060",
@@ -1038,7 +1230,7 @@
       "admission": "지역균형",
       "method": "교과 90%\n비교과 10%\n(출결)",
       "minimum": "• 국, 수, 영, 사탐, 과탐 중 3개 영역 등급 합 7, 한국사 4등급 이내\n• 약학부 → 국, 수, 영, 사탐, 과탐 중 4개 영역 등급 합 5, 한국사 4등급 이내\n• 중앙대(다빈치)는 수능최저기준 미적용",
-      "notes": "• 영어 2등급 누적비율이 20%미만일 경우 1, 2등급을 통합하여 1등급으로 간주\n• 인 문, 사범, 사회과학, 경영경제대학 소속 모집단위의 경우 과탐 영역 1, 2등급을\n통합하여 1등급으로 간주\n• 출결 → 미인정결석, 조퇴일수에 따른 환산점수표 추후 발표\n• 고교별 20명 이내 추천",
+      "notes": "• 영어 2등급 누적비율이 20%미만일 경우 1, 2등급을 통합하여 1등급으로 간주\n• 인 문, 사범, 사회과학, 경영경제대학 소속 모집단위의 경우 과탐 영역 1, 2등급을\n통합하여 1등급으로 간주\n• 출결 → 미인정결석, 조퇴일수에 따른 환산점수표 추후 발표\n• 고교별 20명 이내 추천\nSEN 10월 14일 대학별 상세표와 대조. 모집인원은 계약학과·캠퍼스 포함 여부에 따라 달라 이 카드에서는 합산하지 않습니다.",
       "page": 3,
       "fields": [
         "인문·어문",
@@ -1048,7 +1240,12 @@
         "의약"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "sen-20261014",
+      "sourceLabel": "SEN 10.14 대조",
+      "reviewedAt": "2026-10-14",
+      "sourcePage": 274,
+      "sourceUrl": "/admissions-2028/sen-preview-20261014.pdf"
     },
     {
       "id": "2028-3-061",
@@ -1065,7 +1262,10 @@
         "자연·공학"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-3-062",
@@ -1074,7 +1274,7 @@
       "admission": "학생부교과\n(추천형)",
       "method": "교과 60%\n비교과 40%\n(학생부 종합평가)",
       "minimum": "• 자연, 상경, 한양인터칼리지학부 → 국, 수, 영, 사/과(1) 중 3개 영역(수학포함) 각 3등급 이내\n• 인문, 의류학과, 실내건축디자인학과 → 국, 수, 영, 사/과(1) 중 3개 영역 각 3등급 이내",
-      "notes": "• 학 생부종합평가40% → 고교교육과정에 충실한 이수 및 종합 성취도, 핵심 역량\n등을 종합적으로 평가 •고교별 추천 인원 제한없음",
+      "notes": "• 학 생부종합평가40% → 고교교육과정에 충실한 이수 및 종합 성취도, 핵심 역량\n등을 종합적으로 평가 •고교별 추천 인원 제한없음\nSEN 10월 14일 대학별 상세표와 대조. 모집인원은 계약학과·캠퍼스 포함 여부에 따라 달라 이 카드에서는 합산하지 않습니다.",
       "page": 3,
       "fields": [
         "인문·어문",
@@ -1084,7 +1284,12 @@
         "예체능"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "sen-20261014",
+      "sourceLabel": "SEN 10.14 대조",
+      "reviewedAt": "2026-10-14",
+      "sourcePage": 320,
+      "sourceUrl": "/admissions-2028/sen-preview-20261014.pdf"
     },
     {
       "id": "2028-3-063",
@@ -1093,7 +1298,7 @@
       "admission": "학교장추천",
       "method": "교과 70%\n비교과 30%\n(교과종합평가)",
       "minimum": "• (서울) 국, 수, 영,사/과(1) 중 2개 영역 등급 합 5\n• (글로벌) 국, 수, 영, 사/과(1) 중 2개 영역 등급 합 6",
-      "notes": "• 교 과종합평가 → 교과학습발달상황을 바탕으로 교과이수현황 및 관련\n학업역량을 정성적ㆍ종합적으로 평가 •고교별 추천 인원 제한없음",
+      "notes": "• 교 과종합평가 → 교과학습발달상황을 바탕으로 교과이수현황 및 관련\n학업역량을 정성적ㆍ종합적으로 평가 •고교별 추천 인원 제한없음\nSEN 10월 14일 대학별 상세표와 대조. 모집인원은 계약학과·캠퍼스 포함 여부에 따라 달라 이 카드에서는 합산하지 않습니다.",
       "page": 3,
       "fields": [
         "인문·어문",
@@ -1101,7 +1306,12 @@
         "자연·공학"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "sen-20261014",
+      "sourceLabel": "SEN 10.14 대조",
+      "reviewedAt": "2026-10-14",
+      "sourcePage": 309,
+      "sourceUrl": "/admissions-2028/sen-preview-20261014.pdf"
     },
     {
       "id": "2028-3-064",
@@ -1110,7 +1320,7 @@
       "admission": "학교장추천자",
       "method": "교과 95%\n비교과 5% (출결)",
       "minimum": "• 국, 수, 영, 탐(사/과)(1) 중 2개 영역 등급 합 5, 한국사 4등급 이내",
-      "notes": "• 고교별 추천 인원 제한없음",
+      "notes": "• 고교별 추천 인원 제한없음\nSEN 10월 14일 대학별 상세표와 대조. 모집인원은 계약학과·캠퍼스 포함 여부에 따라 달라 이 카드에서는 합산하지 않습니다.",
       "page": 3,
       "fields": [
         "인문·어문",
@@ -1118,7 +1328,12 @@
         "자연·공학"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "sen-20261014",
+      "sourceLabel": "SEN 10.14 대조",
+      "reviewedAt": "2026-10-14",
+      "sourcePage": 329,
+      "sourceUrl": "/admissions-2028/sen-preview-20261014.pdf"
     },
     {
       "id": "2028-3-065",
@@ -1135,7 +1350,10 @@
         "자연·공학"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-3-066",
@@ -1152,7 +1370,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-3-067",
@@ -1161,7 +1382,7 @@
       "admission": "학교추천",
       "method": "학생부(교과) 80% + 서류평가 20%",
       "minimum": "미적용\n• 일부 모집단위 예외: 의과대학 → 국, 수, 영, 사/과(1) 중 4개 영역 등급합 5, 한국사 4등급 이내",
-      "notes": "• 의과대학 → 국, 수, 영, 사/과(1) 중 4개 영역 등급합 5, 한국사 4등급 이내\n• 서류평가 → 학생부종합평가 •고교별 12명 이내 추천 •학생부종합전형과 중복지원 가능",
+      "notes": "• 의과대학 → 국, 수, 영, 사/과(1) 중 4개 영역 등급합 5, 한국사 4등급 이내\n• 서류평가 → 학생부종합평가 •고교별 12명 이내 추천 •학생부종합전형과 중복지원 가능\nSEN 10월 14일 대학별 상세표와 대조. 모집인원은 계약학과·캠퍼스 포함 여부에 따라 달라 이 카드에서는 합산하지 않습니다.",
       "page": 3,
       "fields": [
         "인문·어문",
@@ -1169,7 +1390,13 @@
         "자연·공학"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "sen-20261014",
+      "sourceLabel": "SEN 10.14 대조",
+      "reviewedAt": "2026-10-14",
+      "sourcePage": 138,
+      "sourceUrl": "/admissions-2028/sen-preview-20261014.pdf",
+      "minimumScope": "일부 모집단위 적용"
     },
     {
       "id": "2028-3-068",
@@ -1178,7 +1405,7 @@
       "admission": "학교장추천인재",
       "method": "학생부(교과) 70% + 서류평가 30%",
       "minimum": "미적용",
-      "notes": "• 서류평가 → 학교생활기록부 교과 관련 영역\n- 교과학습발달상황, 세부능력 및 특기사항, 출결상황, 행동특성 및 종합의견 •고교별 추천인원 제한 없음",
+      "notes": "• 서류평가 → 학교생활기록부 교과 관련 영역\n- 교과학습발달상황, 세부능력 및 특기사항, 출결상황, 행동특성 및 종합의견 •고교별 추천인원 제한 없음\nSEN 10월 14일 대학별 상세표와 대조. 모집인원은 계약학과·캠퍼스 포함 여부에 따라 달라 이 카드에서는 합산하지 않습니다.",
       "page": 3,
       "fields": [
         "인문·어문",
@@ -1186,7 +1413,12 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "sen-20261014",
+      "sourceLabel": "SEN 10.14 대조",
+      "reviewedAt": "2026-10-14",
+      "sourcePage": 164,
+      "sourceUrl": "/admissions-2028/sen-preview-20261014.pdf"
     },
     {
       "id": "2028-3-069",
@@ -1204,7 +1436,10 @@
         "의약"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-3-070",
@@ -1221,7 +1456,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-3-071",
@@ -1238,7 +1476,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-3-072",
@@ -1246,8 +1487,8 @@
       "category": "학생부교과",
       "admission": "지역균형선발",
       "method": "학생부(교과) 70% + 서류평가 30%",
-      "minimum": "미적용\n• 일부 모집단위 예외: 서류평가 → 교과위주 •약학부 → 국,수,영,사/과(1) 중 3개영역 등급 합 5 •고교별 추천인원 제한 없음",
-      "notes": "• 서류평가 → 교과위주 •약학부 → 국,수,영,사/과(1) 중 3개영역 등급 합 5 •고교별 추천인원 제한 없음",
+      "minimum": "일반 모집단위: 미적용\n약학부: 국·수·영·탐(1) 중 수학 포함 3개 합 5",
+      "notes": "• 서류평가 → 교과위주 •약학부 → 국,수,영,사/과(1) 중 3개영역 등급 합 5 •고교별 추천인원 제한 없음\nSEN 10월 14일 대학별 상세표와 대조. 모집인원은 계약학과·캠퍼스 포함 여부에 따라 달라 이 카드에서는 합산하지 않습니다.",
       "page": 3,
       "fields": [
         "인문·어문",
@@ -1256,7 +1497,13 @@
         "의약"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "sen-20261014",
+      "sourceLabel": "SEN 10.14 대조",
+      "reviewedAt": "2026-10-14",
+      "sourcePage": 226,
+      "sourceUrl": "/admissions-2028/sen-preview-20261014.pdf",
+      "minimumScope": "약학부만 적용"
     },
     {
       "id": "2028-3-073",
@@ -1273,7 +1520,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-3-074",
@@ -1290,7 +1540,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-3-075",
@@ -1307,7 +1560,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-3-076",
@@ -1324,7 +1580,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-3-077",
@@ -1341,7 +1600,10 @@
         "자연·공학"
       ],
       "hasMinimum": true,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-3-078",
@@ -1356,7 +1618,10 @@
         "의약"
       ],
       "hasMinimum": true,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-3-079",
@@ -1371,7 +1636,10 @@
         "의약"
       ],
       "hasMinimum": true,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-4-080",
@@ -1388,7 +1656,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-4-081",
@@ -1405,7 +1676,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-4-082",
@@ -1422,7 +1696,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-4-083",
@@ -1439,7 +1716,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-4-084",
@@ -1456,7 +1736,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-4-085",
@@ -1473,7 +1756,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-4-086",
@@ -1490,7 +1776,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-4-087",
@@ -1507,7 +1796,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-4-088",
@@ -1524,7 +1816,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-4-089",
@@ -1542,7 +1837,10 @@
         "의약"
       ],
       "hasMinimum": true,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-4-090",
@@ -1559,7 +1857,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-4-091",
@@ -1576,7 +1877,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-4-092",
@@ -1593,7 +1897,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-4-093",
@@ -1610,7 +1917,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-8-094",
@@ -1628,7 +1938,10 @@
         "의약"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-8-095",
@@ -1637,7 +1950,7 @@
       "admission": "KU논술우수자",
       "method": "논술 100%",
       "minimum": "• 인문/자연 → 국, 수, 영, 한국사, 사/과(1) 중 3개 영역 등급 합 8 이내\n• 수의예과 → 국, 수, 영, 한국사, 사/과(2) 중 3개 영역 등급 합 4 이내",
-      "notes": "• 한국사 수능최저학력기준에 포함",
+      "notes": "• 한국사 수능최저학력기준에 포함\nSEN 10월 14일 대학별 상세표와 대조. 모집인원은 계약학과·캠퍼스 포함 여부에 따라 달라 이 카드에서는 합산하지 않습니다.",
       "page": 8,
       "fields": [
         "인문·어문",
@@ -1646,7 +1959,12 @@
         "의약"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "sen-20261014",
+      "sourceLabel": "SEN 10.14 대조",
+      "reviewedAt": "2026-10-14",
+      "sourcePage": 116,
+      "sourceUrl": "/admissions-2028/sen-preview-20261014.pdf"
     },
     {
       "id": "2028-8-096",
@@ -1655,7 +1973,7 @@
       "admission": "논술우수자",
       "method": "논술 100%",
       "minimum": "• 인문/자연 → 국, 수, 영, 사/과(1) 중 2개 영역 등급합 5, 한국사 5등급 이내\n• 의예/치의예/약학/한의예과(인문·자연) →국, 수, 영, 사/과(1) 중 3개 영역 등급합 4, 한국사 5등급 이내\n• 체육 → 국, 수, 영, 사/과(1) 중 1개 영역 3등급 이내",
-      "notes": "",
+      "notes": "SEN 10월 14일 대학별 상세표와 대조. 모집인원은 계약학과·캠퍼스 포함 여부에 따라 달라 이 카드에서는 합산하지 않습니다.",
       "page": 8,
       "fields": [
         "인문·어문",
@@ -1665,7 +1983,12 @@
         "예체능"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "sen-20261014",
+      "sourceLabel": "SEN 10.14 대조",
+      "reviewedAt": "2026-10-14",
+      "sourcePage": 134,
+      "sourceUrl": "/admissions-2028/sen-preview-20261014.pdf"
     },
     {
       "id": "2028-8-097",
@@ -1674,7 +1997,7 @@
       "admission": "논술",
       "method": "논술 100%",
       "minimum": "• 인문/자연 →국, 수, 영, 사/과(1) 4개 영역 등급 합 8 이내 및 한국사 4등급 이내",
-      "notes": "",
+      "notes": "SEN 10월 14일 대학별 상세표와 대조. 모집인원은 계약학과·캠퍼스 포함 여부에 따라 달라 이 카드에서는 합산하지 않습니다.",
       "page": 8,
       "fields": [
         "인문·어문",
@@ -1682,7 +2005,12 @@
         "자연·공학"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "sen-20261014",
+      "sourceLabel": "SEN 10.14 대조",
+      "reviewedAt": "2026-10-14",
+      "sourcePage": 138,
+      "sourceUrl": "/admissions-2028/sen-preview-20261014.pdf"
     },
     {
       "id": "2028-8-098",
@@ -1701,7 +2029,10 @@
         "예체능"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-8-099",
@@ -1718,7 +2049,10 @@
         "자연·공학"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-8-100",
@@ -1727,7 +2061,7 @@
       "admission": "논술",
       "method": "논술 70% + 교과 20% +\n출결 10%",
       "minimum": "• 전모집단위 → 국, 수, 영, 사탐, 과탐 중 2개 영역 등급 합 5 및 한국사 4등급 이내\n• 약학 → 국, 수, 영, 사탐, 과탐 중 3개 영역 등급합 4 및 한국사 4등급 이내",
-      "notes": "",
+      "notes": "SEN 10월 14일 대학별 상세표와 대조. 모집인원은 계약학과·캠퍼스 포함 여부에 따라 달라 이 카드에서는 합산하지 않습니다.",
       "page": 8,
       "fields": [
         "인문·어문",
@@ -1736,7 +2070,12 @@
         "의약"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "sen-20261014",
+      "sourceLabel": "SEN 10.14 대조",
+      "reviewedAt": "2026-10-14",
+      "sourcePage": 164,
+      "sourceUrl": "/admissions-2028/sen-preview-20261014.pdf"
     },
     {
       "id": "2028-8-101",
@@ -1752,7 +2091,10 @@
         "의약"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-8-102",
@@ -1770,7 +2112,10 @@
         "의약"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-8-103",
@@ -1779,7 +2124,7 @@
       "admission": "논술(일반)",
       "method": "논술 80% + 교과 10% + 출결 10%",
       "minimum": "• 전계열 → 국, 수, 영, 사/과(1) 중 3개 영역 등급 합 7, 한국사 4등급 이내",
-      "notes": "",
+      "notes": "SEN 10월 14일 대학별 상세표와 대조. 모집인원은 계약학과·캠퍼스 포함 여부에 따라 달라 이 카드에서는 합산하지 않습니다.",
       "page": 8,
       "fields": [
         "인문·어문",
@@ -1787,7 +2132,12 @@
         "자연·공학"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "sen-20261014",
+      "sourceLabel": "SEN 10.14 대조",
+      "reviewedAt": "2026-10-14",
+      "sourcePage": 189,
+      "sourceUrl": "/admissions-2028/sen-preview-20261014.pdf"
     },
     {
       "id": "2028-8-104",
@@ -1796,13 +2146,18 @@
       "admission": "논술(자연계열)",
       "method": "논술 100%",
       "minimum": "• 자연계열 → 국, 수, 영, 사/과(1) 중 3개 영역 등급 합 7, 한국사 4등급 이내",
-      "notes": "",
+      "notes": "SEN 10월 14일 대학별 상세표와 대조. 모집인원은 계약학과·캠퍼스 포함 여부에 따라 달라 이 카드에서는 합산하지 않습니다.",
       "page": 8,
       "fields": [
         "자연·공학"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "sen-20261014",
+      "sourceLabel": "SEN 10.14 대조",
+      "reviewedAt": "2026-10-14",
+      "sourcePage": 201,
+      "sourceUrl": "/admissions-2028/sen-preview-20261014.pdf"
     },
     {
       "id": "2028-8-105",
@@ -1811,7 +2166,7 @@
       "admission": "논술우수\n(언어형/\n수리형)",
       "method": "논술 100%",
       "minimum": "• 글로벌AI융합학부 / 인문과학계열 / 사회과학계열 / 경영학과 / 자연과학계열 / 공학계열 / 건설환경공학부\n→ 국, 수, 영, 사탐, 과탐 중 3개 영역 등급 합 6 이내\n• 자 유전공계열 / 글로벌리더학부 / 글로벌경제 / 글로벌경영 / 전자전기정보공학부 / 반도체시스템공 / 컴퓨터공 /\n글로벌바이오메디컬공/지능형소프트웨어 / 약학 / 반도체융합공/ 에너지학 → 국, 수, 영, 사탐, 과탐 중 3개 영역 등급 합 5 이내\n• 자 연과학계열 / 공학계열 / 건설환경공학부 / 전자전기정보공학부 / 컴퓨터공학과 / 글로벌AI융합학부 모집단위\n→ 언어형 지원 시 수능최저학력기준에 수학 영역 의무 반영\n• 의예과 → 국, 수, 영, 사/과(2) 4개 영역 등급 합 5 이내",
-      "notes": "• 언어형과 수리형 논술 중복지원할 수 없음",
+      "notes": "• 언어형과 수리형 논술 중복지원할 수 없음\nSEN 10월 14일 대학별 상세표와 대조. 모집인원은 계약학과·캠퍼스 포함 여부에 따라 달라 이 카드에서는 합산하지 않습니다.",
       "page": 8,
       "fields": [
         "인문·어문",
@@ -1820,7 +2175,12 @@
         "의약"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "sen-20261014",
+      "sourceLabel": "SEN 10.14 대조",
+      "reviewedAt": "2026-10-14",
+      "sourcePage": 212,
+      "sourceUrl": "/admissions-2028/sen-preview-20261014.pdf"
     },
     {
       "id": "2028-8-106",
@@ -1837,7 +2197,10 @@
         "자연·공학"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-8-107",
@@ -1854,7 +2217,10 @@
         "자연·공학"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-8-108",
@@ -1862,8 +2228,8 @@
       "category": "논술",
       "admission": "논술",
       "method": "논술 100%",
-      "minimum": "• 전모집단위 → 국, 수, 사/과(1) 중 3개 영역 합 6 및 영어 3등급, 한국사 4등급 이내\n• 약학과 → 국, 수, 사/과(1) 중 3개 영역 합 5 및 영어 3등급, 한국사 4등급 이내",
-      "notes": "• 탐구는 소수점 첫째자리에서 절사",
+      "minimum": "국어·수학·사탐/과탐(1) 중 3개 합 6(국어·수학 필수), 영어 3·한국사 4 이내\n약학과: 3개 합 5(국어·수학 필수), 영어 3·한국사 4 이내",
+      "notes": "• 탐구는 소수점 첫째자리에서 절사\nSEN 10월 14일 대학별 상세표와 대조. 모집인원은 계약학과·캠퍼스 포함 여부에 따라 달라 이 카드에서는 합산하지 않습니다.",
       "page": 8,
       "fields": [
         "인문·어문",
@@ -1872,7 +2238,12 @@
         "의약"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "sen-20261014",
+      "sourceLabel": "SEN 10.14 대조",
+      "reviewedAt": "2026-10-14",
+      "sourcePage": 241,
+      "sourceUrl": "/admissions-2028/sen-preview-20261014.pdf"
     },
     {
       "id": "2028-8-109",
@@ -1890,7 +2261,10 @@
         "의약"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-8-110",
@@ -1899,7 +2273,7 @@
       "admission": "모두의 논술",
       "method": "논술 80% + 교과 10% +\n출결 10%",
       "minimum": "• 서울 전모집단위 → 국,수,영,사탐, 과탐 중 3개 영역 등급합 6, 한국사 4등급 이내\n• 다빈치캠 → 수능최저 미적용\n• 약학부 → 국, 수, 영, 사탐, 과탐 중 4개 영역 등급합 5 및 한국사 4등급 이내\n• 의학부 → 국, 수, 영, 사/과(2) 4개 영역 등급합 5 및 한국사 4등급 이내",
-      "notes": "• 영 어2등급 누적비율이 20%미만일 경우 1,2등급을\n모두 1등급 인정",
+      "notes": "• 영 어2등급 누적비율이 20%미만일 경우 1,2등급을\n모두 1등급 인정\nSEN 10월 14일 대학별 상세표와 대조. 모집인원은 계약학과·캠퍼스 포함 여부에 따라 달라 이 카드에서는 합산하지 않습니다.",
       "page": 8,
       "fields": [
         "인문·어문",
@@ -1908,7 +2282,12 @@
         "의약"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "sen-20261014",
+      "sourceLabel": "SEN 10.14 대조",
+      "reviewedAt": "2026-10-14",
+      "sourcePage": 274,
+      "sourceUrl": "/admissions-2028/sen-preview-20261014.pdf"
     },
     {
       "id": "2028-8-111",
@@ -1917,7 +2296,7 @@
       "admission": "논술",
       "method": "논술100%",
       "minimum": "• 서울 전모집단위 → 국, 수, 영, 사/과(1) 중 2개 영역 등급 합 5 이내\n• 글로벌 전모집단위 → 국, 수, 영, 사/과(1) 중 2개 영역 등급 합 6 이내",
-      "notes": "",
+      "notes": "SEN 10월 14일 대학별 상세표와 대조. 모집인원은 계약학과·캠퍼스 포함 여부에 따라 달라 이 카드에서는 합산하지 않습니다.",
       "page": 8,
       "fields": [
         "인문·어문",
@@ -1925,7 +2304,12 @@
         "자연·공학"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "sen-20261014",
+      "sourceLabel": "SEN 10.14 대조",
+      "reviewedAt": "2026-10-14",
+      "sourcePage": 309,
+      "sourceUrl": "/admissions-2028/sen-preview-20261014.pdf"
     },
     {
       "id": "2028-8-112",
@@ -1942,7 +2326,10 @@
         "자연·공학"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-8-113",
@@ -1951,7 +2338,7 @@
       "admission": "논술",
       "method": "논술 90% + 출결 10%",
       "minimum": "• 전모집단위 → 국,수,영,사/과(1) 중 3개 영역 등급합 7 이내\n• 의예 → 국, 수, 영, 사/과(2) 중 3개 영역 등급합 4 이내",
-      "notes": "",
+      "notes": "SEN 10월 14일 대학별 상세표와 대조. 모집인원은 계약학과·캠퍼스 포함 여부에 따라 달라 이 카드에서는 합산하지 않습니다.",
       "page": 8,
       "fields": [
         "인문·어문",
@@ -1960,7 +2347,12 @@
         "의약"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "sen-20261014",
+      "sourceLabel": "SEN 10.14 대조",
+      "reviewedAt": "2026-10-14",
+      "sourcePage": 320,
+      "sourceUrl": "/admissions-2028/sen-preview-20261014.pdf"
     },
     {
       "id": "2028-8-114",
@@ -1977,7 +2369,10 @@
         "자연·공학"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-8-115",
@@ -1986,7 +2381,7 @@
       "admission": "논술",
       "method": "논술 90% + 교과 10%",
       "minimum": "• 전모집단위 → 국, 수, 영, 사/과(1) 중 2개 영역 등급 합 5, 한국사 4등급 이내",
-      "notes": "",
+      "notes": "SEN 10월 14일 대학별 상세표와 대조. 모집인원은 계약학과·캠퍼스 포함 여부에 따라 달라 이 카드에서는 합산하지 않습니다.",
       "page": 8,
       "fields": [
         "인문·어문",
@@ -1994,7 +2389,12 @@
         "자연·공학"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "sen-20261014",
+      "sourceLabel": "SEN 10.14 대조",
+      "reviewedAt": "2026-10-14",
+      "sourcePage": 329,
+      "sourceUrl": "/admissions-2028/sen-preview-20261014.pdf"
     },
     {
       "id": "2028-8-116",
@@ -2011,7 +2411,10 @@
         "자연·공학"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-8-117",
@@ -2029,7 +2432,10 @@
         "의약"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-8-118",
@@ -2046,7 +2452,10 @@
         "자연·공학"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-8-119",
@@ -2063,7 +2472,10 @@
         "자연·공학"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-8-120",
@@ -2072,7 +2484,7 @@
       "admission": "논술우수자",
       "method": "논술 85% + 교과 15%",
       "minimum": "• 전모집단위 → 국, 수, 영, 사/과(1) 중 2개 영역 등급 합 5 이내\n• 약학부 → 국, 수, 영, 사/과(1) 중 수학 포함 3개 영역 등급 합 4 이내",
-      "notes": "",
+      "notes": "SEN 10월 14일 대학별 상세표와 대조. 모집인원은 계약학과·캠퍼스 포함 여부에 따라 달라 이 카드에서는 합산하지 않습니다.",
       "page": 8,
       "fields": [
         "인문·어문",
@@ -2081,7 +2493,12 @@
         "의약"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "sen-20261014",
+      "sourceLabel": "SEN 10.14 대조",
+      "reviewedAt": "2026-10-14",
+      "sourcePage": 226,
+      "sourceUrl": "/admissions-2028/sen-preview-20261014.pdf"
     },
     {
       "id": "2028-8-121",
@@ -2090,7 +2507,7 @@
       "admission": "논술",
       "method": "논술 100%",
       "minimum": "• 인문/자연 → 국, 수, 영, 사/과(1) 중 3개 영역 등급 합 7 이내\n• 의예 → 국, 수, 영, 사/과(1) 4개 영역 등급 합 5 이내\n• 약학 → 국, 수, 영, 사/과(1) 4개 영역 등급 합 6 이내\n• 스크랜튼학부 → 국, 수, 영, 사/과(1) 중 3개 영역 등급 합 5 이내",
-      "notes": "",
+      "notes": "SEN 10월 14일 대학별 상세표와 대조. 모집인원은 계약학과·캠퍼스 포함 여부에 따라 달라 이 카드에서는 합산하지 않습니다.",
       "page": 8,
       "fields": [
         "인문·어문",
@@ -2099,7 +2516,12 @@
         "의약"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "sen-20261014",
+      "sourceLabel": "SEN 10.14 대조",
+      "reviewedAt": "2026-10-14",
+      "sourcePage": 253,
+      "sourceUrl": "/admissions-2028/sen-preview-20261014.pdf"
     },
     {
       "id": "2028-8-122",
@@ -2117,7 +2539,10 @@
         "의약"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-8-123",
@@ -2134,7 +2559,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-8-124",
@@ -2151,7 +2579,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-8-125",
@@ -2168,7 +2599,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-8-126",
@@ -2185,7 +2619,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-8-127",
@@ -2202,7 +2639,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-8-128",
@@ -2219,7 +2659,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-8-129",
@@ -2236,7 +2679,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-8-130",
@@ -2253,7 +2699,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-8-131",
@@ -2270,7 +2719,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-8-132",
@@ -2288,24 +2740,10 @@
         "의약"
       ],
       "hasMinimum": true,
-      "hasInterview": false
-    },
-    {
-      "id": "2028-8-133",
-      "university": "연세대",
-      "category": "논술",
-      "admission": "논술",
-      "method": "논술 100%",
-      "minimum": "미적용",
-      "notes": "",
-      "page": 8,
-      "fields": [
-        "인문·어문",
-        "사회·상경",
-        "자연·공학"
-      ],
-      "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-8-134",
@@ -2322,7 +2760,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-8-135",
@@ -2339,7 +2780,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-8-136",
@@ -2348,7 +2792,7 @@
       "admission": "재학생논술",
       "method": "논술 80% + 교과 10% + 출결 10%",
       "minimum": "미적용",
-      "notes": "• 2028년 졸업예정자만 지원 가능",
+      "notes": "• 2028년 졸업예정자만 지원 가능\nSEN 10월 14일 대학별 상세표와 대조. 모집인원은 계약학과·캠퍼스 포함 여부에 따라 달라 이 카드에서는 합산하지 않습니다.",
       "page": 8,
       "fields": [
         "인문·어문",
@@ -2356,7 +2800,12 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "sen-20261014",
+      "sourceLabel": "SEN 10.14 대조",
+      "reviewedAt": "2026-10-14",
+      "sourcePage": 274,
+      "sourceUrl": "/admissions-2028/sen-preview-20261014.pdf"
     },
     {
       "id": "2028-8-137",
@@ -2373,7 +2822,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-8-138",
@@ -2390,7 +2842,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-8-139",
@@ -2407,7 +2862,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-8-140",
@@ -2424,7 +2882,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-8-141",
@@ -2441,7 +2902,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-10-142",
@@ -2458,7 +2922,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-10-143",
@@ -2473,7 +2940,10 @@
         "의약"
       ],
       "hasMinimum": true,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-10-144",
@@ -2490,7 +2960,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-10-145",
@@ -2508,7 +2981,10 @@
         "의약"
       ],
       "hasMinimum": true,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-10-146",
@@ -2525,16 +3001,19 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-10-147",
       "university": "건국대",
       "category": "학생부종합",
       "admission": "KU자기추천",
-      "method": "서류 100% (3배수)\n1단계 70% + 면접 30%",
+      "method": "1단계 서류 100% (3배수)\n2단계 1단계 70% + 면접 30%",
       "minimum": "미적용",
-      "notes": "",
+      "notes": "SEN 10월 14일 대학별 상세표와 대조. 모집인원은 계약학과·캠퍼스 포함 여부에 따라 달라 이 카드에서는 합산하지 않습니다.",
       "page": 10,
       "fields": [
         "인문·어문",
@@ -2542,7 +3021,12 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "sen-20261014",
+      "sourceLabel": "SEN 10.14 대조",
+      "reviewedAt": "2026-10-14",
+      "sourcePage": 116,
+      "sourceUrl": "/admissions-2028/sen-preview-20261014.pdf"
     },
     {
       "id": "2028-10-148",
@@ -2560,7 +3044,10 @@
         "의약"
       ],
       "hasMinimum": true,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-10-149",
@@ -2577,16 +3064,19 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-10-150",
       "university": "경희대",
       "category": "학생부종합",
       "admission": "네오르네상스(면접형)",
-      "method": "서류 100% (4배수)\n1단계 70% + 면접 30%",
+      "method": "1단계 서류 100%: 일반 4배수, 의예·한의예·치의예·약학 5배수\n2단계 1단계 성적 70% + 면접 30%",
       "minimum": "미적용",
-      "notes": "• 1단계 : 의/치/한/약학과는 5배수 내외",
+      "notes": "• 1단계 : 의/치/한/약학과는 5배수 내외\nSEN 10월 14일 대학별 상세표와 대조. 모집인원은 계약학과·캠퍼스 포함 여부에 따라 달라 이 카드에서는 합산하지 않습니다.",
       "page": 10,
       "fields": [
         "인문·어문",
@@ -2595,16 +3085,21 @@
         "의약"
       ],
       "hasMinimum": false,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "sen-20261014",
+      "sourceLabel": "SEN 10.14 대조",
+      "reviewedAt": "2026-10-14",
+      "sourcePage": 134,
+      "sourceUrl": "/admissions-2028/sen-preview-20261014.pdf"
     },
     {
       "id": "2028-10-151",
       "university": "고려대",
       "category": "학생부종합",
       "admission": "학업우수",
-      "method": "서류 100% (5배수)\n1단계 80% + 면접 20%",
+      "method": "1단계 서류 100% (5배수)\n2단계 1단계 80% + 면접 20%",
       "minimum": "• 인문, 자연 → 국, 수, 영, 사/과(1) 중 4개 영역 등급 합 9, 한국사 4등급\n• 의학과 → 국, 수, 영, 사/과(1) 중 4개 영역 등급 합 5, 한국사 4등급",
-      "notes": "• 학생부 기반 면접\n• 의학과 : 적성 및 인성 면접 추가시행",
+      "notes": "• 학생부 기반 면접\n• 의학과 : 적성 및 인성 면접 추가시행\nSEN 10월 14일 대학별 상세표와 대조. 모집인원은 계약학과·캠퍼스 포함 여부에 따라 달라 이 카드에서는 합산하지 않습니다.",
       "page": 10,
       "fields": [
         "인문·어문",
@@ -2613,7 +3108,12 @@
         "의약"
       ],
       "hasMinimum": true,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "sen-20261014",
+      "sourceLabel": "SEN 10.14 대조",
+      "reviewedAt": "2026-10-14",
+      "sourcePage": 138,
+      "sourceUrl": "/admissions-2028/sen-preview-20261014.pdf"
     },
     {
       "id": "2028-10-152",
@@ -2631,7 +3131,10 @@
         "의약"
       ],
       "hasMinimum": true,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-10-153",
@@ -2648,7 +3151,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-10-154",
@@ -2665,7 +3171,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-10-155",
@@ -2683,7 +3192,10 @@
         "의약"
       ],
       "hasMinimum": true,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-10-156",
@@ -2700,16 +3212,19 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-10-157",
       "university": "동국대",
       "category": "학생부종합",
       "admission": "DoDream",
-      "method": "서류 100% (2.5~3.5배수)\n1단계 60% + 면접 40%",
+      "method": "1단계 서류 100% (2.5~3.5배수)\n2단계 1단계 60% + 면접 40%",
       "minimum": "미적용",
-      "notes": "• 2 .5배수 : 경영대학, 기계로봇에너지공학, 법학,\n전자전기공학부, 컴퓨터AI학부\n• 3 .5배수 : 교육학과, 문화유산학과, 물리학과, 북한학전공,\n불교학부, 사회복지학과, 수학과, 수학교육과, 철학과\n• 3배수 : 위 모집 단위 제외한 모집 단위",
+      "notes": "• 2 .5배수 : 경영대학, 기계로봇에너지공학, 법학,\n전자전기공학부, 컴퓨터AI학부\n• 3 .5배수 : 교육학과, 문화유산학과, 물리학과, 북한학전공,\n불교학부, 사회복지학과, 수학과, 수학교육과, 철학과\n• 3배수 : 위 모집 단위 제외한 모집 단위\nSEN 10월 14일 대학별 상세표와 대조. 모집인원은 계약학과·캠퍼스 포함 여부에 따라 달라 이 카드에서는 합산하지 않습니다.",
       "page": 10,
       "fields": [
         "인문·어문",
@@ -2718,7 +3233,12 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "sen-20261014",
+      "sourceLabel": "SEN 10.14 대조",
+      "reviewedAt": "2026-10-14",
+      "sourcePage": 164,
+      "sourceUrl": "/admissions-2028/sen-preview-20261014.pdf"
     },
     {
       "id": "2028-10-158",
@@ -2733,7 +3253,10 @@
         "의약"
       ],
       "hasMinimum": true,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-10-159",
@@ -2750,7 +3273,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-10-160",
@@ -2768,7 +3294,10 @@
         "의약"
       ],
       "hasMinimum": true,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-10-161",
@@ -2785,16 +3314,19 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-10-162",
       "university": "서울대",
       "category": "학생부종합",
       "admission": "지역균형",
-      "method": "서류 100% (3배수)\n1단계 70% + 면접 30%",
+      "method": "1단계 서류 100% (3배수)\n2단계 1단계 70% + 면접 30%",
       "minimum": "미적용\n※ 제 2외국어/한문 영역 응시 필수 학과 : 인문대학, 사회과학대학, 경영대학,\n농경제사회학부, 사범대학(인문사회, 체육계열), 소비자아동학부",
-      "notes": "• 고 교별 3명 이내 추천(자율형사립고, 외국어고, 국제고, 과학고,\n영재학교 지원 불가)\n• 2 022개정교육과정의 핵심역량을 평가에 반영하는 학생부\n기반 면접",
+      "notes": "• 고 교별 3명 이내 추천(자율형사립고, 외국어고, 국제고, 과학고,\n영재학교 지원 불가)\n• 2 022개정교육과정의 핵심역량을 평가에 반영하는 학생부\n기반 면접\nSEN 10월 14일 대학별 상세표와 대조. 모집인원은 계약학과·캠퍼스 포함 여부에 따라 달라 이 카드에서는 합산하지 않습니다.",
       "page": 10,
       "fields": [
         "인문·어문",
@@ -2804,16 +3336,21 @@
         "예체능"
       ],
       "hasMinimum": false,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "sen-20261014",
+      "sourceLabel": "SEN 10.14 대조",
+      "reviewedAt": "2026-10-14",
+      "sourcePage": 197,
+      "sourceUrl": "/admissions-2028/sen-preview-20261014.pdf"
     },
     {
       "id": "2028-10-163",
       "university": "서울대",
       "category": "학생부종합",
       "admission": "일반",
-      "method": "서류 100% (2배수)\n• 1단계 50% + 면접 50%\n• 사범대학:\n1단계 50% + 면접 30% +\n면접(교직적성·인성) 20%\n• 미술대학 디자인과:\n면접 100%",
+      "method": "1단계 서류 100% (2배수)\n2단계 • 1단계 50% + 면접 50%\n• 사범대학:\n1단계 50% + 면접 30% +\n면접(교직적성·인성) 20%\n• 미술대학 디자인과:\n면접 100%",
       "minimum": "미적용",
-      "notes": "• 면접 →공동 출제 문항 활용 모집단위와 비활용 모집단위\n1) 공 동 출제 문항 활용 : 열린 문항과 답변에 기반한\n탐침 질문을 활용하여 문제해결능력과 사고력을 종합\n평가함(20분 내외, 답변준비시간 별도)\n면접유형 : 분 석적 주제토론, 심층적 문제해결, 융합적 과제수행\n면접유형은 모집단위별 다름(모집요강확인)\n2) 공 동 출제 문항 비활용: 상황제시, 자질, 적성, 인성,\n학업소양등 평가\n- 간호, 수의과, 의과, 치의학, 미술, 음악대학",
+      "notes": "• 면접 →공동 출제 문항 활용 모집단위와 비활용 모집단위\n1) 공 동 출제 문항 활용 : 열린 문항과 답변에 기반한\n탐침 질문을 활용하여 문제해결능력과 사고력을 종합\n평가함(20분 내외, 답변준비시간 별도)\n면접유형 : 분 석적 주제토론, 심층적 문제해결, 융합적 과제수행\n면접유형은 모집단위별 다름(모집요강확인)\n2) 공 동 출제 문항 비활용: 상황제시, 자질, 적성, 인성,\n학업소양등 평가\n- 간호, 수의과, 의과, 치의학, 미술, 음악대학\nSEN 10월 14일 대학별 상세표와 대조. 모집인원은 계약학과·캠퍼스 포함 여부에 따라 달라 이 카드에서는 합산하지 않습니다.",
       "page": 10,
       "fields": [
         "인문·어문",
@@ -2823,16 +3360,21 @@
         "예체능"
       ],
       "hasMinimum": false,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "sen-20261014",
+      "sourceLabel": "SEN 10.14 대조",
+      "reviewedAt": "2026-10-14",
+      "sourcePage": 197,
+      "sourceUrl": "/admissions-2028/sen-preview-20261014.pdf"
     },
     {
       "id": "2028-10-164",
       "university": "서울시립대",
       "category": "학생부종합",
       "admission": "학생부종합",
-      "method": "서류 100% (3배수)\n1단계 50%+면접 50%",
+      "method": "1단계 서류 100% (3배수)\n2단계 1단계 50%+면접 50%",
       "minimum": "미적용",
-      "notes": "",
+      "notes": "SEN 10월 14일 대학별 상세표와 대조. 모집인원은 계약학과·캠퍼스 포함 여부에 따라 달라 이 카드에서는 합산하지 않습니다.",
       "page": 10,
       "fields": [
         "인문·어문",
@@ -2840,7 +3382,12 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "sen-20261014",
+      "sourceLabel": "SEN 10.14 대조",
+      "reviewedAt": "2026-10-14",
+      "sourcePage": 201,
+      "sourceUrl": "/admissions-2028/sen-preview-20261014.pdf"
     },
     {
       "id": "2028-10-165",
@@ -2857,7 +3404,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-10-166",
@@ -2874,7 +3424,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-10-167",
@@ -2891,16 +3444,19 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-10-168",
       "university": "성균관대",
       "category": "학생부종합",
       "admission": "성균인재",
-      "method": "서류 100% (3~7배수)\n1단계 70% + 면접 30%",
+      "method": "1단계 학생부 100%(3~7배수)\n2단계 학생부 70% + 면접 30%",
       "minimum": "미적용",
-      "notes": "• 성균인재 3배수 : 사범대학, 스포츠과학과\n• 성균인재 5배수 : 연기예술학과(연출)\n• 성균인재 6배수 : 의예과\n• 성 균인재 7배수 : 자유전공계열, 글로벌융합학부, 공학계열,\n사회과학계열\n• 과학인재 : 제시문 기반 수학/과학 교과형 면접",
+      "notes": "• 성균인재 3배수 : 사범대학, 스포츠과학과\n• 성균인재 5배수 : 연기예술학과(연출)\n• 성균인재 6배수 : 의예과\n• 성 균인재 7배수 : 자유전공계열, 글로벌융합학부, 공학계열,\n사회과학계열\n• 과학인재 : 제시문 기반 수학/과학 교과형 면접\nSEN 10월 14일 대학별 상세표와 대조. 모집인원은 계약학과·캠퍼스 포함 여부에 따라 달라 이 카드에서는 합산하지 않습니다.",
       "page": 10,
       "fields": [
         "인문·어문",
@@ -2911,16 +3467,21 @@
         "예체능"
       ],
       "hasMinimum": false,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "sen-20261014",
+      "sourceLabel": "SEN 10.14 대조",
+      "reviewedAt": "2026-10-14",
+      "sourcePage": 212,
+      "sourceUrl": "/admissions-2028/sen-preview-20261014.pdf"
     },
     {
       "id": "2028-10-169",
       "university": "성균관대",
       "category": "학생부종합",
       "admission": "과학인재",
-      "method": "서류 100% (7배수)",
+      "method": "1단계 학생부 100%(7배수)\n2단계 학생부 70% + 면접 30%",
       "minimum": "미적용",
-      "notes": "",
+      "notes": "SEN 10월 14일 대학별 상세표와 대조. 모집인원은 계약학과·캠퍼스 포함 여부에 따라 달라 이 카드에서는 합산하지 않습니다.",
       "page": 10,
       "fields": [
         "인문·어문",
@@ -2928,7 +3489,12 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "sen-20261014",
+      "sourceLabel": "SEN 10.14 대조",
+      "reviewedAt": "2026-10-14",
+      "sourcePage": 212,
+      "sourceUrl": "/admissions-2028/sen-preview-20261014.pdf"
     },
     {
       "id": "2028-10-170",
@@ -2945,7 +3511,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-10-171",
@@ -2962,7 +3531,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-10-172",
@@ -2980,16 +3552,19 @@
         "의약"
       ],
       "hasMinimum": true,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-10-173",
       "university": "연세대",
       "category": "학생부종합",
       "admission": "종합인재형",
-      "method": "서류 100% (4배수)\n1단계 70% + 면접 30%",
-      "minimum": "• 인문 / 사회 → 국, 수, 사, 과 중 국, 수 중 1개 과목 포함 2개 과목 등급 합 4\n• 자연 → 국, 수, 사, 과 중 수학 포함 2개 과목 등급 합 5\n• 의예 / 치의예 / 약학 → 국, 수, 사, 과 중 수학 포함하여 1등급 2개 이상\n• 통합(상경계열 / 응용통계학과 / 생활과학대학 / 간호대학)\n→ 인문 또는 자연계열(일반)의 최저학력기준 중 하나 만족\n• 국 제(아시아학전공, 융합인문사회과학부(HASS), 융합과학공학부(ISE))\n→ 국, 수, 사, 과 중 국, 수 중 1개 과목 포 2개 과목 등급 합 5\n• 언더우드학부(인문·사회), 언더우드학부(생명과학공학) → 최저미적용",
-      "notes": "• 공통 : 영어 3등급 및 한국사 4등급 이내\n• 국제 : 영어 2등급 및 한국사 4등급 이내\n• 제시문 기반 논리적 사고력 및 의사소통 능력 면접\n언더우드국제대학 전 모집단위의 경우 영어 제시문 출제 가능\n언더우드학부(인문·사회/생명과학공학)은 영어 구술면접 실시",
+      "method": "1단계 서류 100% (4배수)\n2단계 1단계 70% + 면접 30%",
+      "minimum": "인문: 국·수·사·과 중 2개 합 4(국어 또는 수학 포함), 영어 3·한국사 4 이내\n자연 일반: 국·수·사·과 중 2개 합 5(수학 포함), 영어 3·한국사 4 이내\n의예·치의예·약학: 수학 포함 1등급 2개, 영어 3·한국사 4 이내\n통합계열: 인문 또는 자연 일반 중 하나 충족\n국제(아시아학·HASS·ISE): 국·수·사·과 중 2개 합 5(국어 또는 수학 포함), 영어 2·한국사 4 이내\n언더우드학부(인문·사회/생명과학공학): 미적용\n탐구 반영은 해당 모집단위 원문 확인",
+      "notes": "• 공통 : 영어 3등급 및 한국사 4등급 이내\n• 국제 : 영어 2등급 및 한국사 4등급 이내\n• 제시문 기반 논리적 사고력 및 의사소통 능력 면접\n언더우드국제대학 전 모집단위의 경우 영어 제시문 출제 가능\n언더우드학부(인문·사회/생명과학공학)은 영어 구술면접 실시\nSEN 10월 14일 대학별 상세표와 대조. 모집인원은 계약학과·캠퍼스 포함 여부에 따라 달라 이 카드에서는 합산하지 않습니다.",
       "page": 10,
       "fields": [
         "인문·어문",
@@ -2998,7 +3573,13 @@
         "의약"
       ],
       "hasMinimum": true,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "sen-20261014",
+      "sourceLabel": "SEN 10.14 대조",
+      "reviewedAt": "2026-10-14",
+      "sourcePage": 241,
+      "sourceUrl": "/admissions-2028/sen-preview-20261014.pdf",
+      "minimumScope": "일부 모집단위 미적용"
     },
     {
       "id": "2028-10-174",
@@ -3007,7 +3588,7 @@
       "admission": "탐구인재형(일반,국제)",
       "method": "서류 100%\n(일반: 4배수, 국제: 3배수)\n1단계 60% + 면접 40%",
       "minimum": "미적용",
-      "notes": "• 제시문 기반 면접\n국제트랙은 영어 제시문 출제 가능",
+      "notes": "• 제시문 기반 면접\n국제트랙은 영어 제시문 출제 가능\nSEN 10월 14일 대학별 상세표와 대조. 모집인원은 계약학과·캠퍼스 포함 여부에 따라 달라 이 카드에서는 합산하지 않습니다.",
       "page": 10,
       "fields": [
         "인문·어문",
@@ -3015,7 +3596,12 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "sen-20261014",
+      "sourceLabel": "SEN 10.14 대조",
+      "reviewedAt": "2026-10-14",
+      "sourcePage": 241,
+      "sourceUrl": "/admissions-2028/sen-preview-20261014.pdf"
     },
     {
       "id": "2028-10-175",
@@ -3033,7 +3619,10 @@
         "의약"
       ],
       "hasMinimum": true,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-10-176",
@@ -3050,7 +3639,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-10-177",
@@ -3067,7 +3659,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-10-178",
@@ -3087,7 +3682,10 @@
         "예체능"
       ],
       "hasMinimum": false,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-11-179",
@@ -3105,16 +3703,19 @@
         "의약"
       ],
       "hasMinimum": true,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-11-180",
       "university": "중앙대",
       "category": "학생부종합",
       "admission": "모두의학종(All)",
-      "method": "서류 100%\n(3~6배수)\n1단계 60% + 면접 40%",
+      "method": "1단계 서류 100%(3~6배수)\n2단계 1단계 성적 60% + 면접 40%",
       "minimum": "미적용",
-      "notes": "• 1단계 선발 모집단위별 상이 (모집요강 참조)",
+      "notes": "• 1단계 선발 모집단위별 상이 (모집요강 참조)\nSEN 10월 14일 대학별 상세표와 대조. 모집인원은 계약학과·캠퍼스 포함 여부에 따라 달라 이 카드에서는 합산하지 않습니다.",
       "page": 11,
       "fields": [
         "인문·어문",
@@ -3123,16 +3724,22 @@
         "의약"
       ],
       "hasMinimum": false,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "sen-20261014",
+      "sourceLabel": "SEN 10.14 대조",
+      "reviewedAt": "2026-10-14",
+      "sourcePage": 274,
+      "sourceUrl": "/admissions-2028/sen-preview-20261014.pdf",
+      "verificationNote": "SEN 3쪽은 3~6배수, 274쪽은 3배수로 표기가 다릅니다. 중앙대 공식 2028 안내는 3~6배수로 안내합니다. 모집단위별 배수는 최종 모집요강에서 확인하세요."
     },
     {
       "id": "2028-11-181",
       "university": "중앙대",
       "category": "학생부종합",
       "admission": "탐구하는학종(Core)",
-      "method": "서류 100%\n(3~6배수)\n1단계 60% + 면접 40%",
+      "method": "1단계 서류 100%(3~6배수)\n2단계 1단계 성적 60% + 면접 40%",
       "minimum": "미적용",
-      "notes": "",
+      "notes": "SEN 10월 14일 대학별 상세표와 대조. 모집인원은 계약학과·캠퍼스 포함 여부에 따라 달라 이 카드에서는 합산하지 않습니다.",
       "page": 11,
       "fields": [
         "인문·어문",
@@ -3140,22 +3747,34 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "sen-20261014",
+      "sourceLabel": "SEN 10.14 대조",
+      "reviewedAt": "2026-10-14",
+      "sourcePage": 274,
+      "sourceUrl": "/admissions-2028/sen-preview-20261014.pdf",
+      "verificationNote": "SEN 3쪽은 3~6배수, 274쪽은 3배수로 표기가 다릅니다. 중앙대 공식 2028 안내는 3~6배수로 안내합니다. 모집단위별 배수는 최종 모집요강에서 확인하세요."
     },
     {
       "id": "2028-11-182",
       "university": "중앙대",
       "category": "학생부종합",
       "admission": "최저있는학종(Up)-의학부",
-      "method": "서류 100% (5배수)",
+      "method": "의학부는 면접 실시. 1단계 선발배수·2단계 반영비율은 입학처 확인",
       "minimum": "• 의학부 → 국, 수, 영, 사/과(2) 중 4개 영역 등급 합 5, 한국사 4등급",
-      "notes": "",
+      "notes": "SEN 10월 14일 대학별 상세표와 대조. 모집인원은 계약학과·캠퍼스 포함 여부에 따라 달라 이 카드에서는 합산하지 않습니다.",
       "page": 11,
       "fields": [
         "의약"
       ],
       "hasMinimum": true,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "sen-20261014",
+      "sourceLabel": "SEN 10.14 대조",
+      "reviewedAt": "2026-10-14",
+      "sourcePage": 274,
+      "sourceUrl": "/admissions-2028/sen-preview-20261014.pdf",
+      "verificationNote": "SEN 3쪽은 의예 5배수·70+30, 274쪽은 의학부 3배수·60+40으로 서로 다릅니다. 수능최저는 탐구 2과목 평균 포함 4합5·한국사4이며, 면접 세부 비율은 입학처 시행계획·최종 모집요강을 확인하세요."
     },
     {
       "id": "2028-11-183",
@@ -3173,7 +3792,10 @@
         "의약"
       ],
       "hasMinimum": true,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-11-184",
@@ -3190,7 +3812,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-11-185",
@@ -3207,7 +3832,10 @@
         "자연·공학"
       ],
       "hasMinimum": true,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-11-186",
@@ -3224,7 +3852,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-11-187",
@@ -3241,16 +3872,19 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-11-188",
       "university": "한국외대\n(서울/글로벌)",
       "category": "학생부종합",
-      "admission": "면접형",
-      "method": "서류 100% (3배수)\n1단계 50% + 면접 50%",
+      "admission": "학생부종합(면접형)",
+      "method": "1단계 서류 100% (3배수)\n2단계 1단계 50% + 면접 50%",
       "minimum": "미적용",
-      "notes": "• 인적성 면접",
+      "notes": "• 인적성 면접\nSEN 10월 14일 대학별 상세표와 대조. 모집인원은 계약학과·캠퍼스 포함 여부에 따라 달라 이 카드에서는 합산하지 않습니다.",
       "page": 11,
       "fields": [
         "인문·어문",
@@ -3258,7 +3892,12 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "sen-20261014",
+      "sourceLabel": "SEN 10.14 대조",
+      "reviewedAt": "2026-10-14",
+      "sourcePage": 309,
+      "sourceUrl": "/admissions-2028/sen-preview-20261014.pdf"
     },
     {
       "id": "2028-11-189",
@@ -3275,16 +3914,19 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-11-190",
       "university": "한양대",
       "category": "학생부종합",
       "admission": "면접형",
-      "method": "서류 100% (3~5배수)\n1단계 70% + 면접 30%",
+      "method": "1단계 서류 100% (3~5배수)\n2단계 1단계 70% + 면접 30%",
       "minimum": "미적용",
-      "notes": "• 학생부 기반 면접\n• 공과 및 한양YK인터칼리지 → 제시문기반 면접",
+      "notes": "• 학생부 기반 면접\n• 공과 및 한양YK인터칼리지 → 제시문기반 면접\nSEN 10월 14일 대학별 상세표와 대조. 모집인원은 계약학과·캠퍼스 포함 여부에 따라 달라 이 카드에서는 합산하지 않습니다.",
       "page": 11,
       "fields": [
         "인문·어문",
@@ -3292,7 +3934,12 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "sen-20261014",
+      "sourceLabel": "SEN 10.14 대조",
+      "reviewedAt": "2026-10-14",
+      "sourcePage": 320,
+      "sourceUrl": "/admissions-2028/sen-preview-20261014.pdf"
     },
     {
       "id": "2028-11-191",
@@ -3309,7 +3956,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-11-192",
@@ -3326,16 +3976,19 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-11-193",
       "university": "홍익대",
       "category": "학생부종합",
       "admission": "학교생활우수자(면접형)",
-      "method": "서류 100% (5배수)\n1단계 50% + 면접 50%",
+      "method": "1단계 서류 100% (5배수)\n2단계 1단계 50% + 면접 50%",
       "minimum": "미적용",
-      "notes": "• 캠퍼스자율전공 인문·예능 / 자연·예능",
+      "notes": "• 캠퍼스자율전공 인문·예능 / 자연·예능\nSEN 10월 14일 대학별 상세표와 대조. 모집인원은 계약학과·캠퍼스 포함 여부에 따라 달라 이 카드에서는 합산하지 않습니다.",
       "page": 11,
       "fields": [
         "인문·어문",
@@ -3343,7 +3996,12 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "sen-20261014",
+      "sourceLabel": "SEN 10.14 대조",
+      "reviewedAt": "2026-10-14",
+      "sourcePage": 329,
+      "sourceUrl": "/admissions-2028/sen-preview-20261014.pdf"
     },
     {
       "id": "2028-11-194",
@@ -3362,7 +4020,10 @@
         "의약"
       ],
       "hasMinimum": true,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-11-195",
@@ -3380,7 +4041,10 @@
         "의약"
       ],
       "hasMinimum": true,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-11-196",
@@ -3397,7 +4061,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-11-197",
@@ -3414,16 +4081,19 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-11-198",
       "university": "숙명여대",
       "category": "학생부종합",
-      "admission": "숙명인재(면접형)/ SW인재",
-      "method": "서류 100% (4배수)\n1단계 70% + 면접 30%",
+      "admission": "숙명인재(면접형)",
+      "method": "1단계 서류 100%(4배수)\n2단계 1단계 성적 70% + 면접 30%",
       "minimum": "미적용",
-      "notes": "",
+      "notes": "SEN 10월 14일 대학별 상세표와 대조. 모집인원은 계약학과·캠퍼스 포함 여부에 따라 달라 이 카드에서는 합산하지 않습니다.",
       "page": 11,
       "fields": [
         "인문·어문",
@@ -3431,16 +4101,21 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "sen-20261014",
+      "sourceLabel": "SEN 10.14 대조",
+      "reviewedAt": "2026-10-14",
+      "sourcePage": 226,
+      "sourceUrl": "/admissions-2028/sen-preview-20261014.pdf"
     },
     {
       "id": "2028-11-199",
       "university": "이화여대",
       "category": "학생부종합",
       "admission": "미래인재-면접형",
-      "method": "서류 100% (5배수)\n1단계 70% + 면접 30%",
+      "method": "1단계 서류 100% (5배수)\n2단계 1단계 70% + 면접 30%",
       "minimum": "미적용",
-      "notes": "",
+      "notes": "SEN 10월 14일 대학별 상세표와 대조. 모집인원은 계약학과·캠퍼스 포함 여부에 따라 달라 이 카드에서는 합산하지 않습니다.",
       "page": 11,
       "fields": [
         "인문·어문",
@@ -3448,7 +4123,12 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": true
+      "hasInterview": true,
+      "sourceKey": "sen-20261014",
+      "sourceLabel": "SEN 10.14 대조",
+      "reviewedAt": "2026-10-14",
+      "sourcePage": 253,
+      "sourceUrl": "/admissions-2028/sen-preview-20261014.pdf"
     },
     {
       "id": "2028-11-200",
@@ -3465,7 +4145,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-11-201",
@@ -3483,7 +4166,10 @@
         "예체능"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-11-202",
@@ -3501,7 +4187,10 @@
         "의약"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-11-203",
@@ -3510,7 +4199,7 @@
       "admission": "네오르네상스(서류형)",
       "method": "서류 100%",
       "minimum": "• 인문, 자연, 자율/자유전공학부 → 국, 수, 영, 사/과(1) 중 2개 영역 등급 합 5, 한국사 5등급\n• 의예/한의예(인문·자연)/치의예/약학과 → 국, 수, 영, 사/과(1) 중 3개 영역 등급 합 4, 한국사 5등급",
-      "notes": "",
+      "notes": "SEN 10월 14일 대학별 상세표와 대조. 모집인원은 계약학과·캠퍼스 포함 여부에 따라 달라 이 카드에서는 합산하지 않습니다.",
       "page": 11,
       "fields": [
         "인문·어문",
@@ -3519,7 +4208,12 @@
         "의약"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "sen-20261014",
+      "sourceLabel": "SEN 10.14 대조",
+      "reviewedAt": "2026-10-14",
+      "sourcePage": 134,
+      "sourceUrl": "/admissions-2028/sen-preview-20261014.pdf"
     },
     {
       "id": "2028-11-204",
@@ -3528,7 +4222,7 @@
       "admission": "계열적합",
       "method": "서류 100%",
       "minimum": "미적용",
-      "notes": "",
+      "notes": "SEN 10월 14일 대학별 상세표와 대조. 모집인원은 계약학과·캠퍼스 포함 여부에 따라 달라 이 카드에서는 합산하지 않습니다.",
       "page": 11,
       "fields": [
         "인문·어문",
@@ -3536,7 +4230,12 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "sen-20261014",
+      "sourceLabel": "SEN 10.14 대조",
+      "reviewedAt": "2026-10-14",
+      "sourcePage": 138,
+      "sourceUrl": "/admissions-2028/sen-preview-20261014.pdf"
     },
     {
       "id": "2028-11-205",
@@ -3553,7 +4252,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-11-206",
@@ -3570,7 +4272,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-11-207",
@@ -3587,7 +4292,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-11-208",
@@ -3604,7 +4312,10 @@
         "자연·공학"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-11-209",
@@ -3622,7 +4333,10 @@
         "예체능"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-11-210",
@@ -3631,7 +4345,7 @@
       "admission": "일반Ⅰ",
       "method": "서류 100%",
       "minimum": "미적용",
-      "notes": "• 학과별 모집",
+      "notes": "• 학과별 모집\nSEN 10월 14일 대학별 상세표와 대조. 모집인원은 계약학과·캠퍼스 포함 여부에 따라 달라 이 카드에서는 합산하지 않습니다.",
       "page": 11,
       "fields": [
         "인문·어문",
@@ -3639,7 +4353,12 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "sen-20261014",
+      "sourceLabel": "SEN 10.14 대조",
+      "reviewedAt": "2026-10-14",
+      "sourcePage": 189,
+      "sourceUrl": "/admissions-2028/sen-preview-20261014.pdf"
     },
     {
       "id": "2028-11-211",
@@ -3648,7 +4367,7 @@
       "admission": "일반Ⅱ",
       "method": "서류 100%",
       "minimum": "• 국, 수, 영, 사/과(1) 중 3개 영역 등급 합 7, 한국사 4등급",
-      "notes": "• 자유전공 포함 학부 모집",
+      "notes": "• 자유전공 포함 학부 모집\nSEN 10월 14일 대학별 상세표와 대조. 모집인원은 계약학과·캠퍼스 포함 여부에 따라 달라 이 카드에서는 합산하지 않습니다.",
       "page": 11,
       "fields": [
         "인문·어문",
@@ -3656,7 +4375,12 @@
         "자연·공학"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "sen-20261014",
+      "sourceLabel": "SEN 10.14 대조",
+      "reviewedAt": "2026-10-14",
+      "sourcePage": 189,
+      "sourceUrl": "/admissions-2028/sen-preview-20261014.pdf"
     },
     {
       "id": "2028-11-212",
@@ -3673,7 +4397,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-11-213",
@@ -3682,7 +4409,7 @@
       "admission": "융합인재",
       "method": "서류 100%",
       "minimum": "• 국, 수, 영, 사탐, 과탐 중 3개 영역 중 등급 합 6",
-      "notes": "",
+      "notes": "SEN 10월 14일 대학별 상세표와 대조. 모집인원은 계약학과·캠퍼스 포함 여부에 따라 달라 이 카드에서는 합산하지 않습니다.",
       "page": 11,
       "fields": [
         "인문·어문",
@@ -3690,7 +4417,12 @@
         "자연·공학"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "sen-20261014",
+      "sourceLabel": "SEN 10.14 대조",
+      "reviewedAt": "2026-10-14",
+      "sourcePage": 212,
+      "sourceUrl": "/admissions-2028/sen-preview-20261014.pdf"
     },
     {
       "id": "2028-11-214",
@@ -3699,7 +4431,7 @@
       "admission": "탐구인재",
       "method": "서류 100%",
       "minimum": "미적용",
-      "notes": "",
+      "notes": "SEN 10월 14일 대학별 상세표와 대조. 모집인원은 계약학과·캠퍼스 포함 여부에 따라 달라 이 카드에서는 합산하지 않습니다.",
       "page": 11,
       "fields": [
         "인문·어문",
@@ -3707,7 +4439,12 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "sen-20261014",
+      "sourceLabel": "SEN 10.14 대조",
+      "reviewedAt": "2026-10-14",
+      "sourcePage": 212,
+      "sourceUrl": "/admissions-2028/sen-preview-20261014.pdf"
     },
     {
       "id": "2028-11-215",
@@ -3724,7 +4461,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-11-216",
@@ -3741,7 +4481,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-11-217",
@@ -3758,7 +4501,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-11-218",
@@ -3775,7 +4521,10 @@
         "자연·공학"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-11-219",
@@ -3792,7 +4541,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-11-220",
@@ -3809,7 +4561,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-11-221",
@@ -3826,7 +4581,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-11-222",
@@ -3843,7 +4601,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-11-223",
@@ -3851,8 +4612,8 @@
       "category": "학생부종합",
       "admission": "최저있는학종(Up)",
       "method": "서류 100%",
-      "minimum": "미적용\n• 국, 수, 영, 사탐, 과탐 중 3개 영역 등급 합 6, 한국사 4등급\n• 약학부 → 국, 수, 영, 사,탐 과탐 중 4개 영역 등급 합 5, 한국사 4등급",
-      "notes": "• 영어 2등급 누적비율 20% 미만시 1, 2등급 통합 1등급으로 간주\n• 인문대학, 사회과학대학, 경영경제대학 소속 모집 단위 : 과학탐구 1, 2등급 통합 1등급으로 간주\n• 제2외국어/한문은 반영하지 않음.",
+      "minimum": "일반: 국·수·영·사·과 중 3개 합 6, 한국사 4 이내\n약학부: 국·수·영·사·과 중 4개 합 5, 한국사 4 이내\n인문·사회과학·경영경제 등 과탐 등급 조정은 원문 확인",
+      "notes": "• 영어 2등급 누적비율 20% 미만시 1, 2등급 통합 1등급으로 간주\n• 인문대학, 사회과학대학, 경영경제대학 소속 모집 단위 : 과학탐구 1, 2등급 통합 1등급으로 간주\n• 제2외국어/한문은 반영하지 않음.\nSEN 10월 14일 대학별 상세표와 대조. 모집인원은 계약학과·캠퍼스 포함 여부에 따라 달라 이 카드에서는 합산하지 않습니다.",
       "page": 11,
       "fields": [
         "인문·어문",
@@ -3861,7 +4622,12 @@
         "의약"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "sen-20261014",
+      "sourceLabel": "SEN 10.14 대조",
+      "reviewedAt": "2026-10-14",
+      "sourcePage": 274,
+      "sourceUrl": "/admissions-2028/sen-preview-20261014.pdf"
     },
     {
       "id": "2028-11-224",
@@ -3878,7 +4644,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-11-225",
@@ -3895,7 +4664,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-11-226",
@@ -3912,7 +4684,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-11-227",
@@ -3929,16 +4704,19 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-11-228",
       "university": "한국외대\n(서울/글로벌)",
       "category": "학생부종합",
-      "admission": "서류형/SW인재",
+      "admission": "학생부종합(서류형)",
       "method": "서류 100%",
-      "minimum": "• 서울캠 → 국, 수, 영, 사/과(1) 중 2개 영역 등급 합 6\n• 글로벌캠 → 국, 수, 영, 사/과(1) 중 2개 영역 등급 합 7",
-      "notes": "",
+      "minimum": "SEN 상세표 309쪽: 서울 국·수·영·탐(1) 중 2개 합 5 / 글로벌 2개 합 6\nSEN 요약표 27쪽: 서울 2개 합 6 / 글로벌 2개 합 7\n두 표가 다르므로 입학처 확인 필요",
+      "notes": "SEN 10월 14일 대학별 상세표와 대조. 모집인원은 계약학과·캠퍼스 포함 여부에 따라 달라 이 카드에서는 합산하지 않습니다.",
       "page": 11,
       "fields": [
         "인문·어문",
@@ -3946,7 +4724,13 @@
         "자연·공학"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "sen-20261014",
+      "sourceLabel": "SEN 10.14 대조",
+      "reviewedAt": "2026-10-14",
+      "sourcePage": 309,
+      "sourceUrl": "/admissions-2028/sen-preview-20261014.pdf",
+      "verificationNote": "같은 PDF에서 최저 기준이 다릅니다(27쪽 ↔ 309쪽). 현재 입학처 원문과 최종 모집요강으로 확인하기 전에는 어느 기준도 확정으로 사용하지 마세요. SW인재는 별도 전형이며 수능최저 미적용입니다."
     },
     {
       "id": "2028-11-229",
@@ -3963,7 +4747,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-11-230",
@@ -3980,7 +4767,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-11-231",
@@ -3989,7 +4779,7 @@
       "admission": "학업형",
       "method": "서류 100%",
       "minimum": "• 자연, 상경, 한양인터칼리지학부 → 국, 수, 영, 사탐, 과탐 중 3개 영역 등급 합 7 (수학 포함)\n• 인문, 의류학과, 실내건축디자인학과 → 국, 수, 영, 사탐, 과탐 중 3개 영역 등급 합 7\n• 의예과 → 국, 수, 영, 사/과(2) 중 3개 영역 등급 합 4",
-      "notes": "",
+      "notes": "SEN 10월 14일 대학별 상세표와 대조. 모집인원은 계약학과·캠퍼스 포함 여부에 따라 달라 이 카드에서는 합산하지 않습니다.",
       "page": 11,
       "fields": [
         "인문·어문",
@@ -3999,7 +4789,12 @@
         "예체능"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "sen-20261014",
+      "sourceLabel": "SEN 10.14 대조",
+      "reviewedAt": "2026-10-14",
+      "sourcePage": 320,
+      "sourceUrl": "/admissions-2028/sen-preview-20261014.pdf"
     },
     {
       "id": "2028-11-232",
@@ -4018,7 +4813,10 @@
         "예체능"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-11-233",
@@ -4035,7 +4833,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-11-234",
@@ -4052,7 +4853,10 @@
         "자연·공학"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-11-235",
@@ -4069,7 +4873,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-11-236",
@@ -4086,7 +4893,10 @@
         "자연·공학"
       ],
       "hasMinimum": false,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "incheon-20260715",
+      "sourceLabel": "인천교육청 7월 자료",
+      "reviewedAt": "2026-07-15"
     },
     {
       "id": "2028-11-237",
@@ -4095,7 +4905,7 @@
       "admission": "미래인재-서류형",
       "method": "서류100%",
       "minimum": "• 국, 수, 영, 사/과(1) 중 3개 영역 등급 합 7\n• 의예과 → 국, 수, 영, 사/과(1) 4개 영역 등급 합 5\n• 약학전공 → 국, 수, 영, 사/과(1) 4개 영역 등급 합 6\n• 스크랜튼학부 → 국, 수, 영, 사/과(1) 중 3개 영역 등급 합 5\n• 국제학부 → 국, 수, 영, 사/과(1) 중 국어포함 3개 영역 등급 합 7 및 영어 2등급 이내",
-      "notes": "",
+      "notes": "SEN 10월 14일 대학별 상세표와 대조. 모집인원은 계약학과·캠퍼스 포함 여부에 따라 달라 이 카드에서는 합산하지 않습니다.",
       "page": 11,
       "fields": [
         "인문·어문",
@@ -4104,7 +4914,58 @@
         "의약"
       ],
       "hasMinimum": true,
-      "hasInterview": false
+      "hasInterview": false,
+      "sourceKey": "sen-20261014",
+      "sourceLabel": "SEN 10.14 대조",
+      "reviewedAt": "2026-10-14",
+      "sourcePage": 253,
+      "sourceUrl": "/admissions-2028/sen-preview-20261014.pdf"
+    },
+    {
+      "id": "sen-2028-hufs-sw",
+      "university": "한국외대\n(서울/글로벌)",
+      "category": "학생부종합",
+      "admission": "학생부종합(SW인재)",
+      "method": "서류 100%",
+      "minimum": "미적용",
+      "notes": "SEN 309쪽에서 서류형과 분리된 별도 전형. 모집인원 34명. 모집단위·지원자격은 원문 확인.",
+      "page": 11,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": false,
+      "sourceKey": "sen-20261014",
+      "sourceLabel": "SEN 10.14 대조",
+      "reviewedAt": "2026-10-14",
+      "sourcePage": 309,
+      "sourceUrl": "/admissions-2028/sen-preview-20261014.pdf"
+    },
+    {
+      "id": "sen-2028-sookmyung-sw",
+      "university": "숙명여대",
+      "category": "학생부종합",
+      "admission": "소프트웨어인재",
+      "method": "1단계 서류 100%(4배수)\n2단계 1단계 성적 70% + 면접 30%",
+      "minimum": "미적용",
+      "notes": "SEN 226쪽에서 숙명인재(면접형)과 구분되는 별도 전형. 모집인원 35명. 모집단위·지원자격은 원문 확인.",
+      "page": 11,
+      "fields": [
+        "인문·어문",
+        "사회·상경",
+        "자연·공학"
+      ],
+      "hasMinimum": false,
+      "hasInterview": true,
+      "sourceKey": "sen-20261014",
+      "sourceLabel": "SEN 10.14 대조",
+      "reviewedAt": "2026-10-14",
+      "sourcePage": 226,
+      "sourceUrl": "/admissions-2028/sen-preview-20261014.pdf"
     }
-  ]
+  ],
+  "senReviewedUniversities": 15,
+  "senReviewedRecords": 60
 }

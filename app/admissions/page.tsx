@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import SenPlanGuide from "./SenPlanGuide";
 
 type AdmissionRow = {
   r: string;
@@ -37,6 +38,12 @@ type Admission2028Record = {
   fields: string[];
   hasMinimum: boolean;
   hasInterview: boolean;
+  sourceKey?: string;
+  sourceLabel?: string;
+  sourcePage?: number;
+  sourceUrl?: string;
+  minimumScope?: string;
+  verificationNote?: string;
 };
 
 type Admission2028Data = {
@@ -236,26 +243,26 @@ const HOLISTIC_SPOTLIGHTS = [
   {
     university: "서울대",
     admission: "일반전형",
-    method: "1단계 서류 100%(모집단위별 2~2.5배수) → 2단계 서류 50% + 면접 50%",
+    method: "1단계 서류 100%(일반 2배수) → 2단계 1단계 성적 50% + 면접 50%",
     minimum: "수능최저 없음",
     note: "지역균형은 외고 지원 불가입니다. 외고 지원 가능 전형은 일반전형이며, 사범대·미술대 등은 2단계 반영 방식이 다릅니다. 면접에는 추가 탐침 질문이 도입됩니다.",
-    source: "전북 3~6쪽 · 울산 6쪽",
+    source: "SEN 197쪽 · 외고 지원자격 별도 확인",
   },
   {
     university: "연세대",
     admission: "종합인재형 · 2028 신설",
     method: "1단계 서류 100%(4배수) → 2단계 서류 70% + 면접 30%",
     minimum: "일부 모집단위 적용",
-    note: "국제인재형과 중복 지원은 불가합니다. 모집단위별 수능최저가 다르며 제시문 기반 면접을 실시합니다.",
-    source: "전북 7~10쪽 · 울산 6쪽",
+    note: "모집단위별 최저가 다르며, 언더우드학부는 최저를 적용하지 않습니다. 영어·한국사 별도 등급 조건과 모집단위별 면접 방식을 확인하세요.",
+    source: "SEN 23·241쪽",
   },
   {
     university: "고려대",
     admission: "학업우수형 · 계열적합형",
-    method: "학업우수형은 서류 80% + 면접 20%, 계열적합형은 2028 면접 폐지 후 서류 100%",
+    method: "학업우수형: 1단계 서류100(5배수) → 2단계 1단계80+면접20 / 계열적합형: 서류100",
     minimum: "학업우수형 있음 · 계열적합형 없음",
     note: "학업우수형은 면접과 수능최저를 적용하고, 계열적합형은 서류 100%로 선발하며 수능최저를 적용하지 않습니다.",
-    source: "전북 11~13쪽 · 울산 6쪽",
+    source: "SEN 21·27·138쪽",
   },
   {
     university: "서강대",
@@ -263,15 +270,15 @@ const HOLISTIC_SPOTLIGHTS = [
     method: "두 전형 모두 서류평가 100%",
     minimum: "일반Ⅰ 없음 · 일반Ⅱ 있음",
     note: "일반Ⅱ의 수능최저는 국어·수학·영어·탐구(1) 중 3개 합 7 이내, 한국사 4등급 이내입니다.",
-    source: "전북 14~16쪽 · 울산 6쪽",
+    source: "SEN 27·189쪽",
   },
   {
     university: "성균관대",
     admission: "서류형 · 면접형",
     method: "서류형은 학생부 100%, 면접형은 1단계 학생부 100% → 2단계 학생부 70% + 면접 30%",
     minimum: "전형별 적용 여부 다름",
-    note: "융합인재·탐구인재·성균인재 등 전형별로 모집단위와 수능최저 적용 여부가 다릅니다.",
-    source: "전북 17~20쪽 · 울산 6쪽",
+    note: "융합인재는 최저 적용, 탐구인재는 미적용입니다. 면접형은 학생부70+면접30을 반영하며 모집단위·선발배수는 원문을 확인합니다. 인원은 PDF 표 사이에 차이가 있어 최종 모집요강 확인이 필요합니다.",
+    source: "SEN 3·21·27·212쪽",
   },
   {
     university: "한양대",
@@ -279,7 +286,7 @@ const HOLISTIC_SPOTLIGHTS = [
     method: "학업형은 학생부종합평가 100%, 면접형은 1단계 종합평가 100% → 2단계 70% + 면접 30%",
     minimum: "학업형 있음 · 면접형 없음",
     note: "2028학년도에는 면접형 모집단위가 확대됐으며, 모집단위별로 학업형과 면접형이 구분됩니다.",
-    source: "전북 21~24쪽 · 울산 6쪽",
+    source: "SEN 27·320~321쪽",
   },
   {
     university: "이화여대",
@@ -287,15 +294,15 @@ const HOLISTIC_SPOTLIGHTS = [
     method: "서류형은 서류 100%, 면접형은 1단계 서류 100%(5배수) → 2단계 서류 70% + 면접 30%",
     minimum: "서류형 있음 · 면접형 없음",
     note: "미래인재 서류형은 수능최저를 적용하고, 미래인재 면접형은 면접을 실시하며 수능최저를 적용하지 않습니다.",
-    source: "전북 25~28쪽 · 울산 6쪽",
+    source: "SEN 27·253쪽",
   },
   {
     university: "한국외대",
     admission: "면접형 · 서류형",
     method: "면접형은 1단계 서류 100%(3배수) → 2단계 1단계 성적 50% + 면접 50%, 서류형은 서류 100%",
     minimum: "면접형 없음 · 서류형 모집단위별 적용",
-    note: "면접형은 제출서류 기반 블라인드 인적성면접이에요. 서류형 최저는 모집단위별 합 6~7 이내로 달라집니다.",
-    source: "전북 36~37쪽 · 울산 6쪽",
+    note: "면접형은 최저가 없고 서류형은 최저를 적용합니다. 서류형 최저가 SEN 27쪽(서울2합6·글로벌2합7)과 309쪽(서울2합5·글로벌2합6)에서 달라 입학처 확인이 필요합니다. SW인재는 별도 서류100 전형이며 최저가 없습니다.",
+    source: "SEN 27·309쪽 · 최저 기준 불일치",
   },
 ];
 
@@ -707,13 +714,19 @@ function PlanCard({ record }: { record: Admission2028Record }) {
           <div className="ad-chips">
             <span>{record.category}</span>
             {record.hasInterview && <span>면접 있음</span>}
-            <span>{record.hasMinimum ? "수능최저 있음" : "수능최저 없음"}</span>
+            <span>{record.minimumScope || (record.hasMinimum ? "수능최저 있음" : "수능최저 없음")}</span>
+            {record.verificationNote && <span>원문 확인 필요</span>}
           </div>
           <h3>{record.university}</h3>
           <p>{record.admission}</p>
         </div>
-        <b className="ad-source-page">PDF {record.page}쪽</b>
+        {record.sourceUrl ? (
+          <a className="ad-source-page" href={`${record.sourceUrl}#page=${record.sourcePage}`} target="_blank" rel="noopener noreferrer">SEN {record.sourcePage}쪽 ↗</a>
+        ) : <b className="ad-source-page">인천 7월 {record.page}쪽</b>}
       </div>
+
+      <p className="ad-plan-provenance">{record.sourceKey === "sen-20261014" ? "SEN 10.14 자료 대조" : "인천교육청 7월 자료 · 최신 SEN 원문 별도 확인"}</p>
+      {record.verificationNote && <div className="ad-plan-verification"><b>자료를 비교하며 확인할 점</b><p>{record.verificationNote}</p></div>}
 
       <div className="ad-plan-fields">
         {record.fields.map((field) => <span key={field}>{field}</span>)}
@@ -737,7 +750,7 @@ function PlanCard({ record }: { record: Admission2028Record }) {
 
       {evaluation && (
         <div className="ad-plan-evaluation">
-          <span>서류에서 보는 것</span>
+          <span>서류 평가 참고</span>
           <p>{evaluation}</p>
         </div>
       )}
@@ -974,7 +987,7 @@ export default function AdmissionsPage() {
   }, []);
 
   useEffect(() => {
-    fetch("/admissions-2028/records.json")
+    fetch("/admissions-2028/records.json?v=sen-20261014")
       .then((response) => {
         if (!response.ok) throw new Error("2028 data load failed");
         return response.json() as Promise<Admission2028Data>;
@@ -1137,7 +1150,7 @@ export default function AdmissionsPage() {
       <div className="ad-warning">
         <span>📌</span>
         <p>
-          점수 검색은 <b>이투스 2027학년도 9월 학력평가 지원참고표</b>, 2028 전형 검색은 <b>인천·전북·울산교육청 자료</b>를 서로 대조해 만든 탐색 자료입니다.
+          점수 검색은 <b>이투스 2027학년도 9월 학력평가 지원참고표</b>, 2028 전형 검색은 <b>SEN 10월 14일 자료와 기존 교육청 자료</b>를 대조한 탐색 자료입니다. 카드마다 출처와 확인 범위를 표시합니다.
           시행계획은 바뀔 수 있으며 실제 지원 전에는 반드시 대학 입학처의 최종 모집요강을 확인해야 합니다.
         </p>
       </div>
@@ -1328,8 +1341,17 @@ export default function AdmissionsPage() {
               <p>2028 ADMISSION PLAN</p>
               <h2>계열별 전형 검색</h2>
             </div>
-            <span>인천·전북·울산교육청 2028 자료 대조</span>
+            <span>SEN 10.14 자료 반영 · 출처별 구분</span>
           </div>
+
+          <SenPlanGuide onUniversity={(name) => {
+            setPlanKeyword(name);
+            setPlanField("전체");
+            setPlanCategory("전체");
+            setPlanMinimum("전체");
+            setPlanInterview("전체");
+            document.getElementById("ad-plan-filters")?.scrollIntoView({ behavior: "smooth", block: "start" });
+          }} />
 
           <div className="ad-plan-notice">
             <span>🧭</span>
@@ -1363,7 +1385,7 @@ export default function AdmissionsPage() {
             </article>
           )}
 
-          <div className="ad-plan-toolbar">
+          <div className="ad-plan-toolbar" id="ad-plan-filters">
             <div className="ad-keyword-input">
               <span>🔎</span>
               <input
@@ -1405,7 +1427,7 @@ export default function AdmissionsPage() {
               <div className="ad-result-header">
                 <div>
                   <h3>검색 결과 <b>{planResults.length.toLocaleString()}개 전형</b></h3>
-                  <p>기본 필터는 학생부종합이며, 결과는 주요 인서울 대학 우선순위로 정렬됩니다.</p>
+                  <p>기본은 학생부종합 · 주요 인서울 대학 우선 정렬 · 수능최저 ‘있음’에는 일부 학과만 적용하는 전형도 포함됩니다.</p>
                 </div>
               </div>
               {planResults.length > 0 ? (
@@ -1467,7 +1489,7 @@ export default function AdmissionsPage() {
               <p>2028 HOLISTIC ADMISSION</p>
               <h2>2028 학생부종합전형 정리</h2>
             </div>
-            <span>인천·전북·울산교육청 2028 자료 대조</span>
+            <span>SEN 10.14 · 기존 교육청 자료 대조</span>
           </div>
 
           <div className="ad-holistic-hero">
@@ -1568,7 +1590,7 @@ export default function AdmissionsPage() {
       )}
 
       <footer className="ad-source">
-        자료: 이투스 2027학년도 9월 학력평가 대학별 지원참고표(고1 가채점) · 인천광역시교육청 2028 대입전형 프리뷰 · 전북특별자치도교육청 2028 대학 입학전형 시행계획 분석 · 울산광역시교육청 2028 대입전형 깔끔정리 · 교내 진학 탐색용
+        자료: 서울특별시교육청 쎈(SEN)진학 프리뷰(10월14일) · 인천교육청 2028 대입전형 프리뷰(7월) · 전북·울산교육청 2028 자료 · 이투스 2027학년도 9월 학력평가 지원참고표 · 교내 진학 탐색용
       </footer>
 
       <style>{`
@@ -1707,6 +1729,11 @@ export default function AdmissionsPage() {
         .ad-plan-card-head h3 { margin:0; color:var(--text); font-size:17px; font-weight:900; }
         .ad-plan-card-head p { margin:3px 0 0; color:#6d5c7b; font-size:12px; font-weight:800; }
         .ad-source-page { flex:0 0 auto; padding:5px 7px; border-radius:8px; background:#f8fafc; color:#94a3b8; font-size:8px; }
+        a.ad-source-page { color:#6d28d9; text-decoration:underline; font-size:11px; }
+        .ad-plan-provenance { margin:0; color:#64748b; font-size:11px; line-height:1.5; }
+        .ad-plan-verification { padding:12px; border:1px solid #fcd34d; border-radius:12px; background:#fffbeb; color:#854d0e; font-size:12px; line-height:1.7; }
+        .ad-plan-verification p { margin:5px 0 0; }
+        #ad-plan-filters { scroll-margin-top:100px; }
         .ad-plan-fields { display:flex; flex-wrap:wrap; gap:5px; }
         .ad-plan-fields span { padding:3px 7px; border-radius:999px; background:#ecfeff; color:#0f766e; font-size:8px; font-weight:800; }
         .ad-plan-detail-grid { display:grid; grid-template-columns:1fr 1.15fr; gap:8px; }

@@ -1,0 +1,52 @@
+.root { margin: 0 0 26px; color: #334155; font-size: 14px; line-height: 1.75; }
+.intro { display:flex; align-items:center; justify-content:space-between; gap:22px; padding:26px; border:1px solid #c4b5fd; border-radius:22px; background:linear-gradient(120deg,#f5f3ff,#eff6ff); }
+.intro h3 { font-size:24px; margin:8px 0; line-height:1.4; color:#312e81; letter-spacing:-.6px; }
+.intro p { margin:0; max-width:730px; }
+.badge { display:inline-block; background:#ede9fe; border-radius:20px; padding:3px 11px; color:#6d28d9; font-size:12px; font-weight:800; }
+.button { display:inline-flex; justify-content:center; align-items:center; text-decoration:none; white-space:nowrap; background:#6d28d9; color:white; padding:10px 16px; border-radius:12px; font-weight:750; font-size:14px; }
+.introActions { display:flex; flex-direction:column; align-items:stretch; gap:9px; }
+.introActions button { border:0; background:transparent; color:#6d28d9; cursor:pointer; font:inherit; font-size:12px; padding:4px; white-space:nowrap; }
+.button:hover { background:#5b21b6; }
+.scope { margin:14px 4px 20px; font-size:13px; color:#64748b; }
+.scope strong { color:#475569; margin-right:6px; }
+.details { border:1px solid #e2e8f0; border-radius:16px; background:white; margin:10px 0; overflow:hidden; }
+.details summary { padding:16px 20px; color:#312e81; cursor:pointer; font-size:16px; font-weight:800; }
+.details summary:hover { background:#faf8ff; }
+.details[open] summary { border-bottom:1px solid #ede9fe; background:#faf8ff; }
+.body { padding:20px; }
+.body > p:first-child { margin-top:0; }
+.steps { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; padding-left:24px; margin:0 0 20px; }
+.steps li { padding:8px 12px; }
+.steps b,.steps span { display:block; }
+.steps b { color:#5b21b6; font-size:15px; }
+.steps span { margin-top:4px; color:#64748b; }
+.callout { border-left:4px solid #8b5cf6; background:#f5f3ff; padding:15px 18px; border-radius:0 12px 12px 0; margin:18px 0; }
+.callout b { color:#5b21b6; }
+.callout p { margin:5px 0 0; }
+.tableWrap { overflow-x:auto; border:1px solid #e2e8f0; border-radius:12px; margin:16px 0; }
+.tableWrap table { border-collapse:collapse; width:100%; text-align:left; font-size:14px; }
+.tableWrap caption { text-align:left; padding:12px 14px; font-weight:800; background:#f8fafc; color:#475569; }
+.tableWrap td,.tableWrap th { padding:12px 14px; border-top:1px solid #e2e8f0; vertical-align:top; }
+.tableWrap thead th { background:#f5f3ff; color:#5b21b6; }
+.tableWrap tbody th { min-width:160px; width:25%; font-weight:750; color:#334155; }
+.tableWrap tbody tr:nth-child(even) { background:#fafbfc; }
+.examples { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; }
+.examples article { border:1px solid #e2e8f0; border-radius:14px; padding:18px; }
+.examples h4 { color:#312e81; font-size:17px; margin:0; line-height:1.45; }
+.examples small { color:#64748b; font-size:12px; }
+.examples p { margin:12px 0 0; }
+.meaning { padding-top:12px; border-top:1px dashed #ddd6fe; color:#5b21b6; }
+.note { font-size:13px; color:#64748b; margin:14px 0 0; }
+.warnings { margin:0; padding-left:20px; }
+.warnings li { margin-bottom:12px; }
+.links { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+.links a { border:1px solid #e2e8f0; border-radius:12px; padding:12px 16px; text-decoration:none; color:#5b21b6; }
+.links a:hover { border-color:#a78bfa; background:#faf8ff; }
+.links b,.links small { display:block; }
+.links small { color:#64748b; font-size:12px; }
+.navigator { display:flex; flex-wrap:wrap; align-items:center; gap:12px; padding:18px; background:#f8fafc; border-radius:12px; margin-top:18px; }
+.navigator label { width:100%; font-weight:800; color:#312e81; }
+.navigator select { background:white; border:1px solid #cbd5e1; border-radius:10px; padding:10px; min-width:180px; font-size:15px; }
+.navigator button { border:1px solid #c4b5fd; border-radius:10px; padding:10px 14px; background:white; color:#5b21b6; font:inherit; cursor:pointer; }
+.root a:focus-visible,.root summary:focus-visible,.root button:focus-visible,.root select:focus-visible { outline:3px solid #a78bfa; outline-offset:3px; }
+@media(max-width:760px) { .intro { align-items:flex-start; flex-direction:column; padding:20px; } .intro h3 { font-size:22px; } .examples { grid-template-columns:1fr; } .body { padding:16px; } .steps { grid-template-columns:1fr; gap:0; } .links { grid-template-columns:1fr; } .details summary { font-size:15px; padding:15px; } .navigator { padding:14px; } .navigator select { width:100%; min-width:0; } .tableWrap tbody th { min-width:120px; } .tableWrap td,.tableWrap th { padding:10px; } }
