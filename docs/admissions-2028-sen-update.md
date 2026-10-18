@@ -5,7 +5,7 @@ Source: Seoul Metropolitan Office of Education, 쎈(SEN)진학 프리뷰, V.10�
 ## Coverage
 
 - 238 searchable records total: 60 records at 15 major universities cross-checked against SEN; 178 records retain the Incheon July source label. Existing `page` is the July reference. New `sourcePage` always refers to SEN.
-- All 82 university detail sections have an original-PDF page index (98–334). This is source navigation, not a claim that every record in all 335 pages was imported.
+- All 82 university detail sections have a retained source-data page index (98–334); this is not a claim that every record in all 335 pages was imported.
 - Existing field labels are broad search categories and do not assert department-level recruitment or eligibility.
 - No new acceptance probability or past cutoff is inferred from this source. The existing score-reference dataset is unchanged.
 
@@ -25,10 +25,14 @@ Source: Seoul Metropolitan Office of Education, 쎈(SEN)진학 프리뷰, V.10�
 - Central CORE/ALL: page 3 and official 2028 microsite say 3–6x, while page 274 says 3x. Display 3–6x with note and official-source link.
 - Ewha recommendation: page 3 separates academic80+attendance5+documents15, while page 253 groups academic85+documents15. Display academic/attendance85+documents15 with note.
 - Recruitment counts differ for split campuses, free majors, and contract departments; not imported as a single quota.
-- Subject evaluation ratios in pages 21/27 may be based on 2027 guidelines/common research. The guide explicitly labels them reference data.
+- Subject evaluation ratios in pages 21/27 may be based on 2027 guidelines/common research and remain reference data.
 - Interview/essay calendars based on 2027 admissions are not imported as confirmed 2028 dates.
 
 Official Central 2028 reference checked: https://admission.cau.ac.kr/2028_iphak/typeA/index.html
+
+## Presentation scope
+
+The user clarified that table-reading explanations are for the teacher in conversation, not for publication on the student-facing site. The new reading guide, worked examples and table-navigation panel were removed. Admission-data corrections, provenance and necessary discrepancy notes remain.
 
 ## Validation
 

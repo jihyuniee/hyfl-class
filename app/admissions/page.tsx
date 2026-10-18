@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import SenPlanGuide from "./SenPlanGuide";
 
 type AdmissionRow = {
   r: string;
@@ -1344,15 +1343,6 @@ export default function AdmissionsPage() {
             <span>SEN 10.14 자료 반영 · 출처별 구분</span>
           </div>
 
-          <SenPlanGuide onUniversity={(name) => {
-            setPlanKeyword(name);
-            setPlanField("전체");
-            setPlanCategory("전체");
-            setPlanMinimum("전체");
-            setPlanInterview("전체");
-            document.getElementById("ad-plan-filters")?.scrollIntoView({ behavior: "smooth", block: "start" });
-          }} />
-
           <div className="ad-plan-notice">
             <span>🧭</span>
             <p><b>기본 전형 필터는 학생부종합입니다.</b> 계열·전형·수능최저·면접 조건과 대학명을 기준으로 검색할 수 있습니다. 전형 필터에서 논술·학생부교과·전체로 전환할 수 있습니다.</p>
@@ -1385,7 +1375,7 @@ export default function AdmissionsPage() {
             </article>
           )}
 
-          <div className="ad-plan-toolbar" id="ad-plan-filters">
+          <div className="ad-plan-toolbar">
             <div className="ad-keyword-input">
               <span>🔎</span>
               <input
@@ -1733,7 +1723,6 @@ export default function AdmissionsPage() {
         .ad-plan-provenance { margin:0; color:#64748b; font-size:11px; line-height:1.5; }
         .ad-plan-verification { padding:12px; border:1px solid #fcd34d; border-radius:12px; background:#fffbeb; color:#854d0e; font-size:12px; line-height:1.7; }
         .ad-plan-verification p { margin:5px 0 0; }
-        #ad-plan-filters { scroll-margin-top:100px; }
         .ad-plan-fields { display:flex; flex-wrap:wrap; gap:5px; }
         .ad-plan-fields span { padding:3px 7px; border-radius:999px; background:#ecfeff; color:#0f766e; font-size:8px; font-weight:800; }
         .ad-plan-detail-grid { display:grid; grid-template-columns:1fr 1.15fr; gap:8px; }
