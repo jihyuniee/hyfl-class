@@ -106,18 +106,29 @@ export default function Home() {
             <span>DIFFERENT COLORS</span><strong>23<span>명</span></strong><span>하나의 우리반 <span aria-hidden="true">↗</span></span>
           </Link>
         </div>
-        <figure className={styles.cover}>
-          <div className={styles.heroPhoto}>
-            <Image src={heroSrc} alt="길동생태공원에서 함께 찍은 한영외고 2학년 2반 단체사진" fill priority
-              sizes="(max-width: 640px) calc(100vw - 28px), (max-width: 1100px) 92vw, 1020px"
-              className={styles.heroImage} onError={() => { if (heroSrc !== "/class-photo.jpg") setHeroSrc("/class-photo.jpg"); }} />
-            <span className={styles.photoLabel}>THE 2-2 COLLECTIVE <span aria-hidden="true">✳</span></span>
+        <div className={styles.cover}>
+          <div className={styles.photoSpread}>
+            <figure className={`${styles.photoCard} ${styles.photoFirst}`}>
+              <a href={heroSrc} target="_blank" rel="noopener noreferrer" className={styles.heroPhoto} aria-label="첫 번째 우리반 단체사진 크게 보기 (새 탭)">
+                <Image src={heroSrc} alt="길동생태공원에서 브이 포즈로 함께 찍은 2학년 2반 단체사진" fill priority
+                  sizes="(max-width: 640px) 46vw, (max-width: 860px) 44vw, 380px"
+                  className={styles.heroImage} onError={() => { if (heroSrc !== "/class-photo.jpg") setHeroSrc("/class-photo.jpg"); }} />
+              </a>
+              <figcaption className={styles.photoNote}><span>01 / 우리반의 가을</span><span aria-hidden="true">↗</span></figcaption>
+            </figure>
+            <figure className={`${styles.photoCard} ${styles.photoSecond}`}>
+              <a href="/class-gildong-202610-02.jpg" target="_blank" rel="noopener noreferrer" className={styles.heroPhoto} aria-label="두 번째 우리반 단체사진 크게 보기 (새 탭)">
+                <Image src="/class-gildong-202610-02.jpg" alt="길동생태공원에서 다 함께 웃으며 찍은 2학년 2반 단체사진" fill priority
+                  sizes="(max-width: 640px) 46vw, (max-width: 860px) 44vw, 380px" className={styles.heroImage} />
+              </a>
+              <figcaption className={styles.photoNote}><span>02 / 함께라서 좋은 날</span><span aria-hidden="true">↗</span></figcaption>
+            </figure>
           </div>
-          <figcaption className={styles.photoCaption}>
+          <div className={styles.photoCaption}>
             <span><span className={styles.captionDot} aria-hidden="true" /> 길동생태공원에서, 함께.</span>
             <Link href="/album">우리의 순간들 보기 <span aria-hidden="true">↗</span></Link>
-          </figcaption>
-        </figure>
+          </div>
+        </div>
         <div className={styles.statusBar}>
           <div className={styles.todayDate}><span className={styles.microLabel}>TODAY</span><strong>{todayStr ? `${Number(todayStr.slice(5, 7))}.${todayStr.slice(8, 10)}` : "—"}<span>{todayName}요일</span></strong></div>
           <div className={styles.countdowns}>{ddayData.map(item => <div key={item.label}><span>{item.label}</span><strong>{item.value}</strong></div>)}</div>
