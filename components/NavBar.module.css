@@ -9,6 +9,29 @@
   backdrop-filter: blur(16px);
 }
 
+/* The cover-page palette is scoped to the home header. */
+.homeHeader {
+  --text: #20221d;
+  --text-muted: #626758;
+  --border: #dddfd4;
+  --primary-light: #edf3d9;
+  background: rgba(246, 246, 239, 0.97);
+  box-shadow: none;
+}
+.homeHeader .brandMark { border-radius: 4px; background: #d6f36a; color: #20221d; box-shadow: none; font-family: Arial, sans-serif; font-size: 16px; }
+.homeHeader .brandText { font-size: 14px; letter-spacing: -.04em; }
+.homeHeader .brandText > span { margin-left: 3px; color: #6b7f36; }
+.homeHeader .menuButton { border-color: #d0d5c4; border-radius: 4px; background: transparent; color: #20221d; }
+.homeHeader .todayLink { border: 1px solid #20221d; border-radius: 4px; background: #20221d; color: #fff; box-shadow: none; }
+.homeHeader .quickLink { border-radius: 4px; color: #626758; }
+.homeHeader .quickLink:hover, .homeHeader .quickLink[aria-current="page"] { background: #e7eecf; color: #344319; }
+.homeHeader .desktopButton { font-size: 13px; border-radius: 4px; }
+.homeHeader .desktopButton > span:first-child { display: none; }
+.homeHeader .desktopButton:hover, .homeHeader .desktopButton[aria-expanded="true"], .homeHeader .desktopButton[data-active] { color: #344319; }
+.homeHeader .desktopDropdown { border-radius: 6px; box-shadow: 0 12px 30px rgba(32, 34, 29, .1); }
+.homeHeader .desktopLink:hover, .homeHeader .desktopLink[aria-current="page"] { background: #edf3d9; color: #344319; }
+.homeHeader a:focus-visible, .homeHeader button:focus-visible { outline-color: #606f2b; }
+
 .headerBar {
   display: flex;
   align-items: center;

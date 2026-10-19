@@ -186,11 +186,11 @@ export default function NavBar() {
 
   return (
     <>
-      <header ref={headerRef} className={styles.header}>
+      <header ref={headerRef} className={`${styles.header} ${pathname === "/" ? styles.homeHeader : ""}`}>
         <nav className={styles.headerBar} aria-label="주 메뉴">
           <Link href="/" onClick={closeMenus} className={styles.brand} aria-label="2학년 2반 우리반 홈">
             <span className={styles.brandMark}>2·2</span>
-            <span className={styles.brandText}>우리반 <span aria-hidden="true">🌸</span></span>
+            <span className={styles.brandText}>우리반 <span aria-hidden="true">{pathname === "/" ? "✳" : "🌸"}</span></span>
           </Link>
 
           <div className={styles.desktopNav}>
