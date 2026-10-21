@@ -17,7 +17,7 @@ type AdmissionRow = {
   p: number;
 };
 
-type TabKey = "score" | "search" | "plan" | "minimum" | "saved" | "guide";
+type TabKey = "score" | "search" | "plan" | "minimum" | "saved" | "guide" | "resources";
 
 type AdmissionManifest = {
   total: number;
@@ -59,7 +59,10 @@ const TABS: { key: TabKey; label: string; emoji: string }[] = [
   { key: "minimum", label: "최저 맞추기", emoji: "🎯" },
   { key: "saved", label: "관심 목록", emoji: "♡" },
   { key: "guide", label: "학종 정보", emoji: "📚" },
+  { key: "resources", label: "2028 대학 자료", emoji: "🔗" },
 ];
+
+const UNIVERSITY_RESOURCES_URL = "https://script.google.com/macros/s/AKfycbzRCA4FQ_9kT0SvrfA67B8j-4CcKTmVbaXzeDF9d0BKUyqr3_8K6Ne2sRuqvoRD5EOWRg/exec";
 
 const REGIONS = [
   "전체", "서울", "경기", "인천", "강원", "대전", "충남", "충북",
@@ -944,6 +947,79 @@ function MinimumPlanner() {
   );
 }
 
+function UniversityResources() {
+  const [showSearch, setShowSearch] = useState(false);
+
+  return (
+    <section className="ad-section" aria-labelledby="ad-resources-heading">
+      <div className="ad-section-title">
+        <div>
+          <p>2028 UNIVERSITY RESOURCES</p>
+          <h2 id="ad-resources-heading">대학별 입시 자료 한눈에 보기</h2>
+        </div>
+        <span>경기도교육청 제작 자료</span>
+      </div>
+
+      <div className="ad-resources-hero">
+        <span className="ad-resources-badge">2028학년도</span>
+        <h3>관심 대학의 시행계획부터 전공안내까지</h3>
+        <p>경기도교육청 검색기에서 대학명을 입력하면 해당 대학의 자료를 바로 열 수 있어요.</p>
+        <div className="ad-resources-actions">
+          <a href={UNIVERSITY_RESOURCES_URL} target="_blank" rel="noopener noreferrer" className="ad-resource-primary">
+            대학 자료 검색기 열기 ↗<span className="ad-sr-only"> (새 탭)</span>
+          </a>
+          <button
+            type="button"
+            onClick={() => setShowSearch((value) => !value)}
+            aria-expanded={showSearch}
+            aria-controls="ad-resources-search"
+          >
+            {showSearch ? "웹앱 안에서 보기 닫기" : "웹앱 안에서 검색하기"}
+          </button>
+        </div>
+        <p className="ad-resources-credit">제작: 경기도교육청 대입진학지도리더교사 콘텐츠팀</p>
+      </div>
+
+      <div className="ad-resources-grid">
+        {[
+          { icon: "🏫", title: "입학처", description: "대학의 최신 모집요강과 공지 확인" },
+          { icon: "📄", title: "2028 계획", description: "수시·정시 전형방법과 수능 반영방법 확인" },
+          { icon: "📚", title: "학종 안내서", description: "서류·면접 평가기준과 준비 방향 확인" },
+          { icon: "🧭", title: "전공안내", description: "학과의 교육과정과 진로 탐색" },
+        ].map((item) => (
+          <article key={item.title}>
+            <span aria-hidden="true">{item.icon}</span>
+            <h3>{item.title}</h3>
+            <p>{item.description}</p>
+          </article>
+        ))}
+      </div>
+
+      <div className="ad-resources-tip">
+        <b>정시 반영 과목이 궁금하다면</b>
+        <p>검색기에서 대학 검색 → <strong>2028 계획</strong> → <strong>수능 반영방법·영역별 반영비율</strong>을 찾아보세요. 국어·수학·통합사회·통합과학의 반영 여부와 영어·한국사 처리 방식을 확인할 수 있어요.</p>
+        <small>대학별 제공 자료는 다르며, 실제 지원 전에는 대학 입학처의 최종 모집요강을 확인해 주세요.</small>
+      </div>
+
+      {showSearch && (
+        <div className="ad-resources-embed" id="ad-resources-search">
+          <div>
+            <b>경기도교육청 2028 대학입학전형 시행계획 검색기</b>
+            <a href={UNIVERSITY_RESOURCES_URL} target="_blank" rel="noopener noreferrer">원본에서 열기 ↗</a>
+          </div>
+          <p>화면이 표시되지 않거나 자료를 크게 보고 싶으면 ‘원본에서 열기’를 눌러 주세요.</p>
+          <iframe
+            src={UNIVERSITY_RESOURCES_URL}
+            title="경기도교육청 2028 대학입학전형 시행계획 검색기"
+            loading="lazy"
+            referrerPolicy="no-referrer"
+          />
+        </div>
+      )}
+    </section>
+  );
+}
+
 export default function AdmissionsPage() {
   const [rows, setRows] = useState<AdmissionRow[]>([]);
   const [loading, setLoading] = useState(true);
@@ -1154,6 +1230,17 @@ export default function AdmissionsPage() {
         </p>
       </div>
 
+      {tab !== "resources" && (
+        <aside className="ad-resources-shortcut" aria-label="2028 대학 자료 바로가기">
+          <div>
+            <span>경기도교육청 자료</span>
+            <b>2028 대학 자료 바로가기</b>
+            <p>대학별 시행계획·학종 안내서·전공안내를 확인해요.</p>
+          </div>
+          <button type="button" onClick={() => selectTab("resources")}>자료 보기 →</button>
+        </aside>
+      )}
+
       <nav className="ad-tabs" aria-label="대학 입시 메뉴">
         {TABS.map((item) => (
           <button
@@ -1169,14 +1256,16 @@ export default function AdmissionsPage() {
         ))}
       </nav>
 
-      {loading && (
+      {tab === "resources" && <UniversityResources />}
+
+      {loading && tab !== "resources" && (
         <div className="ad-loading">
           <div />
           <p>대학 정보를 불러오고 있어요.</p>
         </div>
       )}
 
-      {loadError && (
+      {loadError && tab !== "resources" && (
         <div className="ad-empty">
           <span>⚠️</span>
           <p>대학 정보를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.</p>
@@ -1596,7 +1685,7 @@ export default function AdmissionsPage() {
         .ad-warning { display:flex; gap:11px; padding:14px 18px; border-radius:16px; border:1.5px solid #fcd34d; background:#fffbeb; align-items:flex-start; }
         .ad-warning > span { font-size:18px; }
         .ad-warning p { margin:0; font-size:12px; line-height:1.75; color:#78550b; }
-        .ad-tabs { display:grid; grid-template-columns:repeat(6,1fr); gap:8px; padding:7px; border-radius:18px; background:#fff; border:1.5px solid var(--border); box-shadow:var(--shadow-sm); }
+        .ad-tabs { display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:8px; padding:7px; border-radius:18px; background:#fff; border:1.5px solid var(--border); box-shadow:var(--shadow-sm); }
         .ad-tabs button { position:relative; border:0; border-radius:13px; padding:11px 12px; background:transparent; color:var(--text-muted); font:700 13px inherit; cursor:pointer; transition:.16s ease; }
         .ad-tabs button span { margin-right:5px; }
         .ad-tabs button b { display:inline-flex; justify-content:center; align-items:center; min-width:18px; height:18px; padding:0 5px; margin-left:5px; border-radius:999px; background:#f472b6; color:#fff; font-size:10px; }
@@ -1835,6 +1924,37 @@ export default function AdmissionsPage() {
         .ad-check-order small { color:var(--text-subtle); font-size:9px; }
         .ad-order-arrow { align-self:center; color:#c4b5fd; font-weight:900; }
         .ad-source { padding:7px 0; color:var(--text-subtle); font-size:10px; text-align:center; }
+        .ad-sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; border:0; }
+        .ad-resources-shortcut { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:17px 20px; border:1.5px solid #ddd6fe; border-radius:18px; background:linear-gradient(120deg,#faf5ff,#fff1f7); }
+        .ad-resources-shortcut > div { display:grid; gap:4px; }
+        .ad-resources-shortcut span { color:#8b5cf6; font-size:10px; font-weight:800; }
+        .ad-resources-shortcut b { color:var(--text); font-size:15px; font-weight:900; }
+        .ad-resources-shortcut p { margin:0; color:var(--text-muted); font-size:11px; line-height:1.6; }
+        .ad-resources-shortcut button { flex-shrink:0; border:0; padding:11px 16px; border-radius:12px; background:#7c3aed; color:#fff; font-size:12px; font-weight:800; cursor:pointer; }
+        .ad-resources-hero { padding:28px; border:1.5px solid #ddd6fe; border-radius:23px; background:linear-gradient(120deg,#faf5ff,#fff1f7); }
+        .ad-resources-badge { display:inline-flex; padding:5px 10px; border-radius:8px; background:#ede9fe; color:#7c3aed; font-size:11px; font-weight:900; }
+        .ad-resources-hero h3 { margin:13px 0 8px; color:var(--text); font-size:23px; font-weight:900; letter-spacing:-.04em; }
+        .ad-resources-hero > p { margin:0; color:var(--text-muted); font-size:13px; line-height:1.8; }
+        .ad-resources-actions { display:flex; flex-wrap:wrap; gap:10px; margin:20px 0 15px; }
+        .ad-resources-actions a, .ad-resources-actions button { display:inline-flex; align-items:center; justify-content:center; padding:13px 17px; border:1.5px solid #ddd6fe; border-radius:13px; background:#fff; color:#7c3aed; text-decoration:none; font-size:13px; font-weight:800; cursor:pointer; }
+        .ad-resources-actions .ad-resource-primary { background:#7c3aed; border-color:#7c3aed; color:#fff; }
+        .ad-resources-hero .ad-resources-credit { color:#8b7d9b; font-size:10px; }
+        .ad-resources-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:11px; }
+        .ad-resources-grid article { padding:20px; border:1.5px solid var(--border); border-radius:18px; background:#fff; }
+        .ad-resources-grid article > span { font-size:23px; }
+        .ad-resources-grid h3 { margin:10px 0 7px; color:var(--text); font-size:14px; font-weight:900; }
+        .ad-resources-grid p { margin:0; color:var(--text-muted); font-size:12px; line-height:1.7; }
+        .ad-resources-tip { padding:18px 20px; border:1px solid #ddd6fe; border-radius:17px; background:#faf8ff; }
+        .ad-resources-tip > b { color:#7c3aed; font-size:13px; }
+        .ad-resources-tip p { margin:8px 0; color:var(--text-muted); font-size:12px; line-height:1.8; }
+        .ad-resources-tip small { color:var(--text-subtle); font-size:10px; line-height:1.6; }
+        .ad-resources-embed { overflow:hidden; border:1.5px solid var(--border); border-radius:20px; background:#fff; }
+        .ad-resources-embed > div { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:17px 20px 8px; }
+        .ad-resources-embed b { color:var(--text); font-size:12px; }
+        .ad-resources-embed a { flex-shrink:0; color:#7c3aed; font-size:12px; font-weight:800; text-decoration:none; }
+        .ad-resources-embed > p { margin:0; padding:0 20px 15px; color:var(--text-subtle); font-size:11px; line-height:1.7; }
+        .ad-resources-embed iframe { display:block; width:100%; height:820px; height:85vh; min-height:560px; border:0; border-top:1px solid var(--border); background:#fff; }
+        .ad-resources-actions a:focus-visible, .ad-resources-actions button:focus-visible, .ad-resources-shortcut button:focus-visible, .ad-resources-embed a:focus-visible { outline:3px solid #a78bfa; outline-offset:4px; }
         @keyframes adSpin { to { transform:rotate(360deg); } }
         @media (max-width:760px) {
           .ad-hero { align-items:flex-start; flex-direction:column; }
@@ -1842,6 +1962,10 @@ export default function AdmissionsPage() {
           .ad-hero-stat b { text-align:right; }
           .ad-hero-stat i { grid-column:auto; width:1px; height:34px; margin:0 8px; }
           .ad-tabs { grid-template-columns:repeat(3,1fr); }
+          .ad-resources-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+          .ad-resources-hero { padding:22px; }
+          .ad-resources-hero h3 { font-size:20px; }
+          .ad-resources-embed > div { align-items:flex-start; flex-direction:column; gap:8px; }
           .ad-section-title { align-items:flex-start; flex-direction:column; gap:5px; }
           .ad-score-inputs { grid-template-columns:1fr 1fr; }
           .ad-search-button { grid-column:1/-1; width:100%; margin:2px 0 0; }
@@ -1880,6 +2004,9 @@ export default function AdmissionsPage() {
           .ad-search-button { grid-column:auto; }
           .ad-tabs { grid-template-columns:repeat(2,1fr); }
           .ad-tabs button { font-size:11px; padding:10px 5px; }
+          .ad-resources-shortcut { align-items:stretch; flex-direction:column; }
+          .ad-resources-actions { flex-direction:column; }
+          .ad-resources-grid article { padding:16px; }
           .ad-school-overview-list { grid-template-columns:1fr; }
           .ad-field-selector { grid-template-columns:repeat(2,1fr); }
           .ad-plan-toolbar { grid-template-columns:1fr; }
