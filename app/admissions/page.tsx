@@ -1686,7 +1686,7 @@ export default function AdmissionsPage() {
         .ad-warning > span { font-size:18px; }
         .ad-warning p { margin:0; font-size:12px; line-height:1.75; color:#78550b; }
         .ad-tabs { display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:8px; padding:7px; border-radius:18px; background:#fff; border:1.5px solid var(--border); box-shadow:var(--shadow-sm); }
-        .ad-tabs button { position:relative; border:0; border-radius:13px; padding:11px 12px; background:transparent; color:var(--text-muted); font:700 13px inherit; cursor:pointer; transition:.16s ease; }
+        .ad-tabs button { position:relative; border:0; border-radius:13px; padding:11px 8px; background:transparent; color:var(--text-muted); font-family:inherit; font-size:12px; font-weight:700; white-space:nowrap; cursor:pointer; transition:.16s ease; }
         .ad-tabs button span { margin-right:5px; }
         .ad-tabs button b { display:inline-flex; justify-content:center; align-items:center; min-width:18px; height:18px; padding:0 5px; margin-left:5px; border-radius:999px; background:#f472b6; color:#fff; font-size:10px; }
         .ad-tabs button.is-active { color:#fff; background:linear-gradient(135deg,#f472b6,#a78bfa); box-shadow:0 4px 13px rgba(244,114,182,.28); }
