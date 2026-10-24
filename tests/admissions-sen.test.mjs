@@ -10,7 +10,16 @@ test('한국외대 SW인재와 서류형은 수능최저 필터에서 구분된�
   const sw = find('sen-2028-hufs-sw');
   assert.equal(regular.hasMinimum, true);
   assert.equal(sw.hasMinimum, false);
-  assert.match(regular.verificationNote, /27쪽.*309쪽/);
+  assert.equal(regular.verificationNote, undefined);
+  assert.match(regular.minimum, /서울캠퍼스:.*2개 영역 등급 합 6 이내/);
+  assert.match(regular.minimum, /글로벌캠퍼스:.*2개 영역 등급 합 7 이내/);
+  assert.match(regular.minimum, /통합사회 혹은 통합과학 1과목/);
+  assert.equal(regular.sourceKey, 'hufs-official-2028-plan');
+  assert.equal(regular.sourcePage, 12);
+  assert.equal(regular.sourcePublishedAt, '2026-04-30');
+  assert.equal(regular.reviewedAt, '2026-10-25');
+  assert.match(regular.sourceUrl, /^https:\/\/adms\.hufs\.ac\.kr\/ajaxfile\//);
+  assert.match(regular.notes, /최종 2028학년도 수시 모집요강/);
   assert.equal(sw.verificationNote, undefined);
 });
 test('중앙대 UP 최저와 의학부 면접, 성균관대 과학인재 면접을 누락하지 않는다', () => {
@@ -37,4 +46,24 @@ test('모든 검색 카드와 82개 대학 쪽수는 중복 없이 출처를 추
   assert.equal(index.length, 82);
   assert.equal(new Set(index.map(row => row.name)).size, 82);
   for (const row of index) assert.ok(row.page <= row.endPage && row.endPage <= 334);
+});
+
+// Execute the actual page filter chain, so these checks cover the search UI's
+// keyword/category/minimum/interview combination without duplicating its logic.
+test('2028 검색에서 외대 서류형·SW인재와 캠퍼스별 최저를 찾을 수 있다', () => {
+  const page = readFileSync(new URL('../app/admissions/page.tsx', import.meta.url), 'utf8');
+  const chain = page.match(/return planRows([\s\S]*?)\.sort\(comparePlanRecords\)/)[1];
+  const search = new Function('planRows', 'planKeyword', 'planField', 'planCategory', 'planMinimum', 'planInterview', 'holisticEvaluation',
+    `const query = planKeyword.trim().toLocaleLowerCase("ko"); return planRows${chain};`);
+  const run = (keyword, minimum = '전체', interview = '전체', field = '전체') =>
+    search(data.records, keyword, field, '학생부종합', minimum, interview, () => '').map(r => r.id);
+  assert.deepEqual(run('한국외대', '있음', '없음'), ['2028-11-228']);
+  assert.ok(run('한국외대', '없음').includes('sen-2028-hufs-sw'));
+  assert.ok(!run('한국외대', '없음').includes('2028-11-228'));
+  assert.ok(!run('SW인재', '있음').includes('sen-2028-hufs-sw')); // Notes can mention other tracks.
+  assert.ok(run('SW인재', '없음').includes('sen-2028-hufs-sw'));
+  assert.ok(run('서류형', '있음', '없음', '인문·어문').includes('2028-11-228'));
+  assert.ok(run('서울캠퍼스: 국어').includes('2028-11-228'));
+  assert.ok(run('글로벌캠퍼스: 국어').includes('2028-11-228'));
+  assert.deepEqual(run('한국외대', '있음', '있음'), []);
 });

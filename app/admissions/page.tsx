@@ -39,6 +39,8 @@ type Admission2028Record = {
   hasInterview: boolean;
   sourceKey?: string;
   sourceLabel?: string;
+  sourcePublishedAt?: string;
+  reviewedAt?: string;
   sourcePage?: number;
   sourceUrl?: string;
   minimumScope?: string;
@@ -723,11 +725,13 @@ function PlanCard({ record }: { record: Admission2028Record }) {
           <p>{record.admission}</p>
         </div>
         {record.sourceUrl ? (
-          <a className="ad-source-page" href={`${record.sourceUrl}#page=${record.sourcePage}`} target="_blank" rel="noopener noreferrer">SEN {record.sourcePage}쪽 ↗</a>
+          <a className="ad-source-page" href={`${record.sourceUrl}#page=${record.sourcePage}`} target="_blank" rel="noopener noreferrer">{record.sourceKey === "hufs-official-2028-plan" ? "입학처 PDF" : "SEN"} {record.sourcePage}쪽 ↗</a>
         ) : <b className="ad-source-page">인천 7월 {record.page}쪽</b>}
       </div>
 
-      <p className="ad-plan-provenance">{record.sourceKey === "sen-20261014" ? "SEN 10.14 자료 대조" : "인천교육청 7월 자료 · 최신 SEN 원문 별도 확인"}</p>
+      <p className="ad-plan-provenance">{record.sourceKey === "hufs-official-2028-plan"
+        ? `${record.sourceLabel} · 발표 ${record.sourcePublishedAt} · 확인 ${record.reviewedAt}`
+        : record.sourceKey === "sen-20261014" ? "SEN 10.14 자료 대조" : "인천교육청 7월 자료 · 최신 SEN 원문 별도 확인"}</p>
       {record.verificationNote && <div className="ad-plan-verification"><b>자료를 비교하며 확인할 점</b><p>{record.verificationNote}</p></div>}
 
       <div className="ad-plan-fields">
@@ -1062,7 +1066,7 @@ export default function AdmissionsPage() {
   }, []);
 
   useEffect(() => {
-    fetch("/admissions-2028/records.json?v=sen-20261014")
+    fetch("/admissions-2028/records.json?v=hufs-20261025")
       .then((response) => {
         if (!response.ok) throw new Error("2028 data load failed");
         return response.json() as Promise<Admission2028Data>;
@@ -1225,7 +1229,7 @@ export default function AdmissionsPage() {
       <div className="ad-warning">
         <span>📌</span>
         <p>
-          점수 검색은 <b>이투스 2027학년도 9월 학력평가 지원참고표</b>, 2028 전형 검색은 <b>SEN 10월 14일 자료와 기존 교육청 자료</b>를 대조한 탐색 자료입니다. 카드마다 출처와 확인 범위를 표시합니다.
+          점수 검색은 <b>이투스 2027학년도 9월 학력평가 지원참고표</b>, 2028 전형 검색은 <b>SEN 10월 14일·기존 교육청 자료 및 한국외대 공식 시행계획</b>를 대조한 탐색 자료입니다. 카드마다 출처와 확인 범위를 표시합니다.
           시행계획은 바뀔 수 있으며 실제 지원 전에는 반드시 대학 입학처의 최종 모집요강을 확인해야 합니다.
         </p>
       </div>
