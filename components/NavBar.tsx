@@ -49,6 +49,7 @@ const NAV_GROUPS = [
     label: "대학입시", emoji: "🎓",
     items: [
       { href: "/admissions", label: "대학입시 살펴보기 🎓" },
+      { href: "/admissions/seoul", label: "서울 주요대학 입결·반영방식" },
     ],
   },
   {

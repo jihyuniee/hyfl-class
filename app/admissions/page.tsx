@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 
 type AdmissionRow = {
   r: string;
@@ -1225,6 +1226,15 @@ export default function AdmissionsPage() {
           <span>모집단위</span>
         </div>
       </section>
+
+      <aside className="ad-resources-shortcut" aria-label="서울 주요대학 입결 바로가기">
+        <div>
+          <span>인문·사회·어문계열</span>
+          <b>서울 주요대학 입결·2028 반영방식</b>
+          <p>과거 정시 결과와 백분위·환산점수의 차이를 확인해요.</p>
+        </div>
+        <Link href="/admissions/seoul">자료 보기 →</Link>
+      </aside>
 
       <div className="ad-warning">
         <span>📌</span>
