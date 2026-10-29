@@ -5,6 +5,7 @@ import { useState } from "react";
 import resultsData from "@/public/admissions-seoul/results.json";
 import plans from "@/public/admissions-seoul/plans.json";
 import styles from "./seoul.module.css";
+import MockScoreExplorer from "@/components/admissions/MockScoreExplorer";
 import PercentileBrowse from "@/components/admissions/PercentileBrowse";
 import AdmissionsNav from "@/components/admissions/AdmissionsNav";
 import ReferenceTable from "./ReferenceTable";
@@ -37,6 +38,8 @@ export default function SeoulAdmissions({ initialUniversity = "" }: { initialUni
     <header className={styles.hero}><span>정시 · 인문·사회·어문</span><h1>내 성적과 가까운 입결은?</h1><p>백분위 구간마다 어떤 대학·학과의 입결이 있는지 둘러보세요.</p></header>
     <p className={styles.date}>2024~2026 입결은 참고자료이며, 2028 합격을 보장하지 않아요.</p>
 
+    <MockScoreExplorer university={university} />
+
     <details className={styles.details}><summary>모의고사와 가까운 백분위 구간부터 보기</summary><PercentileBrowse /></details>
 
     <details open className={styles.details}><summary>대학·학과별 전체 입결과 환산점수 보기</summary><section className={styles.section} aria-labelledby="results-title">
@@ -63,7 +66,7 @@ export default function SeoulAdmissions({ initialUniversity = "" }: { initialUni
 
     <details className={styles.details}><summary>표준점수 합 지원참고 예상점수 보기</summary><ReferenceTable university={university} query={query} /></details>
 
-    <details className={styles.details}><summary>2028 정시 과목별 반영비율 둘러보기</summary><section className={styles.section} aria-labelledby="plans-title">
+    <details open className={styles.details}><summary>2028 정시 과목별 반영비율 둘러보기</summary><section className={styles.section} aria-labelledby="plans-title">
       <h2 id="plans-title">2028 정시에서는 무엇을 반영할까?</h2>
       <p>위의 대학 선택과 연동됩니다. 입결 검색어·연도·지표 필터는 아래 시행계획에 적용하지 않습니다. 15개 대학 30개 반영 사례를 추렸으며 모든 모집단위를 망라한 표는 아닙니다. 시행계획이므로 최종 모집요강을 다시 확인하세요.</p>
       {selectedPlans.length === 0 && <p className={styles.empty}>선택한 대학의 2028 반영방식은 이 요약에 없습니다. 대학 시행계획·최종 모집요강을 확인하세요.</p>}
