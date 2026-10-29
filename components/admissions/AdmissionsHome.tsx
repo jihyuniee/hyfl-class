@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import ClassGuide from "./ClassGuide";
 import StudentQuestions from "./StudentQuestions";
 import directory from "@/public/admissions-explorer/directory.json";
 import FieldBrowse from "./FieldBrowse";
@@ -13,6 +14,7 @@ export default function AdmissionsHome() {
   const [university, setUniversity] = useState("");
   return <section className={styles.home} aria-label="수시와 정시 탐색 시작">
     <header className={styles.startHeader}><span>2028 대입 · 서울 대학</span><h1>대학·성적·관심 분야, 어디서 시작할까요?</h1><p>가고 싶은 대학부터 찾아도, 배우고 싶은 분야부터 둘러봐도 좋아요.</p></header>
+    <ClassGuide />
     <section className={styles.panel} aria-labelledby="university-start"><h2 id="university-start">가고 싶은 대학이 있어요</h2><label>관심 대학<select className={styles.universitySelect} value={university} onChange={e => setUniversity(e.target.value)}><option value="">대학을 골라보세요</option>{directory.universities.map(u => <option key={u}>{u}</option>)}</select></label>
     <div className={styles.tools}><Link href={university ? `/admissions/seoul?university=${encodeURIComponent(university)}` : "/admissions/seoul"}>{university || "대학별"} 정시 입결 보기 →</Link><Link href={university ? `/admissions/susi?university=${encodeURIComponent(university)}` : "/admissions/susi"}>학과·탐구·수시 전형 보기 →</Link></div><p className={styles.muted}>30개 대학의 학과를 탐색할 수 있어요. 과거 정시 입결은 11개 대학 수록이며 자료가 없는 대학은 별도로 안내해요.</p></section>
     <div className={styles.tools}><Link href="/admissions/seoul#mock-score">모의고사 점수 입력</Link><a href="#student-questions">수시·정시 준비 비교</a><Link href="/admissions/susi">학과·탐구 주제 찾기</Link></div>

@@ -7,3 +7,5 @@
 .universitySelect{display:block;width:100%;min-height:44px;padding:10px;border:1px solid #bccdd0;border-radius:8px;background:white;color:#253e49;margin:8px 0 14px;font:inherit}.fold table{width:100%;table-layout:fixed;border-collapse:collapse;font-size:13px}.fold th,.fold td{padding:9px 6px;border:1px solid #d8e3de;text-align:left;overflow-wrap:anywhere;vertical-align:top}.fold caption{text-align:left;padding:8px 0;font-weight:600}.fold p,.fold li{font-size:14px}.fold .tools{margin:12px 0}
 
 .scoreCard{padding:16px;margin:12px 0;background:white;border:1px solid #d8e3de;border-radius:12px;overflow-wrap:anywhere}.scoreCard h3{font-size:17px}.panel form>button{margin-top:12px;border:0;min-height:44px;cursor:pointer}.scoreCard summary{cursor:pointer;min-height:44px;padding:8px 0}
+
+.classGuide{margin:18px 0;border:1px solid #d8e3de;border-radius:14px;background:#f8faf9;padding:14px 18px}.classGuide>summary{font-weight:700;cursor:pointer;min-height:44px}.classGuide li{margin:10px 0}.classGuide p,.classGuide li{font-size:14px}.classGuide .tools{margin:14px 0}.classGuide h3{font-size:17px}
