@@ -26,7 +26,18 @@ export default function ChinaAdmissionsPage() {
   return <div className={styles.page}>
     <AdmissionsNav current="china" />
     <header className={styles.hero}><span className={styles.eyebrow}>중국어과 · 국제학생 학부 진학 탐색</span><h1>중국 대학, 어떻게 지원할까?</h1><p>학교 추천과 대학 지원 절차를 구분하고, 관심 대학·전공의 공식 요건을 하나씩 확인해요.</p><p className={styles.muted}>2026.10.29 정리 · 아래 공식 자료는 칭화대 2027, 푸단대·저장대 2026 안내를 기준으로 합니다. 우리 반의 2028 입학 요건·일정이 확정되었다는 뜻은 아닙니다.</p></header>
-    <aside className={styles.panel} aria-labelledby="school-recommendation"><h2 id="school-recommendation">우리 학교 칭화대 추천 안내</h2><p><b>학교장 추천은 교내 1명입니다.</b></p><p>추천·지원 과정에서 <b>면접이 필요할 수 있습니다.</b> 희망 학생은 담임에게 먼저 문의하세요.</p><p>추천 시기·평가기준·제출서류는 교내 안내를 확인합니다. 면접 시행 주체·방식·일정은 교내 안내와 대학 공지에서 확인하세요. <b>학교 추천을 받는 것과 칭화대에 최종 합격하는 것은 별개입니다.</b></p><p className={styles.muted}>출처: 담임 전달 학교 안내(2026.10.29). 교내 1명은 우리 학교 추천 경로의 인원이며, 칭화대 전체의 한국인 선발 정원이나 모든 지원 경로의 인원을 뜻하지 않습니다.</p></aside>
+    <aside className={styles.panel} aria-labelledby="school-recommendation"><h2 id="school-recommendation">우리 학교 칭화대 추천 안내</h2><p>학교장 추천을 희망하는 학생은 담임에게 먼저 문의하세요. <b>학교 추천을 받는 것과 칭화대에 최종 합격하는 것은 별개입니다.</b></p>
+      <details><summary><b>2026년 교내 추천 선발 공지 · 참고자료 펼치기</b></summary>
+        <p className={styles.muted}>출처: 담임 전달 학교 안내 — 중국 칭화대 학교추천 학생선발 공지(제공 화면 2장). 아래는 2026년 시행 사례입니다. 우리 반의 2028 입학에 적용할 기준·인원·일정은 해당 연도 교내 공지로 확인하세요.</p>
+        <dl>
+          <dt><b>추천 인원·절차</b></dt><dd>학교장 추천은 교내 1명입니다. 지원 인원에 따라 면접이 필요할 수 있습니다. 1차 서류 심사 후, 지원자가 추천 인원 1명을 넘는 경우에만 2차 면접을 실시합니다.</dd>
+          <dt><b>교내 선발 기준</b></dt><dd>HSK 5급 자격증(공지상 점수 무관), 3학년 1학기까지 국영수사과 성적 35%·중국어 성적 35%·서류 및 면접 평가 30%입니다. 교내 기준과 대학의 최종 어학·지원 요건은 각각 확인해야 합니다.</dd>
+          <dt><b>면접 내용</b></dt><dd>신청서 내용을 바탕으로 지원 동기·희망 진로(10점), 중국 유학 준비(5점), 중국어 학습 열정·자격증·학업 계획·관련 활동(5점)을 평가합니다. 공지의 서류·면접 30%와 상세 면접 항목 합계 20점의 배점 관계는 담당 교사에게 확인하세요.</dd>
+          <dt><b>당시 일정</b></dt><dd>신청 2026.10.20.~10.23. 16:00 / 교내 면접 10.28. 14:15(변경 가능) / 발표 10.30. 12:00 이후 개별 통지 / 추천 합격자 원서 접수 11.20. 베이징 시간 17:00 마감.</dd>
+          <dt><b>지원 전 상담</b></dt><dd>공지는 중국 유학을 최우선으로 생각하는 학생의 지원을 원칙으로 안내합니다. 교내 추천은 우리 학교의 추천 경로이며 칭화대 전체 한국인 선발 정원을 뜻하지 않습니다.</dd>
+        </dl>
+      </details>
+    </aside>
 
     <section className={styles.section} aria-labelledby="china-steps"><h2 id="china-steps">지원 준비 순서</h2><div className={styles.planGrid}>{steps.map(([title, body], index) => <article className={styles.plan} key={title}><span className={styles.eyebrow}>STEP {index + 1}</span><h3>{title}</h3><p>{body}</p></article>)}</div><p className={styles.muted}>칭화대·저장대 공식 지원 절차와 서류 안내를 바탕으로 정리한 공통 확인 순서입니다. 대학별 필수 서류와 절차가 모두 동일한 것은 아닙니다.</p></section>
 
