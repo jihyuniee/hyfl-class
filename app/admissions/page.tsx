@@ -1214,20 +1214,20 @@ export default function AdmissionsPage() {
 
   return (
     <div className="ad-page">
-      <section className="hy-hero ad-hero">
+      {tab !== "overview" && <section className="hy-hero ad-hero">
         <div>
           <span className="ad-hero-tag">2026 한영외고 2-2</span>
           <h1>🎓 대학 입시 탐색</h1>
           <p>정시 입결과 수시 학과·전형을 나눠 살펴보고, 관심 대학에서 무엇을 배우는지 확인해요.</p>
         </div>
-        {tab === "overview" ? <div className="ad-hero-stat"><b>30</b><span>서울 대학 탐색</span><i /><b>2028</b><span>지원 준비</span></div> : <div className="ad-hero-stat">
+        <div className="ad-hero-stat">
           <b>179</b>
           <span>대학</span>
           <i />
           <b>4,109</b>
           <span>모집단위</span>
-        </div>}
-      </section>
+        </div>
+      </section>}
 
       {tab !== "overview" && <aside className="ad-resources-shortcut" aria-label="서울 주요대학 입결 바로가기">
         <div>
@@ -1238,13 +1238,13 @@ export default function AdmissionsPage() {
         <Link href="/admissions/seoul">자료 보기 →</Link>
       </aside>}
 
-      <div className="ad-warning">
+      {tab !== "overview" && <div className="ad-warning">
         <span>📌</span>
         <p>
           점수 검색은 <b>이투스 2027학년도 9월 학력평가 지원참고표</b>, 2028 전형 검색은 <b>SEN 10월 14일·기존 교육청 자료 및 한국외대 공식 시행계획</b>를 대조한 탐색 자료입니다. 카드마다 출처와 확인 범위를 표시합니다.
           시행계획은 바뀔 수 있으며 실제 지원 전에는 반드시 대학 입학처의 최종 모집요강을 확인해야 합니다.
         </p>
-      </div>
+      </div>}
 
       {tab !== "resources" && tab !== "overview" && (
         <aside className="ad-resources-shortcut" aria-label="2028 대학 자료 바로가기">
@@ -1257,7 +1257,7 @@ export default function AdmissionsPage() {
         </aside>
       )}
 
-      <nav className="ad-tabs" aria-label="대학 입시 메뉴">
+      {tab !== "overview" && <nav className="ad-tabs" aria-label="대학 입시 메뉴">
         {TABS.map((item) => (
           <button
             type="button"
@@ -1270,7 +1270,7 @@ export default function AdmissionsPage() {
             {item.key === "saved" && favorites.size > 0 && <b>{favorites.size}</b>}
           </button>
         ))}
-      </nav>
+      </nav>}
 
       {tab === "resources" && <UniversityResources />}
       {tab === "overview" && <AdmissionsHome />}
