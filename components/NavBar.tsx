@@ -49,7 +49,9 @@ const NAV_GROUPS = [
     label: "대학입시", emoji: "🎓",
     items: [
       { href: "/admissions", label: "대학입시 살펴보기 🎓" },
-      { href: "/admissions/seoul", label: "서울 주요대학 입결·반영방식" },
+      { href: "/admissions/seoul", label: "정시 · 입결과 반영방식" },
+      { href: "/admissions/susi", label: "수시 · 학과와 전형" },
+      { href: "/admissions/china", label: "중국 대학 지원 안내" },
     ],
   },
   {

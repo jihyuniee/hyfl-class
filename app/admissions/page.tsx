@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import AdmissionsHome from "@/components/admissions/AdmissionsHome";
 
 type AdmissionRow = {
   r: string;
@@ -18,7 +19,7 @@ type AdmissionRow = {
   p: number;
 };
 
-type TabKey = "score" | "search" | "plan" | "minimum" | "saved" | "guide" | "resources";
+type TabKey = "overview" | "score" | "search" | "plan" | "minimum" | "saved" | "guide" | "resources";
 
 type AdmissionManifest = {
   total: number;
@@ -56,6 +57,7 @@ type Admission2028Data = {
 };
 
 const TABS: { key: TabKey; label: string; emoji: string }[] = [
+  { key: "overview", label: "수시·정시 시작", emoji: "🎓" },
   { key: "score", label: "점수로 찾기", emoji: "📊" },
   { key: "search", label: "대학·학과 찾기", emoji: "🔎" },
   { key: "plan", label: "2028 학종 검색", emoji: "🧭" },
@@ -1032,7 +1034,7 @@ export default function AdmissionsPage() {
   const [planRows, setPlanRows] = useState<Admission2028Record[]>([]);
   const [planLoading, setPlanLoading] = useState(true);
   const [planError, setPlanError] = useState(false);
-  const [tab, setTab] = useState<TabKey>("score");
+  const [tab, setTab] = useState<TabKey>("overview");
   const [standardInput, setStandardInput] = useState("");
   const [percentileInput, setPercentileInput] = useState("");
   const [scoreSearched, setScoreSearched] = useState(false);
@@ -1216,25 +1218,25 @@ export default function AdmissionsPage() {
         <div>
           <span className="ad-hero-tag">2026 한영외고 2-2</span>
           <h1>🎓 대학 입시 탐색</h1>
-          <p>내 점수로 지원 가능 대학을 살펴보고, 관심 대학과 전형 정보를 한곳에서 확인해요.</p>
+          <p>정시 입결과 수시 학과·전형을 나눠 살펴보고, 관심 대학에서 무엇을 배우는지 확인해요.</p>
         </div>
-        <div className="ad-hero-stat">
+        {tab === "overview" ? <div className="ad-hero-stat"><b>30</b><span>서울 대학 탐색</span><i /><b>2028</b><span>지원 준비</span></div> : <div className="ad-hero-stat">
           <b>179</b>
           <span>대학</span>
           <i />
           <b>4,109</b>
           <span>모집단위</span>
-        </div>
+        </div>}
       </section>
 
-      <aside className="ad-resources-shortcut" aria-label="서울 주요대학 입결 바로가기">
+      {tab !== "overview" && <aside className="ad-resources-shortcut" aria-label="서울 주요대학 입결 바로가기">
         <div>
           <span>인문·사회·어문계열</span>
           <b>서울 주요대학 입결·2028 반영방식</b>
           <p>과거 정시 결과와 백분위·환산점수의 차이를 확인해요.</p>
         </div>
         <Link href="/admissions/seoul">자료 보기 →</Link>
-      </aside>
+      </aside>}
 
       <div className="ad-warning">
         <span>📌</span>
@@ -1244,7 +1246,7 @@ export default function AdmissionsPage() {
         </p>
       </div>
 
-      {tab !== "resources" && (
+      {tab !== "resources" && tab !== "overview" && (
         <aside className="ad-resources-shortcut" aria-label="2028 대학 자료 바로가기">
           <div>
             <span>경기도교육청 자료</span>
@@ -1271,15 +1273,16 @@ export default function AdmissionsPage() {
       </nav>
 
       {tab === "resources" && <UniversityResources />}
+      {tab === "overview" && <AdmissionsHome />}
 
-      {loading && tab !== "resources" && (
+      {loading && tab !== "resources" && tab !== "overview" && (
         <div className="ad-loading">
           <div />
           <p>대학 정보를 불러오고 있어요.</p>
         </div>
       )}
 
-      {loadError && tab !== "resources" && (
+      {loadError && tab !== "resources" && tab !== "overview" && (
         <div className="ad-empty">
           <span>⚠️</span>
           <p>대학 정보를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.</p>
