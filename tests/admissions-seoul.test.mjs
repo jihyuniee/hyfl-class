@@ -11,7 +11,7 @@ test('서울 입결의 출처·연도·백분위 단위를 보존한다', () => 
   assert.equal(new Set(results.map(r => `${r.univ}/${r.dept}/${r.year}`)).size, results.length);
   for (const r of results) {
     assert.ok([2024, 2025, 2026].includes(r.year));
-    assert.match(r.source, /^https:\/\/(www\.adiga\.kr|iphak\.ssu\.ac\.kr)\//);
+    assert.match(r.source, /^https:\/\/(www\.adiga\.kr|iphak\.ssu\.ac\.kr|admission\.ssu\.ac\.kr)\//);
     for (const field of ['mean_pct', 'cut_pct70']) {
       assert.ok(r[field] === null || (r[field] >= 0 && r[field] <= 100));
     }
