@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { readFileSync } from 'node:fs';
-import { latestPercentileResults, inPercentileBand, previewPercentileResults } from '../components/lib/admissionsBrowse.ts';
+import { latestPercentileResults, inPercentileBand, previewPercentileResults, belongsToProfile } from '../components/lib/admissionsBrowse.ts';
 const row = (univ, dept, year, cut_pct70, mean_pct = null) => ({ univ, dept, year, cut_pct70, mean_pct, source: 'https://example.test', metric_note: 'test' });
 test('백분위 구간에 평균·환산점수만 있는 자료를 섞지 않는다', () => {
   const result = latestPercentileResults([row('A', '경영', 2024, 90), row('A', '경영', 2025, null, 97), row('B', '경제', 2026, null, 96)]);
@@ -27,4 +27,12 @@ test('미리보기는 같은 대학만 반복하지 않고 실제 자료만 표�
   const preview = previewPercentileResults(data);
   assert.deepEqual(preview.map(r => r.univ), ['A', 'B', 'C']);
   assert.ok(preview.every(r => data.includes(r)));
+});
+
+test('계열 예시는 넓은 입시 분류 대신 학과 이름으로 연결한다', () => {
+  assert.ok(belongsToProfile('정치외교학과', 'politics'));
+  assert.ok(!belongsToProfile('보건정책관리학부', 'politics'));
+  assert.ok(belongsToProfile('사회학과', 'sociology'));
+  assert.ok(!belongsToProfile('사회과학대학융합전공학부', 'sociology'));
+  assert.ok(belongsToProfile('중국외교통상학부', 'china-trade'));
 });
