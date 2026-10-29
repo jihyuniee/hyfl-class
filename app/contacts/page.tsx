@@ -127,17 +127,17 @@ export default function ContactsPage() {
   if (step === "login") return (
     <div style={{ display:"flex", flexDirection:"column", gap:20 }}>
       <div className="hy-hero">
-        <div style={{ display:"inline-flex", alignItems:"center", background:"rgba(255,255,255,0.2)", backdropFilter:"blur(8px)", borderRadius:999, padding:"4px 14px", marginBottom:12, border:"1px solid rgba(255,255,255,0.3)" }}>
-          <span style={{ fontSize:12, color:"#fff", fontWeight:700 }}>🔒 개인정보 보호</span>
+        <div style={{ display:"inline-flex", alignItems:"center", background:"var(--primary-light)",  borderRadius:8, padding:"4px 14px", marginBottom:12, border:"1px solid var(--border)" }}>
+          <span style={{ fontSize:12, color:"var(--text)", fontWeight:700 }}>🔒 개인정보 보호</span>
         </div>
-        <h1 style={{ color:"#fff", fontSize:"clamp(20px,4vw,30px)", fontWeight:900, margin:"0 0 8px" }}>📞 연락처 확인</h1>
-        <p style={{ color:"rgba(255,255,255,0.85)", fontSize:13, margin:0, fontWeight:500, lineHeight:1.7 }}>
+        <h1 style={{ color:"var(--text)", fontSize:"var(--page-title-size)", fontWeight:800, margin:"0 0 8px" }}>📞 연락처 확인</h1>
+        <p style={{ color:"var(--text-muted)", fontSize:13, margin:0, fontWeight:500, lineHeight:1.7 }}>
           본인 인증 후 연락처를 확인하고<br/>잘못된 번호는 직접 수정할 수 있어요
         </p>
       </div>
 
       {/* 안내 카드 */}
-      <div style={{ borderRadius:18, padding:"18px 20px", background:"linear-gradient(135deg,#fffbeb,#fef9c3)", border:"1.5px solid #fde68a" }}>
+      <div style={{ borderRadius:8, padding:"18px 20px", background:"#fffbeb", border:"1px solid #fde68a" }}>
         <p style={{ fontSize:14, fontWeight:900, color:"#92400e", margin:"0 0 8px" }}>📢 꼭 확인해주세요!</p>
         <p style={{ fontSize:13, color:"#78350f", margin:"0 0 6px", lineHeight:1.7, fontWeight:500 }}>
           첫 시간에 작성한 설문을 바탕으로 연락처를 정리했어요.<br/>
@@ -172,7 +172,7 @@ export default function ContactsPage() {
         </div>
       </div>
 
-      <div className="hy-card" style={{ padding:"18px 22px", maxWidth:420, margin:"0 auto", width:"100%", background:"#f9fafb" }}>
+      <div className="hy-card" style={{ padding:"18px 22px", maxWidth:420, margin:"0 auto", width:"100%", background:"var(--surface-muted)" }}>
         <p style={{ fontSize:12, fontWeight:700, color:"var(--text-subtle)", margin:"0 0 10px" }}>👩‍🏫 선생님 전용</p>
         <div style={{ display:"flex", gap:8 }}>
           <input type="password" placeholder="관리자 비밀번호" value={adminPw}
@@ -188,12 +188,12 @@ export default function ContactsPage() {
   if (step === "myinfo" && myInfo) return (
     <div style={{ display:"flex", flexDirection:"column", gap:16 }}>
       <div className="hy-hero">
-        <h1 style={{ color:"#fff", fontSize:"clamp(20px,4vw,28px)", fontWeight:900, margin:"0 0 6px" }}>📞 내 연락처 확인</h1>
-        <p style={{ color:"rgba(255,255,255,0.85)", fontSize:13, margin:0, fontWeight:600 }}>{myInfo.student_no} {myInfo.name}</p>
+        <h1 style={{ color:"var(--text)", fontSize:"var(--page-title-size)", fontWeight:800, margin:"0 0 6px" }}>📞 내 연락처 확인</h1>
+        <p style={{ color:"var(--text-muted)", fontSize:13, margin:0, fontWeight:600 }}>{myInfo.student_no} {myInfo.name}</p>
       </div>
 
       {saved && (
-        <div style={{ padding:"12px 18px", borderRadius:14, background:"#f0fdf4", border:"1.5px solid #86efac", display:"flex", alignItems:"center", gap:8 }}>
+        <div style={{ padding:"12px 18px", borderRadius:8, background:"#f0fdf4", border:"1px solid #86efac", display:"flex", alignItems:"center", gap:8 }}>
           <span style={{ fontSize:18 }}>✅</span>
           <p style={{ fontSize:13, color:"#16a34a", fontWeight:700, margin:0 }}>저장 완료! 감사해요 🙂</p>
         </div>
@@ -204,7 +204,7 @@ export default function ContactsPage() {
         <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:20 }}>
           <h3 style={{ fontSize:15, fontWeight:900, color:"var(--text)", margin:0 }}>📋 연락처 정보</h3>
           <button onClick={() => setEditMode(o => !o)}
-            style={{ padding:"6px 14px", borderRadius:999, border:"1.5px solid var(--primary)", background: editMode ? "var(--primary)" : "#fff",
+            style={{ padding:"6px 14px", borderRadius:8, border:"1px solid var(--primary)", background: editMode ? "var(--primary)" : "#fff",
               color: editMode ? "#fff" : "var(--primary)", fontSize:12, fontWeight:700, cursor:"pointer", fontFamily:"inherit" }}>
             {editMode ? "✕ 취소" : "✏️ 수정하기"}
           </button>
@@ -212,7 +212,7 @@ export default function ContactsPage() {
 
         <div style={{ display:"flex", flexDirection:"column", gap:14 }}>
           {/* 학생 전화번호 */}
-          <div style={{ background:"#f9fafb", borderRadius:14, padding:"14px 16px" }}>
+          <div style={{ background:"var(--surface-muted)", borderRadius:8, padding:"14px 16px" }}>
             <p style={{ fontSize:11, fontWeight:800, color:"var(--text-subtle)", margin:"0 0 8px", textTransform:"uppercase", letterSpacing:"0.05em" }}>📱 내 전화번호</p>
             {editMode ? (
               <input value={editStudentPhone} onChange={e=>setEditStudentPhone(e.target.value)}
@@ -224,7 +224,7 @@ export default function ContactsPage() {
           </div>
 
           {/* 학부모 전화번호 */}
-          <div style={{ background:"#f9fafb", borderRadius:14, padding:"14px 16px" }}>
+          <div style={{ background:"var(--surface-muted)", borderRadius:8, padding:"14px 16px" }}>
             <p style={{ fontSize:11, fontWeight:800, color:"var(--text-subtle)", margin:"0 0 8px", textTransform:"uppercase", letterSpacing:"0.05em" }}>📞 학부모 전화번호</p>
             {editMode ? (
               <input value={editParentPhone} onChange={e=>setEditParentPhone(e.target.value)}
@@ -235,12 +235,12 @@ export default function ContactsPage() {
           </div>
 
           {/* 학부모 관계 + 성함 */}
-          <div style={{ borderTop:"1.5px solid var(--border)", paddingTop:16 }}>
+          <div style={{ borderTop:"1px solid var(--border)", paddingTop:16 }}>
             <p style={{ fontSize:13, fontWeight:800, color:"var(--text)", margin:"0 0 12px" }}>위 학부모 번호는 누구의 번호인가요?</p>
             <div style={{ display:"flex", gap:8, marginBottom:12 }}>
               {["엄마","아빠","기타"].map(r => (
                 <button key={r} onClick={()=>setRelation(r)}
-                  style={{ flex:1, padding:"12px 0", borderRadius:14, border:"2px solid", cursor:"pointer", fontFamily:"inherit", fontSize:14, fontWeight:800, transition:"all 0.15s",
+                  style={{ flex:1, padding:"12px 0", borderRadius:8, border:"2px solid", cursor:"pointer", fontFamily:"inherit", fontSize:14, fontWeight:800, transition:"all 0.15s",
                     borderColor: relation===r ? "var(--primary)" : "var(--border)",
                     background: relation===r ? "var(--primary-light)" : "#fff",
                     color: relation===r ? "var(--primary)" : "var(--text-muted)" }}>
@@ -273,8 +273,8 @@ export default function ContactsPage() {
   if (step === "admin") return (
     <div style={{ display:"flex", flexDirection:"column", gap:16 }}>
       <div className="hy-hero">
-        <h1 style={{ color:"#fff", fontSize:"clamp(20px,4vw,28px)", fontWeight:900, margin:"0 0 6px" }}>👩‍🏫 연락처 전체 현황</h1>
-        <p style={{ color:"rgba(255,255,255,0.85)", fontSize:13, margin:0, fontWeight:600 }}>
+        <h1 style={{ color:"var(--text)", fontSize:"var(--page-title-size)", fontWeight:800, margin:"0 0 6px" }}>👩‍🏫 연락처 전체 현황</h1>
+        <p style={{ color:"var(--text-muted)", fontSize:13, margin:0, fontWeight:600 }}>
           확인 완료: {allData.filter(d=>d.confirmed).length} / {allData.length}명
         </p>
       </div>
@@ -284,8 +284,8 @@ export default function ContactsPage() {
           <span style={{ fontSize:13, fontWeight:700, color:"var(--text)" }}>확인 완료 현황</span>
           <span style={{ fontSize:13, fontWeight:800, color:"var(--primary)" }}>{allData.filter(d=>d.confirmed).length}/{allData.length}명</span>
         </div>
-        <div style={{ height:10, borderRadius:999, background:"#f3e8ff", overflow:"hidden" }}>
-          <div style={{ height:"100%", borderRadius:999, background:"linear-gradient(90deg,var(--primary),var(--accent))",
+        <div style={{ height:10, borderRadius:8, background:"var(--accent-light)", overflow:"hidden" }}>
+          <div style={{ height:"100%", borderRadius:8, background:"var(--primary)",
             width:`${allData.length ? allData.filter(d=>d.confirmed).length/allData.length*100 : 0}%`, transition:"width 0.5s" }}/>
         </div>
         <div style={{ display:"flex", gap:16, marginTop:10 }}>
@@ -299,7 +299,7 @@ export default function ContactsPage() {
           <div key={d.id} className="hy-card" style={{ padding:"16px 20px", borderLeft:`3px solid ${d.confirmed?"#22c55e":"#f59e0b"}` }}>
             <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:10 }}>
               <div style={{ display:"flex", alignItems:"center", gap:8 }}>
-                <span style={{ fontSize:11, padding:"2px 8px", borderRadius:999, fontWeight:800,
+                <span style={{ fontSize:11, padding:"2px 8px", borderRadius:8, fontWeight:800,
                   background:d.confirmed?"#f0fdf4":"#fffbeb", color:d.confirmed?"#16a34a":"#f59e0b" }}>
                   {d.confirmed?"✅ 확인완료":"⏳ 미확인"}
                 </span>
@@ -307,16 +307,16 @@ export default function ContactsPage() {
               </div>
             </div>
             <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(170px,1fr))", gap:8 }}>
-              <div style={{ background:"#f9fafb", borderRadius:10, padding:"10px 12px" }}>
+              <div style={{ background:"var(--surface-muted)", borderRadius:6, padding:"10px 12px" }}>
                 <p style={{ fontSize:11, color:"var(--text-subtle)", fontWeight:700, margin:"0 0 3px" }}>📱 학생 번호</p>
                 <p style={{ fontSize:13, fontWeight:800, color:"var(--text)", margin:0 }}>{formatPhone(d.student_phone)}</p>
               </div>
-              <div style={{ background:"#f9fafb", borderRadius:10, padding:"10px 12px" }}>
+              <div style={{ background:"var(--surface-muted)", borderRadius:6, padding:"10px 12px" }}>
                 <p style={{ fontSize:11, color:"var(--text-subtle)", fontWeight:700, margin:"0 0 3px" }}>📞 학부모 번호</p>
                 <p style={{ fontSize:13, fontWeight:800, color:"var(--text)", margin:0 }}>{formatPhone(d.parent_phone)}</p>
               </div>
               {d.confirmed && (
-                <div style={{ background:"#f0fdf4", borderRadius:10, padding:"10px 12px" }}>
+                <div style={{ background:"#f0fdf4", borderRadius:6, padding:"10px 12px" }}>
                   <p style={{ fontSize:11, color:"#16a34a", fontWeight:700, margin:"0 0 3px" }}>
                     {d.parent_relation==="엄마"?"👩":d.parent_relation==="아빠"?"👨":"👤"} {d.parent_relation ?? "-"}
                   </p>

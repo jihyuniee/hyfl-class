@@ -1,9 +1,9 @@
 .page {
-  --ink: #20221d;
-  --paper: #f6f6ef;
-  --line: #dddfd4;
-  --muted: #6d7264;
-  --lime: #d6f36a;
+  --ink: var(--text);
+  --paper: var(--bg);
+  --line: var(--border);
+  --muted: var(--text-muted);
+  --lime: var(--highlight);
   display: flex;
   flex-direction: column;
   gap: 36px;
@@ -12,7 +12,7 @@
 }
 .page h1, .page h2, .page p, .page figure, .cover { margin: 0; }
 .page a { color: inherit; text-decoration: none; }
-.page a:focus-visible { outline: 3px solid #606f2b; outline-offset: 5px; }
+.page a:focus-visible { outline: 3px solid var(--primary); outline-offset: 5px; }
 .hero { min-width: 0; }
 .shortcutSection, .noticeList { min-width: 0; }
 .issueLine { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 0 0 15px; border-bottom: 1px solid var(--ink); font-family: Arial, sans-serif; font-size: 9px; font-weight: 700; letter-spacing: .1em; }
@@ -59,7 +59,7 @@
 .sectionHeading h2 { margin-top: 5px; font-size: 23px; font-weight: 800; letter-spacing: -.055em; line-height: 1.4; }
 .sectionAside { display: flex; align-items: center; gap: 18px; padding-bottom: 2px; color: var(--muted); font-size: 10px; }
 .sectionAside > span { font-size: 18px; color: var(--ink); }
-.quickGrid { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); border: 1px solid var(--line); border-radius: 6px; overflow: hidden; background: #fff; }
+.quickGrid { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); border: 1px solid var(--line); border-radius: var(--radius-card); overflow: hidden; background: #fff; }
 .quickLink { display: flex; flex-direction: column; align-items: flex-start; min-width: 0; padding: 19px 12px 17px; border-left: 1px solid var(--line); transition: background .18s; }
 .quickLink:first-child { border-left: 0; }
 .shortcutTop { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-bottom: 22px; }
@@ -70,16 +70,16 @@
 .examTag { flex-shrink: 0; padding: 4px 7px; background: var(--ink); color: #fff; font-family: Arial, sans-serif; font-size: 8px; font-weight: 700; letter-spacing: .08em; }
 .examBanner > span:last-child { margin-left: auto; font-size: 20px; }
 .featureGrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
-.featureCard { display: flex; flex-direction: column; min-width: 0; padding: 22px; border: 1px solid var(--ink); border-radius: 6px; transition: transform .2s, box-shadow .2s; }
+.featureCard { display: flex; flex-direction: column; min-width: 0; padding: 22px; border: 1px solid var(--ink); border-radius: var(--radius-card); transition: transform .2s, box-shadow .2s; }
 .featureCard[data-tone="lime"] { background: var(--lime); }
-.featureCard[data-tone="lavender"] { background: #e2dcf3; }
-.featureCard[data-tone="peach"] { background: #f3dcc8; }
+.featureCard[data-tone="lavender"] { background: var(--accent-light); }
+.featureCard[data-tone="peach"] { background: var(--peach); }
 .featureTop { display: flex; align-items: center; justify-content: space-between; gap: 14px; font-family: Arial, sans-serif; font-size: 9px; font-weight: 700; letter-spacing: .06em; }
 .featureTop > span:last-child { display: grid; place-items: center; width: 29px; height: 29px; border: 1px solid var(--ink); border-radius: 50%; font-size: 18px; }
 .featureCard h2 { margin: 26px 0 13px; font-size: clamp(21px, 2.2vw, 27px); font-weight: 800; line-height: 1.45; letter-spacing: -.055em; word-break: keep-all; }
 .featureCard p { margin-top: auto; font-size: 11px; line-height: 1.8; color: #505447; word-break: keep-all; }
 .dashboardGrid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 24px; align-items: start; }
-.timetableCard, .noticeCard { min-width: 0; padding: 23px; border: 1px solid var(--line); border-radius: 6px; background: #fff; }
+.timetableCard, .noticeCard { min-width: 0; padding: 23px; border: 1px solid var(--line); border-radius: var(--radius-card); background: #fff; }
 .cardHeading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 20px; }
 .cardHeading h2 { margin-top: 4px; font-size: 23px; font-weight: 800; letter-spacing: -.06em; }
 .cardHeading h2 > span { color: #91a743; }
@@ -103,7 +103,7 @@
 .noticeItem time { font-family: Arial, sans-serif; font-size: 9px; color: #7e8372; }
 .emptyNotice { padding: 24px 0; font-size: 12px; line-height: 1.8; color: var(--muted); }
 .emptyNotice a { display: block; text-decoration: underline; text-underline-offset: 4px; }
-.todoCard { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; padding: 24px; border-radius: 6px; background: var(--ink); color: #fff !important; }
+.todoCard { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; padding: 24px; border-radius: var(--radius-card); background: var(--ink); color: #fff !important; }
 .todoCard .microLabel { color: #c2c7b6; font-size: 8px; }
 .todoCard h2 { margin-top: 13px; font-size: 22px; font-weight: 700; line-height: 1.5; letter-spacing: -.05em; }
 .todoCard h2 span { color: var(--lime); }

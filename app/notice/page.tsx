@@ -81,7 +81,7 @@ export default function NoticePage() {
     // 이미지
     const img = document.createElement("img");
     img.src = url;
-    img.style.cssText = "max-width:100%;border-radius:10px;margin:6px 0;display:block;cursor:default;";
+    img.style.cssText = "max-width:100%;border-radius:var(--radius-control);margin:6px 0;display:block;cursor:default;";
     range.insertNode(img);
     // 이미지 뒤 줄바꿈 + 빈 텍스트
     const br = document.createElement("br");
@@ -182,17 +182,17 @@ export default function NoticePage() {
     <div style={{ display:"flex", flexDirection:"column", gap:20 }}>
 
       <style>{`
-        .notice-editor { min-height:200px; padding:14px 16px; border:1.5px solid var(--border); border-radius:0 0 14px 14px; font-size:14px; line-height:1.9; color:var(--text); outline:none; background:#fff; font-family:'Noto Sans KR',sans-serif; word-break:break-word; }
+        .notice-editor { min-height:200px; padding:14px 16px; border:1px solid var(--border); border-radius:0 0 14px 14px; font-size:14px; line-height:1.9; color:var(--text); outline:none; background:#fff; font-family:'Noto Sans KR',sans-serif; word-break:break-word; }
         .notice-editor:empty:before { content:"내용을 입력하세요.\\A이미지는 📷 버튼 또는 Ctrl+V(PC) 로 원하는 위치에 삽입할 수 있어요."; white-space:pre; color:#c4b5d4; pointer-events:none; }
-        .notice-editor img { max-width:100%; border-radius:10px; margin:6px 0; display:block; }
+        .notice-editor img { max-width:100%; border-radius:var(--radius-control); margin:6px 0; display:block; }
         .notice-content { font-size:14px; line-height:1.9; color:var(--text); word-break:break-word; }
-        .notice-content img { max-width:100%; border-radius:12px; margin:10px 0; display:block; }
+        .notice-content img { max-width:100%; border-radius:var(--radius-control); margin:10px 0; display:block; }
       `}</style>
 
       {/* 헤더 */}
       <div className="hy-hero">
-        <p style={{ color:"rgba(255,255,255,0.8)", fontSize:13, fontWeight:600, margin:"0 0 6px" }}>우리반 소식</p>
-        <h1 style={{ color:"#fff", fontSize:"clamp(22px,4vw,32px)", fontWeight:900, margin:0, letterSpacing:"-0.5px" }}>
+        <p style={{ color:"var(--text-muted)", fontSize:13, fontWeight:600, margin:"0 0 6px" }}>우리반 소식</p>
+        <h1 style={{ color:"var(--text)", fontSize:"var(--page-title-size)", fontWeight:800, margin:0, letterSpacing:"-0.5px" }}>
           📢 공지사항
         </h1>
       </div>
@@ -225,11 +225,11 @@ export default function NoticePage() {
             <input placeholder="제목 *" value={fTitle} onChange={e => setFTitle(e.target.value)} className="hy-input"/>
 
             {/* 툴바 */}
-            <div style={{ display:"flex", gap:8, alignItems:"center", padding:"8px 14px", background:"#f9fafb", border:"1.5px solid var(--border)", borderBottom:"none", borderRadius:"14px 14px 0 0" }}>
+            <div style={{ display:"flex", gap:8, alignItems:"center", padding:"8px 14px", background:"var(--surface-muted)", border:"1px solid var(--border)", borderBottom:"none", borderRadius:"14px 14px 0 0" }}>
               <button
                 onMouseDown={saveSelection}
                 onClick={() => fileInputRef.current?.click()}
-                style={{ display:"flex", alignItems:"center", gap:5, padding:"5px 12px", borderRadius:999, border:"1.5px solid var(--border)", background:"#fff", cursor:"pointer", fontSize:12, fontWeight:700, fontFamily:"inherit", color:"var(--text-muted)" }}>
+                style={{ display:"flex", alignItems:"center", gap:5, padding:"5px 12px", borderRadius:8, border:"1px solid var(--border)", background:"#fff", cursor:"pointer", fontSize:12, fontWeight:700, fontFamily:"inherit", color:"var(--text-muted)" }}>
                 📷 사진 삽입
               </button>
               {uploading && <span style={{ fontSize:12, color:"var(--primary)", fontWeight:700 }}>⏳ 업로드 중...</span>}
@@ -310,7 +310,7 @@ function NoticeCard({ notice, expanded, onToggle, isAdmin, onPin, onDelete, pinn
       <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", gap:10 }}>
         <div style={{ flex:1, cursor:"pointer" }} onClick={onToggle}>
           <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:4, flexWrap:"wrap" }}>
-            {pinned && <span style={{ fontSize:11, fontWeight:800, color:"var(--primary)", background:"var(--primary-light)", padding:"2px 8px", borderRadius:999 }}>📌 고정</span>}
+            {pinned && <span style={{ fontSize:11, fontWeight:800, color:"var(--primary)", background:"var(--primary-light)", padding:"2px 8px", borderRadius:8 }}>📌 고정</span>}
             <span style={{ fontWeight:800, fontSize:15, color:"var(--text)" }}>{notice.title}</span>
             {notice.image_urls?.length > 0 && <span style={{ fontSize:11, color:"var(--text-subtle)", fontWeight:600 }}>🖼️ {notice.image_urls.length}장</span>}
           </div>
@@ -318,10 +318,10 @@ function NoticeCard({ notice, expanded, onToggle, isAdmin, onPin, onDelete, pinn
         </div>
         {isAdmin && (
           <div style={{ display:"flex", gap:6, flexShrink:0 }}>
-            <button onClick={onPin} style={{ fontSize:11, padding:"4px 10px", borderRadius:999, border:"1.5px solid var(--border)", background:"#fff", cursor:"pointer", fontFamily:"inherit", fontWeight:700 }}>
+            <button onClick={onPin} style={{ fontSize:11, padding:"4px 10px", borderRadius:8, border:"1px solid var(--border)", background:"#fff", cursor:"pointer", fontFamily:"inherit", fontWeight:700 }}>
               {pinned ? "고정 해제" : "📌 고정"}
             </button>
-            <button onClick={onDelete} style={{ fontSize:11, padding:"4px 10px", borderRadius:999, border:"1.5px solid #fecaca", background:"#fff5f5", color:"#ef4444", cursor:"pointer", fontFamily:"inherit", fontWeight:700 }}>
+            <button onClick={onDelete} style={{ fontSize:11, padding:"4px 10px", borderRadius:8, border:"1px solid #fecaca", background:"#fff5f5", color:"#ef4444", cursor:"pointer", fontFamily:"inherit", fontWeight:700 }}>
               삭제
             </button>
           </div>
@@ -329,7 +329,7 @@ function NoticeCard({ notice, expanded, onToggle, isAdmin, onPin, onDelete, pinn
       </div>
 
       {expanded && (
-        <div style={{ marginTop:14, paddingTop:14, borderTop:"1.5px solid var(--border)" }}>
+        <div style={{ marginTop:14, paddingTop:14, borderTop:"1px solid var(--border)" }}>
           {isHtml ? (
             // 새 방식: HTML 그대로 (이미지 위치 보존)
             <div className="notice-content" dangerouslySetInnerHTML={{ __html: notice.content }}/>

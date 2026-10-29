@@ -123,12 +123,12 @@ function SummaryTable({ rows }: { rows: SummaryRow[] }) {
       <div className="mt-4 hidden overflow-x-auto md:block">
         <table className="w-full min-w-[560px] border-collapse">
           <thead>
-            <tr className="bg-gray-50 text-left">
-              <th className="w-28 rounded-l-2xl border-b px-4 py-3 text-sm font-semibold text-gray-700">
+            <tr className="bg-[var(--surface-muted)] text-left">
+              <th className="w-28 rounded-l-2xl border-b px-4 py-3 text-sm font-semibold text-[var(--text)]">
                 구분
               </th>
-              <th className="border-b px-4 py-3 text-sm font-semibold text-gray-700">담당</th>
-              <th className="rounded-r-2xl border-b px-4 py-3 text-sm font-semibold text-gray-700">
+              <th className="border-b px-4 py-3 text-sm font-semibold text-[var(--text)]">담당</th>
+              <th className="rounded-r-2xl border-b px-4 py-3 text-sm font-semibold text-[var(--text)]">
                 비고
               </th>
             </tr>
@@ -136,9 +136,9 @@ function SummaryTable({ rows }: { rows: SummaryRow[] }) {
           <tbody>
             {rows.map((row) => (
               <tr key={row.label} className="align-top">
-                <td className="whitespace-nowrap border-b px-4 py-4 text-sm font-semibold text-gray-900">{row.label}</td>
-                <td className="border-b px-4 py-4 text-sm text-gray-800">{row.value}</td>
-                <td className="border-b px-4 py-4 text-sm text-gray-700">{row.note}</td>
+                <td className="whitespace-nowrap border-b px-4 py-4 text-sm font-semibold text-[var(--text)]">{row.label}</td>
+                <td className="border-b px-4 py-4 text-sm text-[var(--text)]">{row.value}</td>
+                <td className="border-b px-4 py-4 text-sm text-[var(--text)]">{row.note}</td>
               </tr>
             ))}
           </tbody>
@@ -148,10 +148,10 @@ function SummaryTable({ rows }: { rows: SummaryRow[] }) {
       {/* 휴대폰: 카드 목록 */}
       <div className="mt-4 flex flex-col gap-3 md:hidden">
         {rows.map((row) => (
-          <div key={row.label} className="rounded-2xl border border-gray-100 bg-gray-50 p-4">
-            <div className="text-sm font-bold text-gray-900">{row.label}</div>
-            <div className="mt-1.5 text-sm text-gray-800">{row.value}</div>
-            <div className="mt-1.5 text-xs text-gray-500">{row.note}</div>
+          <div key={row.label} className="rounded-[var(--radius-card)] border border-[var(--border)] bg-[var(--surface-muted)] p-4">
+            <div className="text-sm font-bold text-[var(--text)]">{row.label}</div>
+            <div className="mt-1.5 text-sm text-[var(--text)]">{row.value}</div>
+            <div className="mt-1.5 text-xs text-[var(--text-muted)]">{row.note}</div>
           </div>
         ))}
       </div>
@@ -163,13 +163,13 @@ export default function CleaningPage() {
   const [semester, setSemester] = useState<SemesterId>(CURRENT_SEMESTER);
 
   return (
-    <div className="mx-auto max-w-6xl space-y-8 px-4 py-8">
-      <section className="rounded-[28px] border border-sky-100 bg-gradient-to-br from-sky-50 via-white to-emerald-50 p-8 shadow-sm">
-        <div className="text-sm font-medium text-sky-600">2학년 2반 학급 운영</div>
-        <h1 className="mt-2 text-3xl font-bold tracking-tight text-gray-900">
+    <div className="hy-page">
+      <section className="hy-hero">
+        <div className="text-sm font-medium text-[var(--primary)]">2학년 2반 학급 운영</div>
+        <h1 className="hy-page-title">
           🧹 우리반 청소 역할표
         </h1>
-        <p className="mt-3 text-sm leading-6 text-gray-700">
+        <p className="mt-3 text-sm leading-6 text-[var(--text)]">
           {semester === CURRENT_SEMESTER
             ? "칠판 담당과 특별구역 담당을 제외한 모든 학생이 주번에 참여해요. 휴지통 비우기 담당 학생이 주번인 주에는 쓰레기 버리기에서 빠지고, 나머지 3명이 쓰레기와 재활용품을 버리고 휴지통을 비워요."
             : "월요일, 목요일 청소 기준 역할표예요. 자료는 그대로 보존됩니다."}
@@ -186,7 +186,7 @@ export default function CleaningPage() {
 
 function NameCard({ name }: { name: string }) {
   return (
-    <div className="rounded-full bg-white px-4 py-2 text-sm font-medium text-gray-800 shadow-sm">
+    <div className="rounded-[var(--radius-control)] bg-[var(--surface)] px-4 py-2 text-sm font-medium text-[var(--text)] shadow-[var(--shadow-sm)]">
       {name}
     </div>
   );
@@ -198,7 +198,7 @@ function CleaningSecondSemester() {
   return (
     <>
       <section className="grid gap-4 md:grid-cols-3">
-        <div className="rounded-2xl border border-rose-200 bg-rose-50 p-5 shadow-sm">
+        <div className="rounded-[var(--radius-card)] border border-rose-200 bg-rose-50 p-5 shadow-[var(--shadow-sm)]">
           <div className="text-sm font-semibold text-rose-600">청소 총괄</div>
           <div className="mt-3 space-y-2">
             {s.managers.map((name) => (
@@ -207,13 +207,13 @@ function CleaningSecondSemester() {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-amber-200 bg-amber-50 p-5 shadow-sm">
+        <div className="rounded-[var(--radius-card)] border border-amber-200 bg-amber-50 p-5 shadow-[var(--shadow-sm)]">
           <div className="text-sm font-semibold text-amber-700">주번 대신 · 칠판 담당</div>
           <div className="mt-3 flex flex-wrap gap-2">
             {s.chalkboard.map((name) => (
               <span
                 key={name}
-                className="rounded-full bg-white px-3 py-1 text-sm font-medium text-gray-800 shadow-sm"
+                className="rounded-[var(--radius-control)] bg-[var(--surface)] px-3 py-1 text-sm font-medium text-[var(--text)] shadow-[var(--shadow-sm)]"
               >
                 {name}
               </span>
@@ -221,13 +221,13 @@ function CleaningSecondSemester() {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-violet-200 bg-violet-50 p-5 shadow-sm">
+        <div className="rounded-[var(--radius-card)] border border-violet-200 bg-violet-50 p-5 shadow-[var(--shadow-sm)]">
           <div className="text-sm font-semibold text-violet-700">휴지통 비우기 · 주번 참여</div>
           <div className="mt-3 flex flex-wrap gap-2">
             {s.trash.map((name) => (
               <span
                 key={name}
-                className="rounded-full bg-white px-3 py-1 text-sm font-medium text-gray-800 shadow-sm"
+                className="rounded-[var(--radius-control)] bg-[var(--surface)] px-3 py-1 text-sm font-medium text-[var(--text)] shadow-[var(--shadow-sm)]"
               >
                 {name}
               </span>
@@ -236,17 +236,17 @@ function CleaningSecondSemester() {
         </div>
       </section>
 
-      <section className="rounded-[24px] border border-emerald-200 bg-white p-6 shadow-sm">
+      <section className="rounded-[var(--radius-card)] border border-emerald-200 bg-[var(--surface)] p-6 shadow-[var(--shadow-sm)]">
         <div className="mb-4 flex items-center gap-2">
           <span className="text-2xl">🌿</span>
-          <h2 className="text-xl font-bold text-gray-900">주번 대신 · 특별구역 담당</h2>
+          <h2 className="text-xl font-bold text-[var(--text)]">주번 대신 · 특별구역 담당</h2>
         </div>
 
         <div className="flex flex-wrap gap-2">
           {s.specialZones.map((student) => (
             <span
               key={student.no}
-              className="rounded-full bg-emerald-50 px-4 py-2 text-sm font-medium text-gray-800"
+              className="rounded-[var(--radius-control)] bg-emerald-50 px-4 py-2 text-sm font-medium text-[var(--text)]"
             >
               {classNo(student.no)}번 {student.name}
             </span>
@@ -254,12 +254,12 @@ function CleaningSecondSemester() {
         </div>
       </section>
 
-      <section className="rounded-[24px] border border-gray-200 bg-white p-6 shadow-sm">
+      <section className="rounded-[var(--radius-card)] border border-[var(--border)] bg-[var(--surface)] p-6 shadow-[var(--shadow-sm)]">
         <div className="mb-2 flex items-center gap-2">
           <span className="text-2xl">🔁</span>
-          <h2 className="text-xl font-bold text-gray-900">주번 (매주 순환)</h2>
+          <h2 className="text-xl font-bold text-[var(--text)]">주번 (매주 순환)</h2>
         </div>
-        <p className="mb-4 text-sm leading-6 text-gray-700">
+        <p className="mb-4 text-sm leading-6 text-[var(--text)]">
           칠판·특별구역 담당을 제외한 {s.weekly.length}명이 매주 돌아가며 주번을 맡아요.
           휴지통 비우기 담당 학생도 주번에 참여하며, 주번인 주에는 나머지 3명이 쓰레기와 재활용품을 버리고 휴지통을 비워요.
         </p>
@@ -268,16 +268,16 @@ function CleaningSecondSemester() {
           {s.weekly.map((student) => (
             <span
               key={student.no}
-              className="rounded-full bg-sky-50 px-3 py-1 text-sm font-medium text-gray-800"
+              className="rounded-[var(--radius-control)] bg-sky-50 px-3 py-1 text-sm font-medium text-[var(--text)]"
             >
               {classNo(student.no)}번 {student.name}
             </span>
           ))}
         </div>
 
-        <div className="rounded-2xl border border-sky-100 bg-sky-50 p-4">
+        <div className="rounded-[var(--radius-card)] border border-sky-100 bg-sky-50 p-4">
           <div className="mb-2 text-sm font-semibold text-sky-700">주번이 할 일</div>
-          <ul className="list-inside list-disc space-y-1 text-sm text-gray-800">
+          <ul className="list-inside list-disc space-y-1 text-sm text-[var(--text)]">
             {s.weeklyTasks.map((task) => (
               <li key={task}>{task}</li>
             ))}
@@ -285,12 +285,12 @@ function CleaningSecondSemester() {
         </div>
       </section>
 
-      <section className="rounded-[24px] border border-gray-200 bg-white p-6 shadow-sm">
+      <section className="rounded-[var(--radius-card)] border border-[var(--border)] bg-[var(--surface)] p-6 shadow-[var(--shadow-sm)]">
         <div className="mb-2 flex items-center gap-2">
           <span className="text-2xl">🗓️</span>
-          <h2 className="text-xl font-bold text-gray-900">주번 주간 일정표</h2>
+          <h2 className="text-xl font-bold text-[var(--text)]">주번 주간 일정표</h2>
         </div>
-        <p className="mb-4 text-sm leading-6 text-gray-700">
+        <p className="mb-4 text-sm leading-6 text-[var(--text)]">
           8/24(다음 주)부터 종업식(12/31) 전까지예요. 중간고사(9/28~10/2)·기말고사(12/2~12/8)
           주간은 빠졌어요.
         </p>
@@ -298,11 +298,11 @@ function CleaningSecondSemester() {
         <div className="overflow-x-auto">
           <table className="w-full border-collapse">
             <thead>
-              <tr className="bg-gray-50 text-left">
-                <th className="rounded-l-2xl border-b px-3 py-3 text-sm font-semibold text-gray-700 sm:px-4">
+              <tr className="bg-[var(--surface-muted)] text-left">
+                <th className="rounded-l-2xl border-b px-3 py-3 text-sm font-semibold text-[var(--text)] sm:px-4">
                   기간
                 </th>
-                <th className="rounded-r-2xl border-b px-3 py-3 text-sm font-semibold text-gray-700 sm:px-4">
+                <th className="rounded-r-2xl border-b px-3 py-3 text-sm font-semibold text-[var(--text)] sm:px-4">
                   담당
                 </th>
               </tr>
@@ -313,15 +313,15 @@ function CleaningSecondSemester() {
                 const isThisWeek = todayIso >= week.start && todayIso <= week.end;
                 return (
                   <tr key={week.start} className={isThisWeek ? "bg-sky-50" : undefined}>
-                    <td className="whitespace-nowrap border-b px-3 py-3 text-sm font-semibold text-gray-900 sm:px-4">
+                    <td className="whitespace-nowrap border-b px-3 py-3 text-sm font-semibold text-[var(--text)] sm:px-4">
                       {formatWeekRange(week.start, week.end)}
                       {isThisWeek && (
-                        <span className="ml-2 inline-block rounded-full bg-sky-500 px-2 py-0.5 text-xs font-bold text-white">
+                        <span className="ml-2 inline-block rounded-[var(--radius-control)] bg-sky-500 px-2 py-0.5 text-xs font-bold text-white">
                           이번 주
                         </span>
                       )}
                     </td>
-                    <td className="border-b px-3 py-3 text-sm text-gray-800 sm:px-4">
+                    <td className="border-b px-3 py-3 text-sm text-[var(--text)] sm:px-4">
                       {week.pair
                         .map((name) => {
                           const student = STUDENTS.find((item) => item.name === name);
@@ -337,8 +337,8 @@ function CleaningSecondSemester() {
         </div>
       </section>
 
-      <section className="rounded-[24px] border border-gray-200 bg-white p-6 shadow-sm">
-        <h2 className="text-xl font-bold text-gray-900">전체 역할 한눈에 보기</h2>
+      <section className="rounded-[var(--radius-card)] border border-[var(--border)] bg-[var(--surface)] p-6 shadow-[var(--shadow-sm)]">
+        <h2 className="text-xl font-bold text-[var(--text)]">전체 역할 한눈에 보기</h2>
         <SummaryTable rows={SUMMARY_ROWS_2ND} />
       </section>
     </>
@@ -351,7 +351,7 @@ function CleaningFirstSemester() {
   return (
     <>
       <section className="grid gap-4 md:grid-cols-3">
-        <div className="rounded-2xl border border-rose-200 bg-rose-50 p-5 shadow-sm">
+        <div className="rounded-[var(--radius-card)] border border-rose-200 bg-rose-50 p-5 shadow-[var(--shadow-sm)]">
           <div className="text-sm font-semibold text-rose-600">청소 총괄</div>
           <div className="mt-3 space-y-2">
             {s.managers.map((name) => (
@@ -360,13 +360,13 @@ function CleaningFirstSemester() {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-amber-200 bg-amber-50 p-5 shadow-sm">
+        <div className="rounded-[var(--radius-card)] border border-amber-200 bg-amber-50 p-5 shadow-[var(--shadow-sm)]">
           <div className="text-sm font-semibold text-amber-700">청소 제외 · 칠판 담당</div>
           <div className="mt-3 flex flex-wrap gap-2">
             {s.excluded.chalkboard.map((name) => (
               <span
                 key={name}
-                className="rounded-full bg-white px-3 py-1 text-sm font-medium text-gray-800 shadow-sm"
+                className="rounded-[var(--radius-control)] bg-[var(--surface)] px-3 py-1 text-sm font-medium text-[var(--text)] shadow-[var(--shadow-sm)]"
               >
                 {name}
               </span>
@@ -374,13 +374,13 @@ function CleaningFirstSemester() {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-violet-200 bg-violet-50 p-5 shadow-sm">
+        <div className="rounded-[var(--radius-card)] border border-violet-200 bg-violet-50 p-5 shadow-[var(--shadow-sm)]">
           <div className="text-sm font-semibold text-violet-700">청소 제외 · 휴지통 비우기 담당</div>
           <div className="mt-3 flex flex-wrap gap-2">
             {s.excluded.trash.map((name) => (
               <span
                 key={name}
-                className="rounded-full bg-white px-3 py-1 text-sm font-medium text-gray-800 shadow-sm"
+                className="rounded-[var(--radius-control)] bg-[var(--surface)] px-3 py-1 text-sm font-medium text-[var(--text)] shadow-[var(--shadow-sm)]"
               >
                 {name}
               </span>
@@ -389,25 +389,25 @@ function CleaningFirstSemester() {
         </div>
       </section>
 
-      <section className="rounded-[24px] border border-emerald-200 bg-white p-6 shadow-sm">
+      <section className="rounded-[var(--radius-card)] border border-emerald-200 bg-[var(--surface)] p-6 shadow-[var(--shadow-sm)]">
         <div className="mb-4 flex items-center gap-2">
           <span className="text-2xl">🌿</span>
-          <h2 className="text-xl font-bold text-gray-900">특별구역 담당</h2>
+          <h2 className="text-xl font-bold text-[var(--text)]">특별구역 담당</h2>
         </div>
 
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {s.specialZones.map((item) => (
-            <div key={item.name} className="rounded-2xl border border-emerald-100 bg-emerald-50 p-5">
+            <div key={item.name} className="rounded-[var(--radius-card)] border border-emerald-100 bg-emerald-50 p-5">
               <div className="text-sm font-semibold text-emerald-700">{item.zone}</div>
-              <div className="mt-2 text-lg font-bold text-gray-900">{item.name}</div>
+              <div className="mt-2 text-lg font-bold text-[var(--text)]">{item.name}</div>
             </div>
           ))}
         </div>
       </section>
 
       <section className="grid gap-6 lg:grid-cols-2">
-        <div className="rounded-[24px] border border-gray-200 bg-white p-6 shadow-sm">
-          <h2 className="text-xl font-bold text-gray-900">월요일 청소</h2>
+        <div className="rounded-[var(--radius-card)] border border-[var(--border)] bg-[var(--surface)] p-6 shadow-[var(--shadow-sm)]">
+          <h2 className="text-xl font-bold text-[var(--text)]">월요일 청소</h2>
 
           <div className="mt-5 space-y-5">
             <div>
@@ -416,7 +416,7 @@ function CleaningFirstSemester() {
                 {s.classroomFront.map((name) => (
                   <span
                     key={name}
-                    className="rounded-full bg-sky-50 px-3 py-1 text-sm font-medium text-gray-800"
+                    className="rounded-[var(--radius-control)] bg-sky-50 px-3 py-1 text-sm font-medium text-[var(--text)]"
                   >
                     {name}
                   </span>
@@ -430,7 +430,7 @@ function CleaningFirstSemester() {
                 {s.classroomBack.map((name) => (
                   <span
                     key={name}
-                    className="rounded-full bg-rose-50 px-3 py-1 text-sm font-medium text-gray-800"
+                    className="rounded-[var(--radius-control)] bg-rose-50 px-3 py-1 text-sm font-medium text-[var(--text)]"
                   >
                     {name}
                   </span>
@@ -444,7 +444,7 @@ function CleaningFirstSemester() {
                 {s.specialZones.map((item) => (
                   <span
                     key={item.name}
-                    className="rounded-full bg-emerald-50 px-3 py-1 text-sm font-medium text-gray-800"
+                    className="rounded-[var(--radius-control)] bg-emerald-50 px-3 py-1 text-sm font-medium text-[var(--text)]"
                   >
                     {item.name}
                   </span>
@@ -454,8 +454,8 @@ function CleaningFirstSemester() {
           </div>
         </div>
 
-        <div className="rounded-[24px] border border-gray-200 bg-white p-6 shadow-sm">
-          <h2 className="text-xl font-bold text-gray-900">목요일 청소</h2>
+        <div className="rounded-[var(--radius-card)] border border-[var(--border)] bg-[var(--surface)] p-6 shadow-[var(--shadow-sm)]">
+          <h2 className="text-xl font-bold text-[var(--text)]">목요일 청소</h2>
 
           <div className="mt-5 space-y-5">
             <div>
@@ -464,7 +464,7 @@ function CleaningFirstSemester() {
                 {s.classroomFront.map((name) => (
                   <span
                     key={name}
-                    className="rounded-full bg-sky-50 px-3 py-1 text-sm font-medium text-gray-800"
+                    className="rounded-[var(--radius-control)] bg-sky-50 px-3 py-1 text-sm font-medium text-[var(--text)]"
                   >
                     {name}
                   </span>
@@ -478,7 +478,7 @@ function CleaningFirstSemester() {
                 {s.classroomBack.map((name) => (
                   <span
                     key={name}
-                    className="rounded-full bg-rose-50 px-3 py-1 text-sm font-medium text-gray-800"
+                    className="rounded-[var(--radius-control)] bg-rose-50 px-3 py-1 text-sm font-medium text-[var(--text)]"
                   >
                     {name}
                   </span>
@@ -492,7 +492,7 @@ function CleaningFirstSemester() {
                 {s.specialZones.map((item) => (
                   <span
                     key={item.name}
-                    className="rounded-full bg-emerald-50 px-3 py-1 text-sm font-medium text-gray-800"
+                    className="rounded-[var(--radius-control)] bg-emerald-50 px-3 py-1 text-sm font-medium text-[var(--text)]"
                   >
                     {item.name}
                   </span>
@@ -503,8 +503,8 @@ function CleaningFirstSemester() {
         </div>
       </section>
 
-      <section className="rounded-[24px] border border-gray-200 bg-white p-6 shadow-sm">
-        <h2 className="text-xl font-bold text-gray-900">전체 역할 한눈에 보기</h2>
+      <section className="rounded-[var(--radius-card)] border border-[var(--border)] bg-[var(--surface)] p-6 shadow-[var(--shadow-sm)]">
+        <h2 className="text-xl font-bold text-[var(--text)]">전체 역할 한눈에 보기</h2>
         <SummaryTable rows={SUMMARY_ROWS_1ST} />
       </section>
     </>

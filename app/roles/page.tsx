@@ -262,11 +262,11 @@ export default function RolesPage() {
   const [semester, setSemester] = useState<SemesterId>(CURRENT_SEMESTER);
 
   return (
-    <div className="mx-auto max-w-6xl space-y-6 px-4 py-8">
-      <section className="rounded-[28px] border border-rose-100 bg-gradient-to-br from-rose-50 via-white to-sky-50 p-8 shadow-sm">
-        <div className="text-sm font-medium text-rose-500">2학년 2반 학급 운영 조직</div>
-        <h1 className="mt-2 text-3xl font-bold tracking-tight text-gray-900">1인 1역할</h1>
-        <p className="mt-3 text-sm leading-6 text-gray-700">
+    <div className="hy-page">
+      <section className="hy-hero">
+        <div className="text-sm font-medium text-[var(--primary)]">2학년 2반 학급 운영 조직</div>
+        <h1 className="hy-page-title">1인 1역할</h1>
+        <p className="mt-3 text-sm leading-6 text-[var(--text)]">
           {semester === CURRENT_SEMESTER
             ? "칠판·쓰레기 담당은 매일 필요한 청소 역할로 별도 운영합니다. 청소 역할만으로는 학기말에 각자의 역량과 성장 과정을 충분히 기록하기 어려워, 해당 학생들이 선택한 교과 멘토 활동을 1인 1역할로 연결했습니다. 이번 학기 동안 친구들의 학습을 돕고 자료를 나누며 의미 있는 활동을 만들어주세요."
             : "1학기 최종 확정 역할표예요. 자료는 그대로 보존됩니다."}
@@ -298,25 +298,25 @@ function DeptSections({
       {sections.map((section) => (
         <section
           key={section.dept}
-          className="rounded-[24px] border border-gray-200 bg-white p-6 shadow-sm"
+          className="rounded-[var(--radius-card)] border border-[var(--border)] bg-[var(--surface)] p-6 shadow-[var(--shadow-sm)]"
         >
           <div className="mb-4 flex items-center gap-2">
             <span className="text-2xl">{section.emoji}</span>
-            <h2 className="text-xl font-bold text-gray-900">{section.dept}</h2>
+            <h2 className="text-xl font-bold text-[var(--text)]">{section.dept}</h2>
           </div>
 
           {/* 태블릿·데스크톱: 표 */}
           <div className="hidden overflow-x-auto md:block">
             <table className="w-full min-w-[560px] border-collapse">
               <thead>
-                <tr className="bg-gray-50 text-left">
-                  <th className="w-36 rounded-l-2xl border-b px-4 py-3 text-sm font-semibold text-gray-700">
+                <tr className="bg-[var(--surface-muted)] text-left">
+                  <th className="w-36 rounded-l-2xl border-b px-4 py-3 text-sm font-semibold text-[var(--text)]">
                     역할
                   </th>
-                  <th className="border-b px-4 py-3 text-sm font-semibold text-gray-700">
+                  <th className="border-b px-4 py-3 text-sm font-semibold text-[var(--text)]">
                     담당자
                   </th>
-                  <th className="rounded-r-2xl border-b px-4 py-3 text-sm font-semibold text-gray-700">
+                  <th className="rounded-r-2xl border-b px-4 py-3 text-sm font-semibold text-[var(--text)]">
                     설명
                   </th>
                 </tr>
@@ -324,22 +324,22 @@ function DeptSections({
               <tbody>
                 {section.roles.map((item) => (
                   <tr key={`${section.dept}-${item.role}`} className="align-top">
-                    <td className="whitespace-nowrap border-b px-4 py-4 text-sm font-semibold text-gray-900">
+                    <td className="whitespace-nowrap border-b px-4 py-4 text-sm font-semibold text-[var(--text)]">
                       {item.role}
                     </td>
-                    <td className="border-b px-4 py-4 text-sm text-gray-800">
+                    <td className="border-b px-4 py-4 text-sm text-[var(--text)]">
                       <div className="flex flex-wrap gap-2">
                         {item.students.map((student) => (
                           <span
                             key={student}
-                            className="rounded-full bg-rose-100 px-3 py-1 text-xs font-medium text-rose-700"
+                            className="rounded-[var(--radius-control)] bg-rose-100 px-3 py-1 text-xs font-medium text-rose-700"
                           >
                             {student}
                           </span>
                         ))}
                       </div>
                     </td>
-                    <td className="border-b px-4 py-4 text-sm leading-6 text-gray-700">
+                    <td className="border-b px-4 py-4 text-sm leading-6 text-[var(--text)]">
                       {item.desc}
                     </td>
                   </tr>
@@ -353,20 +353,20 @@ function DeptSections({
             {section.roles.map((item) => (
               <div
                 key={`${section.dept}-${item.role}-card`}
-                className="rounded-2xl border border-gray-100 bg-gray-50 p-4"
+                className="rounded-[var(--radius-card)] border border-[var(--border)] bg-[var(--surface-muted)] p-4"
               >
-                <div className="text-sm font-bold text-gray-900">{item.role}</div>
+                <div className="text-sm font-bold text-[var(--text)]">{item.role}</div>
                 <div className="mt-2 flex flex-wrap gap-2">
                   {item.students.map((student) => (
                     <span
                       key={student}
-                      className="rounded-full bg-rose-100 px-3 py-1 text-xs font-medium text-rose-700"
+                      className="rounded-[var(--radius-control)] bg-rose-100 px-3 py-1 text-xs font-medium text-rose-700"
                     >
                       {student}
                     </span>
                   ))}
                 </div>
-                <div className="mt-2 text-sm leading-6 text-gray-700">{item.desc}</div>
+                <div className="mt-2 text-sm leading-6 text-[var(--text)]">{item.desc}</div>
               </div>
             ))}
           </div>
@@ -374,30 +374,30 @@ function DeptSections({
       ))}
 
       {extraRoles && extraRoles.length > 0 && (
-        <section className="rounded-[24px] border border-amber-200 bg-amber-50 p-6 shadow-sm">
+        <section className="rounded-[var(--radius-card)] border border-amber-200 bg-amber-50 p-6 shadow-[var(--shadow-sm)]">
           <div className="mb-4 flex items-center gap-2">
             <span className="text-2xl">✨</span>
-            <h2 className="text-xl font-bold text-gray-900">{extraTitle}</h2>
+            <h2 className="text-xl font-bold text-[var(--text)]">{extraTitle}</h2>
           </div>
 
           <div className="grid gap-4 md:grid-cols-3">
             {extraRoles.map((item) => (
               <div
                 key={item.role}
-                className="rounded-2xl border border-amber-200 bg-white p-5 shadow-sm"
+                className="rounded-[var(--radius-card)] border border-amber-200 bg-[var(--surface)] p-5 shadow-[var(--shadow-sm)]"
               >
-                <div className="text-base font-bold text-gray-900">{item.role}</div>
+                <div className="text-base font-bold text-[var(--text)]">{item.role}</div>
                 <div className="mt-3 flex flex-wrap gap-2">
                   {item.students.map((student) => (
                     <span
                       key={student}
-                      className="rounded-full bg-sky-100 px-3 py-1 text-xs font-medium text-sky-700"
+                      className="rounded-[var(--radius-control)] bg-sky-100 px-3 py-1 text-xs font-medium text-sky-700"
                     >
                       {student}
                     </span>
                   ))}
                 </div>
-                <div className="mt-3 text-sm leading-6 text-gray-700">{item.desc}</div>
+                <div className="mt-3 text-sm leading-6 text-[var(--text)]">{item.desc}</div>
               </div>
             ))}
           </div>

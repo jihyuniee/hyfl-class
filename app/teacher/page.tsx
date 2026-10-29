@@ -10,16 +10,16 @@ function Card({
   children: React.ReactNode;
 }) {
   return (
-    <section className="rounded-2xl border bg-white p-5">
-      <h2 className="text-base font-semibold text-gray-900">{title}</h2>
-      <div className="mt-3 text-sm leading-7 text-gray-800">{children}</div>
+    <section className="rounded-[var(--radius-card)] border bg-[var(--surface)] p-5 border-[var(--border)]">
+      <h2 className="text-base font-semibold text-[var(--text)]">{title}</h2>
+      <div className="mt-3 text-sm leading-7 text-[var(--text)]">{children}</div>
     </section>
   );
 }
 
 function Chip({ children }: { children: React.ReactNode }) {
   return (
-    <span className="inline-flex items-center rounded-full border bg-gray-50 px-3 py-1 text-xs text-gray-700">
+    <span className="inline-flex items-center rounded-[var(--radius-control)] border bg-[var(--surface-muted)] px-3 py-1 text-xs text-[var(--text)] border-[var(--border)]">
       {children}
     </span>
   );
@@ -39,11 +39,11 @@ export default function TeacherPage() {
   return (
     <div className="space-y-6">
       {/* 헤더 */}
-      <div className="rounded-2xl border bg-white p-6">
+      <div className="hy-hero">
         <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
           <div className="space-y-2">
-            <div className="text-sm text-gray-600">한영외국어고등학교 2학년 2반 담임 자기소개</div>
-            <h1 className="text-2xl font-bold text-gray-900">
+            <div className="text-sm text-[var(--text-muted)]">한영외국어고등학교 2학년 2반 담임 자기소개</div>
+            <h1 className="hy-page-title">
               안녕하세요, 지현쌤(정보쌤/인탐쌤/컴쌤)입니다.
             </h1>
 
@@ -53,7 +53,7 @@ export default function TeacherPage() {
               <Chip>이름: 이지현 (별칭: 컴도리)</Chip>
             </div>
 
-            <div className="pt-2 text-sm text-gray-700">
+            <div className="pt-2 text-sm text-[var(--text)]">
               <div className="font-semibold">여러분이 불러도 되는 호칭</div>
               <div>지현쌤 · 정보쌤 · 인탐쌤 · 컴쌤</div>
             </div>
@@ -61,33 +61,33 @@ export default function TeacherPage() {
 
           {/* 캐릭터 이미지 */}
           <div className="flex items-center gap-3">
-            <div className="rounded-2xl border bg-gray-50 p-3">
+            <div className="rounded-[var(--radius-card)] border bg-[var(--surface-muted)] p-3 border-[var(--border)]">
               <Image
                 src="/comdori.png"
                 alt="컴도리"
                 width={96}
                 height={96}
-                className="rounded-xl"
+                className="rounded-[var(--radius-card)]"
                 priority
               />
-              <div className="mt-2 text-center text-xs text-gray-600">컴도리</div>
+              <div className="mt-2 text-center text-xs text-[var(--text-muted)]">컴도리</div>
             </div>
-            <div className="rounded-2xl border bg-gray-50 p-3">
+            <div className="rounded-[var(--radius-card)] border bg-[var(--surface-muted)] p-3 border-[var(--border)]">
               <Image
                 src="/comsuni.png"
                 alt="컴수니"
                 width={96}
                 height={96}
-                className="rounded-xl"
+                className="rounded-[var(--radius-card)]"
               />
-              <div className="mt-2 text-center text-xs text-gray-600">컴수니</div>
+              <div className="mt-2 text-center text-xs text-[var(--text-muted)]">컴수니</div>
             </div>
           </div>
         </div>
 
-        <div className="mt-5 rounded-2xl border bg-gray-50 p-4">
-          <div className="text-sm font-semibold text-gray-900">오늘부터 우리 반 슬로건</div>
-          <div className="mt-1 text-lg font-bold text-gray-900">
+        <div className="mt-5 rounded-[var(--radius-card)] border bg-[var(--surface-muted)] p-4 border-[var(--border)]">
+          <div className="text-sm font-semibold text-[var(--text)]">오늘부터 우리 반 슬로건</div>
+          <div className="mt-1 text-lg font-bold text-[var(--text)]">
             “지금부터 할 수 있는 것부터, 나부터.”
           </div>
         </div>
@@ -112,8 +112,8 @@ export default function TeacherPage() {
           저는 “차분하고 따뜻하지만, 기준은 분명한 담임”을 목표로 합니다. 우리 반에서 특히 지키고
           싶은 약속은 아래입니다.
         </p>
-        <div className="mt-4 rounded-2xl border bg-gray-50 p-4">
-          <div className="font-semibold text-gray-900">우리 반 핵심 약속 5가지</div>
+        <div className="mt-4 rounded-[var(--radius-card)] border bg-[var(--surface-muted)] p-4 border-[var(--border)]">
+          <div className="font-semibold text-[var(--text)]">우리 반 핵심 약속 5가지</div>
           <List
             items={[
               "거짓말 금지: 실수는 괜찮지만, 숨기지는 말기. 같이 해결하기.",
@@ -152,20 +152,20 @@ export default function TeacherPage() {
       <Card title="상담/연락 안내 (편하게, 하지만 규칙은 지켜요)">
         <div className="space-y-3">
           <div>
-            <div className="font-semibold text-gray-900">상담 방식</div>
+            <div className="font-semibold text-[var(--text)]">상담 방식</div>
             <div>대면 / 메신저 / 예약제 모두 가능합니다.</div>
           </div>
 
           <div>
-            <div className="font-semibold text-gray-900">상담 가능한 시간</div>
+            <div className="font-semibold text-[var(--text)]">상담 가능한 시간</div>
             <div>
               조회 전, 점심시간, 방과 후, 특히 <span className="font-semibold">월요일</span>에 여유가
               있습니다. (긴 상담이 필요하면 예약이 가장 좋습니다.)
             </div>
           </div>
 
-          <div className="rounded-2xl border bg-gray-50 p-4">
-            <div className="font-semibold text-gray-900">연락 규칙</div>
+          <div className="rounded-[var(--radius-card)] border bg-[var(--surface-muted)] p-4 border-[var(--border)]">
+            <div className="font-semibold text-[var(--text)]">연락 규칙</div>
             <List
               items={[
                 "오후 6시 이후에는 답이 늦을 수 있습니다.",
@@ -179,43 +179,43 @@ export default function TeacherPage() {
 
       {/* 퀴즈 */}
       <Card title="컴도리’s QUIZ (첫 만남용)">
-        <p className="text-gray-700">
+        <p className="text-[var(--text)]">
           아래는 “지현쌤 사용설명서” 퀴즈입니다. 오늘/이번 주에 정답 공개할게요.
         </p>
 
         <div className="mt-4 space-y-3">
-          <div className="rounded-2xl border bg-gray-50 p-4">
+          <div className="rounded-[var(--radius-card)] border bg-[var(--surface-muted)] p-4 border-[var(--border)]">
             <div className="font-semibold">1) 제가 더 자주 하는 말은?</div>
             <div className="mt-1">A. “괜찮아, 다음에 하면 돼.”</div>
             <div>B. “지금부터 할 수 있는 것부터, 나부터.”</div>
           </div>
 
-          <div className="rounded-2xl border bg-gray-50 p-4">
+          <div className="rounded-[var(--radius-card)] border bg-[var(--surface-muted)] p-4 border-[var(--border)]">
             <div className="font-semibold">2) 제가 더 좋아하는 교실은?</div>
             <div className="mt-1">A. 조용히 집중되는 교실</div>
             <div>B. 웃음이 있고, 선을 지키는 교실</div>
           </div>
 
-          <div className="rounded-2xl border bg-gray-50 p-4">
+          <div className="rounded-[var(--radius-card)] border bg-[var(--surface-muted)] p-4 border-[var(--border)]">
             <div className="font-semibold">3) 제가 더 신뢰하는 것은?</div>
             <div className="mt-1">A. ‘잘한다’는 말</div>
             <div>B. ‘꾸준히 했다’는 기록/과정</div>
           </div>
 
-          <div className="rounded-2xl border bg-gray-50 p-4">
+          <div className="rounded-[var(--radius-card)] border bg-[var(--surface-muted)] p-4 border-[var(--border)]">
             <div className="font-semibold">4) “바이브코딩”에 가까운 설명은?</div>
             <div className="mt-1">A. 감으로 막 코딩하기</div>
             <div>B. 아이디어를 말/글로 정리해서 구현해 보기</div>
           </div>
 
-          <div className="rounded-2xl border bg-gray-50 p-4">
+          <div className="rounded-[var(--radius-card)] border bg-[var(--surface-muted)] p-4 border-[var(--border)]">
             <div className="font-semibold">5) 제가 좋아하는 음식은?</div>
             <div className="mt-1">A. 불닭</div>
             <div>B. (평범한 맛)</div>
           </div>
         </div>
 
-        <div className="mt-4 rounded-2xl border bg-white p-4 text-sm text-gray-700">
+        <div className="mt-4 rounded-[var(--radius-card)] border bg-[var(--surface)] p-4 text-sm text-[var(--text)] border-[var(--border)]">
           정답을 맞힌 사람에게는{" "}
           <span className="font-semibold">[소소한 칭찬/혜택]</span>을 고민해 보겠습니다.
         </div>
@@ -223,7 +223,7 @@ export default function TeacherPage() {
 
       {/* 첫날/첫주 */}
       <Card title="첫날/첫주에 여러분에게 받고 싶은 것 (짧게만!)">
-        <p className="text-gray-700">
+        <p className="text-[var(--text)]">
           아래 질문에 <span className="font-semibold">짧게</span>라도 답해 주면, 담임이 1년을
           운영하는 데 큰 도움이 됩니다.
         </p>
@@ -236,8 +236,8 @@ export default function TeacherPage() {
             "“나는 이런 방식이면 더 편해요” (말 먼저 걸어주기/조용히 두기/메신저로 이야기하기 등)",
           ]}
         />
-        <div className="mt-4 rounded-2xl border bg-gray-50 p-4">
-          <div className="font-semibold text-gray-900">마지막으로</div>
+        <div className="mt-4 rounded-[var(--radius-card)] border bg-[var(--surface-muted)] p-4 border-[var(--border)]">
+          <div className="font-semibold text-[var(--text)]">마지막으로</div>
           <p className="mt-1">
             저는 여러분이 <span className="font-semibold">믿을 수 있는 어른</span>으로 남고
             싶습니다. 완벽한 한 해가 아니어도 괜찮습니다. 대신,{" "}

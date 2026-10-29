@@ -55,7 +55,7 @@ export default function StudentPicker({
         <div
           style={{
             position: "absolute", top: "calc(100% + 6px)", left: 0, right: 0, zIndex: 20,
-            background: "#fff", border: "1.5px solid var(--border)", borderRadius: 16,
+            background: "#fff", border: "1px solid var(--border)", borderRadius:8,
             boxShadow: "0 12px 32px rgba(0,0,0,0.12)", padding: 10,
           }}
         >
@@ -79,7 +79,7 @@ export default function StudentPicker({
                 onClick={() => pick(s)}
                 style={{
                   display: "flex", alignItems: "center", justifyContent: "space-between",
-                  padding: "10px 12px", borderRadius: 12, border: "none",
+                  padding: "10px 12px", borderRadius:6, border: "none",
                   background: value?.no === s.no ? "var(--primary-light)" : "transparent",
                   cursor: "pointer", fontFamily: "inherit", textAlign: "left",
                 }}

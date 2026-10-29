@@ -65,13 +65,13 @@ export default function WallIntroPage() {
       {/* 헤더 */}
       <div className="hy-hero">
         <div style={{ position:"relative" }}>
-          <div style={{ display:"inline-flex", alignItems:"center", background:"rgba(255,255,255,0.2)", backdropFilter:"blur(8px)", borderRadius:999, padding:"4px 14px", marginBottom:12, border:"1px solid rgba(255,255,255,0.3)" }}>
-            <span style={{ fontSize:12, color:"#fff", fontWeight:700 }}>2026 한영외고 2-2</span>
+          <div style={{ display:"inline-flex", alignItems:"center", background:"var(--primary-light)",  borderRadius:8, padding:"4px 14px", marginBottom:12, border:"1px solid var(--border)" }}>
+            <span style={{ fontSize:12, color:"var(--text)", fontWeight:700 }}>2026 한영외고 2-2</span>
           </div>
-          <h1 style={{ color:"#fff", fontSize:"clamp(22px,4vw,32px)", fontWeight:900, margin:"0 0 8px", letterSpacing:"-0.5px" }}>
+          <h1 style={{ color:"var(--text)", fontSize:"var(--page-title-size)", fontWeight:800, margin:"0 0 8px", letterSpacing:"-0.5px" }}>
             🌸 자기소개 담벼락
           </h1>
-          <p style={{ color:"rgba(255,255,255,0.85)", fontSize:13, margin:0, fontWeight:500, lineHeight:1.7 }}>
+          <p style={{ color:"var(--text-muted)", fontSize:13, margin:0, fontWeight:500, lineHeight:1.7 }}>
             서로를 편하게 알아가기 위한 공간이야 🙂
           </p>
         </div>
@@ -112,7 +112,7 @@ export default function WallIntroPage() {
                       { label:"🎯 올해 이루고 싶은 것",  value: intro.thisYearGoal },
                       { label:"💬 하고 싶은 말",        value: intro.message },
                     ].filter(f => f.value?.trim()).map(f => (
-                      <div key={f.label} style={{ background:"#f9fafb", borderRadius:12, padding:"12px 14px" }}>
+                      <div key={f.label} style={{ background:"var(--surface-muted)", borderRadius:6, padding:"12px 14px" }}>
                         <p style={{ fontSize:11, fontWeight:800, color:"var(--text-subtle)", margin:"0 0 4px", textTransform:"uppercase", letterSpacing:"0.04em" }}>{f.label}</p>
                         <p style={{ fontSize:13, color:"var(--text)", margin:0, whiteSpace:"pre-wrap", lineHeight:1.7 }}>{f.value}</p>
                       </div>
@@ -127,7 +127,7 @@ export default function WallIntroPage() {
                     {p.image_urls.map((url, idx) => (
                       <a key={idx} href={url} target="_blank" rel="noreferrer">
                         <img src={url} alt="첨부 이미지"
-                          style={{ width:"100%", height:100, objectFit:"cover", borderRadius:12, display:"block" }}/>
+                          style={{ width:"100%", height:100, objectFit:"cover", borderRadius:6, display:"block" }}/>
                       </a>
                     ))}
                   </div>

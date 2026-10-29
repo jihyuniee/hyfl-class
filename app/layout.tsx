@@ -5,7 +5,7 @@ import SiteFrame from "@/components/SiteFrame";
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#c084fc",
+  themeColor: "#f6f6ef",
 };
 
 export const metadata: Metadata = {

@@ -42,7 +42,7 @@ const STEPS = [
 
 const ABILITIES = [
   { title: "창의적 사고", desc: "익숙한 문제를 새로운 시각으로 바라보고 독창적인 아이디어를 제안한다.", color: "#4F46E5" },
-  { title: "문제 해결", desc: "문제를 지적하는 데서 멈추지 않고 원인을 분석하고 해결 방안을 설계한다.", color: "#7C3AED" },
+  { title: "문제 해결", desc: "문제를 지적하는 데서 멈추지 않고 원인을 분석하고 해결 방안을 설계한다.", color: "var(--primary)" },
   { title: "협업", desc: "팀원들과 역할을 나누고 의견을 조율하며 함께 해결책을 만들어 간다.", color: "#06B6D4" },
   { title: "의사소통", desc: "설문, 인터뷰, 발표 등을 통해 생각을 설득력 있게 전달한다.", color: "#10B981" },
   { title: "공동체 의식", desc: "나만의 불편함이 아니라 학교 구성원 모두를 위한 방향을 고민한다.", color: "#F59E0B" },
@@ -50,7 +50,7 @@ const ABILITIES = [
 
 const TRAITS = [
   { num: "01", title: "질문한다", desc: "무엇이 문제인지 발견한다.", color: "#4F46E5" },
-  { num: "02", title: "분석한다", desc: "현상이 아닌 원인을 찾는다.", color: "#7C3AED" },
+  { num: "02", title: "분석한다", desc: "현상이 아닌 원인을 찾는다.", color: "var(--primary)" },
   { num: "03", title: "확인한다", desc: "설문, 인터뷰, 데이터로 근거를 수집한다.", color: "#06B6D4" },
   { num: "04", title: "제안한다", desc: "실행 가능한 해결 방안을 만든다.", color: "#10B981" },
 ];
@@ -91,7 +91,7 @@ function toISODateKST() {
 }
 
 function getStage(groupLogs: Log[]) {
-  if (groupLogs.length === 0) return { label: "문제 발견 단계", color: "#94a3b8" };
+  if (groupLogs.length === 0) return { label: "문제 발견 단계", color: "var(--text-subtle)" };
   if (groupLogs.some(l => l.log_type === "최종보고")) return { label: "결과물 제작 · 공유", color: "#a855f7" };
   if (groupLogs.some(l => l.log_type === "중간보고")) return { label: "해결 방안 설계 중", color: "#f97316" };
   return { label: "원인 분석 · 자료 조사 중", color: "#3b82f6" };
@@ -193,25 +193,19 @@ export default function ResearchPage() {
     <div style={{ display:"flex", flexDirection:"column", gap:64, paddingBottom:40 }}>
 
       {/* ===================== HERO ===================== */}
-      <section style={{
-        background:"linear-gradient(135deg,#312e81 0%,#4F46E5 45%,#7C3AED 85%,#06B6D4 130%)",
-        borderRadius:28, padding:"64px 36px", position:"relative", overflow:"hidden",
-        boxShadow:"0 24px 60px rgba(79,70,229,0.35)",
-      }}>
-        {[{w:320,h:320,top:-120,right:-100,op:0.10},{w:180,h:180,bottom:-70,left:-50,op:0.10}].map((b,i)=>(
-          <div key={i} style={{ position:"absolute",width:b.w,height:b.h,top:b.top,right:b.right,bottom:b.bottom,left:b.left,borderRadius:"50%",background:"#fff",opacity:b.op,filter:"blur(2px)" }}/>
-        ))}
+      <section className="hy-hero">
+        
         <div style={{ position:"relative", maxWidth:680 }}>
-          <div style={{ display:"inline-flex",alignItems:"center",background:"rgba(255,255,255,0.15)",backdropFilter:"blur(8px)",borderRadius:999,padding:"5px 16px",marginBottom:24,border:"1px solid rgba(255,255,255,0.25)" }}>
-            <span style={{ fontSize:12,color:"#fff",fontWeight:700,letterSpacing:"1.5px" }}>RESEARCH PROJECT</span>
+          <div style={{ display:"inline-flex",alignItems:"center",background:"var(--primary-light)",borderRadius:8,padding:"5px 16px",marginBottom:24,border:"1px solid var(--border)" }}>
+            <span style={{ fontSize:12,color:"var(--text)",fontWeight:700,letterSpacing:"1.5px" }}>RESEARCH PROJECT</span>
           </div>
-          <h1 style={{ color:"#fff",fontSize:"clamp(26px,5vw,42px)",fontWeight:900,margin:"0 0 18px",letterSpacing:"-1px",lineHeight:1.3 }}>
+          <h1 style={{ color:"var(--text)",fontSize:"var(--page-title-size)",fontWeight:800,margin:"0 0 18px",letterSpacing:"-1px",lineHeight:1.3 }}>
             우리 학교 좋은 학교 만들기 프로젝트
           </h1>
-          <p style={{ color:"rgba(255,255,255,0.92)",fontSize:"clamp(15px,2.2vw,19px)",fontWeight:700,margin:"0 0 26px",lineHeight:1.9 }}>
+          <p style={{ color:"var(--text-muted)",fontSize:"clamp(15px,2.2vw,19px)",fontWeight:700,margin:"0 0 26px",lineHeight:1.9 }}>
             문제를 발견하고,<br/>원인을 분석하고,<br/>해결 방안을 설계하는 탐구
           </p>
-          <p style={{ color:"rgba(255,255,255,0.78)",fontSize:14.5,margin:0,lineHeight:2 }}>
+          <p style={{ color:"var(--text-muted)",fontSize:14.5,margin:0,lineHeight:2 }}>
             학교생활 속에서 더 나아질 수 있는 점을 발견하고,<br/>
             그 원인을 분석하며, 설문조사·인터뷰·데이터 분석 등을 통해<br/>
             근거를 수집하고, 실제로 적용 가능한 해결 방안을<br/>
@@ -281,7 +275,7 @@ export default function ResearchPage() {
                     <h3 style={{ color:"var(--text)",fontSize:15,fontWeight:800,margin:0 }}>{g.name}</h3>
                     {isAdmin && (
                       <button onClick={e=>{e.stopPropagation();deleteGroup(g.id);}}
-                        style={{ fontSize:10,padding:"2px 8px",borderRadius:999,border:"1px solid var(--border)",background:"transparent",color:"var(--text-subtle)",cursor:"pointer",fontFamily:"inherit" }}>
+                        style={{ fontSize:10,padding:"2px 8px",borderRadius:8,border:"1px solid var(--border)",background:"transparent",color:"var(--text-subtle)",cursor:"pointer",fontFamily:"inherit" }}>
                         삭제
                       </button>
                     )}
@@ -320,7 +314,7 @@ export default function ResearchPage() {
             </div>
 
             {lOpen && (
-              <div style={{ marginBottom:20,padding:"18px",background:"#f8faff",borderRadius:16,border:"1.5px solid #e0e7ff" }}>
+              <div style={{ marginBottom:20,padding:"18px",background:"#f8faff",borderRadius:8,border:"1px solid #e0e7ff" }}>
                 <div style={{ display:"flex",flexDirection:"column",gap:10 }}>
                   <div style={{ display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(160px,1fr))",gap:10 }}>
                     <select value={lType} onChange={e=>setLType(e.target.value as Log["log_type"])} className="hy-input" style={{ cursor:"pointer" }}>
@@ -346,9 +340,9 @@ export default function ResearchPage() {
             ) : (
               <div style={{ display:"flex",flexDirection:"column",gap:10 }}>
                 {groupLogs.map(l=>(
-                  <div key={l.id} style={{ padding:"14px 16px",borderRadius:14,background:"#fafafa",border:"1.5px solid var(--border)" }}>
+                  <div key={l.id} style={{ padding:"14px 16px",borderRadius:8,background:"var(--surface-muted)",border:"1px solid var(--border)" }}>
                     <div style={{ display:"flex",alignItems:"center",gap:8,marginBottom:8,flexWrap:"wrap" }}>
-                      <span style={{ fontSize:11,fontWeight:700,padding:"2px 10px",borderRadius:999,background:TYPE_STYLE[l.log_type]?.bg,color:TYPE_STYLE[l.log_type]?.color }}>
+                      <span style={{ fontSize:11,fontWeight:700,padding:"2px 10px",borderRadius:8,background:TYPE_STYLE[l.log_type]?.bg,color:TYPE_STYLE[l.log_type]?.color }}>
                         {l.log_type}
                       </span>
                       <span style={{ fontSize:12,color:"var(--text-subtle)",fontWeight:600 }}>{l.date}</span>
@@ -357,7 +351,7 @@ export default function ResearchPage() {
                     <p style={{ fontSize:14,color:"var(--text)",lineHeight:1.7,margin:0,whiteSpace:"pre-wrap" }}>{l.content}</p>
                     {l.report_link && (
                       <a href={l.report_link} target="_blank" rel="noopener noreferrer"
-                        style={{ display:"inline-flex",alignItems:"center",gap:4,marginTop:10,fontSize:12,fontWeight:700,color:"#6366f1",textDecoration:"none",padding:"5px 12px",borderRadius:999,background:"#eff6ff",border:"1px solid #c7d2fe" }}>
+                        style={{ display:"inline-flex",alignItems:"center",gap:4,marginTop:10,fontSize:12,fontWeight:700,color:"#6366f1",textDecoration:"none",padding:"5px 12px",borderRadius:8,background:"#eff6ff",border:"1px solid #c7d2fe" }}>
                         보고물 보기 →
                       </a>
                     )}
@@ -377,7 +371,7 @@ export default function ResearchPage() {
             lineHeight:1.7, color:"var(--text)", margin:0, letterSpacing:"-0.5px",
           }}>
             좋은 탐구는<br/>
-            <span style={{ background:"linear-gradient(135deg,#4F46E5,#7C3AED)", WebkitBackgroundClip:"text", backgroundClip:"text", color:"transparent" }}>
+            <span style={{ background:"var(--text)", WebkitBackgroundClip:"text", backgroundClip:"text", color:"transparent" }}>
               문제를 발견하는 것에서 끝나지 않는다.
             </span>
           </h2>
@@ -403,8 +397,8 @@ export default function ResearchPage() {
           {ABILITIES.map((a,i)=>(
             <Reveal key={a.title} delay={i*60}>
               <div className="hy-hover-card" style={{
-                borderRadius:20, padding:"24px 22px", height:"100%",
-                background:"#fff", border:"1.5px solid var(--border)",
+                borderRadius:8, padding:"24px 22px", height:"100%",
+                background:"#fff", border:"1px solid var(--border)",
                 borderTop:`3px solid ${a.color}`,
               }}>
                 <h3 style={{ fontSize:15.5, fontWeight:800, margin:"0 0 8px", color:a.color }}>{a.title}</h3>
@@ -417,8 +411,8 @@ export default function ResearchPage() {
 
       {/* ===================== 좋은 탐구의 특징 ===================== */}
       <section style={{
-        background:"linear-gradient(135deg,#eef2ff 0%,#f5f3ff 50%,#ecfeff 100%)",
-        borderRadius:28, padding:"44px 32px",
+        background:"var(--primary-light)",
+        borderRadius:8, padding:"44px 32px",
       }}>
         <Reveal>
           <h2 style={{ fontSize:"clamp(20px,3.5vw,26px)", fontWeight:900, color:"var(--text)", margin:"0 0 28px", letterSpacing:"-0.5px", textAlign:"center" }}>
@@ -429,8 +423,8 @@ export default function ResearchPage() {
           {TRAITS.map((t,i)=>(
             <Reveal key={t.title} delay={i*70}>
               <div className="hy-hover-card" style={{
-                borderRadius:20, padding:"26px 22px", height:"100%",
-                background:"#fff", boxShadow:"0 4px 20px rgba(79,70,229,0.08)",
+                borderRadius:8, padding:"26px 22px", height:"100%",
+                background:"#fff", boxShadow:"0 4px 20px rgba(76,97,41,0.08)",
               }}>
                 <div style={{ fontSize:13, fontWeight:900, color:t.color, marginBottom:12, letterSpacing:"1px" }}>{t.num}</div>
                 <h3 style={{ fontSize:17, fontWeight:900, margin:"0 0 8px", color:"var(--text)" }}>{t.title}</h3>
@@ -458,9 +452,9 @@ export default function ResearchPage() {
                 <div className="hy-flow-node">
                   <div style={{
                     width:64, height:64, borderRadius:"50%",
-                    background:`linear-gradient(135deg, ${["#4F46E5","#6D40E0","#7C3AED","#5B6FE0","#06B6D4","#10B981","#06B6D4"][i]}, ${["#7C3AED","#7C3AED","#06B6D4","#06B6D4","#10B981","#06B6D4","#4F46E5"][i]})`,
+                    background:["var(--primary)","var(--accent)","#7a5738","var(--primary-dark)","#316968","#39704f","#356a80"][i],
                     display:"flex", alignItems:"center", justifyContent:"center",
-                    color:"#fff", fontSize:14, fontWeight:800, boxShadow:"0 8px 20px rgba(79,70,229,0.25)",
+                    color:"#fff", fontSize:14, fontWeight:800, boxShadow:"0 8px 20px rgba(76,97,41,0.25)",
                   }}>{f}</div>
                 </div>
                 {i < FLOW.length-1 && <span className="hy-flow-arrow">→</span>}
@@ -473,8 +467,8 @@ export default function ResearchPage() {
       {/* ===================== 우리가 지향하는 탐구 ===================== */}
       <Reveal>
         <section style={{
-          background:"linear-gradient(135deg,#312e81 0%,#1e1b4b 100%)",
-          borderRadius:24, padding:"40px 32px", color:"#fff",
+          background:"var(--text)",
+          borderRadius:8, padding:"40px 32px", color:"#fff",
         }}>
           <h2 style={{ fontSize:"clamp(18px,3vw,24px)", fontWeight:900, margin:"0 0 18px", letterSpacing:"-0.5px" }}>
             우리가 지향하는 탐구
@@ -491,7 +485,7 @@ export default function ResearchPage() {
               "얼마나 현실적인 해결 방안을 고민했는가",
             ].map(t=>(
               <div key={t} style={{
-                border:"1px solid rgba(255,255,255,0.15)", borderRadius:14, padding:"16px",
+                border:"1px solid rgba(255,255,255,0.15)", borderRadius:8, padding:"16px",
                 background:"rgba(255,255,255,0.05)", fontSize:13.5, fontWeight:700, lineHeight:1.7,
               }}>
                 {t}
@@ -516,7 +510,7 @@ export default function ResearchPage() {
                   <span style={{
                     display:"inline-flex", alignItems:"center", justifyContent:"center",
                     width:36, height:36, borderRadius:"50%", fontSize:13, fontWeight:900, color:"#fff",
-                    background:`linear-gradient(135deg, #4F46E5, #06B6D4)`,
+                    background:`var(--primary)`,
                   }}>{i+1}</span>
                 </div>
                 <div>
@@ -555,8 +549,8 @@ export default function ResearchPage() {
                 {RECORD_EXAMPLES.map((ex, i) => (
                   <Reveal key={ex.topic} delay={i*60}>
                     <div className="hy-hover-card" style={{
-                      borderRadius:18, padding:"22px 22px", height:"100%",
-                      background:"#fafbff", border:"1.5px solid var(--border)",
+                      borderRadius:8, padding:"22px 22px", height:"100%",
+                      background:"#fafbff", border:"1px solid var(--border)",
                     }}>
                       <div style={{ fontSize:10.5, fontWeight:800, color:"#6366f1", letterSpacing:"0.5px", marginBottom:6 }}>탐구 주제</div>
                       <h4 style={{ fontSize:15.5, fontWeight:900, color:"var(--text)", margin:"0 0 16px" }}>{ex.topic}</h4>
@@ -565,7 +559,7 @@ export default function ResearchPage() {
                       <div style={{
                         fontSize:13, color:"var(--text)", lineHeight:1.9,
                         background:"#fff", border:"1px solid var(--border)",
-                        borderRadius:12, padding:"16px 16px",
+                        borderRadius:6, padding:"16px 16px",
                       }}>
                         {ex.record}
                       </div>
@@ -581,8 +575,8 @@ export default function ResearchPage() {
       {/* ===================== 좋은 탐구자가 되는 방법 ===================== */}
       <Reveal>
         <section style={{
-          background:"linear-gradient(135deg,#065f46 0%,#0f766e 45%,#4F46E5 100%)",
-          borderRadius:28, padding:"44px 34px", color:"#fff",
+          background:"var(--primary-dark)",
+          borderRadius:8, padding:"44px 34px", color:"#fff",
           boxShadow:"0 24px 60px rgba(6,95,70,0.3)",
           position:"relative", overflow:"hidden",
         }}>
@@ -611,7 +605,7 @@ export default function ResearchPage() {
           <h2 style={{ fontSize:"clamp(22px,4.5vw,34px)", fontWeight:900, lineHeight:1.8, letterSpacing:"-0.5px", margin:0, color:"var(--text)" }}>
             좋은 탐구는<br/>
             정답을 찾는 활동이 아니라<br/>
-            <span style={{ background:"linear-gradient(135deg,#4F46E5,#06B6D4)", WebkitBackgroundClip:"text", backgroundClip:"text", color:"transparent" }}>
+            <span style={{ background:"var(--primary)", WebkitBackgroundClip:"text", backgroundClip:"text", color:"transparent" }}>
               더 좋은 질문을 만들고<br/>더 나은 해결책을 고민하는 활동
             </span>이다.
           </h2>

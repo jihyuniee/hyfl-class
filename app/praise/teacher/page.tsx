@@ -126,10 +126,10 @@ export default function PraiseTeacherPage() {
   return (
     <div style={{ display:"flex", flexDirection:"column", gap:16 }}>
       <div className="hy-hero">
-        <h1 style={{ color:"#fff", fontSize:"clamp(22px,4vw,30px)", fontWeight:900, margin:"0 0 7px" }}>
+        <h1 style={{ color:"var(--text)", fontSize:"var(--page-title-size)", fontWeight:800, margin:"0 0 7px" }}>
           🔒 담임 전용 성장 기록
         </h1>
-        <p style={{ color:"rgba(255,255,255,.85)", fontSize:12, margin:0 }}>
+        <p style={{ color:"var(--text-muted)", fontSize:12, margin:0 }}>
           학생들의 실천과 서로 발견한 좋은 행동을 확인합니다.
         </p>
       </div>
@@ -164,7 +164,7 @@ export default function PraiseTeacherPage() {
         }}>
           <div style={{ display:"flex", justifyContent:"space-between", gap:10, flexWrap:"wrap", marginBottom:9 }}>
             <div style={{ display:"flex", gap:7, flexWrap:"wrap", alignItems:"center" }}>
-              <span style={{ fontSize:11, fontWeight:800, padding:"4px 9px", borderRadius:999,
+              <span style={{ fontSize:11, fontWeight:800, padding:"4px 9px", borderRadius:8,
                 background:r.type === "friend" ? "var(--primary-light)" : "#fffbeb",
                 color:r.type === "friend" ? "var(--primary)" : "#92400e" }}>
                 {r.type === "friend" ? "친구의 좋은 행동" : "나의 실천"}

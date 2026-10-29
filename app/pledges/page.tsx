@@ -3,8 +3,8 @@ export default function PledgesPage() {
     {
       emoji: "🏫",
       title: "교실 생활 규칙",
-      color: "linear-gradient(135deg,#f472b6,#a78bfa)",
-      shadow: "rgba(244,114,182,0.2)",
+      color: "var(--text)",
+      shadow: "rgba(76,97,41,0.2)",
       items: [
         "거짓말 금지 — 실수는 괜찮지만, 숨기지는 말기. 같이 해결하기.",
         "배려하기 — 말투·표정·뒷말로 사람을 힘들게 하지 않기.",
@@ -16,7 +16,7 @@ export default function PledgesPage() {
     {
       emoji: "📚",
       title: "수업 시간 규칙",
-      color: "linear-gradient(135deg,#3b82f6,#6366f1)",
+      color: "#356a80",
       shadow: "rgba(59,130,246,0.2)",
       items: [
         "수업 시작 전 준비물 챙겨두기.",
@@ -29,7 +29,7 @@ export default function PledgesPage() {
     {
       emoji: "📱",
       title: "연락 규칙",
-      color: "linear-gradient(135deg,#34d399,#0ea5e9)",
+      color: "#39704f",
       shadow: "rgba(52,211,153,0.2)",
       items: [
         "오후 6시 이후에는 선생님 답변이 늦을 수 있습니다.",
@@ -42,7 +42,7 @@ export default function PledgesPage() {
     {
       emoji: "🗣️",
       title: "학생들이 정한 약속",
-      color: "linear-gradient(135deg,#fb923c,#f472b6)",
+      color: "var(--text)",
       shadow: "rgba(251,146,60,0.2)",
       items: [
         "🔜 학급회의에서 정해지면 업데이트될 예정이에요!",
@@ -55,23 +55,16 @@ export default function PledgesPage() {
     <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
 
       {/* 헤더 */}
-      <div style={{
-        background: "linear-gradient(135deg,#f472b6 0%,#a78bfa 50%,#818cf8 100%)",
-        borderRadius: 28, padding: "32px 28px",
-        position: "relative", overflow: "hidden",
-        boxShadow: "0 12px 40px rgba(244,114,182,0.3)",
-      }}>
-        {[{w:140,h:140,top:-40,right:-20,op:0.08},{w:70,h:70,bottom:-10,left:60,op:0.07}].map((b,i)=>(
-          <div key={i} style={{ position:"absolute",width:b.w,height:b.h,top:b.top,right:b.right,bottom:b.bottom,left:b.left,borderRadius:"50%",background:"#fff",opacity:b.op }}/>
-        ))}
+      <div className="hy-hero">
+        
         <div style={{ position: "relative" }}>
-          <div style={{ display:"inline-flex",alignItems:"center",background:"rgba(255,255,255,0.2)",backdropFilter:"blur(8px)",borderRadius:999,padding:"4px 14px",marginBottom:12,border:"1px solid rgba(255,255,255,0.3)" }}>
-            <span style={{ fontSize:12, color:"#fff", fontWeight:700 }}>2026학년도 2학년 2반</span>
+          <div style={{ display:"inline-flex",alignItems:"center",background:"var(--primary-light)",borderRadius:8,padding:"4px 14px",marginBottom:12,border:"1px solid var(--border)" }}>
+            <span style={{ fontSize:12, color:"var(--text)", fontWeight:700 }}>2026학년도 2학년 2반</span>
           </div>
-          <h1 style={{ color:"#fff", fontSize:"clamp(22px,4vw,32px)", fontWeight:900, margin:"0 0 8px", letterSpacing:"-0.5px" }}>
+          <h1 style={{ color:"var(--text)", fontSize:"var(--page-title-size)", fontWeight:800, margin:"0 0 8px", letterSpacing:"-0.5px" }}>
             📋 우리반 규칙
           </h1>
-          <p style={{ color:"rgba(255,255,255,0.85)", fontSize:13, margin:0, fontWeight:500, lineHeight:1.7 }}>
+          <p style={{ color:"var(--text-muted)", fontSize:13, margin:0, fontWeight:500, lineHeight:1.7 }}>
             함께 만들어가는 우리반 약속이에요. 서로 존중하며 즐거운 교실을 만들어요 🌸
           </p>
         </div>
@@ -79,9 +72,9 @@ export default function PledgesPage() {
 
       {/* 슬로건 */}
       <div style={{
-        padding: "18px 22px", borderRadius: 18,
-        background: "linear-gradient(135deg,#fdf2f8,#f5f3ff)",
-        border: "1.5px solid #e9d5ff",
+        padding: "18px 22px", borderRadius:8,
+        background: "var(--primary-light)",
+        border: "1px solid var(--border)",
         display: "flex", alignItems: "center", gap: 14,
       }}>
         <span style={{ fontSize: 28 }}>💬</span>
@@ -95,14 +88,14 @@ export default function PledgesPage() {
 
       {/* 규칙 카드들 */}
       {RULES.map((rule) => (
-        <div key={rule.title} style={{ borderRadius: 20, overflow: "hidden", boxShadow: `0 4px 20px ${rule.shadow}`, opacity: rule.pending ? 0.8 : 1 }}>
+        <div key={rule.title} style={{ borderRadius:8, overflow: "hidden", boxShadow: `0 4px 20px ${rule.shadow}`, opacity: rule.pending ? 0.8 : 1 }}>
           <div style={{ background: rule.color, padding: "16px 22px", display: "flex", alignItems: "center", gap: 10 }}>
             <span style={{ fontSize: 24 }}>{rule.emoji}</span>
             <h3 style={{ color: "#fff", fontSize: 16, fontWeight: 900, margin: 0, letterSpacing: "-0.3px" }}>
               {rule.title}
             </h3>
             {rule.pending && (
-              <span style={{ marginLeft: "auto", fontSize: 11, fontWeight: 700, background: "rgba(255,255,255,0.25)", color: "#fff", padding: "3px 10px", borderRadius: 999 }}>
+              <span style={{ marginLeft: "auto", fontSize: 11, fontWeight: 700, background: "rgba(255,255,255,0.25)", color: "#fff", padding: "3px 10px", borderRadius:8 }}>
                 업데이트 예정
               </span>
             )}
@@ -113,7 +106,7 @@ export default function PledgesPage() {
                 <li key={i} style={{ display: "flex", alignItems: "flex-start", gap: 10, fontSize: 14, color: "var(--text-muted)", lineHeight: 1.7 }}>
                   <span style={{
                     width: 22, height: 22, borderRadius: 7, flexShrink: 0,
-                    background: rule.pending ? "#f3f4f6" : rule.color,
+                    background: rule.pending ? "var(--surface-muted)" : rule.color,
                     display: "flex", alignItems: "center", justifyContent: "center",
                     fontSize: 11, fontWeight: 900, color: rule.pending ? "#9ca3af" : "#fff",
                     marginTop: 2,
@@ -129,7 +122,7 @@ export default function PledgesPage() {
       ))}
 
       {/* 안내 */}
-      <div style={{ padding: "16px 20px", borderRadius: 16, background: "#fffbeb", border: "1.5px solid #fde68a" }}>
+      <div style={{ padding: "16px 20px", borderRadius:8, background: "#fffbeb", border: "1px solid #fde68a" }}>
         <p style={{ fontSize: 13, fontWeight: 700, color: "#f59e0b", margin: "0 0 4px" }}>💡 규칙 업데이트 안내</p>
         <p style={{ fontSize: 13, color: "var(--text-muted)", margin: 0, lineHeight: 1.7 }}>
           학급회의에서 새로운 약속이 정해지면 선생님이 이 페이지에 추가할 거예요. 의견이 있으면 신문고에 남겨줘요!

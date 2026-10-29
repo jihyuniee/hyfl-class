@@ -177,8 +177,8 @@ function PrepField({ label, value, onChange }: { label: string; value: string; o
 function PrepRow({ label, value }: { label: string; value: string | number | null }) {
   if (value === null || value === "" || value === undefined) return null;
   return (
-    <div style={{ padding:"8px 0", borderBottom:"1px solid #f3f4f6" }}>
-      <p style={{ fontSize:11, fontWeight:800, color:"#7c3aed", margin:"0 0 3px" }}>{label}</p>
+    <div style={{ padding:"8px 0", borderBottom:"1px solid var(--surface-muted)" }}>
+      <p style={{ fontSize:11, fontWeight:800, color:"var(--primary)", margin:"0 0 3px" }}>{label}</p>
       <p style={{ fontSize:13, color:"var(--text)", margin:0, whiteSpace:"pre-wrap", lineHeight:1.6 }}>{value}</p>
     </div>
   );
@@ -187,14 +187,14 @@ function PrepRow({ label, value }: { label: string; value: string | number | nul
 function PrepSurveyView({ prep }: { prep: PrepSurvey }) {
   if (prep.survey_note) {
     return (
-      <div style={{ padding:"14px 16px", borderRadius:12, background:"#faf5ff", border:"1.5px solid #e9d5ff" }}>
+      <div style={{ padding:"14px 16px", borderRadius:6, background:"var(--primary-light)", border:"1px solid var(--border)" }}>
         <PrepRow label="중간고사 이후 상담 설문" value={prep.survey_note} />
       </div>
     );
   }
 
   return (
-    <div style={{ padding:"14px 16px", borderRadius:12, background:"#faf5ff", border:"1.5px solid #e9d5ff" }}>
+    <div style={{ padding:"14px 16px", borderRadius:6, background:"var(--primary-light)", border:"1px solid var(--border)" }}>
       <PrepRow label="1. 중간고사 이후 느낌/감정" value={prep.feeling} />
       <PrepRow label="2. 중간고사 준비에 최선을 다한 정도" value={prep.effort_score !== null ? `${prep.effort_score}점` : null} />
       <PrepRow label="3. 가장 열심히 준비한 과목" value={prep.hardest_subject} />
@@ -603,18 +603,18 @@ export default function CounselingPage() {
     <div style={{ display:"flex", flexDirection:"column", gap:20 }}>
 
       <div className="hy-hero">
-        <h1 style={{ color:"#fff", fontSize:"clamp(20px,4vw,30px)", fontWeight:900, margin:"0 0 8px" }}>💬 상담 신청</h1>
-        <p style={{ color:"rgba(255,255,255,0.85)", fontSize:13, margin:0, fontWeight:500, lineHeight:1.7 }}>
+        <h1 style={{ color:"var(--text)", fontSize:"var(--page-title-size)", fontWeight:800, margin:"0 0 8px" }}>💬 상담 신청</h1>
+        <p style={{ color:"var(--text-muted)", fontSize:13, margin:0, fontWeight:500, lineHeight:1.7 }}>
           중간고사가 끝난 지금, 상담 시간을 선택하고<br/>남은 기말고사 계획까지 함께 정리해요
         </p>
       </div>
 
       {/* 탭 */}
-      <div style={{ display:"flex", background:"#f3f4f6", borderRadius:16, padding:4, gap:4 }}>
+      <div style={{ display:"flex", background:"var(--surface-muted)", borderRadius:8, padding:4, gap:4 }}>
         {([{ key:"formal", label:"📅 정식 상담", desc:"집중 상담 기간" },
            { key:"walkin", label:"🙋 수시 상담", desc:"평소 언제든" }] as const).map(t => (
           <button key={t.key} onClick={() => setTab(t.key)}
-            style={{ flex:1, padding:"12px 8px", borderRadius:12, border:"none", cursor:"pointer", fontFamily:"inherit", transition:"all 0.15s",
+            style={{ flex:1, padding:"12px 8px", borderRadius:6, border:"none", cursor:"pointer", fontFamily:"inherit", transition:"all 0.15s",
               background: tab===t.key ? "#fff" : "transparent",
               boxShadow: tab===t.key ? "0 2px 8px rgba(0,0,0,0.08)" : "none" }}>
             <p style={{ fontSize:13, fontWeight:900, color: tab===t.key ? "var(--primary)" : "var(--text-muted)", margin:"0 0 2px" }}>{t.label}</p>
@@ -643,7 +643,7 @@ export default function CounselingPage() {
 
           {/* 관리자: 신청 현황 */}
           {isAdmin && applications.length > 0 && (
-            <div className="hy-card" style={{ padding:"20px 22px", background:"#fdf2f8", border:"2px solid var(--primary)" }}>
+            <div className="hy-card" style={{ padding:"20px 22px", background:"var(--primary-light)", border:"2px solid var(--primary)" }}>
               <h3 style={{ fontSize:14, fontWeight:900, color:"var(--primary)", margin:"0 0 14px" }}>
                 📋 상담 신청 현황 ({applications.length}건)
               </h3>
@@ -651,20 +651,20 @@ export default function CounselingPage() {
                 {applications.map(app => {
                   const slot = slots.find(s => s.id === app.slot_id);
                   return (
-                    <div key={app.id} style={{ padding:"12px 16px", borderRadius:12, background: app.is_confirmed ? "#f0fdf4" : "#fff", border:`1.5px solid ${app.is_confirmed ? "#86efac" : "#f9a8d4"}` }}>
+                    <div key={app.id} style={{ padding:"12px 16px", borderRadius:6, background: app.is_confirmed ? "#f0fdf4" : "#fff", border:`1px solid ${app.is_confirmed ? "#86efac" : "var(--border-strong)"}` }}>
                       <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", flexWrap:"wrap", gap:8 }}>
                         <div style={{ flex:1 }}>
                           <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:4 }}>
                             <p style={{ fontSize:14, fontWeight:900, color:"var(--text)", margin:0 }}>{app.student_no} {app.name}</p>
-                            {app.is_confirmed && <span style={{ fontSize:11, padding:"2px 8px", borderRadius:999, background:"#dcfce7", color:"#15803d", fontWeight:800 }}>✅ 확인완료</span>}
+                            {app.is_confirmed && <span style={{ fontSize:11, padding:"2px 8px", borderRadius:8, background:"#dcfce7", color:"#15803d", fontWeight:800 }}>✅ 확인완료</span>}
                           </div>
                           <p style={{ fontSize:12, color:"var(--primary)", fontWeight:700, margin:"0 0 4px" }}>
                             📅 {slot ? `${fmtDate(slot.date)} ${slot.time}` : "-"}
                           </p>
                           {app.reason ? (
                             <div style={{ marginTop:6, padding:"8px 12px", borderRadius:8,
-                              background: app.is_private ? "#fff5f5" : "#f9fafb",
-                              border: `1px solid ${app.is_private ? "#fecaca" : "#f3f4f6"}` }}>
+                              background: app.is_private ? "#fff5f5" : "var(--surface-muted)",
+                              border: `1px solid ${app.is_private ? "#fecaca" : "var(--surface-muted)"}` }}>
                               {app.is_private && <p style={{ fontSize:10, fontWeight:800, color:"#ef4444", margin:"0 0 3px" }}>🔒 비공개 신청 — 관리자만 열람</p>}
                               <p style={{ fontSize:13, color:"var(--text-muted)", margin:0, lineHeight:1.6, whiteSpace:"pre-wrap" }}>{app.reason}</p>
                             </div>
@@ -673,15 +673,15 @@ export default function CounselingPage() {
                           )}
                           <div style={{ display:"flex", gap:8, flexWrap:"wrap" }}>
                             <button onClick={() => confirmApp(app)}
-                              style={{ marginTop:8, fontSize:11, padding:"4px 12px", borderRadius:999, cursor:"pointer", fontFamily:"inherit", fontWeight:700,
-                                border: app.is_confirmed ? "1.5px solid #86efac" : "1.5px solid var(--border)",
+                              style={{ marginTop:8, fontSize:11, padding:"4px 12px", borderRadius:8, cursor:"pointer", fontFamily:"inherit", fontWeight:700,
+                                border: app.is_confirmed ? "1px solid #86efac" : "1px solid var(--border)",
                                 background: app.is_confirmed ? "#dcfce7" : "#fff",
                                 color: app.is_confirmed ? "#15803d" : "var(--text-muted)" }}>
                               {app.is_confirmed ? "✅ 확인완료 (클릭시 취소)" : "확인하기"}
                             </button>
                             <button onClick={() => togglePrepView(app.id, app.student_no)}
-                              style={{ marginTop:8, fontSize:11, padding:"4px 12px", borderRadius:999, cursor:"pointer", fontFamily:"inherit", fontWeight:700,
-                                border:"1.5px solid #c4b5fd", background:"#f5f3ff", color:"#7c3aed" }}>
+                              style={{ marginTop:8, fontSize:11, padding:"4px 12px", borderRadius:8, cursor:"pointer", fontFamily:"inherit", fontWeight:700,
+                                border:"1px solid var(--border-strong)", background:"var(--primary-light)", color:"var(--primary)" }}>
                               {expandedPrep[app.id] ? "📝 사전 설문 접기" : "📝 사전 설문 보기"}
                             </button>
                           </div>
@@ -708,7 +708,7 @@ export default function CounselingPage() {
 
           {/* 관리자: 슬롯 추가 */}
           {isAdmin && (
-            <div className="hy-card" style={{ padding:"20px 22px", background:"#fdf2f8" }}>
+            <div className="hy-card" style={{ padding:"20px 22px", background:"var(--primary-light)" }}>
               <h3 style={{ fontSize:14, fontWeight:900, color:"var(--primary)", margin:"0 0 14px" }}>➕ 상담 가능 시간 추가</h3>
               <div style={{ display:"flex", gap:8, flexWrap:"wrap", alignItems:"flex-end" }}>
                 <div>
@@ -753,7 +753,7 @@ export default function CounselingPage() {
                           return (
                             <button key={s.id}
                               onClick={() => setSelectedSlot(isSelected ? null : s)}
-                              style={{ fontSize:12, fontWeight:800, padding:"7px 13px", borderRadius:999, border:"1.5px solid",
+                              style={{ fontSize:12, fontWeight:800, padding:"7px 13px", borderRadius:8, border:"1px solid",
                                 borderColor: isSelected ? "var(--primary)" : "#86efac",
                                 background: isSelected ? "var(--primary-light)" : "#f0fdf4",
                                 color: isSelected ? "var(--primary)" : "#15803d",
@@ -790,7 +790,7 @@ export default function CounselingPage() {
                 {gateNameLoading && <span style={{ position:"absolute", right:14, top:"50%", transform:"translateY(-50%)", fontSize:11, color:"var(--text-subtle)" }}>조회 중...</span>}
               </div>
               {gateName && (
-                <div style={{ padding:"10px 14px", borderRadius:12, background:"#f0fdf4", border:"1.5px solid #86efac", fontSize:13, fontWeight:700, color:"#15803d", marginBottom:10 }}>
+                <div style={{ padding:"10px 14px", borderRadius:6, background:"#f0fdf4", border:"1px solid #86efac", fontSize:13, fontWeight:700, color:"#15803d", marginBottom:10 }}>
                   👤 {gateName} 학생 확인
                 </div>
               )}
@@ -801,13 +801,13 @@ export default function CounselingPage() {
               {gateStatus === "checked-missing" && (
                 <div style={{ display:"flex", flexDirection:"column", gap:14, marginTop:20, paddingTop:16, borderTop:"1.5px dashed var(--border)" }}>
                   {selectedSlot ? (
-                    <div style={{ padding:"12px 14px", borderRadius:12, background:"#eef2ff", border:"1.5px solid #c7d2fe" }}>
+                    <div style={{ padding:"12px 14px", borderRadius:6, background:"#eef2ff", border:"1px solid #c7d2fe" }}>
                       <p style={{ fontSize:12, fontWeight:800, color:"var(--primary)", margin:0 }}>
                         선택한 시간: {fmtDate(selectedSlot.date)} {selectedSlot.time}
                       </p>
                     </div>
                   ) : (
-                    <div style={{ padding:"12px 14px", borderRadius:12, background:"#fff7ed", border:"1.5px solid #fed7aa" }}>
+                    <div style={{ padding:"12px 14px", borderRadius:6, background:"#fff7ed", border:"1px solid #fed7aa" }}>
                       <p style={{ fontSize:12, fontWeight:800, color:"#c2410c", margin:0 }}>
                         위에서 상담 시간을 먼저 선택해주세요.
                       </p>
@@ -830,7 +830,7 @@ export default function CounselingPage() {
           {(isAdmin || gateStatus === "checked-exists") && (
           <>
           {!isAdmin && gateStatus === "checked-exists" && (
-            <div style={{ padding:"14px 18px", borderRadius:14, background:"#f0fdf4", border:"1.5px solid #86efac" }}>
+            <div style={{ padding:"14px 18px", borderRadius:8, background:"#f0fdf4", border:"1px solid #86efac" }}>
               <p style={{ fontSize:13, fontWeight:800, color:"#15803d", margin:0 }}>✅ {gateName} 학생, 설문 제출 완료! 이제 상담 시간을 선택해주세요.</p>
             </div>
           )}
@@ -856,7 +856,7 @@ export default function CounselingPage() {
                     return (
                       <button key={slot.id}
                         onClick={() => !isTaken && setSelectedSlot(isSelected ? null : slot)}
-                        style={{ padding:"14px 12px", borderRadius:14, border:"2px solid", fontFamily:"inherit", transition:"all 0.15s", textAlign:"center",
+                        style={{ padding:"14px 12px", borderRadius:8, border:"2px solid", fontFamily:"inherit", transition:"all 0.15s", textAlign:"center",
                           cursor: isTaken ? "default" : "pointer",
                           borderColor: isTaken ? "#fecaca" : isSelected ? "var(--primary)" : "var(--border)",
                           background: isTaken ? "#fff5f5" : isSelected ? "var(--primary-light)" : "#fff",
@@ -875,7 +875,7 @@ export default function CounselingPage() {
                         )}
                         {isAdmin && (
                           <button onClick={e=>{e.stopPropagation();deleteSlot(slot.id);}}
-                            style={{ marginTop:6, fontSize:10, padding:"2px 8px", borderRadius:999, border:"1px solid #fecaca", background:"#fff5f5", color:"#ef4444", cursor:"pointer", fontFamily:"inherit" }}>
+                            style={{ marginTop:6, fontSize:10, padding:"2px 8px", borderRadius:8, border:"1px solid #fecaca", background:"#fff5f5", color:"#ef4444", cursor:"pointer", fontFamily:"inherit" }}>
                             삭제
                           </button>
                         )}
@@ -903,12 +903,12 @@ export default function CounselingPage() {
                   {sNameLoading && <span style={{ position:"absolute", right:14, top:"50%", transform:"translateY(-50%)", fontSize:11, color:"var(--text-subtle)" }}>조회 중...</span>}
                 </div>
                 {sName && (
-                  <div style={{ padding:"10px 14px", borderRadius:12, background:"#f0fdf4", border:"1.5px solid #86efac", fontSize:13, fontWeight:700, color:"#15803d" }}>
+                  <div style={{ padding:"10px 14px", borderRadius:6, background:"#f0fdf4", border:"1px solid #86efac", fontSize:13, fontWeight:700, color:"#15803d" }}>
                     👤 {sName} 학생으로 신청해요
                   </div>
                 )}
                 {sNo.length >= 5 && !sName && !sNameLoading && (
-                  <div style={{ padding:"10px 14px", borderRadius:12, background:"#fff5f5", border:"1.5px solid #fecaca", fontSize:13, fontWeight:700, color:"#ef4444" }}>
+                  <div style={{ padding:"10px 14px", borderRadius:6, background:"#fff5f5", border:"1px solid #fecaca", fontSize:13, fontWeight:700, color:"#ef4444" }}>
                     ⚠️ 학번을 찾을 수 없어요. 연락처 확인 페이지에서 먼저 등록해주세요.
                   </div>
                 )}
@@ -949,7 +949,7 @@ export default function CounselingPage() {
             )}
 
             {myApp === "none" && (
-              <div style={{ marginTop:12, padding:"12px 16px", borderRadius:12, background:"#fff5f5", border:"1.5px solid #fecaca" }}>
+              <div style={{ marginTop:12, padding:"12px 16px", borderRadius:6, background:"#fff5f5", border:"1px solid #fecaca" }}>
                 <p style={{ fontSize:13, fontWeight:700, color:"#ef4444", margin:0 }}>😢 신청 내역이 없어요.</p>
               </div>
             )}
@@ -957,19 +957,19 @@ export default function CounselingPage() {
               const app = myApp as Application;
               const slot = slots.find(s => s.id === app.slot_id);
               return (
-                <div style={{ marginTop:12, padding:"16px 18px", borderRadius:12, background:"#f0fdf4", border:"1.5px solid #86efac" }}>
+                <div style={{ marginTop:12, padding:"16px 18px", borderRadius:6, background:"#f0fdf4", border:"1px solid #86efac" }}>
                   <p style={{ fontSize:14, fontWeight:900, color:"#15803d", margin:"0 0 6px" }}>✅ 신청 완료!</p>
                   <p style={{ fontSize:13, fontWeight:700, color:"var(--text)", margin:"0 0 4px" }}>{app.name} ({app.student_no})</p>
                   <p style={{ fontSize:13, color:"var(--primary)", fontWeight:700, margin:"0 0 8px" }}>
                     📅 {slot ? `${fmtDate(slot.date)} ${slot.time}` : "-"}
                   </p>
                   {app.is_confirmed ? (
-                    <div style={{ padding:"10px 14px", borderRadius:10, background:"#f0fdf4", border:"1.5px solid #86efac", fontSize:13, fontWeight:700, color:"#15803d" }}>
+                    <div style={{ padding:"10px 14px", borderRadius:6, background:"#f0fdf4", border:"1px solid #86efac", fontSize:13, fontWeight:700, color:"#15803d" }}>
                       ✅ 선생님이 확인하셨어요. 취소가 불가해요.
                     </div>
                   ) : (
                     <button onClick={cancelApp} disabled={cancelling}
-                      style={{ fontSize:13, padding:"8px 18px", borderRadius:999, border:"1.5px solid #fecaca",
+                      style={{ fontSize:13, padding:"8px 18px", borderRadius:8, border:"1px solid #fecaca",
                         background:"#fff5f5", color:"#ef4444", cursor:"pointer", fontFamily:"inherit", fontWeight:700 }}>
                       {cancelling ? "취소 중..." : "🗑 상담 취소하기"}
                     </button>
@@ -984,7 +984,7 @@ export default function CounselingPage() {
       {/* ══ 수시 상담 탭 ══ */}
       {tab === "walkin" && (
         <div style={{ display:"flex", flexDirection:"column", gap:16 }}>
-          <div style={{ padding:"16px 20px", borderRadius:16, background:"linear-gradient(135deg,#f0fdf4,#dcfce7)", border:"1.5px solid #86efac" }}>
+          <div style={{ padding:"16px 20px", borderRadius:8, background:"#f0fdf4", border:"1px solid #86efac" }}>
             <p style={{ fontSize:14, fontWeight:800, color:"#15803d", margin:"0 0 6px" }}>🙋 수시 상담이란?</p>
             <p style={{ fontSize:13, color:"#166534", margin:0, lineHeight:1.7, fontWeight:500 }}>
               정식 상담 기간이 아니어도, 고민이나 상담하고 싶은 내용이 있으면 언제든 신청해요.<br/>
@@ -1011,7 +1011,7 @@ export default function CounselingPage() {
                   {wNameLoading && <span style={{ position:"absolute", right:14, top:"50%", transform:"translateY(-50%)", fontSize:11, color:"var(--text-subtle)" }}>조회 중...</span>}
                 </div>
                 {wName && (
-                  <div style={{ padding:"10px 14px", borderRadius:12, background:"#f0fdf4", border:"1.5px solid #86efac", fontSize:13, fontWeight:700, color:"#15803d" }}>
+                  <div style={{ padding:"10px 14px", borderRadius:6, background:"#f0fdf4", border:"1px solid #86efac", fontSize:13, fontWeight:700, color:"#15803d" }}>
                     👤 {wName} 학생으로 신청해요
                   </div>
                 )}
@@ -1045,12 +1045,12 @@ export default function CounselingPage() {
               ) : (
                 <div style={{ display:"flex", flexDirection:"column", gap:8 }}>
                   {walkIns.map(w => (
-                    <div key={w.id} style={{ padding:"14px 16px", borderRadius:12,
-                      background: w.is_checked ? "#f9fafb" : "#fffbeb",
-                      border:`1.5px solid ${w.is_checked ? "var(--border)" : "#fde68a"}` }}>
+                    <div key={w.id} style={{ padding:"14px 16px", borderRadius:6,
+                      background: w.is_checked ? "var(--surface-muted)" : "#fffbeb",
+                      border:`1px solid ${w.is_checked ? "var(--border)" : "#fde68a"}` }}>
                       <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", gap:8, marginBottom:8 }}>
                         <div style={{ display:"flex", alignItems:"center", gap:8 }}>
-                          <span style={{ fontSize:11, padding:"2px 8px", borderRadius:999, fontWeight:800,
+                          <span style={{ fontSize:11, padding:"2px 8px", borderRadius:8, fontWeight:800,
                             background: w.is_checked ? "#f0fdf4" : "#fffbeb", color: w.is_checked ? "#16a34a" : "#f59e0b" }}>
                             {w.is_checked ? "✅ 확인완료" : "⏳ 미확인"}
                           </span>
@@ -1060,15 +1060,15 @@ export default function CounselingPage() {
                       </div>
                       {w.content && (
                         <div style={{ marginBottom:8, padding:"8px 12px", borderRadius:8,
-                          background: w.is_private ? "#fff5f5" : "#f9fafb",
-                          border: `1px solid ${w.is_private ? "#fecaca" : "#f3f4f6"}` }}>
+                          background: w.is_private ? "#fff5f5" : "var(--surface-muted)",
+                          border: `1px solid ${w.is_private ? "#fecaca" : "var(--surface-muted)"}` }}>
                           {w.is_private && <p style={{ fontSize:10, fontWeight:800, color:"#ef4444", margin:"0 0 3px" }}>🔒 비공개 신청 — 관리자만 열람</p>}
                           <p style={{ fontSize:13, color:"var(--text-muted)", margin:0, lineHeight:1.6, whiteSpace:"pre-wrap" }}>{w.content}</p>
                         </div>
                       )}
                       {w.preferred_time && <p style={{ fontSize:12, color:"var(--primary)", fontWeight:700, margin:"0 0 8px" }}>⏰ 희망 시간: {w.preferred_time}</p>}
                       <button onClick={() => toggleChecked(w.id, w.is_checked)}
-                        style={{ fontSize:11, padding:"4px 12px", borderRadius:999, border:"1.5px solid var(--border)", background:"#fff",
+                        style={{ fontSize:11, padding:"4px 12px", borderRadius:8, border:"1px solid var(--border)", background:"#fff",
                           cursor:"pointer", fontFamily:"inherit", fontWeight:700, color:"var(--text-muted)" }}>
                         {w.is_checked ? "미확인으로 변경" : "✅ 확인 완료"}
                       </button>
