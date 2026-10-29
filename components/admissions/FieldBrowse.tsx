@@ -1,11 +1,12 @@
 import Link from "next/link";
 import majors from "@/public/admissions-explorer/majors.json";
 import directory from "@/public/admissions-explorer/directory.json";
+import { belongsToProfile } from "@/components/lib/admissionsBrowse";
 import styles from "./explorer.module.css";
 
 export default function FieldBrowse({ active = "", onChoose }: { active?: string; onChoose?: (id: string) => void }) {
   return <div className={styles.fieldGrid}>{majors.filter(p => !active || p.id === active).map(p => {
-    const units = directory.records.filter(u => u.profileIds.includes(p.id));
+    const units = directory.records.filter(u => belongsToProfile(u.department, p.id));
     const examples = units.filter((u, i, all) => all.findIndex(a => a.university === u.university) === i).slice(0, 3);
     return <article key={p.id} className={styles.fieldCard} data-active={active === p.id}>
       <span className={styles.eyebrow}>{p.field}</span><h3>{p.title}</h3><p>{p.learn}</p>

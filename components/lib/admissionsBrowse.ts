@@ -27,3 +27,20 @@ export function previewPercentileResults<T extends PercentileResult>(rows: T[], 
   for (const row of rows) if (!picked.includes(row) && picked.length < count) picked.push(row);
   return picked;
 }
+
+// Exploratory labels are narrower than the source's broad admissions categories.
+export function belongsToProfile(department: string, id: string): boolean {
+  const patterns: Record<string, RegExp> = {
+    'chinese-language': /중어|중국언어|중국문화|중국어문|중국학/,
+    'china-trade': /중국외교|중국정경|중국지역/,
+    english: /영어|영문|영미/,
+    politics: /정치|외교|국제관계|국제학|행정/,
+    business: /경영|회계|마케팅/,
+    economics: /경제|통상|무역/,
+    sociology: /사회학|사회복지/,
+    media: /미디어|언론|방송|커뮤니케이션|광고|홍보/,
+    psychology: /심리/,
+    education: /교육|사범/,
+  };
+  return patterns[id]?.test(department) ?? false;
+}

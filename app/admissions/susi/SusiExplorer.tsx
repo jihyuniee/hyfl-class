@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import FieldBrowse from "@/components/admissions/FieldBrowse";
 import AdmissionsNav from "@/components/admissions/AdmissionsNav";
+import { belongsToProfile } from "@/components/lib/admissionsBrowse";
 import { selectSusiPlans } from "@/components/lib/admissionsExplorer";
 import directory from "@/public/admissions-explorer/directory.json";
 import majors from "@/public/admissions-explorer/majors.json";
@@ -20,7 +21,7 @@ export default function SusiExplorer({ initialUniversity = "", initialProfile = 
   const [limit, setLimit] = useState(12);
   const [unitKey, setUnitKey] = useState("");
   const [profileId, setProfileId] = useState(majors.some(p => p.id === initialProfile) ? initialProfile : "");
-  const units = directory.records.filter(r => (!profileId || r.profileIds.includes(profileId)) && (!university || r.university === university)
+  const units = directory.records.filter(r => (!profileId || belongsToProfile(r.department, profileId)) && (!university || r.university === university)
     && `${r.university} ${r.department} ${r.classification}`.toLocaleLowerCase("ko").includes(query.trim().toLocaleLowerCase("ko")));
   const selectedUnit = directory.records.find(r => `${r.university}/${r.department}` === unitKey);
   const profile = majors.find(p => p.id === profileId);
@@ -31,7 +32,7 @@ export default function SusiExplorer({ initialUniversity = "", initialProfile = 
   function chooseUnit(unit: typeof directory.records[number]) {
     setUnitKey(`${unit.university}/${unit.department}`);
     setUniversity(unit.university);
-    const matched = majors.find(p => unit.profileIds.includes(p.id));
+    const matched = majors.find(p => belongsToProfile(unit.department, p.id));
     setProfileId(matched?.id || "");
     setField(matched?.field || (unit.classification.includes("사범") || unit.classification.includes("교육") ? "교육" : "사회·상경"));
   }
