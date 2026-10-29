@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
+import { belongsToProfile, chooseUnitProfile } from '../components/lib/admissionsBrowse.ts';
 import { canonicalUniversity, selectSusiPlans } from '../components/lib/admissionsExplorer.ts';
 const json = path => JSON.parse(readFileSync(new URL(`../public/${path}`, import.meta.url)));
 const records = json('admissions-2028/records.json').records;
@@ -60,4 +61,18 @@ test('학교 추천 인원과 대학 최종 선발을 구분하고 안내 연도
   assert.match(page, /담임 전달 학교 안내/);
   assert.match(page, /2028 입학 요건·일정이 확정되었다는 뜻은 아닙니다/);
   assert.match(page, /HSK 5급 이상/);
+});
+
+
+test('계열 선택 → 중국학 통합모집 → 전공 탐구 → 외대 전형 후보 연결', () => {
+  for (const id of ['chinese-language', 'china-trade']) {
+    const units = directory.records.filter(r => belongsToProfile(r, id));
+    const china = units.find(r => r.university === '한국외대' && r.department === '중국학대학(통합모집)');
+    assert.ok(china);
+    const profile = majors.find(p => p.id === chooseUnitProfile(china, id));
+    assert.ok(profile.question && profile.method);
+    const plans = selectSusiPlans(records, china.university, profile.field, '학생부종합', '');
+    assert.ok(plans.length > 0);
+    assert.ok(plans.every(p => p.sourceUrl || p.sourceKey));
+  }
 });

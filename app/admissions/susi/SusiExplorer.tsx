@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import FieldBrowse from "@/components/admissions/FieldBrowse";
 import AdmissionsNav from "@/components/admissions/AdmissionsNav";
-import { belongsToProfile } from "@/components/lib/admissionsBrowse";
+import { belongsToProfile, chooseUnitProfile, unitAdmissionField } from "@/components/lib/admissionsBrowse";
 import { selectSusiPlans } from "@/components/lib/admissionsExplorer";
 import directory from "@/public/admissions-explorer/directory.json";
 import majors from "@/public/admissions-explorer/majors.json";
@@ -21,7 +21,7 @@ export default function SusiExplorer({ initialUniversity = "", initialProfile = 
   const [limit, setLimit] = useState(12);
   const [unitKey, setUnitKey] = useState("");
   const [profileId, setProfileId] = useState(majors.some(p => p.id === initialProfile) ? initialProfile : "");
-  const units = directory.records.filter(r => (!profileId || belongsToProfile(r.department, profileId)) && (!university || r.university === university)
+  const units = directory.records.filter(r => (!profileId || belongsToProfile(r, profileId)) && (!university || r.university === university)
     && `${r.university} ${r.department} ${r.classification}`.toLocaleLowerCase("ko").includes(query.trim().toLocaleLowerCase("ko")));
   const selectedUnit = directory.records.find(r => `${r.university}/${r.department}` === unitKey);
   const profile = majors.find(p => p.id === profileId);
@@ -32,9 +32,10 @@ export default function SusiExplorer({ initialUniversity = "", initialProfile = 
   function chooseUnit(unit: typeof directory.records[number]) {
     setUnitKey(`${unit.university}/${unit.department}`);
     setUniversity(unit.university);
-    const matched = majors.find(p => belongsToProfile(unit.department, p.id));
-    setProfileId(matched?.id || "");
-    setField(matched?.field || (unit.classification.includes("사범") || unit.classification.includes("교육") ? "교육" : "사회·상경"));
+    const nextProfile = chooseUnitProfile(unit, profileId);
+    const matched = majors.find(p => p.id === nextProfile);
+    setProfileId(nextProfile);
+    setField(matched?.field || unitAdmissionField(unit));
   }
 
   return <div className={styles.page}>
@@ -64,7 +65,11 @@ export default function SusiExplorer({ initialUniversity = "", initialProfile = 
       <h2 id="major-heading">이 분야의 탐구는 이렇게 해볼 수 있어요</h2>
       {selectedUnit && <p>선택한 모집단위: <b>{selectedUnit.university} · {selectedUnit.department}</b></p>}
 
-      {!profile && <p className={styles.empty}>이 모집단위의 세부 전공 해설은 아직 수록하지 않았습니다. 위에서 인접 분야를 직접 골라 참고하고, 해당 대학의 교육과정을 확인하세요.</p>}
+      {selectedUnit && selectedUnit.profileIds.length > 1 && <div className={styles.chips}>
+        <p>여러 분야와 연결되는 모집단위입니다. 관심 있는 탐구 분야를 골라보세요.</p>
+        {majors.filter(p => belongsToProfile(selectedUnit, p.id)).map(p => <button key={p.id} type="button" aria-pressed={profileId === p.id} onClick={() => { setProfileId(p.id); setField(p.field); }}>{p.title}</button>)}
+      </div>}
+      {!profile && <p className={styles.empty}>이 모집단위에 단일 전공 해설을 자동 지정하지 않았습니다. 위에서 인접 분야를 직접 골라 참고하고, 해당 대학의 교육과정을 확인하세요.</p>}
       {profile && <article className={styles.selection}>
         <span className={styles.eyebrow}>{profile.field}</span><h3>{profile.title}</h3>
         <details><summary>고교 공부·탐구 준비 더 보기</summary><h4>고교 공부에서 연결해 볼 내용</h4><p>{profile.subjects.join(" · ")}</p><p className={styles.muted}>관심 공부를 연결하는 예시입니다. 대학별 필수·권장 이수과목 공지는 따로 확인하세요.</p>
@@ -80,7 +85,7 @@ export default function SusiExplorer({ initialUniversity = "", initialProfile = 
       <h2 id="susi-heading">수능최저·면접은 어떻게 볼까?</h2>
       <p>학교·계열로 찾은 <b>대학 공통 전형 후보</b>입니다. 선택한 학과가 그 전형에서 실제 모집하는지, 추천·고교유형 등 지원자격이 맞는지는 원문의 모집단위 표와 지원자격에서 확인해야 합니다.</p>
       <div className={styles.filters}>
-        <label>전형 탐색 계열<select value={field} onChange={e => setField(e.target.value)}><option>인문·어문</option><option>사회·상경</option><option>교육</option></select></label>
+        <label>전형 탐색 계열<select value={field} onChange={e => setField(e.target.value)}><option value="">계열 선택</option><option>인문·어문</option><option>사회·상경</option><option>교육</option></select></label>
         <label>전형 유형<select value={category} onChange={e => setCategory(e.target.value)}><option value="">학종·교과·논술 전체</option><option>학생부종합</option><option>학생부교과</option><option>논술</option></select></label>
         <label>수능최저<select value={minimum} onChange={e => setMinimum(e.target.value)}><option value="">전체</option><option>있음</option><option>없음</option></select></label>
       </div>

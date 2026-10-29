@@ -28,19 +28,23 @@ export function previewPercentileResults<T extends PercentileResult>(rows: T[], 
   return picked;
 }
 
-// Exploratory labels are narrower than the source's broad admissions categories.
-export function belongsToProfile(department: string, id: string): boolean {
-  const patterns: Record<string, RegExp> = {
-    'chinese-language': /중어|중국언어|중국문화|중국어문|중국학/,
-    'china-trade': /중국외교|중국정경|중국지역/,
-    english: /영어|영문|영미/,
-    politics: /정치|외교|국제관계|국제학|행정/,
-    business: /경영|회계|마케팅/,
-    economics: /경제|통상|무역/,
-    sociology: /사회학|사회복지/,
-    media: /미디어|언론|방송|커뮤니케이션|광고|홍보/,
-    psychology: /심리/,
-    education: /교육|사범/,
-  };
-  return patterns[id]?.test(department) ?? false;
+// Curated links are exploratory connections, not declarations of a single major.
+// An empty list means no specific guide is linked; broad source categories alone
+// must not turn 자유전공, 언어, 사회과학, or 정책 into a narrower discipline.
+export type BrowseUnit = { department: string; classification: string; profileIds: readonly string[] };
+export function belongsToProfile(unit: BrowseUnit, id: string): boolean {
+  return unit.profileIds.includes(id);
+}
+
+export function chooseUnitProfile(unit: BrowseUnit, active: string): string {
+  if (belongsToProfile(unit, active)) return active;
+  return unit.profileIds.length === 1 ? unit.profileIds[0] : "";
+}
+
+export function unitAdmissionField(unit: BrowseUnit): string {
+  if (/사범|교육/.test(unit.classification)) return "교육";
+  if (/어문|인문학/.test(unit.classification)) return "인문·어문";
+  // Broad or interdisciplinary units require the student's own field choice.
+  if (/자유전공|기타/.test(unit.classification)) return "";
+  return "사회·상경";
 }
