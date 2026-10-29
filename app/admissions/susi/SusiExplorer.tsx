@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import FieldBrowse from "@/components/admissions/FieldBrowse";
 import AdmissionsNav from "@/components/admissions/AdmissionsNav";
 import { selectSusiPlans } from "@/components/lib/admissionsExplorer";
 import directory from "@/public/admissions-explorer/directory.json";
@@ -10,17 +11,16 @@ import planData from "@/public/admissions-2028/records.json";
 import senIndex from "@/public/admissions-2028/sen-universities.json";
 import styles from "@/components/admissions/explorer.module.css";
 
-export default function SusiExplorer({ initialUniversity = "" }: { initialUniversity?: string }) {
+export default function SusiExplorer({ initialUniversity = "", initialProfile = "" }: { initialUniversity?: string; initialProfile?: string }) {
   const [university, setUniversity] = useState(directory.universities.includes(initialUniversity) ? initialUniversity : "");
   const [query, setQuery] = useState("");
-  const [field, setField] = useState("인문·어문");
+  const [field, setField] = useState(majors.find(p => p.id === initialProfile)?.field || "인문·어문");
   const [category, setCategory] = useState("학생부종합");
   const [minimum, setMinimum] = useState("");
-  const [limit, setLimit] = useState(6);
+  const [limit, setLimit] = useState(12);
   const [unitKey, setUnitKey] = useState("");
-  const [profileId, setProfileId] = useState("");
-  const hasSearch = Boolean(university || query.trim());
-  const units = directory.records.filter(r => (!university || r.university === university)
+  const [profileId, setProfileId] = useState(majors.some(p => p.id === initialProfile) ? initialProfile : "");
+  const units = directory.records.filter(r => (!profileId || r.profileIds.includes(profileId)) && (!university || r.university === university)
     && `${r.university} ${r.department} ${r.classification}`.toLocaleLowerCase("ko").includes(query.trim().toLocaleLowerCase("ko")));
   const selectedUnit = directory.records.find(r => `${r.university}/${r.department}` === unitKey);
   const profile = majors.find(p => p.id === profileId);
@@ -38,32 +38,34 @@ export default function SusiExplorer({ initialUniversity = "" }: { initialUniver
 
   return <div className={styles.page}>
     <AdmissionsNav current="early" />
-    <header className={styles.hero}><span className={styles.eyebrow}>수시 · 2028</span><h1>어떤 학과에 관심 있어?</h1><p>학과를 고르면 공부할 내용과 지원 전형을 볼 수 있어요.</p></header>
+    <header className={styles.hero}><span className={styles.eyebrow}>수시 · 2028</span><h1>이런 계열에서는 무엇을 배울까?</h1><p>분야별 공부 내용과 학과를 둘러보고, 마음에 드는 계열을 눌러보세요.</p></header>
+
+    <section className={styles.section} aria-label="계열별 공부와 학과 예시"><FieldBrowse active={profileId} onChoose={id => { setProfileId(id); setUniversity(""); setQuery(""); setUnitKey(""); setLimit(6); setField(majors.find(p => p.id === id)?.field || "인문·어문"); }} /></section>
 
     <section className={styles.section} aria-labelledby="directory-heading">
-      <h2 id="directory-heading">대학·학과 찾기</h2>
+      <h2 id="directory-heading">{profile ? `${profile.title} 관련 학과` : "서울 대학에는 이런 학과가 있어요"}</h2>
       <div className={styles.filters}>
         <label>서울 대학<select value={university} onChange={e => { setUniversity(e.target.value); setUnitKey(""); setLimit(6); }}><option value="">30개 대학 전체</option>{directory.universities.map(u => <option key={u}>{u}</option>)}</select></label>
         <label>학과·계열 검색<input value={query} placeholder="예: 중국, 경영, 사회, 교육" onChange={e => { setQuery(e.target.value); setLimit(6); }} /></label>
-        <label>목록 보기<select value={String(limit)} onChange={e => setLimit(Number(e.target.value))}><option value="6">6개씩</option><option value="60">60개씩</option><option value="600">모두</option></select></label>
+        <label>목록 보기<select value={String(limit)} onChange={e => setLimit(Number(e.target.value))}><option value="6">6개씩</option><option value="12">12개씩</option><option value="60">60개씩</option><option value="600">모두</option></select></label>
       </div>
       <details><summary>학과 목록의 출처·수록 범위</summary><p className={styles.muted}>{directory.source}. {directory.notice} 전공 선택 범위가 있는 계열·자유전공은 개별 학과와 구분하세요.</p></details>
-      <p className={styles.resultCount} role="status">{hasSearch ? `학과·모집단위 ${units.length}개 · 학과를 눌러보세요.` : "대학을 선택하거나 관심 학과를 검색하세요."}</p>
-      <div className={styles.directory}>{(hasSearch ? units.slice(0, limit) : []).map(u => {
+      <p className={styles.resultCount} role="status">{`학과·모집단위 ${units.length}개 · 학과를 누르면 전형 정보를 볼 수 있어요.`}</p>
+      <div className={styles.directory}>{units.slice(0, limit).map(u => {
         const key = `${u.university}/${u.department}`;
         return <button key={key} type="button" className={styles.unit} aria-pressed={unitKey === key} onClick={() => chooseUnit(u)}><small>{u.university} · 서울</small><strong>{u.department}</strong><small>{u.classification} · 공부·전형 확인 ↓</small></button>;
       })}</div>
-      {hasSearch && units.length === 0 && <p className={styles.empty}>이 목록에는 해당 학과가 없습니다. 학과가 없거나 모집하지 않는다는 뜻은 아닙니다. 대학의 공식 학과 안내와 2028 모집단위를 확인하세요.</p>}
-      {hasSearch && units.length > limit && <button className={styles.more} onClick={() => setLimit(n => n + 6)}>6개 더 보기</button>}
+      {units.length === 0 && <p className={styles.empty}>이 목록에는 해당 학과가 없습니다. 학과가 없거나 모집하지 않는다는 뜻은 아닙니다. 대학의 공식 학과 안내와 2028 모집단위를 확인하세요.</p>}
+      {units.length > limit && <button className={styles.more} onClick={() => setLimit(n => n + 6)}>6개 더 보기</button>}
     </section>
 
-    {selectedUnit && <section className={styles.section} aria-labelledby="major-heading">
-      <h2 id="major-heading">이 학과에서는 무엇을 배울까?</h2>
+    {(selectedUnit || profile) && <section className={styles.section} aria-labelledby="major-heading">
+      <h2 id="major-heading">이 분야의 탐구는 이렇게 해볼 수 있어요</h2>
       {selectedUnit && <p>선택한 모집단위: <b>{selectedUnit.university} · {selectedUnit.department}</b></p>}
-      <div className={styles.chips}>{majors.map(p => <button key={p.id} type="button" aria-pressed={profileId === p.id} onClick={() => { setProfileId(p.id); setField(p.field); }}>{p.title}</button>)}</div>
+
       {!profile && <p className={styles.empty}>이 모집단위의 세부 전공 해설은 아직 수록하지 않았습니다. 위에서 인접 분야를 직접 골라 참고하고, 해당 대학의 교육과정을 확인하세요.</p>}
       {profile && <article className={styles.selection}>
-        <span className={styles.eyebrow}>{profile.field}</span><h3>{profile.title}</h3><p>{profile.learn}</p>
+        <span className={styles.eyebrow}>{profile.field}</span><h3>{profile.title}</h3>
         <details><summary>고교 공부·탐구 준비 더 보기</summary><h4>고교 공부에서 연결해 볼 내용</h4><p>{profile.subjects.join(" · ")}</p><p className={styles.muted}>관심 공부를 연결하는 예시입니다. 대학별 필수·권장 이수과목 공지는 따로 확인하세요.</p>
         <h4>탐구에서 연습할 역량</h4><ul>{profile.skills.map(s => <li key={s}>{s}</li>)}</ul>
         <h4>탐구 질문 예시</h4><p><b>{profile.question}</b></p><p>{profile.method}</p>
