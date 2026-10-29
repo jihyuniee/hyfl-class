@@ -41,15 +41,15 @@ export default function CampaignPage() {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
       <div className="hy-hero">
-        <div style={{ display: "inline-flex", alignItems: "center", background: "rgba(255,255,255,0.2)", backdropFilter: "blur(8px)", borderRadius: 999, padding: "4px 14px", marginBottom: 12, border: "1px solid rgba(255,255,255,0.3)" }}>
-          <span style={{ fontSize: 12, color: "#fff", fontWeight: 700 }}>
+        <div style={{ display: "inline-flex", alignItems: "center", background:"var(--primary-light)",  borderRadius:8, padding: "4px 14px", marginBottom: 12, border: "1px solid var(--border)" }}>
+          <span style={{ fontSize: 12, color:"var(--text)", fontWeight: 700 }}>
             {semester === CURRENT_SEMESTER && ELECTION_OPEN ? "🗳️ 2학기 공약 등록" : "✅ 선거 완료"}
           </span>
         </div>
-        <h1 style={{ color: "#fff", fontSize: "clamp(22px,4vw,32px)", fontWeight: 900, margin: "0 0 8px" }}>
+        <h1 style={{ color:"var(--text)", fontSize:"var(--page-title-size)", fontWeight:800, margin: "0 0 8px" }}>
           🌷 회장/부회장 공약
         </h1>
-        <p style={{ color: "rgba(255,255,255,0.85)", fontSize: 13, margin: 0, fontWeight: 500, lineHeight: 1.7 }}>
+        <p style={{ color:"var(--text-muted)", fontSize: 13, margin: 0, fontWeight: 500, lineHeight: 1.7 }}>
           {semester === CURRENT_SEMESTER && ELECTION_OPEN
             ? "2학기 후보의 공약을 직접 등록하고 함께 확인해요."
             : "선거에서 약속한 공약들이에요. 잘 이행되고 있는지 함께 지켜봐요 🙂"}
@@ -337,7 +337,7 @@ function PledgeList({ semester }: { semester: SemesterId }) {
                 <div key={p.id} className="hy-card" style={{ padding: "22px 24px" }}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12, marginBottom: 14, flexWrap: "wrap" }}>
                     <div>
-                      <span style={{ display: "inline-block", fontSize: 11, fontWeight: 800, color: "var(--primary)", background: "rgba(124,58,237,0.1)", borderRadius: 999, padding: "2px 10px", marginBottom: 6 }}>
+                      <span style={{ display: "inline-block", fontSize: 11, fontWeight: 800, color: "var(--primary)", background: "rgba(124,58,237,0.1)", borderRadius:8, padding: "2px 10px", marginBottom: 6 }}>
                         {(semester === CURRENT_SEMESTER && ELECTION_OPEN ? POSITION_LABEL_CANDIDATE : POSITION_LABEL_ELECTED)[p.position] ?? p.position}
                       </span>
                       {editingId === p.id ? (
@@ -365,7 +365,7 @@ function PledgeList({ semester }: { semester: SemesterId }) {
                       </div>
                     )}
                   </div>
-                  <div style={{ background: "#f9fafb", borderRadius: 14, padding: "14px 18px" }}>
+                  <div style={{ background: "var(--surface-muted)", borderRadius:8, padding: "14px 18px" }}>
                     {editingId === p.id ? (
                       <textarea value={editPledges} onChange={e => setEditPledges(e.target.value)} className="hy-input" rows={4} style={{ width: "100%", resize: "vertical" }} />
                     ) : (

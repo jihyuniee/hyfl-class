@@ -61,10 +61,10 @@ export default function HRPage() {
       {/* 헤더 */}
       <div className="hy-hero">
         <div style={{ position:"relative" }}>
-          <p style={{ color:"rgba(255,255,255,0.8)", fontSize:13, fontWeight:600, margin:"0 0 6px" }}>
+          <p style={{ color:"var(--text-muted)", fontSize:13, fontWeight:600, margin:"0 0 6px" }}>
             우리반 회의 기록
           </p>
-          <h1 style={{ color:"#fff", fontSize:"clamp(22px,4vw,32px)", fontWeight:900, margin:0, letterSpacing:"-0.5px" }}>
+          <h1 style={{ color:"var(--text)", fontSize:"var(--page-title-size)", fontWeight:800, margin:0, letterSpacing:"-0.5px" }}>
             📝 HR / 학급회의 기록
           </h1>
         </div>
@@ -138,8 +138,8 @@ export default function HRPage() {
                   {/* 날짜 배지 */}
                   <div style={{
                     width:48, textAlign:"center", flexShrink:0,
-                    background:"linear-gradient(135deg,#f472b6,#a78bfa)",
-                    borderRadius:12, padding:"6px 0",
+                    background:"var(--text)",
+                    borderRadius:6, padding:"6px 0",
                   }}>
                     <div style={{ fontSize:10, color:"rgba(255,255,255,0.8)", fontWeight:700 }}>
                       {d.getMonth()+1}월
@@ -158,7 +158,7 @@ export default function HRPage() {
                     </div>
                     <div style={{ display:"flex", gap:8, flexWrap:"wrap" }}>
                       {r.decisions && (
-                        <span style={{ fontSize:11, fontWeight:700, padding:"2px 8px", borderRadius:999, background:"#f0fdf4", color:"#22c55e" }}>
+                        <span style={{ fontSize:11, fontWeight:700, padding:"2px 8px", borderRadius:8, background:"#f0fdf4", color:"#22c55e" }}>
                           ✅ 결정사항 있음
                         </span>
                       )}
@@ -176,7 +176,7 @@ export default function HRPage() {
 
                 {/* 상세 내용 */}
                 {isExp && (
-                  <div style={{ marginTop:16, paddingTop:16, borderTop:"1.5px solid var(--border)", display:"flex", flexDirection:"column", gap:14 }}>
+                  <div style={{ marginTop:16, paddingTop:16, borderTop:"1px solid var(--border)", display:"flex", flexDirection:"column", gap:14 }}>
                     <div>
                       <p style={{ fontSize:12, fontWeight:800, color:"var(--text-subtle)", margin:"0 0 6px", textTransform:"uppercase", letterSpacing:"0.06em" }}>
                         📋 안건
@@ -186,7 +186,7 @@ export default function HRPage() {
                       </p>
                     </div>
                     {r.decisions && (
-                      <div style={{ background:"#f0fdf4", borderRadius:12, padding:"12px 16px", border:"1.5px solid #bbf7d0" }}>
+                      <div style={{ background:"#f0fdf4", borderRadius:6, padding:"12px 16px", border:"1px solid #bbf7d0" }}>
                         <p style={{ fontSize:12, fontWeight:800, color:"#22c55e", margin:"0 0 6px", textTransform:"uppercase", letterSpacing:"0.06em" }}>
                           ✅ 결정사항
                         </p>
@@ -196,7 +196,7 @@ export default function HRPage() {
                       </div>
                     )}
                     {r.notes && (
-                      <div style={{ background:"#fffbeb", borderRadius:12, padding:"12px 16px", border:"1.5px solid #fde68a" }}>
+                      <div style={{ background:"#fffbeb", borderRadius:6, padding:"12px 16px", border:"1px solid #fde68a" }}>
                         <p style={{ fontSize:12, fontWeight:800, color:"#f59e0b", margin:"0 0 6px", textTransform:"uppercase", letterSpacing:"0.06em" }}>
                           🗒 메모
                         </p>

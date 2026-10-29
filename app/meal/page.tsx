@@ -85,21 +85,21 @@ export default function MealPage() {
     <div style={{ display:"flex", flexDirection:"column", gap:20 }}>
 
       <div className="hy-hero">
-        <h1 style={{ color:"#fff", fontSize:"clamp(22px,4vw,32px)", fontWeight:900, margin:"0 0 8px" }}>🍱 급식 게시판</h1>
-        <p style={{ color:"rgba(255,255,255,0.85)", fontSize:13, margin:0, fontWeight:500, lineHeight:1.7 }}>
+        <h1 style={{ color:"var(--text)", fontSize:"var(--page-title-size)", fontWeight:800, margin:"0 0 8px" }}>🍱 급식 게시판</h1>
+        <p style={{ color:"var(--text-muted)", fontSize:13, margin:0, fontWeight:500, lineHeight:1.7 }}>
           오늘 뭐 나왔는지 기록하고, 맛 평가도 남겨봐요!
         </p>
       </div>
 
       {/* 오늘 급식 요약 */}
       {todayMeals.length > 0 && (
-        <div style={{ borderRadius:20, padding:"18px 22px", background:"linear-gradient(135deg,#fdf2f8,#f5f3ff)", border:"1.5px solid #f9a8d4" }}>
+        <div style={{ borderRadius:8, padding:"18px 22px", background:"var(--primary-light)", border:"1px solid var(--border-strong)" }}>
           <p style={{ fontSize:12, fontWeight:800, color:"var(--primary)", margin:"0 0 10px", textTransform:"uppercase", letterSpacing:"0.05em" }}>
             🍽️ 오늘 급식 — {fmtDate(today)}
           </p>
           <div style={{ display:"flex", gap:12, flexWrap:"wrap" }}>
             {todayMeals.map(m => (
-              <div key={m.id} style={{ flex:1, minWidth:160, background:"#fff", borderRadius:14, padding:"12px 16px", border:"1px solid #f9a8d4" }}>
+              <div key={m.id} style={{ flex:1, minWidth:160, background:"#fff", borderRadius:8, padding:"12px 16px", border:"1px solid var(--border-strong)" }}>
                 <p style={{ fontSize:11, fontWeight:800, color:"var(--primary)", margin:"0 0 6px" }}>
                   {m.type === "중식" ? "☀️ 중식" : "🌙 석식"}
                 </p>
@@ -125,7 +125,7 @@ export default function MealPage() {
         Object.entries(grouped).map(([date, dayMeals]) => (
           <div key={date}>
             <p style={{ fontSize:13, fontWeight:800, color:"var(--text-muted)", margin:"0 0 10px" }}>
-              📅 {fmtDate(date)} {date===today && <span style={{ fontSize:11, background:"var(--primary)", color:"#fff", padding:"2px 8px", borderRadius:999, marginLeft:6, fontWeight:700 }}>오늘</span>}
+              📅 {fmtDate(date)} {date===today && <span style={{ fontSize:11, background:"var(--primary)", color:"#fff", padding:"2px 8px", borderRadius:8, marginLeft:6, fontWeight:700 }}>오늘</span>}
             </p>
             <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(280px,1fr))", gap:12 }}>
               {dayMeals.map(meal => {
@@ -135,7 +135,7 @@ export default function MealPage() {
                   <div key={meal.id} className="hy-card" style={{ padding:"18px 20px" }}>
                     <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:10 }}>
                       <span style={{ fontSize:13, fontWeight:900, color: meal.type==="중식" ? "#f59e0b" : "#6366f1",
-                        background: meal.type==="중식" ? "#fffbeb" : "#f5f3ff", padding:"4px 12px", borderRadius:999 }}>
+                        background: meal.type==="중식" ? "#fffbeb" : "var(--primary-light)", padding:"4px 12px", borderRadius:8 }}>
                         {meal.type==="중식" ? "☀️ 중식" : "🌙 석식"}
                       </span>
                     </div>
@@ -159,7 +159,7 @@ export default function MealPage() {
 
                     {/* 평점 등록 */}
                     {ratingOpen === meal.id ? (
-                      <div style={{ borderTop:"1.5px solid var(--border)", paddingTop:12, display:"flex", flexDirection:"column", gap:8 }}>
+                      <div style={{ borderTop:"1px solid var(--border)", paddingTop:12, display:"flex", flexDirection:"column", gap:8 }}>
                         <div style={{ display:"flex", gap:4, justifyContent:"center" }}>
                           {[1,2,3,4,5].map(n => (
                             <button key={n} onClick={()=>setRStar(n)}
@@ -177,7 +177,7 @@ export default function MealPage() {
                       </div>
                     ) : (
                       <button onClick={()=>{ setRatingOpen(meal.id); setRStar(5); }}
-                        style={{ width:"100%", padding:"8px", borderRadius:12, border:"1.5px dashed var(--border)", background:"transparent",
+                        style={{ width:"100%", padding:"8px", borderRadius:6, border:"1.5px dashed var(--border)", background:"transparent",
                           fontSize:12, fontWeight:700, color:"var(--text-subtle)", cursor:"pointer", fontFamily:"inherit" }}>
                         ⭐ 맛 평가하기
                       </button>

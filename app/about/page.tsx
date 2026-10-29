@@ -23,7 +23,7 @@ const ACTIVITIES = [
   {
     emoji: "🔬",
     title: "전공분야별 심화탐구활동",
-    color: "linear-gradient(135deg,#0ea5e9,#6366f1)",
+    color: "#356a80",
     shadow: "rgba(14,165,233,0.2)",
     href: "/research",
     items: [
@@ -39,7 +39,7 @@ const ACTIVITIES = [
   {
     emoji: "🤝",
     title: "교과 멘토·멘티 협력 학습 활동",
-    color: "linear-gradient(135deg,#f59e0b,#ef4444)",
+    color: "#805823",
     shadow: "rgba(245,158,11,0.2)",
     href: "/mentor",
     items: [
@@ -54,7 +54,7 @@ const ACTIVITIES = [
   {
     emoji: "💪",
     title: "90일 좋은 습관 만들기 프로젝트",
-    color: "linear-gradient(135deg,#34d399,#3b82f6)",
+    color: "#39704f",
     shadow: "rgba(52,211,153,0.2)",
     href: "/habits",
     items: [
@@ -102,25 +102,25 @@ export default function AboutPage() {
       {/* 헤더 */}
       <div className="hy-hero">
         <div style={{ position:"relative" }}>
-          <div style={{ display:"inline-flex", alignItems:"center", background:"rgba(255,255,255,0.2)", backdropFilter:"blur(8px)", borderRadius:999, padding:"4px 14px", marginBottom:12, border:"1px solid rgba(255,255,255,0.3)" }}>
-            <span style={{ fontSize:12, color:"#fff", fontWeight:700 }}>2026 한영외고 2-2</span>
+          <div style={{ display:"inline-flex", alignItems:"center", background:"var(--primary-light)",  borderRadius:8, padding:"4px 14px", marginBottom:12, border:"1px solid var(--border)" }}>
+            <span style={{ fontSize:12, color:"var(--text)", fontWeight:700 }}>2026 한영외고 2-2</span>
           </div>
-          <h1 style={{ color:"#fff", fontSize:"clamp(22px,4vw,32px)", fontWeight:900, margin:"0 0 8px", letterSpacing:"-0.5px" }}>
+          <h1 style={{ color:"var(--text)", fontSize:"var(--page-title-size)", fontWeight:800, margin:"0 0 8px", letterSpacing:"-0.5px" }}>
             🏫 학급 소개
           </h1>
-          <p style={{ color:"rgba(255,255,255,0.85)", fontSize:13, margin:0, fontWeight:500, lineHeight:1.7 }}>
+          <p style={{ color:"var(--text-muted)", fontSize:13, margin:0, fontWeight:500, lineHeight:1.7 }}>
             한영외국어고등학교 중국어과 2학년 2반
           </p>
         </div>
       </div>
 
       {/* 급훈 */}
-      <div style={{ borderRadius:24, padding:"28px", background:"linear-gradient(135deg,#fdf2f8,#f5f3ff)", border:"1.5px solid #f9a8d4", textAlign:"center" }}>
+      <div style={{ borderRadius:8, padding:"28px", background:"var(--primary-light)", border:"1px solid var(--border-strong)", textAlign:"center" }}>
         <p style={{ fontSize:13, fontWeight:700, color:"var(--primary)", margin:"0 0 8px", letterSpacing:"0.05em" }}>✨ 우리반 급훈</p>
         <h2 style={{ fontSize:"clamp(20px,5vw,30px)", fontWeight:900, color:"var(--text)", margin:"0 0 16px", letterSpacing:"-0.5px" }}>
           Oh, my God! 오 내 신!
         </h2>
-        <div style={{ maxWidth:460, margin:"0 auto", background:"#fff", borderRadius:16, padding:"16px 20px", border:"1px solid #f9a8d4" }}>
+        <div style={{ maxWidth:460, margin:"0 auto", background:"#fff", borderRadius:8, padding:"16px 20px", border:"1px solid var(--border-strong)" }}>
           <p style={{ fontSize:14, color:"var(--text-muted)", fontWeight:600, margin:0, lineHeight:1.8 }}>
             🌟 <b>"오 내 신(내신)!"</b> — 내신 시험을 향한 우리의 다짐이에요.<br/>
             시험마다 최선을 다해 좋은 내신 성적을 만들어 나가자는 의미예요.<br/>
@@ -147,7 +147,7 @@ export default function AboutPage() {
 
       {/* 학급 자율활동 */}
       <div>
-        <div style={{ display:"flex", alignItems:"center", gap:12, padding:"20px 24px", background:"linear-gradient(135deg,#f0fdf4,#dcfce7)", borderRadius:22, border:"1.5px solid #86efac", marginBottom:14 }}>
+        <div style={{ display:"flex", alignItems:"center", gap:12, padding:"20px 24px", background:"#f0fdf4", borderRadius:8, border:"1px solid #86efac", marginBottom:14 }}>
           <span style={{ fontSize:28 }}>📢</span>
           <div>
             <p style={{ fontSize:12, fontWeight:800, color:"#22c55e", margin:"0 0 2px", textTransform:"uppercase", letterSpacing:"0.06em" }}>2026학년도</p>
@@ -157,13 +157,13 @@ export default function AboutPage() {
         </div>
         <div style={{ display:"flex", flexDirection:"column", gap:12 }}>
           {ACTIVITIES.map(act => (
-            <div key={act.title} style={{ borderRadius:20, overflow:"hidden", boxShadow:`0 4px 20px ${act.shadow}` }}>
+            <div key={act.title} style={{ borderRadius:8, overflow:"hidden", boxShadow:`0 4px 20px ${act.shadow}` }}>
               <div style={{ background:act.color, padding:"16px 22px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
                 <div style={{ display:"flex", alignItems:"center", gap:10 }}>
                   <span style={{ fontSize:22 }}>{act.emoji}</span>
                   <h3 style={{ color:"#fff", fontSize:14, fontWeight:900, margin:0 }}>{act.title}</h3>
                 </div>
-                <a href={act.href} style={{ fontSize:12, fontWeight:700, color:"#fff", background:"rgba(255,255,255,0.2)", padding:"4px 12px", borderRadius:999, textDecoration:"none", border:"1px solid rgba(255,255,255,0.3)", whiteSpace:"nowrap" }}>
+                <a href={act.href} style={{ fontSize:12, fontWeight:700, color:"#fff", background:"rgba(255,255,255,0.2)", padding:"4px 12px", borderRadius:8, textDecoration:"none", border:"1px solid rgba(255,255,255,0.3)", whiteSpace:"nowrap" }}>
                   바로가기 →
                 </a>
               </div>
@@ -176,7 +176,7 @@ export default function AboutPage() {
                     </li>
                   ))}
                 </ul>
-                <div style={{ marginTop:10, padding:"8px 14px", borderRadius:10, background:"#f9fafb", border:"1px solid var(--border)" }}>
+                <div style={{ marginTop:10, padding:"8px 14px", borderRadius:6, background:"var(--surface-muted)", border:"1px solid var(--border)" }}>
                   <p style={{ fontSize:12, fontWeight:700, color:"var(--text-subtle)", margin:0 }}>📌 {act.note}</p>
                 </div>
               </div>

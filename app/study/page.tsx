@@ -93,34 +93,27 @@ export default function StudyPage() {
   const maxCount = Math.max(...Object.values(dayCount), 1);
 
   const DAY_COLORS: Record<Day, string> = {
-    월:"linear-gradient(135deg,#818cf8,#a78bfa)",
-    화:"linear-gradient(135deg,#f472b6,#fb923c)",
-    수:"linear-gradient(135deg,#34d399,#3b82f6)",
-    목:"linear-gradient(135deg,#fb923c,#fbbf24)",
-    금:"linear-gradient(135deg,#f472b6,#a78bfa)",
+    월:"var(--primary)",
+    화:"var(--text)",
+    수:"#39704f",
+    목:"#8a552d",
+    금:"var(--text)",
   };
 
   return (
     <div style={{ display:"flex", flexDirection:"column", gap:20 }}>
 
       {/* 헤더 */}
-      <div style={{
-        background:"linear-gradient(135deg,#1e3a5f 0%,#1d4ed8 50%,#4f46e5 100%)",
-        borderRadius:28, padding:"32px 28px",
-        position:"relative", overflow:"hidden",
-        boxShadow:"0 12px 40px rgba(30,58,95,0.4)",
-      }}>
-        {[{w:160,h:160,top:-50,right:-30,op:0.08},{w:80,h:80,bottom:-10,left:60,op:0.06}].map((b,i)=>(
-          <div key={i} style={{ position:"absolute",width:b.w,height:b.h,top:b.top,right:b.right,bottom:b.bottom,left:b.left,borderRadius:"50%",background:"#fff",opacity:b.op }}/>
-        ))}
+      <div className="hy-hero">
+        
         <div style={{ position:"relative" }}>
-          <div style={{ display:"inline-flex",alignItems:"center",background:"rgba(255,255,255,0.15)",backdropFilter:"blur(8px)",borderRadius:999,padding:"4px 14px",marginBottom:12,border:"1px solid rgba(255,255,255,0.2)" }}>
-            <span style={{ fontSize:12,color:"#fff",fontWeight:700 }}>📚 야간자율학습</span>
+          <div style={{ display:"inline-flex",alignItems:"center",background:"var(--primary-light)",borderRadius:8,padding:"4px 14px",marginBottom:12,border:"1px solid var(--border)" }}>
+            <span style={{ fontSize:12,color:"var(--text)",fontWeight:700 }}>📚 야간자율학습</span>
           </div>
-          <h1 style={{ color:"#fff",fontSize:"clamp(22px,4vw,32px)",fontWeight:900,margin:"0 0 8px",letterSpacing:"-0.5px" }}>
+          <h1 style={{ color:"var(--text)",fontSize:"var(--page-title-size)",fontWeight:800,margin:"0 0 8px",letterSpacing:"-0.5px" }}>
             야자 신청
           </h1>
-          <p style={{ color:"rgba(255,255,255,0.8)",fontSize:13,margin:0,fontWeight:500 }}>
+          <p style={{ color:"var(--text-muted)",fontSize:13,margin:0,fontWeight:500 }}>
             요일별로 신청해요. <span style={{ color:"#fbbf24",fontWeight:700 }}>한번 신청하면 변경이 불가능</span>하니 신중하게!
           </p>
           <div style={{ marginTop:16 }}>
@@ -167,7 +160,7 @@ export default function StudyPage() {
                 return (
                   <button key={s.no} onClick={() => setMyNo(s.no)}
                     style={{
-                      padding:"7px 14px", borderRadius:999, border:"1.5px solid",
+                      padding:"7px 14px", borderRadius:8, border:"1px solid",
                       borderColor: myNo===s.no ? "#1d4ed8" : done ? "#bbf7d0" : "var(--border)",
                       background: myNo===s.no ? "#dbeafe" : done ? "#f0fdf4" : "#fff",
                       color: myNo===s.no ? "#1d4ed8" : done ? "#22c55e" : "var(--text-muted)",
@@ -186,7 +179,7 @@ export default function StudyPage() {
             <div className="hy-card" style={{ padding:"22px 24px" }}>
               {myRecord ? (
                 <>
-                  <div style={{ display:"flex",alignItems:"center",gap:10,marginBottom:16,padding:"12px 16px",background:"#f0fdf4",borderRadius:14,border:"1.5px solid #86efac" }}>
+                  <div style={{ display:"flex",alignItems:"center",gap:10,marginBottom:16,padding:"12px 16px",background:"#f0fdf4",borderRadius:8,border:"1px solid #86efac" }}>
                     <span style={{ fontSize:20 }}>✅</span>
                     <div>
                       <p style={{ fontSize:13,fontWeight:800,color:"#22c55e",margin:"0 0 2px" }}>신청 완료</p>
@@ -199,9 +192,9 @@ export default function StudyPage() {
                   <div style={{ display:"flex",gap:8,flexWrap:"wrap" }}>
                     {DAYS.map(d=>(
                       <div key={d} style={{
-                        width:52,height:52,borderRadius:14,display:"flex",alignItems:"center",justifyContent:"center",
+                        width:52,height:52,borderRadius:8,display:"flex",alignItems:"center",justifyContent:"center",
                         fontWeight:900,fontSize:16,
-                        background: myRecord.days.includes(d) ? DAY_COLORS[d] : "#f3f4f6",
+                        background: myRecord.days.includes(d) ? DAY_COLORS[d] : "var(--surface-muted)",
                         color: myRecord.days.includes(d) ? "#fff" : "#d1d5db",
                         boxShadow: myRecord.days.includes(d) ? "0 4px 12px rgba(0,0,0,0.15)" : "none",
                       }}>{d}</div>
@@ -231,7 +224,7 @@ export default function StudyPage() {
                     {DAYS.map(d=>(
                       <button key={d} onClick={()=>toggleDay(d)}
                         style={{
-                          width:56,height:56,borderRadius:14,border:"2px solid",
+                          width:56,height:56,borderRadius:8,border:"2px solid",
                           borderColor: selected.includes(d) ? "#1d4ed8" : "var(--border)",
                           background: selected.includes(d) ? DAY_COLORS[d] : "#fff",
                           color: selected.includes(d) ? "#fff" : "var(--text-muted)",
@@ -250,8 +243,8 @@ export default function StudyPage() {
                   )}
                   <button onClick={submit} disabled={saving || selected.length===0}
                     style={{
-                      padding:"12px 28px",borderRadius:14,border:"none",
-                      background: selected.length>0 ? "linear-gradient(135deg,#1d4ed8,#4f46e5)" : "#e5e7eb",
+                      padding:"12px 28px",borderRadius:8,border:"none",
+                      background: selected.length>0 ? "var(--text)" : "#e5e7eb",
                       color: selected.length>0 ? "#fff" : "#9ca3af",
                       fontWeight:800,fontSize:14,cursor: selected.length>0 ? "pointer" : "default",
                       fontFamily:"inherit",boxShadow: selected.length>0 ? "0 6px 20px rgba(29,78,216,0.3)" : "none",
@@ -287,7 +280,7 @@ export default function StudyPage() {
                 </div>
               ))}
             </div>
-            <div style={{ marginTop:16,padding:"10px 14px",background:"#eff6ff",borderRadius:12,border:"1.5px solid #bfdbfe" }}>
+            <div style={{ marginTop:16,padding:"10px 14px",background:"#eff6ff",borderRadius:6,border:"1px solid #bfdbfe" }}>
               <span style={{ fontSize:13,fontWeight:700,color:"#1d4ed8" }}>
                 총 {records.length}명 신청 · 평균 주 {records.length>0 ? (records.reduce((s,r)=>s+r.days.length,0)/records.length).toFixed(1) : 0}회
               </span>
@@ -327,7 +320,7 @@ export default function StudyPage() {
                   {STUDENTS.map((s,i)=>{
                     const rec = records.find(r=>r.student_no===s.no);
                     return (
-                      <tr key={s.no} style={{ borderBottom:"1px solid var(--border)", background: i%2===0?"#fafafa":"#fff" }}>
+                      <tr key={s.no} style={{ borderBottom:"1px solid var(--border)", background: i%2===0?"var(--surface-muted)":"#fff" }}>
                         <td style={{ padding:"10px 12px",color:"var(--text-subtle)",fontWeight:700 }}>{i+1}</td>
                         <td style={{ padding:"10px 12px",fontWeight:800,color:"var(--text)" }}>{s.name}</td>
                         {DAYS.map(d=>(
@@ -346,7 +339,7 @@ export default function StudyPage() {
                           <td style={{ padding:"4px" }}>
                             {rec && (
                               <button onClick={()=>adminDelete(rec.id, s.name)}
-                                style={{ fontSize:10,padding:"2px 8px",borderRadius:999,border:"1px solid #fecaca",background:"#fff5f5",color:"#ef4444",cursor:"pointer",fontFamily:"inherit" }}>
+                                style={{ fontSize:10,padding:"2px 8px",borderRadius:8,border:"1px solid #fecaca",background:"#fff5f5",color:"#ef4444",cursor:"pointer",fontFamily:"inherit" }}>
                                 삭제
                               </button>
                             )}

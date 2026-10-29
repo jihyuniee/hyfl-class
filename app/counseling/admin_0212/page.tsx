@@ -58,9 +58,9 @@ function formatKST(iso: string) {
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <section className="rounded-2xl border bg-white p-5">
-      <h3 className="text-sm font-semibold text-gray-700">{title}</h3>
-      <div className="mt-3 text-sm text-gray-800">{children}</div>
+    <section className="rounded-[var(--radius-card)] border bg-[var(--surface)] p-5 border-[var(--border)]">
+      <h3 className="text-sm font-semibold text-[var(--text)]">{title}</h3>
+      <div className="mt-3 text-sm text-[var(--text)]">{children}</div>
     </section>
   );
 }
@@ -69,8 +69,8 @@ function Row({ label, value }: { label: string; value?: string }) {
   if (!value) return null;
   return (
     <div className="grid gap-2 border-b py-2 last:border-b-0 md:grid-cols-4">
-      <div className="text-xs font-semibold text-gray-600 md:col-span-1">{label}</div>
-      <div className="whitespace-pre-wrap text-sm text-gray-900 md:col-span-3">{value}</div>
+      <div className="text-xs font-semibold text-[var(--text-muted)] md:col-span-1">{label}</div>
+      <div className="whitespace-pre-wrap text-sm text-[var(--text)] md:col-span-3">{value}</div>
     </div>
   );
 }
@@ -239,18 +239,18 @@ function downloadCSV() {
   if (!isUnlocked) {
     return (
       <div className="space-y-6">
-        <h1 className="text-2xl font-bold">담임 전용 페이지 🔒</h1>
+        <h1 className="hy-page-title">담임 전용 페이지 🔒</h1>
 
-        <div className="max-w-md rounded-2xl border bg-white p-6">
+        <div className="max-w-md rounded-[var(--radius-card)] border bg-[var(--surface)] p-6 border-[var(--border)]">
           <div className="mb-3 text-sm">비밀번호를 입력하세요</div>
           <input
             type="password"
-            className="w-full rounded-xl border px-3 py-2"
+            className="w-full rounded-[var(--radius-card)] border px-3 py-2 border-[var(--border)]"
             value={passwordInput}
             onChange={(e) => setPasswordInput(e.target.value)}
           />
           <button
-            className="mt-4 rounded-full bg-black px-5 py-2 text-sm text-white"
+            className="mt-4 rounded-[var(--radius-control)] bg-black px-5 py-2 text-sm text-white"
             onClick={() => {
               if (passwordInput === ADMIN_PASSWORD) {
                 setIsUnlocked(true);
@@ -270,33 +270,33 @@ function downloadCSV() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold">담임 전용: 상담 설문 제출 목록</h1>
-        <p className="mt-1 text-sm text-gray-600">
+        <h1 className="hy-page-title">담임 전용: 상담 설문 제출 목록</h1>
+        <p className="mt-1 text-sm text-[var(--text-muted)]">
           현재는 <span className="font-semibold">이 PC/브라우저</span>에 저장된 제출만 보이게 돼.
         </p>
       </div>
 
       <div className="flex flex-wrap items-center gap-2">
         <button
-        className="rounded-full border px-4 py-2 text-sm hover:bg-gray-50"
+        className="rounded-[var(--radius-control)] border px-4 py-2 text-sm hover:bg-gray-50 border-[var(--border)]"
         onClick={downloadCSV}
         >
         엑셀 다운로드
         </button>
         <input
-          className="w-full rounded-xl border px-3 py-2 md:w-96"
+          className="w-full rounded-[var(--radius-card)] border px-3 py-2 md:w-96 border-[var(--border)]"
           placeholder="이름/학번/메모(15번) 검색"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
         />
         <button
-          className="rounded-full border px-4 py-2 text-sm hover:bg-gray-50"
+          className="rounded-[var(--radius-control)] border px-4 py-2 text-sm hover:bg-gray-50 border-[var(--border)]"
           onClick={refresh}
         >
           새로고침
         </button>
         <button
-          className="rounded-full border px-4 py-2 text-sm hover:bg-gray-50"
+          className="rounded-[var(--radius-control)] border px-4 py-2 text-sm hover:bg-gray-50 border-[var(--border)]"
           onClick={clearAll}
         >
           전체 삭제
@@ -305,11 +305,11 @@ function downloadCSV() {
 
       <div className="grid gap-4 md:grid-cols-3">
         {/* 목록 */}
-        <div className="rounded-2xl border bg-white p-4 md:col-span-1">
-          <div className="text-sm font-semibold text-gray-700">제출 {filtered.length}건</div>
+        <div className="rounded-[var(--radius-card)] border bg-[var(--surface)] p-4 md:col-span-1 border-[var(--border)]">
+          <div className="text-sm font-semibold text-[var(--text)]">제출 {filtered.length}건</div>
           <div className="mt-3 divide-y">
             {filtered.length === 0 && (
-              <div className="py-8 text-sm text-gray-600">제출 데이터가 없어.</div>
+              <div className="py-8 text-sm text-[var(--text-muted)]">제출 데이터가 없어.</div>
             )}
 
             {filtered.map((r) => (
@@ -321,7 +321,7 @@ function downloadCSV() {
                 <div className="font-semibold">
                   {r.payload.name} ({r.payload.studentNo})
                 </div>
-                <div className="mt-1 text-xs text-gray-500">{formatKST(r.createdAt)}</div>
+                <div className="mt-1 text-xs text-[var(--text-muted)]">{formatKST(r.createdAt)}</div>
               </button>
             ))}
           </div>
@@ -330,7 +330,7 @@ function downloadCSV() {
         {/* 상세 */}
         <div className="space-y-4 md:col-span-2">
           {!selected ? (
-            <div className="rounded-2xl border bg-white p-6 text-sm text-gray-700">
+            <div className="rounded-[var(--radius-card)] border bg-[var(--surface)] p-6 text-sm text-[var(--text)] border-[var(--border)]">
               왼쪽에서 학생을 선택해줘.
             </div>
           ) : (
@@ -340,7 +340,7 @@ function downloadCSV() {
                   {selected.payload.name} ({selected.payload.studentNo})
                 </div>
                 <button
-                  className="rounded-full border px-4 py-2 text-sm hover:bg-gray-50"
+                  className="rounded-[var(--radius-control)] border px-4 py-2 text-sm hover:bg-gray-50 border-[var(--border)]"
                   onClick={() => deleteOne(selected.id)}
                 >
                   이 제출 삭제

@@ -14,28 +14,28 @@ type Item = {
 
 const TYPE_STYLE: Record<string, { bg: string; color: string; dot: string; border: string; pill: string }> = {
   수행평가: {
-    bg: "linear-gradient(135deg, #fdf4ff 0%, #fae8ff 100%)",
+    bg: "#fdf4ff",
     color: "#9333ea",
     dot: "#9333ea",
-    border: "#e9d5ff",
-    pill: "#f3e8ff",
+    border: "var(--border)",
+    pill: "var(--accent-light)",
   },
   고사: {
-    bg: "linear-gradient(135deg, #fff1f2 0%, #ffe4e6 100%)",
+    bg: "#fff1f2",
     color: "#e11d48",
     dot: "#e11d48",
     border: "#fecdd3",
     pill: "#ffe4e6",
   },
   학급일정: {
-    bg: "linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%)",
+    bg: "#eff6ff",
     color: "#2563eb",
     dot: "#2563eb",
     border: "#bfdbfe",
     pill: "#dbeafe",
   },
   학교일정: {
-    bg: "linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)",
+    bg: "#f0fdf4",
     color: "#16a34a",
     dot: "#16a34a",
     border: "#bbf7d0",
@@ -44,7 +44,7 @@ const TYPE_STYLE: Record<string, { bg: string; color: string; dot: string; borde
 };
 
 const TYPE_TAG_BG: Record<string, string> = {
-  수행평가: "#f3e8ff",
+  수행평가: "var(--accent-light)",
   고사:     "#ffe4e6",
   학급일정: "#dbeafe",
   학교일정: "#dcfce7",
@@ -194,7 +194,7 @@ export default function SchedulePage() {
 
   const FILTER_ACTIVE_STYLE: Record<string, { bg: string; color: string; border: string; dot: string }> = {
     전체:     { bg: "var(--primary-light)", color: "var(--primary)", border: "var(--primary)", dot: "var(--primary)" },
-    수행평가: { bg: "#f3e8ff", color: "#9333ea", border: "#9333ea", dot: "#9333ea" },
+    수행평가: { bg: "var(--accent-light)", color: "#9333ea", border: "#9333ea", dot: "#9333ea" },
     고사:     { bg: "#ffe4e6", color: "#e11d48", border: "#e11d48", dot: "#e11d48" },
     학급일정: { bg: "#dbeafe", color: "#2563eb", border: "#2563eb", dot: "#2563eb" },
     학교일정: { bg: "#dcfce7", color: "#16a34a", border: "#16a34a", dot: "#16a34a" },
@@ -215,7 +215,7 @@ export default function SchedulePage() {
           <div
             onClick={e => e.stopPropagation()}
             style={{
-              background:"#fff", borderRadius:18, padding:"28px 28px 24px",
+              background:"#fff", borderRadius:8, padding:"28px 28px 24px",
               width:"100%", maxWidth:360, boxShadow:"0 8px 40px rgba(0,0,0,0.18)",
             }}>
             <div style={{ fontSize:22, textAlign:"center", marginBottom:6 }}>🔐</div>
@@ -234,7 +234,7 @@ export default function SchedulePage() {
               className="hy-input"
               style={{
                 width:"100%", marginBottom: pwError ? 6 : 14,
-                border: pwError ? "1.5px solid #e11d48" : undefined,
+                border: pwError ? "1px solid #e11d48" : undefined,
                 outline: pwError ? "none" : undefined,
               }}
               autoFocus
@@ -248,7 +248,7 @@ export default function SchedulePage() {
               <button
                 onClick={() => { setPwModalOpen(false); setPwInput(""); setPwError(false); }}
                 style={{
-                  flex:1, padding:"9px 0", borderRadius:10, border:"1.5px solid var(--border)",
+                  flex:1, padding:"9px 0", borderRadius:6, border:"1px solid var(--border)",
                   background:"#fff", color:"var(--text-muted)", fontWeight:700, fontSize:13,
                   cursor:"pointer", fontFamily:"inherit",
                 }}>
@@ -277,7 +277,7 @@ export default function SchedulePage() {
           <div
             onClick={e => e.stopPropagation()}
             style={{
-              background:"#fff", borderRadius:18, padding:"28px 28px 24px",
+              background:"#fff", borderRadius:8, padding:"28px 28px 24px",
               width:"100%", maxWidth:360, boxShadow:"0 8px 40px rgba(0,0,0,0.18)",
             }}>
             <div style={{ fontSize:22, textAlign:"center", marginBottom:6 }}>🗑️</div>
@@ -289,8 +289,8 @@ export default function SchedulePage() {
             </p>
             {/* 삭제 대상 미리보기 */}
             <div style={{
-              padding:"12px 14px", borderRadius:12, marginBottom:18,
-              background: TYPE_STYLE[deleteTarget.type]?.bg ?? "#f9fafb",
+              padding:"12px 14px", borderRadius:6, marginBottom:18,
+              background: TYPE_STYLE[deleteTarget.type]?.bg ?? "var(--surface-muted)",
               border:`1px solid ${TYPE_STYLE[deleteTarget.type]?.border ?? "#e5e7eb"}`,
             }}>
               <div style={{ fontWeight:800, fontSize:14, color:"var(--text)" }}>
@@ -298,8 +298,8 @@ export default function SchedulePage() {
               </div>
               <div style={{ fontSize:12, color:"var(--text-muted)", marginTop:4 }}>
                 <span style={{
-                  padding:"1px 8px", borderRadius:999, fontSize:11, fontWeight:700,
-                  background: TYPE_STYLE[deleteTarget.type]?.pill ?? "#f3f4f6",
+                  padding:"1px 8px", borderRadius:8, fontSize:11, fontWeight:700,
+                  background: TYPE_STYLE[deleteTarget.type]?.pill ?? "var(--surface-muted)",
                   color: TYPE_STYLE[deleteTarget.type]?.color ?? "#374151",
                 }}>{deleteTarget.type}</span>
                 <span style={{ marginLeft:6 }}>{deleteTarget.date}</span>
@@ -310,7 +310,7 @@ export default function SchedulePage() {
                 onClick={() => setDeleteTarget(null)}
                 disabled={deleteLoading}
                 style={{
-                  flex:1, padding:"9px 0", borderRadius:10, border:"1.5px solid var(--border)",
+                  flex:1, padding:"9px 0", borderRadius:6, border:"1px solid var(--border)",
                   background:"#fff", color:"var(--text-muted)", fontWeight:700, fontSize:13,
                   cursor:"pointer", fontFamily:"inherit",
                 }}>
@@ -320,7 +320,7 @@ export default function SchedulePage() {
                 onClick={handleDelete}
                 disabled={deleteLoading}
                 style={{
-                  flex:1, padding:"9px 0", borderRadius:10, border:"none",
+                  flex:1, padding:"9px 0", borderRadius:6, border:"none",
                   background: deleteLoading ? "#fca5a5" : "#e11d48",
                   color:"#fff", fontWeight:700, fontSize:13,
                   cursor: deleteLoading ? "not-allowed" : "pointer",
@@ -336,10 +336,10 @@ export default function SchedulePage() {
       {/* 헤더 */}
       <div className="hy-hero">
         <div style={{ position:"relative" }}>
-          <p style={{ color:"rgba(255,255,255,0.8)", fontSize:13, fontWeight:600, margin:"0 0 6px" }}>
+          <p style={{ color:"var(--text-muted)", fontSize:13, fontWeight:600, margin:"0 0 6px" }}>
             우리반 일정 관리
           </p>
-          <h1 style={{ color:"#fff", fontSize:"clamp(22px,4vw,32px)", fontWeight:900, margin:0, letterSpacing:"-0.5px" }}>
+          <h1 style={{ color:"var(--text)", fontSize:"var(--page-title-size)", fontWeight:800, margin:0, letterSpacing:"-0.5px" }}>
             📅 일정/수행평가
           </h1>
         </div>
@@ -355,7 +355,7 @@ export default function SchedulePage() {
               <button key={f} onClick={() => setFilter(f)}
                 style={{
                   display:"flex", alignItems:"center", gap:5,
-                  padding:"6px 14px", borderRadius:999, border:"1.5px solid",
+                  padding:"6px 14px", borderRadius:8, border:"1px solid",
                   borderColor: active ? st.border : "var(--border)",
                   background: active ? st.bg : "#fff",
                   color: active ? st.color : "var(--text-muted)",
@@ -381,7 +381,7 @@ export default function SchedulePage() {
             <button
               onClick={() => setIsAdmin(false)}
               style={{
-                padding:"7px 14px", borderRadius:999, border:"1.5px solid #fecdd3",
+                padding:"7px 14px", borderRadius:8, border:"1px solid #fecdd3",
                 background:"#fff1f2", color:"#e11d48", fontWeight:700, fontSize:13,
                 cursor:"pointer", fontFamily:"inherit", display:"flex", alignItems:"center", gap:5,
               }}>
@@ -391,7 +391,7 @@ export default function SchedulePage() {
             <button
               onClick={() => setPwModalOpen(true)}
               style={{
-                padding:"7px 14px", borderRadius:999, border:"1.5px solid var(--border)",
+                padding:"7px 14px", borderRadius:8, border:"1px solid var(--border)",
                 background:"#fff", color:"var(--text-muted)", fontWeight:700, fontSize:13,
                 cursor:"pointer", fontFamily:"inherit", display:"flex", alignItems:"center", gap:5,
               }}>
@@ -409,8 +409,8 @@ export default function SchedulePage() {
       {/* ✅ 관리자 모드 안내 배너 */}
       {isAdmin && (
         <div style={{
-          padding:"10px 16px", borderRadius:12,
-          background:"#fff1f2", border:"1.5px solid #fecdd3",
+          padding:"10px 16px", borderRadius:6,
+          background:"#fff1f2", border:"1px solid #fecdd3",
           display:"flex", alignItems:"center", gap:8,
           fontSize:13, color:"#e11d48", fontWeight:600,
         }}>
@@ -454,7 +454,7 @@ export default function SchedulePage() {
       <div className="hy-card" style={{ padding:"20px" }}>
         <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:16 }}>
           <button onClick={prevMonth} style={{
-            width:34, height:34, borderRadius:10, border:"1.5px solid var(--border)",
+            width:34, height:34, borderRadius:6, border:"1px solid var(--border)",
             background:"#fff", cursor:"pointer", fontSize:16, display:"flex",
             alignItems:"center", justifyContent:"center",
           }}>‹</button>
@@ -462,7 +462,7 @@ export default function SchedulePage() {
             {year}년 {MONTHS[month]}
           </span>
           <button onClick={nextMonth} style={{
-            width:34, height:34, borderRadius:10, border:"1.5px solid var(--border)",
+            width:34, height:34, borderRadius:6, border:"1px solid var(--border)",
             background:"#fff", cursor:"pointer", fontSize:16, display:"flex",
             alignItems:"center", justifyContent:"center",
           }}>›</button>
@@ -489,13 +489,13 @@ export default function SchedulePage() {
               <div key={idx} onClick={() => setSelectedDate(isSel ? null : iso)}
                 style={{
                   height:90, overflow:"hidden",
-                  padding:"5px 6px", borderRadius:10,
+                  padding:"5px 6px", borderRadius:6,
                   background: isSel ? "var(--primary-light)" : isToday ? "#fdf4ff" : "#fff",
                   border: isSel
-                    ? "1.5px solid var(--primary)"
+                    ? "1px solid var(--primary)"
                     : isToday
-                    ? "1.5px solid #e9d5ff"
-                    : "1.5px solid var(--border)",
+                    ? "1px solid var(--border)"
+                    : "1px solid var(--border)",
                   cursor:"pointer", transition:"all 0.12s",
                   boxShadow: isSel ? "0 2px 8px rgba(168,85,247,0.12)" : "none",
                 }}>
@@ -509,7 +509,7 @@ export default function SchedulePage() {
                     <div key={i} style={{
                       fontSize:11, fontWeight:700, padding:"2px 6px",
                       borderRadius:"0 4px 4px 0",
-                      background: TYPE_TAG_BG[it.type] ?? "#f3f4f6",
+                      background: TYPE_TAG_BG[it.type] ?? "var(--surface-muted)",
                       color: TYPE_STYLE[it.type]?.color ?? "#374151",
                       overflow:"hidden", whiteSpace:"nowrap", textOverflow:"ellipsis",
                       borderLeft:`2px solid ${TYPE_STYLE[it.type]?.dot ?? "#9ca3af"}`,
@@ -542,8 +542,8 @@ export default function SchedulePage() {
                 return (
                   <div key={it.id} style={{
                     display:"flex", alignItems:"center", gap:12,
-                    padding:"12px 14px", borderRadius:12,
-                    background: st?.bg ?? "#f9fafb",
+                    padding:"12px 14px", borderRadius:6,
+                    background: st?.bg ?? "var(--surface-muted)",
                     border:`1px solid ${st?.border ?? "#e5e7eb"}`,
                   }}>
                     <span style={{
@@ -554,8 +554,8 @@ export default function SchedulePage() {
                       <div style={{ fontWeight:800, fontSize:14, color:"var(--text)" }}>{it.title}</div>
                       <div style={{ fontSize:12, color:"var(--text-muted)", marginTop:2 }}>
                         <span style={{
-                          padding:"1px 8px", borderRadius:999, fontSize:11, fontWeight:700,
-                          background: st?.pill ?? "#f3f4f6",
+                          padding:"1px 8px", borderRadius:8, fontSize:11, fontWeight:700,
+                          background: st?.pill ?? "var(--surface-muted)",
                           color: st?.color ?? "#374151",
                         }}>{it.type}</span>
                         {it.subject && <span style={{ marginLeft:6 }}>{it.subject}</span>}
@@ -567,7 +567,7 @@ export default function SchedulePage() {
                       <button
                         onClick={e => { e.stopPropagation(); setDeleteTarget(it); }}
                         style={{
-                          width:32, height:32, borderRadius:8, border:"1.5px solid #fecdd3",
+                          width:32, height:32, borderRadius:8, border:"1px solid #fecdd3",
                           background:"#fff1f2", color:"#e11d48", cursor:"pointer",
                           display:"flex", alignItems:"center", justifyContent:"center",
                           fontSize:15, flexShrink:0, transition:"all 0.15s",
@@ -598,9 +598,9 @@ export default function SchedulePage() {
               return (
                 <div key={it.id} style={{
                   display:"flex", alignItems:"center", gap:12,
-                  padding:"12px 14px", borderRadius:12,
-                  background: it.date === today ? "#fdf4ff" : "#fafafa",
-                  border:`1.5px solid ${it.date === today ? "#e9d5ff" : "var(--border)"}`,
+                  padding:"12px 14px", borderRadius:6,
+                  background: it.date === today ? "#fdf4ff" : "var(--surface-muted)",
+                  border:`1px solid ${it.date === today ? "var(--border)" : "var(--border)"}`,
                 }}>
                   <div style={{ width:42, textAlign:"center", flexShrink:0 }}>
                     <div style={{ fontSize:10, color:"var(--text-subtle)", fontWeight:700 }}>
@@ -618,8 +618,8 @@ export default function SchedulePage() {
                     <div style={{ fontWeight:800, fontSize:14, color:"var(--text)" }}>{it.title}</div>
                     <div style={{ fontSize:12, color:"var(--text-muted)", marginTop:2 }}>
                       <span style={{
-                        padding:"1px 8px", borderRadius:999, fontSize:11, fontWeight:700,
-                        background: st?.pill ?? "#f3f4f6",
+                        padding:"1px 8px", borderRadius:8, fontSize:11, fontWeight:700,
+                        background: st?.pill ?? "var(--surface-muted)",
                         color: st?.color ?? "#374151",
                       }}>{it.type}</span>
                       {it.subject && <span style={{ marginLeft:6 }}>{it.subject}</span>}
@@ -630,7 +630,7 @@ export default function SchedulePage() {
                     <button
                       onClick={() => setDeleteTarget(it)}
                       style={{
-                        width:32, height:32, borderRadius:8, border:"1.5px solid #fecdd3",
+                        width:32, height:32, borderRadius:8, border:"1px solid #fecdd3",
                         background:"#fff1f2", color:"#e11d48", cursor:"pointer",
                         display:"flex", alignItems:"center", justifyContent:"center",
                         fontSize:15, flexShrink:0, transition:"all 0.15s",

@@ -60,8 +60,8 @@ const FIELDS: { key: CounselingEntry["category"]; emoji: string; color: string; 
   { key: "교우관계", emoji: "🤝", color: "#a855f7", bg: "#fdf4ff" },
   { key: "진로",    emoji: "🎯", color: "#16a34a", bg: "#f0fdf4" },
   { key: "가족",    emoji: "👨‍👩‍👧", color: "#f97316", bg: "#fff7ed" },
-  { key: "정서",    emoji: "💭", color: "#ec4899", bg: "#fdf2f8" },
-  { key: "기타",    emoji: "💬", color: "#64748b", bg: "#f8fafc" },
+  { key: "정서",    emoji: "💭", color: "var(--primary-dark)", bg: "var(--primary-light)" },
+  { key: "기타",    emoji: "💬", color: "var(--text-muted)", bg: "var(--surface-muted)" },
 ];
 
 const TEACHER_PW = process.env.NEXT_PUBLIC_TEACHER_PW ?? "hyfl-teacher-2026!";
@@ -132,19 +132,19 @@ function CounselingForm({
   const selField = FIELDS.find(f => f.key === field)!;
 
   return (
-    <div style={{ background: "#fff", border: "1.5px solid var(--border)", borderRadius: 16, padding: "20px 22px", display: "flex", flexDirection: "column", gap: 14 }}>
+    <div style={{ background: "#fff", border: "1px solid var(--border)", borderRadius:8, padding: "20px 22px", display: "flex", flexDirection: "column", gap: 14 }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <p style={{ fontSize: 14, fontWeight: 800, color: "var(--text)", margin: 0 }}>
           {editing ? "✏️ 기록 수정" : "✏️ 상담 기록 추가"}
         </p>
-        <button onClick={onCancel} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 18, color: "#94a3b8" }}>×</button>
+        <button onClick={onCancel} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 18, color: "var(--text-subtle)" }}>×</button>
       </div>
       <div>
         <p style={{ fontSize: 11, fontWeight: 700, color: "var(--text-muted)", margin: "0 0 8px" }}>분야</p>
         <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
           {FIELDS.map(f => (
             <button key={f.key} onClick={() => setField(f.key)}
-              style={{ padding: "6px 12px", borderRadius: 999, border: "1.5px solid",
+              style={{ padding: "6px 12px", borderRadius:8, border: "1px solid",
                 borderColor: field === f.key ? f.color : "var(--border)",
                 background: field === f.key ? f.bg : "#fff",
                 color: field === f.key ? f.color : "var(--text-muted)",
@@ -175,8 +175,8 @@ function CounselingForm({
           style={{ minHeight: 60, resize: "vertical", fontSize: 13 }} />
       </div>
       <label style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer",
-        padding: "10px 14px", borderRadius: 10,
-        background: sensitive ? "#fff5f5" : "#f9fafb",
+        padding: "10px 14px", borderRadius:6,
+        background: sensitive ? "#fff5f5" : "var(--surface-muted)",
         border: `1px solid ${sensitive ? "#fecaca" : "var(--border)"}` }}>
         <input type="checkbox" checked={sensitive} onChange={e => setSensitive(e.target.checked)}
           style={{ width: 15, height: 15, accentColor: "#e11d48", cursor: "pointer" }} />
@@ -271,7 +271,7 @@ function FieldForm({
       {/* 민감 여부 */}
       <label style={{ display: "flex", alignItems: "center", gap: 7, cursor: "pointer",
         padding: "7px 10px", borderRadius: 8,
-        background: sensitive ? "#fff5f5" : "#f9fafb",
+        background: sensitive ? "#fff5f5" : "var(--surface-muted)",
         border: `1px solid ${sensitive ? "#fecaca" : "var(--border)"}` }}>
         <input type="checkbox" checked={sensitive} onChange={e => setSensitive(e.target.checked)}
           style={{ width: 13, height: 13, accentColor: "#e11d48", cursor: "pointer" }} />
@@ -281,7 +281,7 @@ function FieldForm({
       </label>
       {/* 저장 버튼 */}
       <button onClick={save} disabled={saving}
-        style={{ width: "100%", padding: "11px", borderRadius: 10, border: "none",
+        style={{ width: "100%", padding: "11px", borderRadius:6, border: "none",
           cursor: saving ? "not-allowed" : "pointer", fontFamily: "inherit",
           background: saving ? currentField.color + "88" : currentField.color,
           color: "#fff", fontSize: 13, fontWeight: 800, transition: "opacity 0.15s" }}>
@@ -525,10 +525,10 @@ export default function TeacherOnlyPage() {
       <div className="hy-hero" style={{ marginBottom: 0, borderRadius: "16px 16px 0 0" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <div>
-            <p style={{ color: "rgba(255,255,255,0.55)", fontSize: 11, fontWeight: 700, margin: "0 0 4px", letterSpacing: "0.1em" }}>
+            <p style={{ color:"var(--text-muted)", fontSize: 11, fontWeight: 700, margin: "0 0 4px", letterSpacing: "0.1em" }}>
               🔒 TEACHER ONLY · 2026 한영외고 2-2
             </p>
-            <h1 style={{ color: "#fff", fontSize: "clamp(16px,3vw,22px)", fontWeight: 900, margin: 0 }}>
+            <h1 style={{ color:"var(--text)", fontSize:"var(--page-title-size)", fontWeight:800, margin: 0 }}>
               📋 학생 상담 대시보드
             </h1>
           </div>
@@ -540,14 +540,14 @@ export default function TeacherOnlyPage() {
                 { label: "총기록", value: logs.length },
               ].map(s => (
                 <div key={s.label} style={{ textAlign: "center" }}>
-                  <p style={{ fontSize: 18, fontWeight: 900, color: "#fff", margin: 0 }}>{s.value}</p>
-                  <p style={{ fontSize: 10, color: "rgba(255,255,255,0.5)", margin: 0, fontWeight: 600 }}>{s.label}</p>
+                  <p style={{ fontSize: 18, fontWeight: 900, color:"var(--text)", margin: 0 }}>{s.value}</p>
+                  <p style={{ fontSize: 10, color:"var(--text-muted)", margin: 0, fontWeight: 600 }}>{s.label}</p>
                 </div>
               ))}
             </div>
             <button onClick={() => { setAuthed(false); setPw(""); }}
-              style={{ padding: "6px 12px", borderRadius: 999, border: "1px solid rgba(255,255,255,0.3)",
-                background: "rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.6)", fontSize: 11, fontWeight: 700,
+              style={{ padding: "6px 12px", borderRadius:8, border: "1px solid var(--border)",
+                background:"var(--primary-light)", color:"var(--text-muted)", fontSize: 11, fontWeight: 700,
                 cursor: "pointer", fontFamily: "inherit" }}>나가기</button>
           </div>
         </div>
@@ -563,7 +563,7 @@ export default function TeacherOnlyPage() {
 
         {/* ── 왼쪽: 학생 명단 사이드바 ── */}
         <div style={{
-          borderRight: "1px solid var(--border)", background: "#fafafa",
+          borderRight: "1px solid var(--border)", background: "var(--surface-muted)",
           display: "flex", flexDirection: "column",
           height: "calc(100vh - 200px)", position: "sticky", top: 0,
         }}>
@@ -582,16 +582,16 @@ export default function TeacherOnlyPage() {
               const lastField = FIELDS.find(f => f.key === lastLog?.category);
               return (
                 <button key={s.student_no} onClick={() => openStudent(s)}
-                  style={{ width: "100%", padding: "10px 10px", borderRadius: 10, border: "1px solid",
+                  style={{ width: "100%", padding: "10px 10px", borderRadius:6, border: "1px solid",
                     borderColor: isSelected ? "var(--primary)" : "transparent",
                     background: isSelected ? "var(--primary-light)" : "transparent",
                     cursor: "pointer", fontFamily: "inherit",
                     display: "flex", alignItems: "center", gap: 8, marginBottom: 2, textAlign: "left", transition: "all 0.1s" }}>
                   <div style={{ width: 32, height: 32, borderRadius: "50%", flexShrink: 0,
-                    background: isSelected ? "var(--primary)" : cnt > 0 ? "#e9d5ff" : "#e2e8f0",
+                    background: isSelected ? "var(--primary)" : cnt > 0 ? "var(--border)" : "var(--border)",
                     display: "flex", alignItems: "center", justifyContent: "center",
                     fontSize: 12, fontWeight: 900,
-                    color: isSelected ? "#fff" : cnt > 0 ? "#7c3aed" : "#94a3b8" }}>
+                    color: isSelected ? "#fff" : cnt > 0 ? "var(--primary)" : "var(--text-subtle)" }}>
                     {s.name.slice(-1)}
                   </div>
                   <div style={{ flex: 1, minWidth: 0 }}>
@@ -621,17 +621,17 @@ export default function TeacherOnlyPage() {
             })}
           </div>
           <div style={{ padding: "10px 12px", borderTop: "1px solid var(--border)", background: "#f1f5f9" }}>
-            <p style={{ fontSize: 10, color: "#94a3b8", fontWeight: 700, margin: "0 0 4px" }}>분야별 상담 현황</p>
+            <p style={{ fontSize: 10, color: "var(--text-subtle)", fontWeight: 700, margin: "0 0 4px" }}>분야별 상담 현황</p>
             {FIELDS.map(f => {
               const cnt = logs.filter(l => l.category === f.key).length;
               if (cnt === 0) return null;
               return (
                 <div key={f.key} style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 2 }}>
                   <span style={{ fontSize: 10, color: f.color, fontWeight: 700, minWidth: 50 }}>{f.emoji} {f.key}</span>
-                  <div style={{ flex: 1, height: 3, borderRadius: 999, background: "#e2e8f0", overflow: "hidden" }}>
+                  <div style={{ flex: 1, height: 3, borderRadius:8, background: "var(--border)", overflow: "hidden" }}>
                     <div style={{ height: "100%", background: f.color, width: `${Math.min(100, cnt * 8)}%` }} />
                   </div>
-                  <span style={{ fontSize: 10, color: "#94a3b8", fontWeight: 700 }}>{cnt}</span>
+                  <span style={{ fontSize: 10, color: "var(--text-subtle)", fontWeight: 700 }}>{cnt}</span>
                 </div>
               );
             })}
@@ -662,13 +662,13 @@ export default function TeacherOnlyPage() {
                       <h2 style={{ fontSize: 18, fontWeight: 900, color: "var(--text)", margin: 0 }}>{sel.name}</h2>
                       <span style={{ fontSize: 12, color: "var(--text-muted)", fontWeight: 600 }}>{sel.student_no}</span>
                       {selLogs.some(l => l.is_sensitive) && (
-                        <span style={{ fontSize: 10, padding: "2px 6px", borderRadius: 999, background: "#fee2e2", color: "#991b1b", fontWeight: 700 }}>🔒 민감</span>
+                        <span style={{ fontSize: 10, padding: "2px 6px", borderRadius:8, background: "#fee2e2", color: "#991b1b", fontWeight: 700 }}>🔒 민감</span>
                       )}
                     </div>
                     <div style={{ display: "flex", gap: 6, marginTop: 3 }}>
-                      {selSub && <span style={{ fontSize: 10, padding: "1px 7px", borderRadius: 999, background: "#eff6ff", color: "#2563eb", fontWeight: 700 }}>📋 설문완료</span>}
-                      {selLogs.length > 0 && <span style={{ fontSize: 10, padding: "1px 7px", borderRadius: 999, background: "#fdf4ff", color: "#9333ea", fontWeight: 700 }}>상담 {selLogs.length}회</span>}
-                      {selAi && <span style={{ fontSize: 10, padding: "1px 7px", borderRadius: 999, background: "#f0fdf4", color: "#16a34a", fontWeight: 700 }}>🤖 AI분석</span>}
+                      {selSub && <span style={{ fontSize: 10, padding: "1px 7px", borderRadius:8, background: "#eff6ff", color: "#2563eb", fontWeight: 700 }}>📋 설문완료</span>}
+                      {selLogs.length > 0 && <span style={{ fontSize: 10, padding: "1px 7px", borderRadius:8, background: "#fdf4ff", color: "#9333ea", fontWeight: 700 }}>상담 {selLogs.length}회</span>}
+                      {selAi && <span style={{ fontSize: 10, padding: "1px 7px", borderRadius:8, background: "#f0fdf4", color: "#16a34a", fontWeight: 700 }}>🤖 AI분석</span>}
                     </div>
                   </div>
                 </div>
@@ -679,7 +679,7 @@ export default function TeacherOnlyPage() {
               </div>
 
               {/* 탭 */}
-              <div style={{ display: "flex", background: "#f3f4f6", borderRadius: 12, padding: 4, gap: 2, overflowX: "auto" }}>
+              <div style={{ display: "flex", background: "var(--surface-muted)", borderRadius:6, padding: 4, gap: 2, overflowX: "auto" }}>
                 {TABS.map(t => (
                   <button key={t.key} onClick={() => setTab(t.key)}
                     style={{ flex: "0 0 auto", padding: "8px 14px", borderRadius: 8, border: "none",
@@ -690,7 +690,7 @@ export default function TeacherOnlyPage() {
                       color: tab === t.key ? "var(--primary)" : "var(--text-muted)" }}>
                     {t.label}
                     {t.key === "log" && selLogs.length > 0 && (
-                      <span style={{ marginLeft: 4, fontSize: 10, padding: "1px 5px", borderRadius: 999,
+                      <span style={{ marginLeft: 4, fontSize: 10, padding: "1px 5px", borderRadius:8,
                         background: "var(--primary-light)", color: "var(--primary)", fontWeight: 800 }}>{selLogs.length}</span>
                     )}
                   </button>
@@ -717,58 +717,58 @@ export default function TeacherOnlyPage() {
 
                 return (
                   <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-                    <div style={{ padding: "16px 18px", borderRadius: 14, background: "linear-gradient(135deg,#f8f7ff,#eff6ff)", border: "1.5px solid #e0d9ff" }}>
+                    <div style={{ padding: "16px 18px", borderRadius:8, background: "#f8f7ff", border: "1px solid #e0d9ff" }}>
                       <p style={{ fontSize: 12, fontWeight: 800, color: "#5b21b6", margin: "0 0 12px" }}>🏫 학급 활동 한눈에</p>
                       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(150px,1fr))", gap: 8 }}>
                         {[
-                          { title: "🌙 야자 요일", color: "#7c3aed", border: "#e0d9ff", content: yajadays.length > 0 ? (
+                          { title: "🌙 야자 요일", color: "var(--primary)", border: "#e0d9ff", content: yajadays.length > 0 ? (
                             <div style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
-                              {yajadays.map((d:string) => <span key={d} style={{ fontSize: 12, fontWeight: 800, padding: "3px 9px", borderRadius: 999, background: "#ede9fe", color: "#7c3aed" }}>{d}</span>)}
+                              {yajadays.map((d:string) => <span key={d} style={{ fontSize: 12, fontWeight: 800, padding: "3px 9px", borderRadius:8, background: "var(--primary-light)", color: "var(--primary)" }}>{d}</span>)}
                             </div>
-                          ) : <p style={{ fontSize: 12, color: "#94a3b8", margin: 0 }}>정보 없음</p> },
+                          ) : <p style={{ fontSize: 12, color: "var(--text-subtle)", margin: 0 }}>정보 없음</p> },
                         ].map(({ title, color, border, content }) => (
-                          <div key={title} style={{ padding: "12px 14px", borderRadius: 10, background: "#fff", border: `1px solid ${border}` }}>
+                          <div key={title} style={{ padding: "12px 14px", borderRadius:6, background: "#fff", border: `1px solid ${border}` }}>
                             <p style={{ fontSize: 10, fontWeight: 700, color, margin: "0 0 6px" }}>{title}</p>
                             {content}
                           </div>
                         ))}
-                        <div style={{ padding: "12px 14px", borderRadius: 10, background: "#fff", border: "1px solid #bfdbfe" }}>
+                        <div style={{ padding: "12px 14px", borderRadius:6, background: "#fff", border: "1px solid #bfdbfe" }}>
                           <p style={{ fontSize: 10, fontWeight: 700, color: "#2563eb", margin: "0 0 6px" }}>🎖 학급 역할</p>
                           {selRoles.length > 0 ? selRoles.map((r, i) => (
                             <div key={i}><span style={{ fontSize: 11, fontWeight: 700, color: "#2563eb" }}>{r.role_name}</span>
-                              {r.dept && <span style={{ fontSize: 10, color: "#94a3b8", marginLeft: 5 }}>{r.dept}</span>}
-                              {r.duties && <p style={{ fontSize: 10, color: "#64748b", margin: "2px 0 0", lineHeight: 1.4 }}>{r.duties}</p>}
+                              {r.dept && <span style={{ fontSize: 10, color: "var(--text-subtle)", marginLeft: 5 }}>{r.dept}</span>}
+                              {r.duties && <p style={{ fontSize: 10, color: "var(--text-muted)", margin: "2px 0 0", lineHeight: 1.4 }}>{r.duties}</p>}
                             </div>
-                          )) : <p style={{ fontSize: 12, color: "#94a3b8", margin: 0 }}>정보 없음</p>}
+                          )) : <p style={{ fontSize: 12, color: "var(--text-subtle)", margin: 0 }}>정보 없음</p>}
                         </div>
-                        <div style={{ padding: "12px 14px", borderRadius: 10, background: "#fff", border: "1px solid #bbf7d0" }}>
+                        <div style={{ padding: "12px 14px", borderRadius:6, background: "#fff", border: "1px solid #bbf7d0" }}>
                           <p style={{ fontSize: 10, fontWeight: 700, color: "#16a34a", margin: "0 0 6px" }}>🔬 심화탐구</p>
                           {selResearch ? (
                             <div>
                               <p style={{ fontSize: 12, fontWeight: 800, color: "#16a34a", margin: "0 0 2px" }}>{selResearch.name}</p>
-                              <p style={{ fontSize: 11, color: "#64748b", margin: "0 0 4px" }}>{selResearch.topic}</p>
+                              <p style={{ fontSize: 11, color: "var(--text-muted)", margin: "0 0 4px" }}>{selResearch.topic}</p>
                             </div>
-                          ) : <p style={{ fontSize: 12, color: "#94a3b8", margin: 0 }}>정보 없음</p>}
+                          ) : <p style={{ fontSize: 12, color: "var(--text-subtle)", margin: 0 }}>정보 없음</p>}
                         </div>
-                        <div style={{ padding: "12px 14px", borderRadius: 10, background: "#fff", border: "1px solid #fecdd3" }}>
+                        <div style={{ padding: "12px 14px", borderRadius:6, background: "#fff", border: "1px solid #fecdd3" }}>
                           <p style={{ fontSize: 10, fontWeight: 700, color: "#e11d48", margin: "0 0 6px" }}>🎂 생일</p>
                           {contacts.find(c => c.student_no === sel.student_no)?.birthday
                             ? <p style={{ fontSize: 13, fontWeight: 800, color: "#e11d48", margin: 0 }}>{contacts.find(c => c.student_no === sel.student_no)?.birthday}</p>
-                            : <p style={{ fontSize: 12, color: "#94a3b8", margin: 0 }}>정보 없음</p>}
+                            : <p style={{ fontSize: 12, color: "var(--text-subtle)", margin: 0 }}>정보 없음</p>}
                         </div>
-                        <div style={{ padding: "12px 14px", borderRadius: 10, background: "#fff", border: "1px solid var(--border)" }}>
+                        <div style={{ padding: "12px 14px", borderRadius:6, background: "#fff", border: "1px solid var(--border)" }}>
                           <p style={{ fontSize: 10, fontWeight: 700, color: "var(--text-muted)", margin: "0 0 6px" }}>🧠 MBTI</p>
                           <p style={{ fontSize: 16, fontWeight: 900, color: "var(--primary)", margin: "0 0 2px" }}>
                             {selSub?.payload.mbti || selWall?.mbti || "-"}
                           </p>
-                          {selSub?.payload.dream && <p style={{ fontSize: 10, color: "#64748b", margin: 0 }}>🎯 {selSub.payload.dream}</p>}
+                          {selSub?.payload.dream && <p style={{ fontSize: 10, color: "var(--text-muted)", margin: 0 }}>🎯 {selSub.payload.dream}</p>}
                         </div>
                       </div>
                     </div>
 
                     <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
                       {(selSub?.payload.messageToTeacher || selSub?.payload.teacherShouldKnow) && (
-                        <div style={{ padding: "14px 16px", borderRadius: 12, background: "#fdf4ff", border: "1.5px solid #e9d5ff", borderLeft: "4px solid var(--primary)" }}>
+                        <div style={{ padding: "14px 16px", borderRadius:6, background: "#fdf4ff", border: "1px solid var(--border)", borderLeft: "4px solid var(--primary)" }}>
                           <p style={{ fontSize: 11, fontWeight: 800, color: "var(--primary)", margin: "0 0 7px" }}>💬 선생님께 한 말</p>
                           {selSub?.payload.messageToTeacher && <p style={{ fontSize: 12, color: "var(--text)", margin: "0 0 4px", lineHeight: 1.7, whiteSpace: "pre-wrap" }}>{selSub.payload.messageToTeacher}</p>}
                           {selSub?.payload.teacherShouldKnow && <p style={{ fontSize: 12, color: "var(--text)", margin: 0, lineHeight: 1.7, whiteSpace: "pre-wrap" }}>{selSub.payload.teacherShouldKnow}</p>}
@@ -777,13 +777,13 @@ export default function TeacherOnlyPage() {
                       {(selSub?.payload.strengths || selSub?.payload.weaknesses) && (
                         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                           {selSub?.payload.strengths && (
-                            <div style={{ padding: "11px 14px", borderRadius: 10, background: "#f0fdf4", borderLeft: "3px solid #16a34a", flex: 1 }}>
+                            <div style={{ padding: "11px 14px", borderRadius:6, background: "#f0fdf4", borderLeft: "3px solid #16a34a", flex: 1 }}>
                               <p style={{ fontSize: 10, fontWeight: 800, color: "#15803d", margin: "0 0 4px" }}>💪 장점</p>
                               <p style={{ fontSize: 12, color: "var(--text)", margin: 0, lineHeight: 1.6, whiteSpace: "pre-wrap" }}>{selSub.payload.strengths}</p>
                             </div>
                           )}
                           {selSub?.payload.weaknesses && (
-                            <div style={{ padding: "11px 14px", borderRadius: 10, background: "#fff7ed", borderLeft: "3px solid #f97316", flex: 1 }}>
+                            <div style={{ padding: "11px 14px", borderRadius:6, background: "#fff7ed", borderLeft: "3px solid #f97316", flex: 1 }}>
                               <p style={{ fontSize: 10, fontWeight: 800, color: "#c2410c", margin: "0 0 4px" }}>🌱 단점/고칠 점</p>
                               <p style={{ fontSize: 12, color: "var(--text)", margin: 0, lineHeight: 1.6, whiteSpace: "pre-wrap" }}>{selSub.payload.weaknesses}</p>
                             </div>
@@ -793,7 +793,7 @@ export default function TeacherOnlyPage() {
                     </div>
 
                     {selLogs.length > 0 && (
-                      <div style={{ padding: "14px 16px", borderRadius: 12, background: "#f8fafc", border: "1px solid var(--border)" }}>
+                      <div style={{ padding: "14px 16px", borderRadius:6, background: "var(--surface-muted)", border: "1px solid var(--border)" }}>
                         <p style={{ fontSize: 11, fontWeight: 800, color: "var(--text-muted)", margin: "0 0 10px" }}>최근 상담 기록</p>
                         <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
                           {selLogs.slice(0, 3).map(log => {
@@ -818,13 +818,13 @@ export default function TeacherOnlyPage() {
                     )}
 
                     {selAi && (
-                      <div style={{ padding: "14px 16px", borderRadius: 12, background: "#f8f7ff", border: "1.5px solid #e0d9ff" }}>
+                      <div style={{ padding: "14px 16px", borderRadius:6, background: "#f8f7ff", border: "1px solid #e0d9ff" }}>
                         <p style={{ fontSize: 11, fontWeight: 800, color: "#5b21b6", margin: "0 0 8px" }}>🤖 AI 생기부 요약</p>
                         <p style={{ fontSize: 12, color: "var(--text)", lineHeight: 1.8, margin: 0, whiteSpace: "pre-wrap" }}>{selAi.summary}</p>
                       </div>
                     )}
 
-                    <div style={{ padding: "14px 16px", borderRadius: 12, background: "#fff", border: "1px solid var(--border)" }}>
+                    <div style={{ padding: "14px 16px", borderRadius:6, background: "#fff", border: "1px solid var(--border)" }}>
                       <p style={{ fontSize: 11, fontWeight: 800, color: "var(--text-muted)", margin: "0 0 8px" }}>📌 교사 메모</p>
                       <textarea placeholder="첫인상, 특이사항, 기억해 둘 것..." value={noteText}
                         onChange={e => setNoteText(e.target.value)} className="hy-input"
@@ -873,9 +873,9 @@ export default function TeacherOnlyPage() {
                       ].map(section => (
                         <div key={section.section} style={{ marginBottom: 14 }}>
                           <p style={{ fontSize: 12, fontWeight: 900, color: "var(--primary)", margin: "0 0 6px" }}>{section.section}</p>
-                          <div style={{ background: "#fff", border: "1px solid var(--border)", borderRadius: 10, overflow: "hidden" }}>
+                          <div style={{ background: "#fff", border: "1px solid var(--border)", borderRadius:6, overflow: "hidden" }}>
                             {section.items.filter(i => i.v?.trim()).map((item, idx) => (
-                              <div key={item.l + idx} style={{ display: "grid", gridTemplateColumns: "110px 1fr", gap: 8, padding: "9px 14px", borderBottom: "1px solid #f3f4f6" }}>
+                              <div key={item.l + idx} style={{ display: "grid", gridTemplateColumns: "110px 1fr", gap: 8, padding: "9px 14px", borderBottom: "1px solid var(--surface-muted)" }}>
                                 <p style={{ fontSize: 11, fontWeight: 700, color: "var(--text-muted)", margin: 0 }}>{item.l}</p>
                                 <p style={{ fontSize: 13, color: "var(--text)", margin: 0, lineHeight: 1.6, whiteSpace: "pre-wrap" }}>{item.v}</p>
                               </div>
@@ -893,7 +893,7 @@ export default function TeacherOnlyPage() {
                 <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                   {!showForm && (
                     <button onClick={() => { setShowForm(true); setEditLog(null); }}
-                      style={{ padding: "12px", borderRadius: 12, border: "2px dashed var(--border)",
+                      style={{ padding: "12px", borderRadius:6, border: "2px dashed var(--border)",
                         background: "transparent", fontSize: 13, fontWeight: 700,
                         color: "var(--text-muted)", cursor: "pointer", fontFamily: "inherit" }}>
                       ＋ 상담 기록 추가하기
@@ -905,13 +905,13 @@ export default function TeacherOnlyPage() {
                     selLogs.map(log => {
                       const f = FIELDS.find(f => f.key === log.category);
                       return (
-                        <div key={log.id} style={{ padding: "14px 16px", borderRadius: 12,
-                          background: log.is_sensitive ? "#fff8f8" : f?.bg ?? "#f9fafb",
-                          border: `1.5px solid ${log.is_sensitive ? "#fecaca" : (f?.color ?? "#e2e8f0") + "44"}`,
-                          borderLeft: `4px solid ${f?.color ?? "#94a3b8"}` }}>
+                        <div key={log.id} style={{ padding: "14px 16px", borderRadius:6,
+                          background: log.is_sensitive ? "#fff8f8" : f?.bg ?? "var(--surface-muted)",
+                          border: `1px solid ${log.is_sensitive ? "#fecaca" : (f?.color ?? "var(--border)") + "44"}`,
+                          borderLeft: `4px solid ${f?.color ?? "var(--text-subtle)"}` }}>
                           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
                             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                              <span style={{ fontSize: 11, padding: "2px 9px", borderRadius: 999, background: (f?.color ?? "#94a3b8") + "22", color: f?.color ?? "#64748b", fontWeight: 800 }}>
+                              <span style={{ fontSize: 11, padding: "2px 9px", borderRadius:8, background: (f?.color ?? "var(--text-subtle)") + "22", color: f?.color ?? "var(--text-muted)", fontWeight: 800 }}>
                                 {f?.emoji} {log.category}
                               </span>
                               {log.is_sensitive && <span style={{ fontSize: 10, color: "#ef4444", fontWeight: 800 }}>🔒</span>}
@@ -919,9 +919,9 @@ export default function TeacherOnlyPage() {
                             </div>
                             <div style={{ display: "flex", gap: 4 }}>
                               <button onClick={() => { setEditLog(log); setShowForm(true); }}
-                                style={{ fontSize: 11, padding: "3px 9px", borderRadius: 999, border: "1px solid var(--border)", background: "#fff", cursor: "pointer", fontFamily: "inherit", fontWeight: 700, color: "var(--text-muted)" }}>수정</button>
+                                style={{ fontSize: 11, padding: "3px 9px", borderRadius:8, border: "1px solid var(--border)", background: "#fff", cursor: "pointer", fontFamily: "inherit", fontWeight: 700, color: "var(--text-muted)" }}>수정</button>
                               <button onClick={() => deleteLog(log.id)}
-                                style={{ fontSize: 11, padding: "3px 9px", borderRadius: 999, border: "1px solid #fecaca", background: "#fff5f5", cursor: "pointer", fontFamily: "inherit", fontWeight: 700, color: "#ef4444" }}>삭제</button>
+                                style={{ fontSize: 11, padding: "3px 9px", borderRadius:8, border: "1px solid #fecaca", background: "#fff5f5", cursor: "pointer", fontFamily: "inherit", fontWeight: 700, color: "#ef4444" }}>삭제</button>
                             </div>
                           </div>
                           {log.is_sensitive
@@ -985,15 +985,15 @@ export default function TeacherOnlyPage() {
                         const cnt = selLogs.filter(l => l.category === f.key).length;
                         return (
                           <button key={f.key} onClick={() => setFieldTab(f.key)}
-                            style={{ padding: "7px 14px", borderRadius: 999, border: "1.5px solid",
+                            style={{ padding: "7px 14px", borderRadius:8, border: "1px solid",
                               borderColor: fieldTab === f.key ? f.color : "var(--border)",
                               background: fieldTab === f.key ? f.bg : "#fff",
                               color: fieldTab === f.key ? f.color : "var(--text-muted)",
                               fontSize: 12, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>
                             {f.emoji} {f.key}
-                            {cnt > 0 && <span style={{ marginLeft: 5, fontSize: 10, padding: "1px 5px", borderRadius: 999,
+                            {cnt > 0 && <span style={{ marginLeft: 5, fontSize: 10, padding: "1px 5px", borderRadius:8,
                               background: fieldTab === f.key ? f.color + "33" : "#f1f5f9",
-                              color: fieldTab === f.key ? f.color : "#94a3b8" }}>{cnt}</span>}
+                              color: fieldTab === f.key ? f.color : "var(--text-subtle)" }}>{cnt}</span>}
                           </button>
                         );
                       })}
@@ -1003,14 +1003,14 @@ export default function TeacherOnlyPage() {
                       {/* 왼쪽: 참고자료 */}
                       <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                         {surveyItems.length > 0 && (
-                          <div style={{ borderRadius: 12, border: `1.5px solid ${currentField.color}33`, overflow: "hidden" }}>
+                          <div style={{ borderRadius:6, border: `1px solid ${currentField.color}33`, overflow: "hidden" }}>
                             <div style={{ padding: "10px 14px", background: currentField.bg, borderBottom: `1px solid ${currentField.color}22` }}>
                               <p style={{ fontSize: 11, fontWeight: 800, color: currentField.color, margin: 0 }}>📋 학생 설문 참고</p>
                             </div>
                             <div style={{ background: "#fff" }}>
                               {surveyItems.map((item, idx) => (
                                 <div key={idx} style={{ display: "grid", gridTemplateColumns: "90px 1fr", gap: 8, padding: "9px 14px",
-                                  borderBottom: idx < surveyItems.length - 1 ? "1px solid #f3f4f6" : "none" }}>
+                                  borderBottom: idx < surveyItems.length - 1 ? "1px solid var(--surface-muted)" : "none" }}>
                                   <p style={{ fontSize: 10, fontWeight: 700, color: "var(--text-muted)", margin: 0, paddingTop: 1 }}>{item.l}</p>
                                   <p style={{ fontSize: 12, color: "var(--text)", margin: 0, lineHeight: 1.6, whiteSpace: "pre-wrap" }}>{item.v}</p>
                                 </div>
@@ -1019,7 +1019,7 @@ export default function TeacherOnlyPage() {
                           </div>
                         )}
                         {fieldLogs.length > 0 && (
-                          <div style={{ borderRadius: 12, border: `1.5px solid ${currentField.color}33`, overflow: "hidden" }}>
+                          <div style={{ borderRadius:6, border: `1px solid ${currentField.color}33`, overflow: "hidden" }}>
                             <div style={{ padding: "10px 14px", background: currentField.bg, borderBottom: `1px solid ${currentField.color}22` }}>
                               <p style={{ fontSize: 11, fontWeight: 800, color: currentField.color, margin: 0 }}>🗂 이전 상담 기록 ({fieldLogs.length}회)</p>
                             </div>
@@ -1038,9 +1038,9 @@ export default function TeacherOnlyPage() {
                                       <p style={{ fontSize: 10, fontWeight: 700, color: currentField.color, margin: 0 }}>{fmtDate(log.date)}</p>
                                       <div style={{ display: "flex", gap: 3 }}>
                                         <button onClick={() => { setEditLog(log); setShowForm(true); setTab("log"); }}
-                                          style={{ fontSize: 9, padding: "2px 7px", borderRadius: 999, border: "1px solid var(--border)", background: "#fff", cursor: "pointer", fontFamily: "inherit", fontWeight: 700, color: "var(--text-muted)" }}>수정</button>
+                                          style={{ fontSize: 9, padding: "2px 7px", borderRadius:8, border: "1px solid var(--border)", background: "#fff", cursor: "pointer", fontFamily: "inherit", fontWeight: 700, color: "var(--text-muted)" }}>수정</button>
                                         <button onClick={() => deleteLog(log.id)}
-                                          style={{ fontSize: 9, padding: "2px 7px", borderRadius: 999, border: "1px solid #fecaca", background: "#fff5f5", cursor: "pointer", fontFamily: "inherit", fontWeight: 700, color: "#ef4444" }}>삭제</button>
+                                          style={{ fontSize: 9, padding: "2px 7px", borderRadius:8, border: "1px solid #fecaca", background: "#fff5f5", cursor: "pointer", fontFamily: "inherit", fontWeight: 700, color: "#ef4444" }}>삭제</button>
                                       </div>
                                     </div>
                                     {log.is_sensitive
@@ -1060,7 +1060,7 @@ export default function TeacherOnlyPage() {
                           </div>
                         )}
                         {fieldLogs.length === 0 && surveyItems.length === 0 && (
-                          <div style={{ padding: "24px", textAlign: "center", background: currentField.bg, borderRadius: 12, border: `1.5px dashed ${currentField.color}44` }}>
+                          <div style={{ padding: "24px", textAlign: "center", background: currentField.bg, borderRadius:6, border: `1.5px dashed ${currentField.color}44` }}>
                             <p style={{ fontSize: 18, margin: "0 0 6px" }}>{currentField.emoji}</p>
                             <p style={{ fontSize: 12, color: currentField.color, fontWeight: 700, margin: 0 }}>참고 자료가 없어요</p>
                           </div>
@@ -1068,7 +1068,7 @@ export default function TeacherOnlyPage() {
                       </div>
 
                       {/* ✅ 오른쪽: FieldForm 컴포넌트 (state 기반) */}
-                      <div style={{ position: "sticky", top: 16, borderRadius: 12, border: `1.5px solid ${currentField.color}55`, overflow: "hidden" }}>
+                      <div style={{ position: "sticky", top: 16, borderRadius:6, border: `1px solid ${currentField.color}55`, overflow: "hidden" }}>
                         <div style={{ padding: "12px 16px", background: currentField.color + "18", borderBottom: `1px solid ${currentField.color}33` }}>
                           <p style={{ fontSize: 12, fontWeight: 800, color: currentField.color, margin: 0 }}>
                             {currentField.emoji} {fieldTab} 내용 추가
@@ -1093,7 +1093,7 @@ export default function TeacherOnlyPage() {
               {/* ── 탭: 메모 + AI ── */}
               {tab === "memo" && (
                 <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-                  <div style={{ padding: "16px 18px", background: "#fff", border: "1px solid var(--border)", borderRadius: 12 }}>
+                  <div style={{ padding: "16px 18px", background: "#fff", border: "1px solid var(--border)", borderRadius:6 }}>
                     <p style={{ fontSize: 13, fontWeight: 800, color: "var(--text)", margin: "0 0 8px" }}>📌 교사 메모</p>
                     <p style={{ fontSize: 11, color: "var(--text-muted)", margin: "0 0 10px" }}>첫인상, 특이사항, 기억해 둘 것 등 자유롭게 기록</p>
                     <textarea placeholder="이 학생에 대해 기억해두고 싶은 것들..." value={noteText}
@@ -1103,14 +1103,14 @@ export default function TeacherOnlyPage() {
                       {noteSaving ? "저장 중..." : "저장"}
                     </button>
                   </div>
-                  <div style={{ padding: "16px 18px", background: "#f8f7ff", border: "1.5px solid #e0d9ff", borderRadius: 12 }}>
+                  <div style={{ padding: "16px 18px", background: "#f8f7ff", border: "1px solid #e0d9ff", borderRadius:6 }}>
                     <p style={{ fontSize: 13, fontWeight: 800, color: "#5b21b6", margin: "0 0 4px" }}>🤖 생기부 AI 분석</p>
-                    <p style={{ fontSize: 11, color: "#7c3aed", margin: "0 0 12px" }}>PDF 업로드하면 항목별로 요약해줘요</p>
+                    <p style={{ fontSize: 11, color: "var(--primary)", margin: "0 0 12px" }}>PDF 업로드하면 항목별로 요약해줘요</p>
                     <input ref={fileRef} type="file" accept=".pdf" onChange={e => setAiFile(e.target.files?.[0] ?? null)} style={{ display: "none" }} />
                     <div style={{ display: "flex", gap: 8 }}>
                       <button onClick={() => fileRef.current?.click()}
-                        style={{ flex: 1, padding: "10px", borderRadius: 10, border: "2px dashed #c4b5fd", background: "#fff",
-                          cursor: "pointer", fontFamily: "inherit", fontSize: 12, fontWeight: 700, color: "#7c3aed" }}>
+                        style={{ flex: 1, padding: "10px", borderRadius:6, border: "2px dashed var(--border-strong)", background: "#fff",
+                          cursor: "pointer", fontFamily: "inherit", fontSize: 12, fontWeight: 700, color: "var(--primary)" }}>
                         {aiFile ? `📄 ${aiFile.name}` : "📁 생기부 PDF 선택"}
                       </button>
                       <button onClick={runAI} disabled={aiLoading || !aiFile} className="hy-btn hy-btn-primary"
@@ -1119,7 +1119,7 @@ export default function TeacherOnlyPage() {
                       </button>
                     </div>
                     {(aiResult || selAi) && (
-                      <div style={{ marginTop: 12, padding: "12px 14px", borderRadius: 10, background: "#fff" }}>
+                      <div style={{ marginTop: 12, padding: "12px 14px", borderRadius:6, background: "#fff" }}>
                         <p style={{ fontSize: 12, color: "var(--text)", lineHeight: 1.8, margin: 0, whiteSpace: "pre-wrap" }}>
                           {aiResult || selAi?.summary}
                         </p>

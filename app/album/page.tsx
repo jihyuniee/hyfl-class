@@ -151,13 +151,13 @@ export default function AlbumPage() {
       {/* 헤더 */}
       <div className="hy-hero">
         <div style={{ position:"relative" }}>
-          <div style={{ display:"inline-flex",alignItems:"center",background:"rgba(255,255,255,0.2)",backdropFilter:"blur(8px)",borderRadius:999,padding:"4px 14px",marginBottom:12,border:"1px solid rgba(255,255,255,0.3)" }}>
-            <span style={{ fontSize:12,color:"#fff",fontWeight:700 }}>2026 한영외고 2-2</span>
+          <div style={{ display:"inline-flex",alignItems:"center",background:"var(--primary-light)",borderRadius:8,padding:"4px 14px",marginBottom:12,border:"1px solid var(--border)" }}>
+            <span style={{ fontSize:12,color:"var(--text)",fontWeight:700 }}>2026 한영외고 2-2</span>
           </div>
-          <h1 style={{ color:"#fff",fontSize:"clamp(22px,4vw,32px)",fontWeight:900,margin:"0 0 8px",letterSpacing:"-0.5px" }}>
+          <h1 style={{ color:"var(--text)",fontSize:"var(--page-title-size)",fontWeight:800,margin:"0 0 8px",letterSpacing:"-0.5px" }}>
             📸 우리반 앨범
           </h1>
-          <p style={{ color:"rgba(255,255,255,0.85)",fontSize:13,margin:0,fontWeight:500,lineHeight:1.7 }}>
+          <p style={{ color:"var(--text-muted)",fontSize:13,margin:0,fontWeight:500,lineHeight:1.7 }}>
             우리반의 소중한 순간들을 함께 기록해요 🌸<br/>
             핸드폰 사진을 바로 올릴 수 있어요!
           </p>
@@ -169,7 +169,7 @@ export default function AlbumPage() {
         <div style={{ display:"flex",gap:6,flexWrap:"wrap",flex:1 }}>
           {["전체", ...allTags].map(tag => (
             <button key={tag} onClick={() => setFilterTag(tag)}
-              style={{ padding:"6px 14px",borderRadius:999,border:"1.5px solid",fontFamily:"inherit",cursor:"pointer",fontSize:12,fontWeight:700,transition:"all 0.12s",
+              style={{ padding:"6px 14px",borderRadius:8,border:"1px solid",fontFamily:"inherit",cursor:"pointer",fontSize:12,fontWeight:700,transition:"all 0.12s",
                 borderColor: filterTag===tag ? "var(--primary)" : "var(--border)",
                 background: filterTag===tag ? "var(--primary-light)" : "#fff",
                 color: filterTag===tag ? "var(--primary)" : "var(--text-muted)",
@@ -190,12 +190,12 @@ export default function AlbumPage() {
             {/* 사진 선택 영역 */}
             <div
               onClick={() => fileInputRef.current?.click()}
-              style={{ border:"2px dashed #f9a8d4",borderRadius:16,padding:"28px",textAlign:"center",cursor:"pointer",background: fPreview ? "#000" : "var(--primary-light)",transition:"all 0.15s",minHeight:160,display:"flex",alignItems:"center",justifyContent:"center",position:"relative",overflow:"hidden" }}
+              style={{ border:"2px dashed var(--border-strong)",borderRadius:8,padding:"28px",textAlign:"center",cursor:"pointer",background: fPreview ? "#000" : "var(--primary-light)",transition:"all 0.15s",minHeight:160,display:"flex",alignItems:"center",justifyContent:"center",position:"relative",overflow:"hidden" }}
               onDragOver={e=>{e.preventDefault();}}
               onDrop={e=>{e.preventDefault();const file=e.dataTransfer.files[0];if(file&&file.type.startsWith("image/")){const ev={target:{files:e.dataTransfer.files}} as unknown as React.ChangeEvent<HTMLInputElement>;onFileChange(ev);}}}
             >
               {fPreview ? (
-                <img src={fPreview} alt="미리보기" style={{ maxWidth:"100%",maxHeight:280,objectFit:"contain",borderRadius:10 }}/>
+                <img src={fPreview} alt="미리보기" style={{ maxWidth:"100%",maxHeight:280,objectFit:"contain",borderRadius:6 }}/>
               ) : (
                 <div>
                   <p style={{ fontSize:32,margin:"0 0 8px" }}>📱</p>
@@ -230,7 +230,7 @@ export default function AlbumPage() {
               <div style={{ display:"flex",gap:6,flexWrap:"wrap" }}>
                 {PRESET_TAGS.map(tag => (
                   <button key={tag} onClick={() => toggleTag(tag)} type="button"
-                    style={{ padding:"5px 12px",borderRadius:999,border:"1.5px solid",fontFamily:"inherit",cursor:"pointer",fontSize:12,fontWeight:700,
+                    style={{ padding:"5px 12px",borderRadius:8,border:"1px solid",fontFamily:"inherit",cursor:"pointer",fontSize:12,fontWeight:700,
                       borderColor: fTags.includes(tag) ? "var(--primary)" : "var(--border)",
                       background: fTags.includes(tag) ? "var(--primary-light)" : "#fff",
                       color: fTags.includes(tag) ? "var(--primary)" : "var(--text-muted)",
@@ -241,8 +241,8 @@ export default function AlbumPage() {
 
             {/* 업로드 진행바 */}
             {uploading && (
-              <div style={{ borderRadius:999,background:"#f3e8ff",overflow:"hidden",height:8 }}>
-                <div style={{ height:"100%",background:"linear-gradient(90deg,var(--primary),var(--accent))",width:`${uploadPct}%`,transition:"width 0.3s",borderRadius:999 }}/>
+              <div style={{ borderRadius:8,background:"var(--accent-light)",overflow:"hidden",height:8 }}>
+                <div style={{ height:"100%",background:"var(--primary)",width:`${uploadPct}%`,transition:"width 0.3s",borderRadius:8 }}/>
               </div>
             )}
 
@@ -263,7 +263,7 @@ export default function AlbumPage() {
         Object.entries(grouped).map(([date, dayPosts]) => (
           <div key={date}>
             <div style={{ display:"flex",alignItems:"center",gap:10,marginBottom:12 }}>
-              <div style={{ padding:"4px 14px",borderRadius:999,background:"linear-gradient(135deg,var(--primary),var(--accent))",color:"#fff",fontSize:12,fontWeight:800 }}>
+              <div style={{ padding:"4px 14px",borderRadius:8,background:"var(--primary)",color:"#fff",fontSize:12,fontWeight:800 }}>
                 {fmtDate(date)}
               </div>
               <div style={{ flex:1,height:1,background:"var(--border)" }}/>
@@ -272,10 +272,10 @@ export default function AlbumPage() {
             <div style={{ display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(200px,1fr))",gap:12 }}>
               {dayPosts.map(post => (
                 <div key={post.id} onClick={() => setLightbox(post)}
-                  style={{ borderRadius:18,overflow:"hidden",cursor:"pointer",boxShadow:"0 4px 16px rgba(0,0,0,0.08)",transition:"transform 0.15s",background:"#fff" }}
+                  style={{ borderRadius:8,overflow:"hidden",cursor:"pointer",boxShadow:"0 4px 16px rgba(0,0,0,0.08)",transition:"transform 0.15s",background:"#fff" }}
                   onMouseEnter={e=>(e.currentTarget.style.transform="translateY(-3px)")}
                   onMouseLeave={e=>(e.currentTarget.style.transform="translateY(0)")}>
-                  <div style={{ position:"relative",paddingTop:"75%",background:"#f3f4f6" }}>
+                  <div style={{ position:"relative",paddingTop:"75%",background:"var(--surface-muted)" }}>
                     {post.tags?.includes("길동영상2026") ? <video src={`${post.image_url}#t=0.1`} muted playsInline preload="metadata" aria-label={post.title} style={{ position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",pointerEvents:"none" }}/> : <img src={post.image_url} alt={post.title}
                       style={{ position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover" }}/>}
                   </div>
@@ -286,7 +286,7 @@ export default function AlbumPage() {
                     <div style={{ display:"flex",justifyContent:"space-between",alignItems:"center" }}>
                       <div style={{ display:"flex",gap:4,flexWrap:"wrap" }}>
                         {post.tags.slice(0,2).map(t => (
-                          <span key={t} style={{ fontSize:10,padding:"2px 7px",borderRadius:999,background:"var(--primary-light)",color:"var(--primary)",fontWeight:700 }}>{t}</span>
+                          <span key={t} style={{ fontSize:10,padding:"2px 7px",borderRadius:8,background:"var(--primary-light)",color:"var(--primary)",fontWeight:700 }}>{t}</span>
                         ))}
                       </div>
                       <button onClick={e => toggleLike(post, e)}
@@ -307,7 +307,7 @@ export default function AlbumPage() {
         <div onClick={() => setLightbox(null)}
           style={{ position:"fixed",inset:0,background:"rgba(0,0,0,0.88)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:1000,padding:16 }}>
           <div onClick={e=>e.stopPropagation()}
-            style={{ background:"#fff",borderRadius:24,overflow:"hidden",maxWidth:600,width:"100%",maxHeight:"92vh",display:"flex",flexDirection:"column" }}>
+            style={{ background:"#fff",borderRadius:8,overflow:"hidden",maxWidth:600,width:"100%",maxHeight:"92vh",display:"flex",flexDirection:"column" }}>
             {lightbox.tags?.includes("길동영상2026") ? <video src={lightbox.image_url} controls playsInline preload="metadata" aria-label={lightbox.title} style={{ width:"100%",maxHeight:"58vh",background:"#111" }}/> : <img src={lightbox.image_url} alt={lightbox.title}
               style={{ width:"100%",maxHeight:"58vh",objectFit:"contain",background:"#111" }}/>}
             <div style={{ padding:"18px 22px",overflowY:"auto" }}>
@@ -324,7 +324,7 @@ export default function AlbumPage() {
               {lightbox.description && <p style={{ fontSize:13,color:"var(--text-muted)",margin:"0 0 10px",lineHeight:1.7 }}>{lightbox.description}</p>}
               <div style={{ display:"flex",gap:6,flexWrap:"wrap",marginBottom:14 }}>
                 {lightbox.tags.map(t => (
-                  <span key={t} style={{ fontSize:11,padding:"3px 10px",borderRadius:999,background:"var(--primary-light)",color:"var(--primary)",fontWeight:700 }}>{t}</span>
+                  <span key={t} style={{ fontSize:11,padding:"3px 10px",borderRadius:8,background:"var(--primary-light)",color:"var(--primary)",fontWeight:700 }}>{t}</span>
                 ))}
               </div>
               <button onClick={() => setLightbox(null)} className="hy-btn" style={{ width:"100%",fontSize:14 }}>닫기</button>

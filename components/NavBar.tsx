@@ -179,8 +179,10 @@ export default function NavBar() {
     setMobileOpen(false);
     setOpenGroup(null);
   };
-  const isActive = (href: string) =>
-    href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`);
+  const activeHref = NAV_GROUPS.flatMap(group => group.items)
+    .filter(item => item.href === "/" ? pathname === "/" : pathname === item.href || pathname.startsWith(`${item.href}/`))
+    .sort((a, b) => b.href.length - a.href.length)[0]?.href;
+  const isActive = (href: string) => href === activeHref;
   const noticeBadge = (href: string) => href === "/notice" && newNoticeCount > 0 ? (
     <span className={styles.noticeBadge} aria-label={`새 공지 ${newNoticeCount}개`}>
       {newNoticeCount > 99 ? "99+" : newNoticeCount}
@@ -189,11 +191,11 @@ export default function NavBar() {
 
   return (
     <>
-      <header ref={headerRef} className={`${styles.header} ${pathname === "/" ? styles.homeHeader : ""}`}>
+      <header ref={headerRef} className={styles.header}>
         <nav className={styles.headerBar} aria-label="주 메뉴">
           <Link href="/" onClick={closeMenus} className={styles.brand} aria-label="2학년 2반 우리반 홈">
             <span className={styles.brandMark}>2·2</span>
-            <span className={styles.brandText}>우리반 <span aria-hidden="true">{pathname === "/" ? "✳" : "🌸"}</span></span>
+            <span className={styles.brandText}>우리반 <span aria-hidden="true">✳</span></span>
           </Link>
 
           <div className={styles.desktopNav}>

@@ -72,19 +72,19 @@ type LikeMap = Record<string, Set<string>>; // todo_id → Set<from_student_no>
 const CATEGORIES = ["국어", "영어", "수학", "사회", "과학", "중국어", "기타"];
 
 const CAT_STYLE: Record<string, { bg: string; color: string; dot: string; border: string }> = {
-  국어:   { bg: "#fdf4ff", color: "#9333ea", dot: "#9333ea", border: "#e9d5ff" },
+  국어:   { bg: "#fdf4ff", color: "#9333ea", dot: "#9333ea", border: "var(--border)" },
   영어:   { bg: "#eff6ff", color: "#2563eb", dot: "#2563eb", border: "#bfdbfe" },
   수학:   { bg: "#fff1f2", color: "#e11d48", dot: "#e11d48", border: "#fecdd3" },
   사회:   { bg: "#fefce8", color: "#ca8a04", dot: "#eab308", border: "#fef08a" },
   과학:   { bg: "#f0fdf4", color: "#16a34a", dot: "#16a34a", border: "#bbf7d0" },
   중국어: { bg: "#fff7ed", color: "#ea580c", dot: "#f97316", border: "#fed7aa" },
-  기타:   { bg: "#f8fafc", color: "#64748b", dot: "#94a3b8", border: "#e2e8f0" },
+  기타:   { bg: "var(--surface-muted)", color: "var(--text-muted)", dot: "var(--text-subtle)", border: "var(--border)" },
 };
 
 // 학생 기본 색상 팔레트 (color 컬럼 없을 때 자동 할당)
 const STUDENT_PALETTE = [
   "#9333ea", "#2563eb", "#e11d48", "#16a34a", "#ea580c",
-  "#0891b2", "#d97706", "#7c3aed", "#059669", "#db2777",
+  "#0891b2", "#d97706", "var(--primary)", "#059669", "var(--primary)",
   "#1d4ed8", "#dc2626", "#0d9488", "#b45309", "#4f46e5",
 ];
 
@@ -155,14 +155,14 @@ function MiniCalendar({
       {/* 달력 헤더 */}
       <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:12 }}>
         <button onClick={() => { if (month===0){setYear(y=>y-1);setMonth(11);}else setMonth(m=>m-1); }}
-          style={{ width:28, height:28, borderRadius:7, border:"1.5px solid var(--border)",
+          style={{ width:28, height:28, borderRadius:7, border:"1px solid var(--border)",
             background:"#fff", cursor:"pointer", fontSize:14, display:"flex",
             alignItems:"center", justifyContent:"center", color:"var(--text-muted)" }}>‹</button>
         <span style={{ fontSize:14, fontWeight:800, color:"var(--text)" }}>
           {year}년 {MONTHS_KO[month]}
         </span>
         <button onClick={() => { if (month===11){setYear(y=>y+1);setMonth(0);}else setMonth(m=>m+1); }}
-          style={{ width:28, height:28, borderRadius:7, border:"1.5px solid var(--border)",
+          style={{ width:28, height:28, borderRadius:7, border:"1px solid var(--border)",
             background:"#fff", cursor:"pointer", fontSize:14, display:"flex",
             alignItems:"center", justifyContent:"center", color:"var(--text-muted)" }}>›</button>
       </div>
@@ -242,7 +242,7 @@ function StudentChip({
     <button onClick={onClick} style={{
       display:"flex", flexDirection:"column", alignItems:"center", gap:5,
       background:"none", border:"none", cursor:"pointer", padding:"6px 4px",
-      borderRadius:12, transition:"transform 0.15s",
+      borderRadius:6, transition:"transform 0.15s",
       transform: selected ? "translateY(-2px)" : "none",
       opacity: selected ? 1 : 0.55,
     }}>
@@ -294,7 +294,7 @@ function TodoCard({
   return (
     <div style={{
       display:"flex", alignItems:"center", gap:10,
-      padding:"10px 12px", borderRadius:10,
+      padding:"10px 12px", borderRadius:6,
       border:`1px solid ${todo.done ? "#dcfce7" : st.border}`,
       background: todo.done ? "#f0fdf4" : st.bg,
       borderLeft:`3px solid ${todo.done ? "#22c55e" : accentColor}`,
@@ -333,7 +333,7 @@ function TodoCard({
           overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap",
         }}>{todo.content}</p>
         <span style={{
-          fontSize:10, fontWeight:700, padding:"1px 6px", borderRadius:999,
+          fontSize:10, fontWeight:700, padding:"1px 6px", borderRadius:8,
           background: todo.done ? "#dcfce7" : st.bg,
           color: todo.done ? "#16a34a" : st.color,
           border:`1px solid ${todo.done ? "#bbf7d0" : st.border}`,
@@ -345,7 +345,7 @@ function TodoCard({
         display:"flex", alignItems:"center", gap:4, flexShrink:0,
         background: liked ? hexToRgba("#e11d48", 0.1) : "transparent",
         border:`1px solid ${liked ? "#fecdd3" : "var(--border)"}`,
-        borderRadius:20, padding:"3px 8px", cursor:"pointer",
+        borderRadius:8, padding:"3px 8px", cursor:"pointer",
         transition:"all 0.15s", fontSize:11, fontWeight:700,
         color: liked ? "#e11d48" : "var(--text-subtle)",
       }}>
@@ -503,7 +503,7 @@ function DiarySection({
           className="hy-input"
           style={{
             minHeight:100, resize:"vertical", fontSize:13, lineHeight:1.7,
-            borderColor: diaryText ? "#c4b5fd" : undefined,
+            borderColor: diaryText ? "var(--border-strong)" : undefined,
             background: diaryText ? "#fdf4ff" : undefined,
           }} />
       </div>
@@ -520,7 +520,7 @@ function DiarySection({
               <div key={i} style={{ position:"relative", width:80, height:80 }}>
                 <img src={url} alt="" style={{
                   width:80, height:80, objectFit:"cover", borderRadius:8,
-                  border:"1.5px solid var(--border)",
+                  border:"1px solid var(--border)",
                 }} />
                 <button onClick={() => removeImage(url)} style={{
                   position:"absolute", top:-6, right:-6, width:18, height:18,
@@ -535,7 +535,7 @@ function DiarySection({
               disabled={uploading}
               style={{
                 width:80, height:80, borderRadius:8, border:"2px dashed var(--border)",
-                background:"#f8fafc", cursor:"pointer", display:"flex",
+                background:"var(--surface-muted)", cursor:"pointer", display:"flex",
                 flexDirection:"column", alignItems:"center", justifyContent:"center",
                 gap:4, color:"var(--text-muted)", fontSize:11, fontWeight:700,
               }}>
@@ -548,8 +548,8 @@ function DiarySection({
           <button onClick={() => fileInputRef.current?.click()}
             disabled={uploading}
             style={{
-              width:"100%", height:64, borderRadius:10, border:"2px dashed var(--border)",
-              background:"#f8fafc", cursor:"pointer", display:"flex",
+              width:"100%", height:64, borderRadius:6, border:"2px dashed var(--border)",
+              background:"var(--surface-muted)", cursor:"pointer", display:"flex",
               alignItems:"center", justifyContent:"center", gap:10,
               color:"var(--text-muted)", fontSize:12, fontWeight:700,
               transition:"all 0.15s",
@@ -566,8 +566,8 @@ function DiarySection({
         <label style={{
           display:"flex", alignItems:"center", gap:7, cursor:"pointer",
           padding:"7px 12px", borderRadius:8, flex:1, minWidth:160,
-          background: shareReflection ? "#fdf4ff" : "#f8fafc",
-          border:`1px solid ${shareReflection ? "#e9d5ff" : "var(--border)"}`,
+          background: shareReflection ? "#fdf4ff" : "var(--surface-muted)",
+          border:`1px solid ${shareReflection ? "var(--border)" : "var(--border)"}`,
         }}>
           <input type="checkbox" checked={shareReflection}
             onChange={e => setShareReflection(e.target.checked)}
@@ -598,29 +598,29 @@ function PastDiaryView({ log, date }: { log: DailyLog; date: string }) {
       </p>
       {log.study_hours != null && (
         <span style={{
-          display:"inline-flex", alignItems:"center", padding:"3px 10px", borderRadius:999,
+          display:"inline-flex", alignItems:"center", padding:"3px 10px", borderRadius:8,
           background:"#fefce8", border:"1px solid #fef08a", marginBottom:8,
           fontSize:12, color:"#ca8a04", fontWeight:700,
         }}>⏱ {log.study_hours}시간</span>
       )}
       <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:8, marginBottom: log.diary_text ? 8 : 0 }}>
         {log.good && (
-          <div style={{ padding:"10px 12px", borderRadius:10, background:"#f0fdf4", border:"1px solid #bbf7d0" }}>
+          <div style={{ padding:"10px 12px", borderRadius:6, background:"#f0fdf4", border:"1px solid #bbf7d0" }}>
             <p style={{ fontSize:10, fontWeight:800, color:"#15803d", margin:"0 0 4px" }}>✅ 잘한 점</p>
             <p style={{ fontSize:12, color:"#166534", margin:0, lineHeight:1.6 }}>{log.good}</p>
           </div>
         )}
         {log.bad && (
-          <div style={{ padding:"10px 12px", borderRadius:10, background:"#fffbeb", border:"1px solid #fef08a" }}>
+          <div style={{ padding:"10px 12px", borderRadius:6, background:"#fffbeb", border:"1px solid #fef08a" }}>
             <p style={{ fontSize:10, fontWeight:800, color:"#92400e", margin:"0 0 4px" }}>💭 아쉬운 점</p>
             <p style={{ fontSize:12, color:"#92400e", margin:0, lineHeight:1.6 }}>{log.bad}</p>
           </div>
         )}
       </div>
       {log.diary_text && (
-        <div style={{ padding:"10px 12px", borderRadius:10, background:"#fdf4ff", border:"1px solid #e9d5ff", marginBottom:8 }}>
-          <p style={{ fontSize:10, fontWeight:800, color:"#7c3aed", margin:"0 0 4px" }}>✏️ 일기</p>
-          <p style={{ fontSize:12, color:"#4c1d95", margin:0, lineHeight:1.7, whiteSpace:"pre-wrap" }}>{log.diary_text}</p>
+        <div style={{ padding:"10px 12px", borderRadius:6, background:"#fdf4ff", border:"1px solid var(--border)", marginBottom:8 }}>
+          <p style={{ fontSize:10, fontWeight:800, color:"var(--primary)", margin:"0 0 4px" }}>✏️ 일기</p>
+          <p style={{ fontSize:12, color:"var(--primary-dark)", margin:0, lineHeight:1.7, whiteSpace:"pre-wrap" }}>{log.diary_text}</p>
         </div>
       )}
       {(log.image_urls?.length ?? 0) > 0 && (
@@ -628,7 +628,7 @@ function PastDiaryView({ log, date }: { log: DailyLog; date: string }) {
           {log.image_urls!.map((url, i) => (
             <img key={i} src={url} alt="" style={{
               width:80, height:80, objectFit:"cover", borderRadius:8,
-              border:"1.5px solid var(--border)", cursor:"pointer",
+              border:"1px solid var(--border)", cursor:"pointer",
             }} onClick={() => window.open(url, "_blank")} />
           ))}
         </div>
@@ -842,10 +842,10 @@ export default function TodoPage() {
   if (step === "login") return (
     <div style={{ display:"flex", flexDirection:"column", gap:20 }}>
       <div className="hy-hero">
-        <h1 style={{ color:"#fff", fontSize:"clamp(20px,4vw,30px)", fontWeight:900, margin:"0 0 8px" }}>
+        <h1 style={{ color:"var(--text)", fontSize:"var(--page-title-size)", fontWeight:800, margin:"0 0 8px" }}>
           ✅ 나의 할일
         </h1>
-        <p style={{ color:"rgba(255,255,255,0.85)", fontSize:13, margin:0, lineHeight:1.7 }}>
+        <p style={{ color:"var(--text-muted)", fontSize:13, margin:0, lineHeight:1.7 }}>
           매일 할 일을 적고, 체크하고, 하루를 돌아봐요 🙂
         </p>
       </div>
@@ -884,17 +884,17 @@ export default function TodoPage() {
       <div className="hy-hero">
         <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start" }}>
           <div>
-            <p style={{ color:"rgba(255,255,255,0.75)", fontSize:11, fontWeight:700, margin:"0 0 4px" }}>
+            <p style={{ color:"var(--text-muted)", fontSize:11, fontWeight:700, margin:"0 0 4px" }}>
               {me?.student_no} · {me?.name}의 공간
             </p>
-            <h1 style={{ color:"#fff", fontSize:"clamp(18px,4vw,26px)", fontWeight:900, margin:"0 0 2px" }}>
+            <h1 style={{ color:"var(--text)", fontSize:"var(--page-title-size)", fontWeight:800, margin:"0 0 2px" }}>
               ✅ 나의 할일
             </h1>
-            <p style={{ color:"rgba(255,255,255,0.75)", fontSize:12, margin:0 }}>{fmtFull(today)}</p>
+            <p style={{ color:"var(--text-muted)", fontSize:12, margin:0 }}>{fmtFull(today)}</p>
           </div>
           <button onClick={() => { setStep("login"); setMe(null); }}
-            style={{ padding:"6px 12px", borderRadius:999, border:"1px solid rgba(255,255,255,0.35)",
-              background:"rgba(255,255,255,0.12)", color:"#fff", fontSize:11, fontWeight:700,
+            style={{ padding:"6px 12px", borderRadius:8, border:"1px solid var(--border)",
+              background:"var(--primary-light)", color:"var(--text)", fontSize:11, fontWeight:700,
               cursor:"pointer", fontFamily:"inherit" }}>
             로그아웃
           </button>
@@ -986,16 +986,16 @@ export default function TodoPage() {
                     <div key={cat}>
                       <div style={{ display:"flex", justifyContent:"space-between", marginBottom:3 }}>
                         <span style={{
-                          fontSize:11, fontWeight:700, padding:"1px 7px", borderRadius:999,
+                          fontSize:11, fontWeight:700, padding:"1px 7px", borderRadius:8,
                           background:st.bg, color:st.color,
                         }}>{cat}</span>
                         <span style={{ fontSize:10, color:"var(--text-subtle)", fontWeight:700 }}>
                           {done}/{total}
                         </span>
                       </div>
-                      <div style={{ height:4, borderRadius:999, background:"#f1f5f9", overflow:"hidden" }}>
+                      <div style={{ height:4, borderRadius:8, background:"#f1f5f9", overflow:"hidden" }}>
                         <div style={{
-                          height:"100%", borderRadius:999, background:st.dot,
+                          height:"100%", borderRadius:8, background:st.dot,
                           width:`${rate}%`, transition:"width 0.4s",
                         }} />
                       </div>
@@ -1024,7 +1024,7 @@ export default function TodoPage() {
               </div>
               {myViewTodos.length > 0 && (
                 <span style={{
-                  fontSize:13, fontWeight:900, padding:"5px 12px", borderRadius:999,
+                  fontSize:13, fontWeight:900, padding:"5px 12px", borderRadius:8,
                   color: doneRate===100 ? "#16a34a" : "var(--primary)",
                   background: doneRate===100 ? "#f0fdf4" : "var(--primary-light)",
                 }}>
@@ -1033,12 +1033,12 @@ export default function TodoPage() {
               )}
             </div>
             {myViewTodos.length > 0 && (
-              <div style={{ height:5, borderRadius:999, background:"#f3e8ff", overflow:"hidden" }}>
+              <div style={{ height:5, borderRadius:8, background:"var(--accent-light)", overflow:"hidden" }}>
                 <div style={{
-                  height:"100%", borderRadius:999,
+                  height:"100%", borderRadius:8,
                   background: doneRate===100
-                    ? "linear-gradient(90deg,#22c55e,#16a34a)"
-                    : "linear-gradient(90deg,var(--primary),var(--accent))",
+                    ? "#22c55e"
+                    : "var(--primary)",
                   width:`${doneRate}%`, transition:"width 0.4s",
                 }} />
               </div>
@@ -1134,7 +1134,7 @@ export default function TodoPage() {
                           fontSize:10, fontWeight:800,
                           color: sRate===100 ? "#16a34a" : color,
                           background: sRate===100 ? "#f0fdf4" : hexToRgba(color, 0.1),
-                          padding:"2px 7px", borderRadius:999,
+                          padding:"2px 7px", borderRadius:8,
                         }}>
                           {sRate===100 ? "🎉" : `${sDone}/${sTodos.length}`}
                         </span>
@@ -1143,9 +1143,9 @@ export default function TodoPage() {
 
                     {/* 진행 바 */}
                     {sTodos.length > 0 && (
-                      <div style={{ height:3, borderRadius:999, background:hexToRgba(color,0.15), overflow:"hidden", marginBottom:8 }}>
+                      <div style={{ height:3, borderRadius:8, background:hexToRgba(color,0.15), overflow:"hidden", marginBottom:8 }}>
                         <div style={{
-                          height:"100%", borderRadius:999, background:color,
+                          height:"100%", borderRadius:8, background:color,
                           width:`${sRate}%`, transition:"width 0.4s",
                         }} />
                       </div>
@@ -1233,8 +1233,8 @@ export default function TodoPage() {
                   const sColor  = getStudentColor(f.student_no, allStudents);
                   return (
                     <div key={f.id} style={{
-                      padding:"10px 12px", borderRadius:10,
-                      background: isMe ? hexToRgba(sColor, 0.08) : "#f9fafb",
+                      padding:"10px 12px", borderRadius:6,
+                      background: isMe ? hexToRgba(sColor, 0.08) : "var(--surface-muted)",
                       border:`1px solid ${isMe ? hexToRgba(sColor, 0.3) : "var(--border)"}`,
                       borderLeft:`3px solid ${sColor}`,
                     }}>
@@ -1258,7 +1258,7 @@ export default function TodoPage() {
                         {f.study_hours != null && (
                           <span style={{
                             fontSize:11, fontWeight:700, color:"var(--primary)",
-                            background:"var(--primary-light)", padding:"2px 8px", borderRadius:999,
+                            background:"var(--primary-light)", padding:"2px 8px", borderRadius:8,
                           }}>⏱ {f.study_hours}h</span>
                         )}
                       </div>
@@ -1283,7 +1283,7 @@ export default function TodoPage() {
                           {f.image_urls!.slice(0,3).map((url, ui) => (
                             <img key={ui} src={url} alt="" style={{
                               width:48, height:48, objectFit:"cover", borderRadius:6,
-                              border:"1.5px solid var(--border)", cursor:"pointer",
+                              border:"1px solid var(--border)", cursor:"pointer",
                             }} onClick={() => window.open(url,"_blank")} />
                           ))}
                         </div>

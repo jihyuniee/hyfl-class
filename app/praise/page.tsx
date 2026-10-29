@@ -86,15 +86,15 @@ export default function PraisePage() {
 
       {/* 헤더 */}
       <div className="hy-hero">
-        <h1 style={{ color:"#fff", fontSize:"clamp(22px,4vw,32px)", fontWeight:900, margin:"0 0 8px" }}>
+        <h1 style={{ color:"var(--text)", fontSize:"var(--page-title-size)", fontWeight:800, margin:"0 0 8px" }}>
           🌱 우리 반 성장 기록
         </h1>
-        <p style={{ color:"rgba(255,255,255,0.85)", fontSize:13, margin:0, fontWeight:500, lineHeight:1.8 }}>
+        <p style={{ color:"var(--text-muted)", fontSize:13, margin:0, fontWeight:500, lineHeight:1.8 }}>
           평소의 작은 실천과 서로의 좋은 행동을 실명으로 기록해요.
         </p>
       </div>
 
-      <div className="hy-card" style={{ padding:"16px 18px", background:"#f8fafc" }}>
+      <div className="hy-card" style={{ padding:"16px 18px", background:"var(--surface-muted)" }}>
         <p style={{ fontSize:13, color:"var(--text)", fontWeight:800, margin:"0 0 7px" }}>
           작은 행동도 좋은 기록이 됩니다
         </p>
@@ -115,7 +115,7 @@ export default function PraisePage() {
         </div>
 
         <div style={{
-          padding:"13px 14px", borderRadius:14, background:"#fff7ed",
+          padding:"13px 14px", borderRadius:8, background:"#fff7ed",
           border:"1px solid #fed7aa", marginBottom:12,
         }}>
           <p style={{ fontSize:12, color:"#9a3412", fontWeight:800, margin:"0 0 7px" }}>
@@ -146,8 +146,8 @@ export default function PraisePage() {
             },
           ].map(item => (
             <div key={item.title} style={{
-              padding:"14px", borderRadius:14, background:"#f8fafc",
-              border:"1px solid #e2e8f0",
+              padding:"14px", borderRadius:8, background:"var(--surface-muted)",
+              border:"1px solid var(--border)",
             }}>
               <p style={{ fontSize:12, color:"var(--text)", fontWeight:900, margin:"0 0 7px" }}>
                 {item.title}
@@ -157,7 +157,7 @@ export default function PraisePage() {
               </p>
               <p style={{
                 display:"inline-block", fontSize:10, color:"var(--primary)", fontWeight:800,
-                background:"var(--primary-light)", borderRadius:999, padding:"4px 9px", margin:0,
+                background:"var(--primary-light)", borderRadius:8, padding:"4px 9px", margin:0,
               }}>
                 기록에서 보이는 모습: {item.traits}
               </p>
@@ -170,7 +170,7 @@ export default function PraisePage() {
         </p>
       </div>
 
-      <div className="hy-card" style={{ padding:"16px 18px", border:"1.5px solid #bbf7d0", background:"#f0fdf4" }}>
+      <div className="hy-card" style={{ padding:"16px 18px", border:"1px solid #bbf7d0", background:"#f0fdf4" }}>
         <p style={{ fontSize:13, color:"#166534", fontWeight:900, margin:"0 0 7px" }}>
           🌱 이 기록은 이렇게 활용합니다
         </p>
@@ -198,7 +198,7 @@ export default function PraisePage() {
         </button>
         <button onClick={() => openForm("self")}
           style={{
-            flex:1, padding:"14px", borderRadius:16,
+            flex:1, padding:"14px", borderRadius:8,
             border:"2px solid #fbbf24", background:"#fffbeb",
             color:"#92400e", fontSize:13, fontWeight:800,
             cursor:"pointer", fontFamily:"inherit",
@@ -277,7 +277,7 @@ export default function PraisePage() {
                 {cats.map(c => (
                   <button key={c.label} onClick={() => setCategory(c.label)}
                     style={{
-                      padding:"11px 16px", borderRadius:12, border:"1.5px solid",
+                      padding:"11px 16px", borderRadius:6, border:"1px solid",
                       textAlign:"left", cursor:"pointer", fontFamily:"inherit",
                       transition:"all 0.1s",
                       borderColor: category === c.label ? "var(--primary)" : "var(--border)",
@@ -313,9 +313,9 @@ export default function PraisePage() {
 
             <label style={{
               display:"flex", alignItems:"flex-start", gap:10, padding:"13px 14px",
-              borderRadius:12, cursor:"pointer",
-              border:`1.5px solid ${confirmed ? "#86efac" : "var(--border)"}`,
-              background:confirmed ? "#f0fdf4" : "#f8fafc",
+              borderRadius:6, cursor:"pointer",
+              border:`1px solid ${confirmed ? "#86efac" : "var(--border)"}`,
+              background:confirmed ? "#f0fdf4" : "var(--surface-muted)",
             }}>
               <input
                 type="checkbox"
@@ -349,7 +349,7 @@ export default function PraisePage() {
 
       {submitted && (
         <div className="hy-card" style={{
-          padding:"20px", textAlign:"center", background:"#f0fdf4", border:"1.5px solid #bbf7d0",
+          padding:"20px", textAlign:"center", background:"#f0fdf4", border:"1px solid #bbf7d0",
         }}>
           <p style={{ fontSize:24, margin:"0 0 7px" }}>✅</p>
           <p style={{ fontSize:14, fontWeight:900, color:"#166534", margin:"0 0 5px" }}>
@@ -366,7 +366,7 @@ export default function PraisePage() {
           href="/praise/teacher"
           style={{
             display:"inline-flex", alignItems:"center", gap:6,
-            padding:"9px 14px", borderRadius:999,
+            padding:"9px 14px", borderRadius:8,
             border:"1px solid var(--border)", background:"#fff",
             color:"var(--text-muted)", fontSize:11, fontWeight:700,
             textDecoration:"none",

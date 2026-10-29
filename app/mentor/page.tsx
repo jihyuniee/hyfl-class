@@ -7,25 +7,25 @@ import { CURRENT_SEMESTER, LEGACY_SEMESTER, type SemesterId } from "@/components
 
 // 1학기 멘토 명단 — 그대로 동결, 수정하지 않는다.
 const MENTORS_1ST = [
-  { subject: "국어",  emoji: "📝", mentors: ["박민석", "성연준"],  color: "linear-gradient(135deg,#f472b6,#fb923c)" },
-  { subject: "수학",  emoji: "🧮", mentors: ["박우진", "손정연"],  color: "linear-gradient(135deg,#3b82f6,#6366f1)" },
-  { subject: "영어",  emoji: "📖", mentors: ["유다현", "이시원"],  color: "linear-gradient(135deg,#34d399,#0ea5e9)" },
-  { subject: "중국어",emoji: "🀄", mentors: ["강지우", "송민주"],  color: "linear-gradient(135deg,#f97316,#ef4444)" },
-  { subject: "사문",  emoji: "🏛️", mentors: ["최인아", "현서정"],  color: "linear-gradient(135deg,#a855f7,#6366f1)" },
-  { subject: "국제",  emoji: "🌏", mentors: ["윤혜림", "장지현"],  color: "linear-gradient(135deg,#06b6d4,#3b82f6)" },
+  { subject: "국어",  emoji: "📝", mentors: ["박민석", "성연준"],  color: "var(--text)" },
+  { subject: "수학",  emoji: "🧮", mentors: ["박우진", "손정연"],  color: "#356a80" },
+  { subject: "영어",  emoji: "📖", mentors: ["유다현", "이시원"],  color: "#39704f" },
+  { subject: "중국어",emoji: "🀄", mentors: ["강지우", "송민주"],  color: "#8a552d" },
+  { subject: "사문",  emoji: "🏛️", mentors: ["최인아", "현서정"],  color: "var(--accent)" },
+  { subject: "국제",  emoji: "🌏", mentors: ["윤혜림", "장지현"],  color: "#316968" },
 ];
 
 // 2학기 멘토 명단.
 const MENTORS_2ND = [
-  { subject: "국어",   emoji: "📝", mentors: ["이승지", "주보민"],  color: "linear-gradient(135deg,#f472b6,#fb923c)" },
-  { subject: "영어",   emoji: "📖", mentors: ["김하연", "김은솔"],  color: "linear-gradient(135deg,#34d399,#0ea5e9)" },
-  { subject: "수학",   emoji: "🧮", mentors: ["심지안", "송민주"],  color: "linear-gradient(135deg,#3b82f6,#6366f1)" },
-  { subject: "세지",   emoji: "🌍", mentors: ["현서정", "박우진"],  color: "linear-gradient(135deg,#14b8a6,#0ea5e9)" },
-  { subject: "세미",   emoji: "🧭", mentors: ["최인아", "윤혜림"],  color: "linear-gradient(135deg,#a855f7,#ec4899)" },
-  { subject: "중입",   emoji: "🀄", mentors: ["김혜민", "강지우"],  color: "linear-gradient(135deg,#f97316,#ef4444)" },
-  { subject: "중독",   emoji: "📕", mentors: ["전주하", "양효승"],  color: "linear-gradient(135deg,#ef4444,#f43f5e)" },
-  { subject: "홍매T",  emoji: "🌸", mentors: ["장지현", "손정연"],  color: "linear-gradient(135deg,#ec4899,#f472b6)" },
-  { subject: "과학",   emoji: "🔬", mentors: ["이시원", "박우진"],  color: "linear-gradient(135deg,#10b981,#14b8a6)" },
+  { subject: "국어",   emoji: "📝", mentors: ["이승지", "주보민"],  color: "var(--text)" },
+  { subject: "영어",   emoji: "📖", mentors: ["김하연", "김은솔"],  color: "#39704f" },
+  { subject: "수학",   emoji: "🧮", mentors: ["심지안", "송민주"],  color: "#356a80" },
+  { subject: "세지",   emoji: "🌍", mentors: ["현서정", "박우진"],  color: "#316968" },
+  { subject: "세미",   emoji: "🧭", mentors: ["최인아", "윤혜림"],  color: "var(--text)" },
+  { subject: "중입",   emoji: "🀄", mentors: ["김혜민", "강지우"],  color: "#8a552d" },
+  { subject: "중독",   emoji: "📕", mentors: ["전주하", "양효승"],  color: "#9b4b42" },
+  { subject: "홍매T",  emoji: "🌸", mentors: ["장지현", "손정연"],  color: "var(--text)" },
+  { subject: "과학",   emoji: "🔬", mentors: ["이시원", "박우진"],  color: "#39704f" },
 ];
 
 type Resource = {
@@ -336,7 +336,7 @@ export default function MentorPage() {
   // ─── 갤러리 타일(그리드 안의 카드) ───
   const renderResourceTile = (r: Resource, showSubject = false) => {
     const m = MENTORS.find(x => x.subject === r.subject);
-    const ts = FTYPE_STYLE[r.file_type] ?? { bg:"#f3f4f6", color:"var(--text-muted)" };
+    const ts = FTYPE_STYLE[r.file_type] ?? { bg:"var(--surface-muted)", color:"var(--text-muted)" };
     const openUrl = r.file_url || r.link || null;
     const isImg = isImageFile(r.file_name);
     const newItem = isNew(r.created_at);
@@ -347,8 +347,8 @@ export default function MentorPage() {
         onClick={() => setDetailId(r.id)}
         style={{
           position:"relative", display:"block", width:"100%", padding:0, cursor:"pointer",
-          border: newItem ? "2px solid #6366f1" : "1.5px solid var(--border)",
-          borderRadius:16, overflow:"hidden", background:"#fff", textAlign:"left", fontFamily:"inherit",
+          border: newItem ? "2px solid #6366f1" : "1px solid var(--border)",
+          borderRadius:8, overflow:"hidden", background:"#fff", textAlign:"left", fontFamily:"inherit",
           boxShadow: newItem ? "0 4px 18px rgba(99,102,241,0.18)" : "0 2px 10px rgba(0,0,0,0.06)",
         }}
       >
@@ -362,9 +362,9 @@ export default function MentorPage() {
             </div>
           )}
           {newItem && (
-            <span style={{ position:"absolute", top:8, left:8, fontSize:9, fontWeight:800, padding:"2px 7px", borderRadius:999, background:"#6366f1", color:"#fff", letterSpacing:"0.5px" }}>NEW</span>
+            <span style={{ position:"absolute", top:8, left:8, fontSize:9, fontWeight:800, padding:"2px 7px", borderRadius:8, background:"#6366f1", color:"#fff", letterSpacing:"0.5px" }}>NEW</span>
           )}
-          <span style={{ position:"absolute", top:8, right:8, fontSize:10, fontWeight:700, padding:"2px 8px", borderRadius:999, background:"rgba(255,255,255,0.92)", color:ts.color }}>
+          <span style={{ position:"absolute", top:8, right:8, fontSize:10, fontWeight:700, padding:"2px 8px", borderRadius:8, background:"rgba(255,255,255,0.92)", color:ts.color }}>
             {r.file_type}
           </span>
         </div>
@@ -388,7 +388,7 @@ export default function MentorPage() {
   // ─── 드라이브식 목록 줄 ───
   const renderResourceRow = (r: Resource, showSubject = false) => {
     const m = MENTORS.find(x => x.subject === r.subject);
-    const ts = FTYPE_STYLE[r.file_type] ?? { bg:"#f3f4f6", color:"var(--text-muted)" };
+    const ts = FTYPE_STYLE[r.file_type] ?? { bg:"var(--surface-muted)", color:"var(--text-muted)" };
     const openUrl = r.file_url || r.link || null;
     const isImg = isImageFile(r.file_name);
     const newItem = isNew(r.created_at);
@@ -397,13 +397,13 @@ export default function MentorPage() {
       <div
         key={r.id}
         style={{
-          display:"flex", alignItems:"center", gap:12, padding:"9px 12px", borderRadius:14,
-          border: newItem ? "1.5px solid #6366f1" : "1px solid var(--border)",
-          background: newItem ? "#f5f3ff" : "#fff",
+          display:"flex", alignItems:"center", gap:12, padding:"9px 12px", borderRadius:8,
+          border: newItem ? "1px solid #6366f1" : "1px solid var(--border)",
+          background: newItem ? "var(--primary-light)" : "#fff",
         }}
       >
         <button onClick={() => setDetailId(r.id)}
-          style={{ width:44, height:44, borderRadius:10, overflow:"hidden", flexShrink:0, border:"1px solid var(--border)", padding:0, cursor:"pointer", background:ts.bg }}>
+          style={{ width:44, height:44, borderRadius:6, overflow:"hidden", flexShrink:0, border:"1px solid var(--border)", padding:0, cursor:"pointer", background:ts.bg }}>
           {isImg && openUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={openUrl} alt={r.title} style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>
@@ -418,14 +418,14 @@ export default function MentorPage() {
           style={{ flex:1, minWidth:0, textAlign:"left", background:"none", border:"none", cursor:"pointer", padding:0, fontFamily:"inherit" }}>
           <div style={{ display:"flex", alignItems:"center", gap:6, flexWrap:"wrap" }}>
             {newItem && (
-              <span style={{ fontSize:9, fontWeight:800, padding:"1px 6px", borderRadius:999, background:"#6366f1", color:"#fff" }}>NEW</span>
+              <span style={{ fontSize:9, fontWeight:800, padding:"1px 6px", borderRadius:8, background:"#6366f1", color:"#fff" }}>NEW</span>
             )}
             <span style={{ fontSize:13, fontWeight:800, color:"var(--text)", overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap", maxWidth:"100%" }}>
               {r.title}
             </span>
           </div>
           <div style={{ display:"flex", alignItems:"center", gap:6, marginTop:3, flexWrap:"wrap" }}>
-            <span style={{ fontSize:10, fontWeight:700, padding:"1px 7px", borderRadius:999, background:ts.bg, color:ts.color }}>{r.file_type}</span>
+            <span style={{ fontSize:10, fontWeight:700, padding:"1px 7px", borderRadius:8, background:ts.bg, color:ts.color }}>{r.file_type}</span>
             {showSubject && m && (
               <span style={{ fontSize:10, color:"var(--text-muted)", fontWeight:600 }}>{m.emoji} {r.subject}</span>
             )}
@@ -436,7 +436,7 @@ export default function MentorPage() {
 
         {openUrl && (
           <a href={openUrl} target="_blank" rel="noopener noreferrer"
-            style={{ flexShrink:0, fontSize:11, fontWeight:700, color:"#6366f1", textDecoration:"none", padding:"6px 12px", borderRadius:999, background:"#eff6ff", border:"1px solid #c7d2fe", whiteSpace:"nowrap" }}>
+            style={{ flexShrink:0, fontSize:11, fontWeight:700, color:"#6366f1", textDecoration:"none", padding:"6px 12px", borderRadius:8, background:"#eff6ff", border:"1px solid #c7d2fe", whiteSpace:"nowrap" }}>
             {isImg ? "보기" : "열기"} ↗
           </a>
         )}
@@ -446,14 +446,14 @@ export default function MentorPage() {
 
   // ─── 그리드/목록 보기 전환 버튼 ───
   const ViewToggle = () => (
-    <div style={{ display:"inline-flex", borderRadius:999, border:"1.5px solid var(--border)", padding:2, gap:2, flexShrink:0 }}>
+    <div style={{ display:"inline-flex", borderRadius:8, border:"1px solid var(--border)", padding:2, gap:2, flexShrink:0 }}>
       <button onClick={() => setViewMode("grid")}
-        style={{ padding:"5px 12px", borderRadius:999, border:"none", cursor:"pointer", fontFamily:"inherit", fontSize:12, fontWeight:700,
+        style={{ padding:"5px 12px", borderRadius:8, border:"none", cursor:"pointer", fontFamily:"inherit", fontSize:12, fontWeight:700,
           background: viewMode==="grid" ? "var(--primary-light)" : "transparent", color: viewMode==="grid" ? "var(--primary)" : "var(--text-muted)" }}>
         🖼️ 그리드
       </button>
       <button onClick={() => setViewMode("list")}
-        style={{ padding:"5px 12px", borderRadius:999, border:"none", cursor:"pointer", fontFamily:"inherit", fontSize:12, fontWeight:700,
+        style={{ padding:"5px 12px", borderRadius:8, border:"none", cursor:"pointer", fontFamily:"inherit", fontSize:12, fontWeight:700,
           background: viewMode==="list" ? "var(--primary-light)" : "transparent", color: viewMode==="list" ? "var(--primary)" : "var(--text-muted)" }}>
         📋 목록
       </button>
@@ -465,7 +465,7 @@ export default function MentorPage() {
     if (!detailResource) return null;
     const r = detailResource;
     const m = MENTORS.find(x => x.subject === r.subject);
-    const ts = FTYPE_STYLE[r.file_type] ?? { bg:"#f3f4f6", color:"var(--text-muted)" };
+    const ts = FTYPE_STYLE[r.file_type] ?? { bg:"var(--surface-muted)", color:"var(--text-muted)" };
     const openUrl = r.file_url || r.link || null;
     const isImg = isImageFile(r.file_name);
     const resComments = comments.filter(c => c.resource_id === r.id);
@@ -479,12 +479,12 @@ export default function MentorPage() {
       >
         <div
           onClick={e => e.stopPropagation()}
-          style={{ width:"100%", maxWidth:520, background:"#fff", borderRadius:20, overflow:"hidden", boxShadow:"0 20px 60px rgba(0,0,0,0.4)" }}
+          style={{ width:"100%", maxWidth:520, background:"#fff", borderRadius:8, overflow:"hidden", boxShadow:"0 20px 60px rgba(0,0,0,0.4)" }}
         >
           <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", padding:"12px 16px", borderBottom:"1px solid var(--border)" }}>
             <div style={{ display:"flex", alignItems:"center", gap:8, flexWrap:"wrap" }}>
-              <span style={{ fontSize:11, fontWeight:700, padding:"2px 8px", borderRadius:999, background:ts.bg, color:ts.color }}>{r.file_type}</span>
-              {m && <span style={{ fontSize:11, fontWeight:700, padding:"2px 8px", borderRadius:999, background:"#f3f4f6", color:"var(--text-muted)" }}>{m.emoji} {r.subject}</span>}
+              <span style={{ fontSize:11, fontWeight:700, padding:"2px 8px", borderRadius:8, background:ts.bg, color:ts.color }}>{r.file_type}</span>
+              {m && <span style={{ fontSize:11, fontWeight:700, padding:"2px 8px", borderRadius:8, background:"var(--surface-muted)", color:"var(--text-muted)" }}>{m.emoji} {r.subject}</span>}
             </div>
             <button onClick={() => setDetailId(null)}
               style={{ fontSize:16, background:"none", border:"none", cursor:"pointer", color:"var(--text-muted)", padding:4, lineHeight:1 }}>
@@ -502,7 +502,7 @@ export default function MentorPage() {
           <div style={{ padding:"16px 18px" }}>
             <h4 style={{ fontSize:16, fontWeight:900, color:"var(--text)", margin:"0 0 8px" }}>{r.title}</h4>
             <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:10, flexWrap:"wrap" }}>
-              <div style={{ display:"inline-flex", alignItems:"center", gap:4, background:"#f0fdf4", border:"1px solid #bbf7d0", borderRadius:999, padding:"2px 10px" }}>
+              <div style={{ display:"inline-flex", alignItems:"center", gap:4, background:"#f0fdf4", border:"1px solid #bbf7d0", borderRadius:8, padding:"2px 10px" }}>
                 <span style={{ fontSize:11 }}>👤</span>
                 <span style={{ fontSize:12, fontWeight:700, color:"#16a34a" }}>{r.uploader_name ?? "익명"}</span>
               </div>
@@ -515,7 +515,7 @@ export default function MentorPage() {
 
             {openUrl && !isImg && (
               <a href={openUrl} target="_blank" rel="noopener noreferrer"
-                style={{ display:"inline-flex", alignItems:"center", gap:6, fontSize:13, fontWeight:700, color:"#6366f1", textDecoration:"none", padding:"8px 18px", borderRadius:999, background:"#eff6ff", border:"1.5px solid #c7d2fe", marginBottom:12 }}>
+                style={{ display:"inline-flex", alignItems:"center", gap:6, fontSize:13, fontWeight:700, color:"#6366f1", textDecoration:"none", padding:"8px 18px", borderRadius:8, background:"#eff6ff", border:"1px solid #c7d2fe", marginBottom:12 }}>
                 {getFileIcon(r.file_name)} {r.file_name ?? "파일 열기"} 보기 →
               </a>
             )}
@@ -523,7 +523,7 @@ export default function MentorPage() {
             <div style={{ display:"flex", justifyContent:"flex-end", marginBottom:12 }}>
               {isAdmin ? (
                 <button onClick={() => deleteResource(r.id)}
-                  style={{ fontSize:11, padding:"4px 10px", borderRadius:999, border:"1px solid #fecaca", background:"#fff5f5", color:"#ef4444", cursor:"pointer", fontFamily:"inherit", fontWeight:700 }}>
+                  style={{ fontSize:11, padding:"4px 10px", borderRadius:8, border:"1px solid #fecaca", background:"#fff5f5", color:"#ef4444", cursor:"pointer", fontFamily:"inherit", fontWeight:700 }}>
                   삭제
                 </button>
               ) : r.delete_code ? (
@@ -539,17 +539,17 @@ export default function MentorPage() {
                       autoFocus
                     />
                     <button onClick={() => handleCodeDelete(r)}
-                      style={{ fontSize:11, padding:"3px 8px", borderRadius:999, border:"1px solid #fecaca", background:"#fff5f5", color:"#ef4444", cursor:"pointer", fontFamily:"inherit", fontWeight:700 }}>
+                      style={{ fontSize:11, padding:"3px 8px", borderRadius:8, border:"1px solid #fecaca", background:"#fff5f5", color:"#ef4444", cursor:"pointer", fontFamily:"inherit", fontWeight:700 }}>
                       확인
                     </button>
                     <button onClick={() => { setDeletingResource(null); setDeleteCodeInput(""); }}
-                      style={{ fontSize:11, padding:"3px 8px", borderRadius:999, border:"1px solid var(--border)", background:"#fff", color:"var(--text-muted)", cursor:"pointer", fontFamily:"inherit", fontWeight:700 }}>
+                      style={{ fontSize:11, padding:"3px 8px", borderRadius:8, border:"1px solid var(--border)", background:"#fff", color:"var(--text-muted)", cursor:"pointer", fontFamily:"inherit", fontWeight:700 }}>
                       취소
                     </button>
                   </div>
                 ) : (
                   <button onClick={() => setDeletingResource(r.id)}
-                    style={{ fontSize:11, padding:"4px 10px", borderRadius:999, border:"1px solid #fecaca", background:"#fff5f5", color:"#ef4444", cursor:"pointer", fontFamily:"inherit", fontWeight:700 }}>
+                    style={{ fontSize:11, padding:"4px 10px", borderRadius:8, border:"1px solid #fecaca", background:"#fff5f5", color:"#ef4444", cursor:"pointer", fontFamily:"inherit", fontWeight:700 }}>
                     삭제
                   </button>
                 )
@@ -564,10 +564,10 @@ export default function MentorPage() {
                 <div style={{ display:"flex", flexDirection:"column", gap:8, marginBottom:12 }}>
                   {resComments.map(c => (
                     <div key={c.id} style={{ display:"flex", gap:8, alignItems:"flex-start" }}>
-                      <div style={{ width:28, height:28, borderRadius:999, background:"var(--primary-light)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:11, fontWeight:800, color:"var(--primary)", flexShrink:0 }}>
+                      <div style={{ width:28, height:28, borderRadius:8, background:"var(--primary-light)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:11, fontWeight:800, color:"var(--primary)", flexShrink:0 }}>
                         {c.author_name.charAt(0)}
                       </div>
-                      <div style={{ flex:1, background:"#f9fafb", borderRadius:12, padding:"8px 12px", border:"1px solid var(--border)" }}>
+                      <div style={{ flex:1, background:"var(--surface-muted)", borderRadius:6, padding:"8px 12px", border:"1px solid var(--border)" }}>
                         <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:4 }}>
                           <span style={{ fontSize:12, fontWeight:800, color:"var(--text)" }}>{c.author_name}</span>
                           <div style={{ display:"flex", gap:6, alignItems:"center" }}>
@@ -609,7 +609,7 @@ export default function MentorPage() {
 
   // ─── 업로드 폼 렌더 ───
   const renderUploadForm = (subjectFixed?: string) => (
-    <div style={{ padding:"18px 20px", background:"#f8faff", borderRadius:16, border:"1.5px solid #e0e7ff" }}>
+    <div style={{ padding:"18px 20px", background:"#f8faff", borderRadius:8, border:"1px solid #e0e7ff" }}>
       <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
         <div
           onClick={() => fileRef.current?.click()}
@@ -618,7 +618,7 @@ export default function MentorPage() {
           onDrop={e => { e.preventDefault(); setRDragOver(false); pickFiles(e.dataTransfer.files); }}
           style={{
             border: rDragOver ? "2px dashed #6366f1" : "2px dashed #c7d2fe",
-            borderRadius:14, padding: rFiles.length > 0 ? 10 : 22, background: rDragOver ? "#eef2ff" : "#fff",
+            borderRadius:8, padding: rFiles.length > 0 ? 10 : 22, background: rDragOver ? "#eef2ff" : "#fff",
             textAlign:"center", cursor:"pointer", transition:"all 0.12s",
           }}>
           {rFiles.length > 0 ? (
@@ -630,7 +630,7 @@ export default function MentorPage() {
               </div>
               <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(72px,1fr))", gap:8 }}>
                 {rFiles.map((f, i) => (
-                  <div key={i} style={{ position:"relative", aspectRatio:"1 / 1", borderRadius:10, overflow:"hidden", border:"1px solid var(--border)", background:"#f8faff" }}>
+                  <div key={i} style={{ position:"relative", aspectRatio:"1 / 1", borderRadius:6, overflow:"hidden", border:"1px solid var(--border)", background:"#f8faff" }}>
                     {rPreviewUrls[i] ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img src={rPreviewUrls[i]!} alt={f.name} style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>
@@ -638,11 +638,11 @@ export default function MentorPage() {
                       <div style={{ width:"100%", height:"100%", display:"flex", alignItems:"center", justifyContent:"center", fontSize:22 }}>{getFileIcon(f.name)}</div>
                     )}
                     <button onClick={() => removeFile(i)}
-                      style={{ position:"absolute", top:2, right:2, width:20, height:20, borderRadius:999, border:"none", background:"rgba(0,0,0,0.55)", color:"#fff", cursor:"pointer", fontSize:11, lineHeight:1 }}>✕</button>
+                      style={{ position:"absolute", top:2, right:2, width:20, height:20, borderRadius:8, border:"none", background:"rgba(0,0,0,0.55)", color:"#fff", cursor:"pointer", fontSize:11, lineHeight:1 }}>✕</button>
                   </div>
                 ))}
                 <button onClick={e => { e.stopPropagation(); fileRef.current?.click(); }}
-                  style={{ aspectRatio:"1 / 1", borderRadius:10, border:"1.5px dashed #c7d2fe", background:"#f8faff", cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", fontSize:22, color:"var(--primary)" }}>＋</button>
+                  style={{ aspectRatio:"1 / 1", borderRadius:6, border:"1.5px dashed #c7d2fe", background:"#f8faff", cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", fontSize:22, color:"var(--primary)" }}>＋</button>
               </div>
             </div>
           ) : (
@@ -696,7 +696,7 @@ export default function MentorPage() {
 
   // ─── 탭 뱃지 컴포넌트 ───
   const TabBadge = ({ count }: { count: number }) => count === 0 ? null : (
-    <span style={{ display:"inline-flex", alignItems:"center", justifyContent:"center", minWidth:16, height:16, borderRadius:999, background:"#ef4444", color:"#fff", fontSize:9, fontWeight:800, padding:"0 4px", marginLeft:4 }}>
+    <span style={{ display:"inline-flex", alignItems:"center", justifyContent:"center", minWidth:16, height:16, borderRadius:8, background:"#ef4444", color:"#fff", fontSize:9, fontWeight:800, padding:"0 4px", marginLeft:4 }}>
       {count > 9 ? "9+" : count}
     </span>
   );
@@ -704,21 +704,19 @@ export default function MentorPage() {
   return (
     <div style={{ display:"flex", flexDirection:"column", gap:20 }}>
       {/* 헤더 */}
-      <div style={{ background:"linear-gradient(135deg,#f59e0b 0%,#ef4444 50%,#ec4899 100%)", borderRadius:28, padding:"32px 28px", position:"relative", overflow:"hidden", boxShadow:"0 12px 40px rgba(245,158,11,0.3)" }}>
-        {[{w:140,h:140,top:-40,right:-20,op:0.08},{w:70,h:70,bottom:-10,left:60,op:0.07}].map((b,i)=>(
-          <div key={i} style={{ position:"absolute",width:b.w,height:b.h,top:(b as {top?:number}).top,right:(b as {right?:number}).right,bottom:(b as {bottom?:number}).bottom,left:(b as {left?:number}).left,borderRadius:"50%",background:"#fff",opacity:b.op }}/>
-        ))}
+      <div className="hy-hero">
+        
         <div style={{ position:"relative" }}>
-          <div style={{ display:"inline-flex",alignItems:"center",background:"rgba(255,255,255,0.2)",backdropFilter:"blur(8px)",borderRadius:999,padding:"4px 14px",marginBottom:12,border:"1px solid rgba(255,255,255,0.3)" }}>
-            <span style={{ fontSize:12,color:"#fff",fontWeight:700 }}>🤝 학급자율활동</span>
+          <div style={{ display:"inline-flex",alignItems:"center",background:"var(--primary-light)",borderRadius:8,padding:"4px 14px",marginBottom:12,border:"1px solid var(--border)" }}>
+            <span style={{ fontSize:12,color:"var(--text)",fontWeight:700 }}>🤝 학급자율활동</span>
           </div>
-          <h1 style={{ color:"#fff",fontSize:"clamp(20px,4vw,30px)",fontWeight:900,margin:"0 0 8px",letterSpacing:"-0.5px" }}>교과 멘토·멘티 필기 공유</h1>
-          <p style={{ color:"rgba(255,255,255,0.85)",fontSize:13,margin:"0 0 14px",lineHeight:1.7,fontWeight:500 }}>
+          <h1 style={{ color:"var(--text)",fontSize:"var(--page-title-size)",fontWeight:800,margin:"0 0 8px",letterSpacing:"-0.5px" }}>교과 멘토·멘티 필기 공유</h1>
+          <p style={{ color:"var(--text-muted)",fontSize:13,margin:"0 0 14px",lineHeight:1.7,fontWeight:500 }}>
             {isFrozen
               ? "1학기 최종 기록이에요. 자료는 그대로 보존됩니다."
               : <>필기 사진, 요약 자료, 예상 문제를 사진 한 장으로 편하게 공유해요.<br/>시험 기간 전 적극적으로 활용해봐요!</>}
           </p>
-          <div style={{ background:"rgba(255,255,255,0.15)", borderRadius:14, padding:6, display:"inline-flex" }}>
+          <div style={{ background:"var(--primary-light)", borderRadius:8, padding:6, display:"inline-flex" }}>
             <SemesterTabs value={semester} onChange={setSemester} />
           </div>
         </div>
@@ -770,7 +768,7 @@ export default function MentorPage() {
               return (
                 <div key={m.subject}
                   onClick={()=>handleMentorCardClick(m.subject)}
-                  style={{ borderRadius:20, overflow:"hidden", cursor:"pointer",
+                  style={{ borderRadius:8, overflow:"hidden", cursor:"pointer",
                     boxShadow: isSelected ? "0 8px 30px rgba(99,102,241,0.3)" : "0 4px 16px rgba(0,0,0,0.08)",
                     border: isSelected ? "2.5px solid #6366f1" : hasNew ? "2.5px solid #f59e0b" : "2.5px solid transparent",
                     transition:"all 0.15s",
@@ -780,18 +778,18 @@ export default function MentorPage() {
                     <div style={{ flex:1 }}>
                       <h3 style={{ color:"#fff", fontSize:17, fontWeight:900, margin:0 }}>
                         {m.subject}
-                        {hasNew && <span style={{ marginLeft:6, fontSize:10, fontWeight:800, background:"#ef4444", color:"#fff", padding:"1px 6px", borderRadius:999, verticalAlign:"middle" }}>NEW</span>}
+                        {hasNew && <span style={{ marginLeft:6, fontSize:10, fontWeight:800, background:"#ef4444", color:"#fff", padding:"1px 6px", borderRadius:8, verticalAlign:"middle" }}>NEW</span>}
                       </h3>
                       <p style={{ color:"rgba(255,255,255,0.8)", fontSize:12, margin:0, fontWeight:600 }}>멘토 {m.mentors.length}명 · 공유 자료 {resCount}개</p>
                     </div>
-                    <span style={{ fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.9)",background:"rgba(255,255,255,0.2)",padding:"3px 10px",borderRadius:999 }}>
+                    <span style={{ fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.9)",background:"rgba(255,255,255,0.2)",padding:"3px 10px",borderRadius:8 }}>
                       {isSelected ? "선택됨 ✓" : "자료 보기 →"}
                     </span>
                   </div>
                   <div style={{ background:"#fff", padding:"14px 18px" }}>
                     <div style={{ display:"flex", gap:8, flexWrap:"wrap", marginBottom: recentRes.length > 0 ? 12 : 0 }}>
                       {m.mentors.map(name=>(
-                        <span key={name} style={{ padding:"6px 14px", borderRadius:999, background:"#fdf2f8", color:"var(--primary)", fontWeight:800, fontSize:13, border:"1.5px solid #f9d0ea" }}>
+                        <span key={name} style={{ padding:"6px 14px", borderRadius:8, background:"var(--primary-light)", color:"var(--primary)", fontWeight:800, fontSize:13, border:"1px solid #f9d0ea" }}>
                           {name}
                         </span>
                       ))}
@@ -803,7 +801,7 @@ export default function MentorPage() {
                           const isImg = isImageFile(r.file_name);
                           return (
                             <button key={r.id} onClick={() => setDetailId(r.id)}
-                              style={{ position:"relative", aspectRatio:"1 / 1", borderRadius:10, overflow:"hidden", border:"1px solid var(--border)", padding:0, cursor:"pointer", background:"#fafafa" }}>
+                              style={{ position:"relative", aspectRatio:"1 / 1", borderRadius:6, overflow:"hidden", border:"1px solid var(--border)", padding:0, cursor:"pointer", background:"var(--surface-muted)" }}>
                               {isImg && openUrl ? (
                                 // eslint-disable-next-line @next/next/no-img-element
                                 <img src={openUrl} alt={r.title} style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>
@@ -811,7 +809,7 @@ export default function MentorPage() {
                                 <span style={{ position:"absolute", inset:0, display:"flex", alignItems:"center", justifyContent:"center", fontSize:18 }}>{getFileIcon(r.file_name)}</span>
                               )}
                               {isNew(r.created_at) && (
-                                <span style={{ position:"absolute", top:3, left:3, fontSize:7, fontWeight:800, padding:"1px 4px", borderRadius:999, background:"#6366f1", color:"#fff" }}>N</span>
+                                <span style={{ position:"absolute", top:3, left:3, fontSize:7, fontWeight:800, padding:"1px 4px", borderRadius:8, background:"#6366f1", color:"#fff" }}>N</span>
                               )}
                             </button>
                           );
@@ -829,7 +827,7 @@ export default function MentorPage() {
             <div ref={subjectSectionRef} className="hy-card" style={{ padding:"24px 26px" }}>
               <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:20, flexWrap:"wrap", gap:10 }}>
                 <div style={{ display:"flex", alignItems:"center", gap:10 }}>
-                  <div style={{ width:40,height:40,borderRadius:12,background:selectedMentor?.color,display:"flex",alignItems:"center",justifyContent:"center",fontSize:20 }}>
+                  <div style={{ width:40,height:40,borderRadius:6,background:selectedMentor?.color,display:"flex",alignItems:"center",justifyContent:"center",fontSize:20 }}>
                     {selectedMentor?.emoji}
                   </div>
                   <div>
@@ -876,7 +874,7 @@ export default function MentorPage() {
             <div style={{ display:"flex", gap:6, flexWrap:"wrap" }}>
               {["전체", ...MENTORS.map(m=>m.subject)].map(s=>(
                 <button key={s} onClick={()=>setFilterSubject(s)}
-                  style={{ padding:"6px 14px",borderRadius:999,border:"1.5px solid",fontFamily:"inherit",cursor:"pointer",
+                  style={{ padding:"6px 14px",borderRadius:8,border:"1px solid",fontFamily:"inherit",cursor:"pointer",
                     borderColor: filterSubject===s ? "var(--primary)" : "var(--border)",
                     background: filterSubject===s ? "var(--primary-light)" : "#fff",
                     color: filterSubject===s ? "var(--primary)" : "var(--text-muted)",

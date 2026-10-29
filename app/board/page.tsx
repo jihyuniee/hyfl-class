@@ -150,10 +150,10 @@ export default function BoardPage() {
       {/* 헤더 */}
       <div className="hy-hero">
         <div style={{ position:"relative" }}>
-          <p style={{ color:"rgba(255,255,255,0.8)", fontSize:13, fontWeight:600, margin:"0 0 6px" }}>
+          <p style={{ color:"var(--text-muted)", fontSize:13, fontWeight:600, margin:"0 0 6px" }}>
             자유롭게 의견을 남겨요
           </p>
-          <h1 style={{ color:"#fff", fontSize:"clamp(22px,4vw,32px)", fontWeight:900, margin:0, letterSpacing:"-0.5px" }}>
+          <h1 style={{ color:"var(--text)", fontSize:"var(--page-title-size)", fontWeight:800, margin:0, letterSpacing:"-0.5px" }}>
             🪗 우리반 신문고
           </h1>
         </div>
@@ -165,7 +165,7 @@ export default function BoardPage() {
           {["전체", ...CATEGORIES].map(f => (
             <button key={f} onClick={() => setFilter(f)}
               style={{
-                padding:"6px 14px", borderRadius:999, border:"1.5px solid",
+                padding:"6px 14px", borderRadius:8, border:"1px solid",
                 borderColor: filter===f ? "var(--primary)" : "var(--border)",
                 background: filter===f ? "var(--primary-light)" : "#fff",
                 color: filter===f ? "var(--primary)" : "var(--text-muted)",
@@ -259,7 +259,7 @@ export default function BoardPage() {
 
       {/* 선생님께 잠금 안내 + 답변 확인 */}
       {(filter === "선생님께" || filter === "전체") && !isAdmin && (
-        <div style={{ padding:"14px 18px", borderRadius:14, background:"#f0fdf4", border:"1.5px solid #86efac", display:"flex", flexDirection:"column", gap:10 }}>
+        <div style={{ padding:"14px 18px", borderRadius:8, background:"#f0fdf4", border:"1px solid #86efac", display:"flex", flexDirection:"column", gap:10 }}>
           <div style={{ display:"flex", alignItems:"center", gap:10 }}>
             <span style={{ fontSize:20 }}>🔒</span>
             <p style={{ fontSize:13, color:"#16a34a", fontWeight:700, margin:0 }}>
@@ -296,7 +296,7 @@ export default function BoardPage() {
                 <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", gap:10, marginBottom:10 }}>
                   <div style={{ display:"flex", alignItems:"center", gap:8, flexWrap:"wrap" }}>
                     <span style={{
-                      padding:"3px 10px", borderRadius:999, fontSize:12, fontWeight:700,
+                      padding:"3px 10px", borderRadius:8, fontSize:12, fontWeight:700,
                       background: cs.bg, color: cs.color,
                     }}>
                       {cs.emoji} {post.category}
@@ -324,14 +324,14 @@ export default function BoardPage() {
 
                 {/* 댓글 영역 */}
                 {isExpanded && (
-                  <div style={{ marginTop:14, borderTop:"1.5px solid var(--border)", paddingTop:14 }}>
+                  <div style={{ marginTop:14, borderTop:"1px solid var(--border)", paddingTop:14 }}>
                     {/* 댓글 목록 */}
                     {postComments.length > 0 && (
                       <div style={{ display:"flex", flexDirection:"column", gap:8, marginBottom:14 }}>
                         {postComments.map(c => (
                           <div key={c.id} style={{
-                            padding:"10px 14px", borderRadius:12,
-                            background:"#fafafa", border:"1.5px solid var(--border)",
+                            padding:"10px 14px", borderRadius:6,
+                            background:"var(--surface-muted)", border:"1px solid var(--border)",
                           }}>
                             <div style={{ fontSize:12, color:"var(--text-subtle)", fontWeight:600, marginBottom:4 }}>
                               {c.is_anonymous ? "익명" : c.author ?? "익명"} · {timeAgo(c.created_at)}

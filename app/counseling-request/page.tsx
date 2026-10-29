@@ -113,11 +113,11 @@ export default function CounselingPage() {
       {/* 헤더 */}
       <div className="hy-hero">
         <div style={{ position:"relative" }}>
-          <p style={{ color:"rgba(255,255,255,0.8)", fontSize:13, fontWeight:600, margin:"0 0 6px" }}>선생님과 1:1</p>
-          <h1 style={{ color:"#fff", fontSize:"clamp(22px,4vw,32px)", fontWeight:900, margin:"0 0 8px", letterSpacing:"-0.5px" }}>
+          <p style={{ color:"var(--text-muted)", fontSize:13, fontWeight:600, margin:"0 0 6px" }}>선생님과 1:1</p>
+          <h1 style={{ color:"var(--text)", fontSize:"var(--page-title-size)", fontWeight:800, margin:"0 0 8px", letterSpacing:"-0.5px" }}>
             💌 1차 상담 신청
           </h1>
-          <p style={{ color:"rgba(255,255,255,0.85)", fontSize:13, margin:0, fontWeight:500, lineHeight:1.7 }}>
+          <p style={{ color:"var(--text-muted)", fontSize:13, margin:0, fontWeight:500, lineHeight:1.7 }}>
             선생님이 등록한 가능 시간 중 원하는 시간을 선택해 신청해요.<br/>
             이미 신청된 시간을 피해서 신청해주세요 🙏 비밀 상담도 가능해요 🔒
           </p>
@@ -168,9 +168,9 @@ export default function CounselingPage() {
               const taken = !!app;
               return (
                 <div key={slot.id} style={{
-                  padding:"12px 16px", borderRadius:14, minWidth:120,
-                  background: taken ? "#f9fafb" : "var(--primary-light)",
-                  border: taken ? "1.5px solid var(--border)" : "1.5px solid #f9a8d4",
+                  padding:"12px 16px", borderRadius:8, minWidth:120,
+                  background: taken ? "var(--surface-muted)" : "var(--primary-light)",
+                  border: taken ? "1px solid var(--border)" : "1px solid var(--border-strong)",
                   opacity: taken ? 0.8 : 1,
                 }}>
                   <div style={{ fontWeight:900, fontSize:16, color: taken ? "var(--text-subtle)" : "var(--primary)", marginBottom:6 }}>
@@ -182,7 +182,7 @@ export default function CounselingPage() {
                         {app.is_private ? "🔒 비밀 상담" : app.name}
                       </div>
                       <button onClick={() => cancelApp(app.id)}
-                        style={{ marginTop:6, fontSize:11, padding:"3px 10px", borderRadius:999, border:"1.5px solid #fecaca", background:"#fff5f5", color:"#ef4444", cursor:"pointer", fontFamily:"inherit", fontWeight:700 }}>
+                        style={{ marginTop:6, fontSize:11, padding:"3px 10px", borderRadius:8, border:"1px solid #fecaca", background:"#fff5f5", color:"#ef4444", cursor:"pointer", fontFamily:"inherit", fontWeight:700 }}>
                         취소
                       </button>
                     </div>
@@ -195,7 +195,7 @@ export default function CounselingPage() {
                   )}
                   {isAdmin && (
                     <button onClick={() => deleteSlot(slot.id)}
-                      style={{ marginTop:4, display:"block", fontSize:10, padding:"2px 8px", borderRadius:999, border:"1.5px solid #e5e7eb", background:"#fff", color:"#9ca3af", cursor:"pointer", fontFamily:"inherit" }}>
+                      style={{ marginTop:4, display:"block", fontSize:10, padding:"2px 8px", borderRadius:8, border:"1px solid #e5e7eb", background:"#fff", color:"#9ca3af", cursor:"pointer", fontFamily:"inherit" }}>
                       슬롯 삭제
                     </button>
                   )}
@@ -209,7 +209,7 @@ export default function CounselingPage() {
       {/* 신청 모달 */}
       {selectedSlot && (
         <div style={{ position:"fixed", inset:0, background:"rgba(0,0,0,0.4)", display:"flex", alignItems:"center", justifyContent:"center", zIndex:1000, padding:20 }}>
-          <div style={{ background:"#fff", borderRadius:24, padding:"28px 26px", maxWidth:420, width:"100%", boxShadow:"0 20px 60px rgba(0,0,0,0.2)" }}>
+          <div style={{ background:"#fff", borderRadius:8, padding:"28px 26px", maxWidth:420, width:"100%", boxShadow:"0 20px 60px rgba(0,0,0,0.2)" }}>
             <h3 style={{ fontSize:17, fontWeight:900, color:"var(--text)", margin:"0 0 6px" }}>1차 상담 신청</h3>
             <p style={{ fontSize:13, color:"var(--text-muted)", margin:"0 0 20px" }}>
               📅 {fmtDate(selectedSlot.date)} {selectedSlot.time}
@@ -248,7 +248,7 @@ export default function CounselingPage() {
             {applications.map(app => {
               const slot = slots.find(s => s.id === app.slot_id);
               return (
-                <div key={app.id} style={{ padding:"12px 16px", borderRadius:12, background:"#fafafa", border:"1.5px solid var(--border)", display:"flex", justifyContent:"space-between", alignItems:"center", flexWrap:"wrap", gap:8 }}>
+                <div key={app.id} style={{ padding:"12px 16px", borderRadius:6, background:"var(--surface-muted)", border:"1px solid var(--border)", display:"flex", justifyContent:"space-between", alignItems:"center", flexWrap:"wrap", gap:8 }}>
                   <div>
                     <div style={{ fontWeight:800, fontSize:14, color:"var(--text)" }}>
                       {app.name} ({app.student_no}) {app.is_private && "🔒"}

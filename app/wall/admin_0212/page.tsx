@@ -135,8 +135,8 @@ export default function WallAdminPage() {
     return (
       <div className="space-y-6">
         <div className="hy-card p-6">
-          <h1 className="text-2xl font-bold">담임 전용: 담벼락 관리자 🔒</h1>
-          <p className="mt-2 text-sm text-gray-600">
+          <h1 className="hy-page-title">담임 전용: 담벼락 관리자 🔒</h1>
+          <p className="mt-2 text-sm text-[var(--text-muted)]">
             비밀번호를 입력하면 학생 자기소개(담벼락) 글을 조회/삭제할 수 있어.
           </p>
         </div>
@@ -145,7 +145,7 @@ export default function WallAdminPage() {
           <div className="text-sm mb-3">비밀번호</div>
           <input
             type="password"
-            className="w-full rounded-2xl border px-4 py-3 text-sm"
+            className="w-full rounded-[var(--radius-card)] border px-4 py-3 text-sm border-[var(--border)]"
             value={passwordInput}
             onChange={(e) => setPasswordInput(e.target.value)}
           />
@@ -166,15 +166,15 @@ export default function WallAdminPage() {
   return (
     <div className="space-y-6">
       <div className="hy-card p-6">
-        <h1 className="text-2xl font-bold">담임 전용: 담벼락 글 관리</h1>
-        <p className="mt-2 text-sm text-gray-600">
+        <h1 className="hy-page-title">담임 전용: 담벼락 글 관리</h1>
+        <p className="mt-2 text-sm text-[var(--text-muted)]">
           여기서 글을 선택해서 확인하고, 필요하면 삭제할 수 있어.
         </p>
       </div>
 
       <div className="flex flex-wrap items-center gap-2">
         <input
-          className="w-full md:w-96 rounded-2xl border px-4 py-3 text-sm"
+          className="w-full md:w-96 rounded-[var(--radius-card)] border px-4 py-3 text-sm border-[var(--border)]"
           placeholder="이름/제목/내용 검색"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
@@ -185,11 +185,11 @@ export default function WallAdminPage() {
         <button className="hy-btn text-sm" onClick={clearAll} disabled={loading}>
           전체 삭제
         </button>
-        {loading && <div className="text-xs text-gray-600 ml-2">처리 중...</div>}
+        {loading && <div className="text-xs text-[var(--text-muted)] ml-2">처리 중...</div>}
       </div>
 
       {err && (
-        <div className="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+        <div className="rounded-[var(--radius-card)] border border-red-200 bg-red-50 p-4 text-sm text-red-700">
           오류: {err}
         </div>
       )}
@@ -197,13 +197,13 @@ export default function WallAdminPage() {
       <div className="grid gap-4 md:grid-cols-3">
         {/* 목록 */}
         <div className="hy-card p-4 md:col-span-1">
-          <div className="text-sm font-semibold text-gray-700">
+          <div className="text-sm font-semibold text-[var(--text)]">
             글 {filtered.length}개
           </div>
 
           <div className="mt-3 divide-y">
             {filtered.length === 0 && (
-              <div className="py-8 text-sm text-gray-600">글이 없어.</div>
+              <div className="py-8 text-sm text-[var(--text-muted)]">글이 없어.</div>
             )}
 
             {filtered.map((p) => (
@@ -219,17 +219,17 @@ export default function WallAdminPage() {
                     {p.author_name || "이름없음"}
                   </div>
                   {!p.is_public && (
-                    <span className="text-[10px] rounded-full border px-2 py-0.5 text-gray-600">
+                    <span className="text-[10px] rounded-[var(--radius-control)] border px-2 py-0.5 text-[var(--text-muted)] border-[var(--border)]">
                       비공개
                     </span>
                   )}
                 </div>
 
-                <div className="mt-1 text-xs text-gray-500">
+                <div className="mt-1 text-xs text-[var(--text-muted)]">
                   {formatKST(p.created_at)}
                 </div>
 
-                <div className="mt-2 text-xs text-gray-700 line-clamp-2">
+                <div className="mt-2 text-xs text-[var(--text)] line-clamp-2">
                   {safePreview(p.content)}
                 </div>
               </button>
@@ -240,7 +240,7 @@ export default function WallAdminPage() {
         {/* 상세 */}
         <div className="space-y-4 md:col-span-2">
           {!selected ? (
-            <div className="hy-card p-6 text-sm text-gray-700">
+            <div className="hy-card p-6 text-sm text-[var(--text)]">
               왼쪽에서 글을 선택해줘.
             </div>
           ) : (
@@ -250,14 +250,14 @@ export default function WallAdminPage() {
                   <div className="text-lg font-bold">
                     {selected.title || `${selected.author_name}의 글`}
                   </div>
-                  <div className="mt-1 text-xs text-gray-500">
+                  <div className="mt-1 text-xs text-[var(--text-muted)]">
                     {selected.author_name} · {formatKST(selected.created_at)}
                     {!selected.is_public && " · (비공개)"}
                   </div>
                 </div>
 
                 <button
-                  className="rounded-full border px-4 py-2 text-sm hover:bg-gray-50"
+                  className="rounded-[var(--radius-control)] border px-4 py-2 text-sm hover:bg-gray-50 border-[var(--border)]"
                   onClick={() => deleteOne(selected.id)}
                   disabled={loading}
                 >
@@ -265,13 +265,13 @@ export default function WallAdminPage() {
                 </button>
               </div>
 
-              <div className="rounded-2xl bg-zinc-50 p-4 text-sm whitespace-pre-wrap">
+              <div className="rounded-[var(--radius-card)] bg-zinc-50 p-4 text-sm whitespace-pre-wrap">
                 {selected.content}
               </div>
 
               {selected.image_urls && selected.image_urls.length > 0 && (
                 <div>
-                  <div className="text-sm font-semibold text-gray-700 mb-2">
+                  <div className="text-sm font-semibold text-[var(--text)] mb-2">
                     첨부 이미지
                   </div>
                   <div className="grid grid-cols-2 gap-2 md:grid-cols-3">
@@ -280,7 +280,7 @@ export default function WallAdminPage() {
                         <img
                           src={url}
                           alt="첨부 이미지"
-                          className="h-28 w-full rounded-xl object-cover"
+                          className="h-28 w-full rounded-[var(--radius-card)] object-cover"
                         />
                       </a>
                     ))}
@@ -292,12 +292,12 @@ export default function WallAdminPage() {
         </div>
       </div>
 
-      <div className="hy-card p-5 text-sm text-gray-700">
+      <div className="hy-card p-5 text-sm text-[var(--text)]">
         <div className="font-semibold">관리자 주소</div>
         <div className="mt-2">
           <span className="font-mono">/wall/admin_0212</span>
         </div>
-        <div className="mt-1 text-xs text-gray-500">
+        <div className="mt-1 text-xs text-[var(--text-muted)]">
           예: https://hyfl-class.vercel.app/wall/admin_0212
         </div>
       </div>
