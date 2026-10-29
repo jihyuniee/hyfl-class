@@ -3,10 +3,10 @@ import { percentileBands, latestPercentileResults, inPercentileBand, previewPerc
 import styles from "./explorer.module.css";
 const latest = latestPercentileResults(results);
 function ResultItem({ row }: { row: PercentileResult }) {
-  return <li><div><b>{row.univ} · {row.dept}</b><span>{row.year}학년도 · 등록자 백분위 70% 컷</span></div><strong>{row.cut_pct70}</strong><details><summary>기준·출처</summary><p>{row.metric_note}</p><a href={row.source} target="_blank" rel="noopener noreferrer">공개 입결 원문 ↗</a></details></li>;
+  return <li><div><b>{row.univ} · {row.dept}</b><span>{row.year}학년도 · 등록자 백분위 70% 컷 · 100명 중 약 70번째 성적</span></div><strong>{row.cut_pct70}</strong><details><summary>기준·출처</summary><p>{row.metric_note}</p><a href={row.source} target="_blank" rel="noopener noreferrer">공개 입결 원문 ↗</a></details></li>;
 }
 export default function PercentileBrowse() {
-  return <section aria-labelledby="percentile-browse"><h2 id="percentile-browse">백분위 구간별로 지난 입결 둘러보기</h2><p className={styles.muted}>아래는 대학이 공개한 <b>등록자 백분위 70% 컷</b>이에요. 내 성적과 가까운 구간부터 살펴보세요. 대학별 산식이 달라 합격 가능성을 직접 판정하는 기준은 아니에요.</p>
+  return <section aria-labelledby="percentile-browse"><h2 id="percentile-browse">백분위 구간별로 지난 입결 둘러보기</h2><p className={styles.muted}>70% 컷은 최종등록자 100명을 공개 지표의 성적이 좋은 순서로 세웠을 때 약 70번째 성적이에요. 합격 확률 70%나 마지막 합격자의 점수가 아니에요. 대학별 등수 처리 방식은 원문을 확인하세요. 아래는 대학이 공개한 <b>등록자 백분위 70% 컷</b>이에요. 내 성적과 가까운 구간부터 살펴보세요. 대학별 산식이 달라 합격 가능성을 직접 판정하는 기준은 아니에요.</p>
     <div className={styles.bandGrid}>{percentileBands.map(band => {
       const rows = latest.filter(r => inPercentileBand(r, band.id));
       const preview = previewPercentileResults(rows);

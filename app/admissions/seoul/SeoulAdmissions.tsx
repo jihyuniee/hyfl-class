@@ -21,8 +21,8 @@ const universities = [...directory.universities].sort((a, b) => a.localeCompare(
 const display = (n: number | null) => n === null ? "미기재" : n.toLocaleString("ko-KR", { maximumFractionDigits: 4 });
 const matchUniversity = (actual: string, selected: string) => !selected || actual === selected || actual === `${selected} 서울`;
 
-export default function SeoulAdmissions() {
-  const [university, setUniversity] = useState("");
+export default function SeoulAdmissions({ initialUniversity = "" }: { initialUniversity?: string }) {
+  const [university, setUniversity] = useState(universities.includes(initialUniversity) ? initialUniversity : "");
   const [query, setQuery] = useState("");
   const [year, setYear] = useState("");
   const [metric, setMetric] = useState("");
@@ -37,16 +37,17 @@ export default function SeoulAdmissions() {
     <header className={styles.hero}><span>정시 · 인문·사회·어문</span><h1>내 성적과 가까운 입결은?</h1><p>백분위 구간마다 어떤 대학·학과의 입결이 있는지 둘러보세요.</p></header>
     <p className={styles.date}>2024~2026 입결은 참고자료이며, 2028 합격을 보장하지 않아요.</p>
 
-    <PercentileBrowse />
+    <details className={styles.details}><summary>모의고사와 가까운 백분위 구간부터 보기</summary><PercentileBrowse /></details>
 
-    <details className={styles.details}><summary>대학·학과별 전체 입결과 환산점수 보기</summary><section className={styles.section} aria-labelledby="results-title">
-      <h2 id="results-title">과거 정시 입결 찾아보기</h2>
+    <details open className={styles.details}><summary>대학·학과별 전체 입결과 환산점수 보기</summary><section className={styles.section} aria-labelledby="results-title">
+      <h2 id="results-title">과거 정시 입결 찾아보기</h2><p>70% 컷: 최종등록자 100명 중 성적이 좋은 순서로 약 70번째 성적. 평균·최저 합격점·합격 확률과는 달라요.</p>
       <div className={styles.filters}>
         <label>대학<select value={university} onChange={e => { setUniversity(e.target.value); setLimit(8); }}><option value="">대학을 선택하세요</option>{universities.map(u => <option key={u}>{u}</option>)}</select></label>
         <label>학과·대학 검색<input value={query} placeholder="예: 중국, 경영, 정치" onChange={e => { setQuery(e.target.value); setLimit(8); }} /></label>
         <label>결과 학년도<select value={year} onChange={e => { setYear(e.target.value); setLimit(8); }}><option value="">전체</option>{[2026, 2025, 2024].map(y => <option key={y}>{y}</option>)}</select></label>
         <label>공개 지표<select value={metric} onChange={e => { setMetric(e.target.value); setLimit(8); }}><option value="">전체</option><option value="percentile">백분위 70% 컷 있음</option><option value="converted">환산점수 70% 컷 있음</option></select></label>
       </div>
+      <div className={styles.downloads}><Link href={university ? `/admissions/susi?university=${encodeURIComponent(university)}` : "/admissions/susi"}>이 대학의 학과·탐구·수시 전형 →</Link><Link href="/admissions#student-questions">수시·정시 준비 비교 →</Link></div>
       <p role="status" className={styles.date}>{`검색 결과 ${filtered.length}개 · 실제 입결은 11개 대학 수록`}</p>
       {filtered.length === 0 ? <div className={styles.empty}>이 조건으로 수록한 입결이 없습니다. 합격 사례가 없다는 뜻은 아닙니다. 아래 시행계획과 기존 대학 자료에서 원문을 확인하세요.</div> : <div className={styles.tableWrap}><table>
         <caption>정시 일반전형 중심 선별 자료. ‘미기재’는 0점이 아닙니다. 가로로 넘겨 출처까지 확인하세요.</caption>
@@ -92,7 +93,7 @@ export default function SeoulAdmissions() {
 
     <details className={styles.details}><summary>상담 준비·자료 내려받기</summary><section className={styles.section} aria-labelledby="next-title">
       <h2 id="next-title">상담 전에 이렇게 준비해요</h2>
-      <ol><li>최근 모의고사 2~3회의 과목별 표준점수·백분위·등급을 가져와요.</li><li>희망 대학보다 먼저 희망 학과와 배우고 싶은 내용을 정리해요.</li><li>내 강점 과목이 지원 연도의 산식에서 얼마나 반영되는지 확인해요.</li><li>정시의 학생부 평가 유무, 수시의 지원자격·추천·수능최저·면접을 따로 확인해요.</li></ol>
+      <ol><li>최근 모의고사 2~3회의 과목별 표준점수·백분위·등급을 가져와요.</li><li>관심 대학이나 학과를 골라 배우고 싶은 내용도 함께 살펴봐요.</li><li>내 강점 과목이 지원 연도의 산식에서 얼마나 반영되는지 확인해요.</li><li>정시의 학생부 평가 유무, 수시의 지원자격·추천·수능최저·면접을 따로 확인해요.</li></ol>
       <details className={styles.details}><summary>외고 학생은 학종만 지원할 수 있나요?</summary><p>아니요. 전형마다 외고 지원 가능 여부와 추천 자격이 달라요. 교과전형은 지원자격과 등급 환산방식부터 확인해야 합니다. 학종은 등급 외에 과목 이수와 수업·탐구 내용 등을 함께 평가하므로 외고 학생이 검토할 수 있는 경로입니다. 학교 유형이나 내신 한 숫자만으로 합격 여부를 정할 수는 없어요.</p></details>
       <div className={styles.downloads}><a href="/admissions-seoul/results.csv" download>정시 입결 292개 기록 CSV ↓</a><a href="/admissions-seoul/counseling-2028.xlsx" download>교사용 상담표·2028 반영방식 XLSX ↓</a><Link href={university ? `/admissions/susi?university=${encodeURIComponent(university)}` : "/admissions/susi"}>관심 대학의 학과·수시 전형 →</Link></div>
       <p className={styles.date}>상담용 XLSX에는 11개 대학 292개 입결과 15개 대학 반영방식·빈 상담표·자료 읽는 법을 담았습니다. 학생 개인 성적은 수록하지 않았습니다.</p>
