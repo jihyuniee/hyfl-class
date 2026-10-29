@@ -5,6 +5,7 @@ import { useState } from "react";
 import resultsData from "@/public/admissions-seoul/results.json";
 import plans from "@/public/admissions-seoul/plans.json";
 import styles from "./seoul.module.css";
+import PercentileBrowse from "@/components/admissions/PercentileBrowse";
 import AdmissionsNav from "@/components/admissions/AdmissionsNav";
 import ReferenceTable from "./ReferenceTable";
 import directory from "@/public/admissions-explorer/directory.json";
@@ -26,7 +27,6 @@ export default function SeoulAdmissions() {
   const [year, setYear] = useState("");
   const [metric, setMetric] = useState("");
   const [limit, setLimit] = useState(8);
-  const hasSearch = Boolean(university || query.trim());
   const filtered = results.filter(r => matchUniversity(r.univ, university)
     && `${r.univ} ${r.dept}`.includes(query.trim()) && (!year || r.year === Number(year))
     && (!metric || (metric === "percentile" ? r.cut_pct70 !== null : r.cut_conv70 !== null)));
@@ -34,10 +34,12 @@ export default function SeoulAdmissions() {
 
   return <div className={styles.page}>
     <AdmissionsNav current="regular" />
-    <header className={styles.hero}><span>정시 · 인문·사회·어문</span><h1>이 학과는 몇 점으로 갔을까?</h1><p>대학·학과별 지난 입결과 과목 반영비율을 찾아봐요.</p></header>
+    <header className={styles.hero}><span>정시 · 인문·사회·어문</span><h1>내 성적과 가까운 입결은?</h1><p>백분위 구간마다 어떤 대학·학과의 입결이 있는지 둘러보세요.</p></header>
     <p className={styles.date}>2024~2026 입결은 참고자료이며, 2028 합격을 보장하지 않아요.</p>
 
-    <section className={styles.section} aria-labelledby="results-title">
+    <PercentileBrowse />
+
+    <details className={styles.details}><summary>대학·학과별 전체 입결과 환산점수 보기</summary><section className={styles.section} aria-labelledby="results-title">
       <h2 id="results-title">과거 정시 입결 찾아보기</h2>
       <div className={styles.filters}>
         <label>대학<select value={university} onChange={e => { setUniversity(e.target.value); setLimit(8); }}><option value="">대학을 선택하세요</option>{universities.map(u => <option key={u}>{u}</option>)}</select></label>
@@ -45,8 +47,8 @@ export default function SeoulAdmissions() {
         <label>결과 학년도<select value={year} onChange={e => { setYear(e.target.value); setLimit(8); }}><option value="">전체</option>{[2026, 2025, 2024].map(y => <option key={y}>{y}</option>)}</select></label>
         <label>공개 지표<select value={metric} onChange={e => { setMetric(e.target.value); setLimit(8); }}><option value="">전체</option><option value="percentile">백분위 70% 컷 있음</option><option value="converted">환산점수 70% 컷 있음</option></select></label>
       </div>
-      <p role="status" className={styles.date}>{hasSearch ? `검색 결과 ${filtered.length}개 · 실제 입결은 11개 대학 수록` : "대학을 선택하거나 학과를 검색하면 지난 입결을 보여줘요."}</p>
-      {!hasSearch ? null : filtered.length === 0 ? <div className={styles.empty}>이 조건으로 수록한 입결이 없습니다. 합격 사례가 없다는 뜻은 아닙니다. 아래 시행계획과 기존 대학 자료에서 원문을 확인하세요.</div> : <div className={styles.tableWrap}><table>
+      <p role="status" className={styles.date}>{`검색 결과 ${filtered.length}개 · 실제 입결은 11개 대학 수록`}</p>
+      {filtered.length === 0 ? <div className={styles.empty}>이 조건으로 수록한 입결이 없습니다. 합격 사례가 없다는 뜻은 아닙니다. 아래 시행계획과 기존 대학 자료에서 원문을 확인하세요.</div> : <div className={styles.tableWrap}><table>
         <caption>정시 일반전형 중심 선별 자료. ‘미기재’는 0점이 아닙니다. 가로로 넘겨 출처까지 확인하세요.</caption>
         <thead><tr><th scope="col">대학·모집단위</th><th scope="col">결과 연도</th><th scope="col">등록자 평균 백분위</th><th scope="col">백분위 70% 컷</th><th scope="col">환산점수 70% 컷</th><th scope="col">정의·출처</th></tr></thead>
         <tbody>{filtered.slice(0, limit).map(r => <tr key={`${r.univ}-${r.dept}-${r.year}`}>
@@ -55,12 +57,12 @@ export default function SeoulAdmissions() {
           <td><details><summary>지표 설명·원문</summary><p>{r.metric_note}</p><p>{r.source_note}</p><a href={r.source} target="_blank" rel="noopener noreferrer">대학 공개 원문 ↗</a></details></td>
         </tr>)}</tbody>
       </table></div>}
-      {hasSearch && filtered.length > limit && <button className={styles.more} onClick={() => setLimit(n => n + 8)}>8개 더 보기 ({Math.min(limit, filtered.length)}/{filtered.length})</button>}
-    </section>
+      {filtered.length > limit && <button className={styles.more} onClick={() => setLimit(n => n + 8)}>8개 더 보기 ({Math.min(limit, filtered.length)}/{filtered.length})</button>}
+    </section></details>
 
-    {hasSearch && <ReferenceTable university={university} query={query} />}
+    <details className={styles.details}><summary>표준점수 합 지원참고 예상점수 보기</summary><ReferenceTable university={university} query={query} /></details>
 
-    {university && <section className={styles.section} aria-labelledby="plans-title">
+    <details className={styles.details}><summary>2028 정시 과목별 반영비율 둘러보기</summary><section className={styles.section} aria-labelledby="plans-title">
       <h2 id="plans-title">2028 정시에서는 무엇을 반영할까?</h2>
       <p>위의 대학 선택과 연동됩니다. 입결 검색어·연도·지표 필터는 아래 시행계획에 적용하지 않습니다. 15개 대학 30개 반영 사례를 추렸으며 모든 모집단위를 망라한 표는 아닙니다. 시행계획이므로 최종 모집요강을 다시 확인하세요.</p>
       {selectedPlans.length === 0 && <p className={styles.empty}>선택한 대학의 2028 반영방식은 이 요약에 없습니다. 대학 시행계획·최종 모집요강을 확인하세요.</p>}
@@ -70,7 +72,7 @@ export default function SeoulAdmissions() {
           <dt>탐구·배점 상세</dt><dd>{p[8]}</dd><dt>수능 / 기타 평가</dt><dd>{p[9]}% / {p[10]}</dd><dt>활용 지표</dt><dd>{p[11]}</dd><dt>영어</dt><dd>{p[12]}</dd><dt>살펴볼 점</dt><dd>{p[13]}</dd></dl>
         <a href={String(p[15])} target="_blank" rel="noopener noreferrer">시행계획 사본 · {p[14]} ↗</a>
       </details>)}</div>
-    </section>}
+    </section></details>
 
     <details className={styles.details}><summary>백분위·표준점수·70% 컷, 무슨 뜻일까?</summary><section className={styles.section} aria-labelledby="score-title">
       <h2 id="score-title">성적표와 입결에서 먼저 구분할 6가지</h2>
