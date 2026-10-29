@@ -16,18 +16,18 @@ export default function MockScoreExplorer({ university }: { university: string }
   const average = mockPercentile(scores);
   const rows = submitted ? nearbyReferences(reference, submitted.average, range, university) : [];
   return <section className={styles.panel} id="mock-score" aria-labelledby="mock-heading">
-    <h2 id="mock-heading">내 모의고사로 살펴볼 대학·학과 찾기</h2>
+    <h2 id="mock-heading">모의고사 백분위와 수록 예상점수 비교</h2>
     <p>성적표의 <b>백분위</b>를 입력하세요. 국어·수학·통합사회·통합과학으로 국수탐 단순 평균을 계산해, 기존 지원참고 예상점수가 가까운 모집단위를 보여줘요.</p>
-    <p className={styles.muted}>기준: 이투스 2027학년도 9월 학력평가 지원참고표에 수록된 2028 모집단위. 다른 시험 성적은 시험 난도·응시집단이 달라 대략적인 탐색에만 사용해요. 실제 등록자 입결과 구분합니다.</p>
+    <p className={styles.muted}>자료 구분: 기존 이투스 지원참고 예상점수. 저장된 출처명에는 ‘2027학년도 9월 학력평가 · 고1 가채점’으로 표기되어 있습니다. 원본의 시험 시행일·대상과 현재 고2 성적에 대한 적용성은 재확인 중입니다. 아래는 수록값 비교이며 2028 지원 가능성 예측 자료로 확인된 값은 아닙니다.</p>
     <form onSubmit={e => { e.preventDefault(); if (average === null || !english) { setError('네 과목 백분위(0~100)와 영어 등급을 모두 입력해 주세요.'); return; } setSubmitted({average, english}); setError(''); setLimit(6); }}>
       <div className={styles.filters}>{['국어 백분위', '수학 백분위', '통합사회 백분위', '통합과학 백분위'].map((label, i) => <label key={label}>{label}<input type="number" inputMode="decimal" min="0" max="100" step="any" required value={scores[i]} onChange={e => { setScores(scores.map((v, j) => j === i ? e.target.value : v)); setSubmitted(null); }} /></label>)}
       <label>영어 등급<select required value={english} onChange={e => { setEnglish(e.target.value); setSubmitted(null); }}><option value="">선택</option>{Array.from({length:9}, (_,i) => <option key={i} value={i+1}>{i+1}등급</option>)}</select></label>
       <label>예상점수와 비교할 범위<select value={range} onChange={e => { setRange(Number(e.target.value)); setLimit(6); }}><option value={1}>평균 백분위 ±1</option><option value={3}>평균 백분위 ±3</option><option value={5}>평균 백분위 ±5</option></select></label></div>
-      <button className={styles.primary} type="submit">가까운 지원참고 대학·학과 보기</button>
+      <button className={styles.primary} type="submit">가까운 수록값 비교하기</button>
       {error && <p role="alert">{error}</p>}
     </form>
     <p className={styles.muted}>입력값은 이 화면에서만 사용하며 서버 전송·저장하지 않습니다.</p>
-    {submitted && <div aria-live="polite"><h3>입력 평균 {submitted.average.toFixed(2)} · 영어 {submitted.english}등급</h3><p>계산: (국어 + 수학 + (사회 + 과학) ÷ 2) ÷ 3. 영어는 이 평균에 포함하지 않아요. 아래 대학별 영어 환산을 따로 확인하세요.</p>
+    {submitted && <div aria-live="polite"><h3>입력 평균 {submitted.average.toFixed(2)} · 영어 {submitted.english}등급(검색 순서 미반영)</h3><p>계산: (국어 + 수학 + (사회 + 과학) ÷ 2) ÷ 3. 영어는 이 평균에 포함하지 않아요. 아래 대학별 영어 환산을 따로 확인하세요.</p>
       <p>{university || '전체 대학'} · 지원참고 예상 평균과 ±{range} 이내 {rows.length}개. 가까운 순서이며 합격 가능성 순위가 아닙니다.</p>
       <p>이 범위는 탐색을 위한 간격입니다. 안정·적정·상향 판정이나 대학별 실제 환산점수가 아니에요. 정확한 환산에는 표준점수·탐구 변환표·영어·한국사·학생부 등 대학별 조건이 필요합니다.</p>
       {rows.length === 0 && <p>가까운 예상점수가 수록되어 있지 않아요. 지원 가능한 대학이 없다는 뜻은 아닙니다. 대학 선택이나 비교 범위를 바꿔보세요.</p>}

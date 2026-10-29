@@ -42,7 +42,7 @@ export default function SusiExplorer({ initialUniversity = "", initialProfile = 
     <AdmissionsNav current="early" />
     <header className={styles.hero}><span className={styles.eyebrow}>수시 · 2028</span><h1>이런 계열에서는 무엇을 배울까?</h1><p>분야별 공부 내용과 학과를 둘러보고, 마음에 드는 계열을 눌러보세요.</p></header>
 
-    <section className={styles.section} aria-label="계열별 공부와 학과 예시"><FieldBrowse active={profileId} onChoose={id => { setProfileId(id); setUniversity(""); setQuery(""); setUnitKey(""); setLimit(6); setField(majors.find(p => p.id === id)?.field || "인문·어문"); }} /></section>
+    <section className={styles.section} aria-label="계열별 공부와 학과 예시"><FieldBrowse active={profileId} onChoose={id => { setProfileId(id); setQuery(""); setUnitKey(""); setLimit(6); setField(majors.find(p => p.id === id)?.field || "인문·어문"); }} /></section>
 
     <section className={styles.section} aria-labelledby="directory-heading">
       <h2 id="directory-heading">{profile ? `${profile.title} 관련 학과` : "서울 대학에는 이런 학과가 있어요"}</h2>

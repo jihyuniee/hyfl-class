@@ -76,3 +76,10 @@ test('계열 선택 → 중국학 통합모집 → 전공 탐구 → 외대 전�
     assert.ok(plans.every(p => p.sourceUrl || p.sourceKey));
   }
 });
+
+test('지원참고 예상점수 502건의 숫자·전형·학과가 저장 원자료와 일치한다', () => {
+  const reference = json('admissions-explorer/reference.json');
+  const raw = Array.from({ length: 12 }, (_, i) => json(`admissions-data/part-${String(i + 1).padStart(2, '0')}.json`)).flat();
+  assert.equal(reference.length, 502);
+  for (const r of reference) assert.ok(raw.some(x => x.u === r.university && x.d === r.department && x.a === r.admission && x.g === r.group && x.s === r.standardSum && x.p === r.percentileSum), `${r.university}/${r.department}/${r.admission}`);
+});
