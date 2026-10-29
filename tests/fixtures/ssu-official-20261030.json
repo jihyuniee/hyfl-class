@@ -1,0 +1,460 @@
+{
+  "reviewed_at": "2026-10-30",
+  "result_year": 2026,
+  "guide_year": 2027,
+  "board_url": "https://iphak.ssu.ac.kr/board/statistics_view.asp?flag=2&keyword=&number=242&page=1&page_no=1_3_4&srchoption=",
+  "pdf_url": "https://admission.ssu.ac.kr/upload/SSU(1)_26051116627.pdf",
+  "pages": {
+    "converted": 28,
+    "percentile": 29,
+    "trend": 33
+  },
+  "conv_max": 1000,
+  "conv_max_evidence": {
+    "url": "https://admission.ssu.ac.kr/upload/2026_plan.pdf#page=28",
+    "scope": "2026 시행계획 28쪽에서 1000점 확인; 2026 최종 모집요강은 미대조"
+  },
+  "rows": [
+    {
+      "dept": "국어국문학과",
+      "group": "가군",
+      "n": 8,
+      "competition": 7.6,
+      "wait": 7,
+      "mean_conv": 897.23,
+      "cut_conv70": 897.23,
+      "mean_pct": 81.67,
+      "cut_pct70": 80.33,
+      "trend": {
+        "2024": 81.71,
+        "2025": 83.44,
+        "2026": 81.67
+      },
+      "competition_trend": {
+        "2024": 3.4,
+        "2025": 6.6,
+        "2026": 7.6
+      }
+    },
+    {
+      "dept": "영어영문학과",
+      "group": "나군",
+      "n": 20,
+      "competition": 6.9,
+      "wait": 36,
+      "mean_conv": 898.48,
+      "cut_conv70": 895.36,
+      "mean_pct": 81.31,
+      "cut_pct70": 80.5,
+      "trend": {
+        "2024": 82.07,
+        "2025": 82.54,
+        "2026": 81.31
+      },
+      "competition_trend": {
+        "2024": 7.2,
+        "2025": 8,
+        "2026": 6.9
+      }
+    },
+    {
+      "dept": "독어독문학과",
+      "group": "나군",
+      "n": 9,
+      "competition": 10.8,
+      "wait": 18,
+      "mean_conv": 897.01,
+      "cut_conv70": 896.74,
+      "mean_pct": 82.42,
+      "cut_pct70": 82.67,
+      "trend": {
+        "2024": 81.54,
+        "2025": 81.16,
+        "2026": 82.42
+      },
+      "competition_trend": {
+        "2024": 6.8,
+        "2025": 11.9,
+        "2026": 10.8
+      }
+    },
+    {
+      "dept": "불어불문학과",
+      "group": "가군",
+      "n": 6,
+      "competition": 7.5,
+      "wait": 2,
+      "mean_conv": 894.02,
+      "cut_conv70": 894.21,
+      "mean_pct": 82.94,
+      "cut_pct70": 81.17,
+      "trend": {
+        "2024": 82.13,
+        "2025": 82,
+        "2026": 82.94
+      },
+      "competition_trend": {
+        "2024": 7.5,
+        "2025": 7.1,
+        "2026": 7.5
+      }
+    },
+    {
+      "dept": "중어중문학과",
+      "group": "가군",
+      "n": 11,
+      "competition": 6.5,
+      "wait": 2,
+      "mean_conv": 895.59,
+      "cut_conv70": 895.05,
+      "mean_pct": 82.26,
+      "cut_pct70": 81.67,
+      "trend": {
+        "2024": 82.79,
+        "2025": 82.86,
+        "2026": 82.26
+      },
+      "competition_trend": {
+        "2024": 4.5,
+        "2025": 5.3,
+        "2026": 6.5
+      }
+    },
+    {
+      "dept": "일어일문학과",
+      "group": "가군",
+      "n": 9,
+      "competition": 6,
+      "wait": 4,
+      "mean_conv": 897.09,
+      "cut_conv70": 895.98,
+      "mean_pct": 81.76,
+      "cut_pct70": 81.5,
+      "trend": {
+        "2024": 83.35,
+        "2025": 82.68,
+        "2026": 81.76
+      },
+      "competition_trend": {
+        "2024": 4.3,
+        "2025": 5.6,
+        "2026": 6
+      }
+    },
+    {
+      "dept": "사학과",
+      "group": "가군",
+      "n": 9,
+      "competition": 8.3,
+      "wait": 4,
+      "mean_conv": 898.12,
+      "cut_conv70": 894.31,
+      "mean_pct": 82.04,
+      "cut_pct70": 81.67,
+      "trend": {
+        "2024": 81.94,
+        "2025": 82.29,
+        "2026": 82.04
+      },
+      "competition_trend": {
+        "2024": 6.2,
+        "2025": 6.3,
+        "2026": 8.3
+      }
+    },
+    {
+      "dept": "법학과",
+      "group": "가군",
+      "n": 22,
+      "competition": 5.4,
+      "wait": 10,
+      "mean_conv": 902.91,
+      "cut_conv70": 902.04,
+      "mean_pct": 83.72,
+      "cut_pct70": 82.33,
+      "trend": {
+        "2024": 82.72,
+        "2025": 83.26,
+        "2026": 83.72
+      },
+      "competition_trend": {
+        "2024": 4.4,
+        "2025": 4.6,
+        "2026": 5.4
+      }
+    },
+    {
+      "dept": "국제법무학과",
+      "group": "가군",
+      "n": 16,
+      "competition": 5.1,
+      "wait": 6,
+      "mean_conv": 898.99,
+      "cut_conv70": 897.23,
+      "mean_pct": 83.26,
+      "cut_pct70": 82.33,
+      "trend": {
+        "2024": 82.94,
+        "2025": 82.21,
+        "2026": 83.26
+      },
+      "competition_trend": {
+        "2024": 5.2,
+        "2025": 5,
+        "2026": 5.1
+      }
+    },
+    {
+      "dept": "사회복지학부",
+      "group": "다군",
+      "n": 15,
+      "competition": 13.7,
+      "wait": 58,
+      "mean_conv": 898.11,
+      "cut_conv70": 896.96,
+      "mean_pct": 83.47,
+      "cut_pct70": 82.33,
+      "trend": {
+        "2024": 83.25,
+        "2025": 83.45,
+        "2026": 83.47
+      },
+      "competition_trend": {
+        "2024": 11.9,
+        "2025": 13.3,
+        "2026": 13.7
+      }
+    },
+    {
+      "dept": "행정학부",
+      "group": "가군",
+      "n": 34,
+      "competition": 4.9,
+      "wait": 15,
+      "mean_conv": 901.11,
+      "cut_conv70": 899.62,
+      "mean_pct": 82.77,
+      "cut_pct70": 82.17,
+      "trend": {
+        "2024": 83.4,
+        "2025": 82.13,
+        "2026": 82.77
+      },
+      "competition_trend": {
+        "2024": 3.7,
+        "2025": 3.5,
+        "2026": 4.9
+      }
+    },
+    {
+      "dept": "정치외교학과",
+      "group": "가군",
+      "n": 13,
+      "competition": 4.5,
+      "wait": 8,
+      "mean_conv": 900.32,
+      "cut_conv70": 897.8,
+      "mean_pct": 81.89,
+      "cut_pct70": 81.33,
+      "trend": {
+        "2024": 81.4,
+        "2025": 83.51,
+        "2026": 81.89
+      },
+      "competition_trend": {
+        "2024": 5.5,
+        "2025": 4.9,
+        "2026": 4.5
+      }
+    },
+    {
+      "dept": "정보사회학과",
+      "group": "가군",
+      "n": 10,
+      "competition": 4.8,
+      "wait": 3,
+      "mean_conv": 899.34,
+      "cut_conv70": 898.75,
+      "mean_pct": 83.35,
+      "cut_pct70": 82.33,
+      "trend": {
+        "2024": 82.39,
+        "2025": 81.31,
+        "2026": 83.35
+      },
+      "competition_trend": {
+        "2024": 4.9,
+        "2025": 6.1,
+        "2026": 4.8
+      }
+    },
+    {
+      "dept": "언론홍보학과",
+      "group": "가군",
+      "n": 12,
+      "competition": 6.2,
+      "wait": 12,
+      "mean_conv": 899.72,
+      "cut_conv70": 898.57,
+      "mean_pct": 82.21,
+      "cut_pct70": 81.5,
+      "trend": {
+        "2024": 83.03,
+        "2025": 81.93,
+        "2026": 82.21
+      },
+      "competition_trend": {
+        "2024": 4.3,
+        "2025": 6.2,
+        "2026": 6.2
+      }
+    },
+    {
+      "dept": "평생교육학과",
+      "group": "가군",
+      "n": 8,
+      "competition": 6.8,
+      "wait": 3,
+      "mean_conv": 893.39,
+      "cut_conv70": 893.17,
+      "mean_pct": 83,
+      "cut_pct70": 82.5,
+      "trend": {
+        "2024": 83.2,
+        "2025": 81.66,
+        "2026": 83
+      },
+      "competition_trend": {
+        "2024": 4.6,
+        "2025": 4.4,
+        "2026": 6.8
+      }
+    },
+    {
+      "dept": "경제학과",
+      "group": "가군",
+      "n": 34,
+      "competition": 4.4,
+      "wait": 15,
+      "mean_conv": 902.91,
+      "cut_conv70": 901.99,
+      "mean_pct": 86.57,
+      "cut_pct70": 85.83,
+      "trend": {
+        "2024": 84.75,
+        "2025": 85.16,
+        "2026": 86.57
+      },
+      "competition_trend": {
+        "2024": 4.8,
+        "2025": 4.3,
+        "2026": 4.4
+      }
+    },
+    {
+      "dept": "글로벌통상학과",
+      "group": "가군",
+      "n": 24,
+      "competition": 3.8,
+      "wait": 10,
+      "mean_conv": 902.48,
+      "cut_conv70": 900.92,
+      "mean_pct": 86.51,
+      "cut_pct70": 86,
+      "trend": {
+        "2024": 84.46,
+        "2025": 84.96,
+        "2026": 86.51
+      },
+      "competition_trend": {
+        "2024": 4.1,
+        "2025": 4.3,
+        "2026": 3.8
+      }
+    },
+    {
+      "dept": "경영학부",
+      "group": "가군",
+      "n": 42,
+      "competition": 4.3,
+      "wait": 31,
+      "mean_conv": 905.34,
+      "cut_conv70": 903.87,
+      "mean_pct": 86.96,
+      "cut_pct70": 86.5,
+      "trend": {
+        "2024": 84.7,
+        "2025": 85.25,
+        "2026": 86.96
+      },
+      "competition_trend": {
+        "2024": 3.7,
+        "2025": 4.1,
+        "2026": 4.3
+      }
+    },
+    {
+      "dept": "회계학과",
+      "group": "가군",
+      "n": 21,
+      "competition": 4.1,
+      "wait": 9,
+      "mean_conv": 903.62,
+      "cut_conv70": 902.83,
+      "mean_pct": 86.73,
+      "cut_pct70": 86.17,
+      "trend": {
+        "2024": 84.49,
+        "2025": 85.93,
+        "2026": 86.73
+      },
+      "competition_trend": {
+        "2024": 3,
+        "2025": 3.8,
+        "2026": 4.1
+      }
+    },
+    {
+      "dept": "벤처중소기업학과",
+      "group": "가군",
+      "n": 25,
+      "competition": 3.8,
+      "wait": 8,
+      "mean_conv": 899.67,
+      "cut_conv70": 899.19,
+      "mean_pct": 85.7,
+      "cut_pct70": 84.83,
+      "trend": {
+        "2024": 84.78,
+        "2025": 84.58,
+        "2026": 85.7
+      },
+      "competition_trend": {
+        "2024": 3.2,
+        "2025": 3.6,
+        "2026": 3.8
+      }
+    },
+    {
+      "dept": "금융학부",
+      "group": "가군",
+      "n": 18,
+      "competition": 4.9,
+      "wait": 8,
+      "mean_conv": 905.5,
+      "cut_conv70": 904.27,
+      "mean_pct": 86.76,
+      "cut_pct70": 86,
+      "trend": {
+        "2024": 84.06,
+        "2025": 85.22,
+        "2026": 86.76
+      },
+      "competition_trend": {
+        "2024": 5.5,
+        "2025": 4.2,
+        "2026": 4.9
+      }
+    }
+  ]
+}
