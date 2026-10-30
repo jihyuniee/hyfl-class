@@ -33,7 +33,7 @@ export default function MockScoreExplorer({ university }: { university: string }
       {rows.length === 0 && <p>가까운 예상점수가 수록되어 있지 않아요. 지원 가능한 대학이 없다는 뜻은 아닙니다. 대학 선택이나 비교 범위를 바꿔보세요.</p>}
       {rows.slice(0,limit).map(r => <article className={styles.scoreCard} key={`${r.university}/${r.department}/${r.admission}/${r.group}`}>
         <h3>{r.university} · {r.department}</h3><p>{r.admission} · {r.group}군</p><p>지원참고 예상 평균 <b>{(r.percentileSum/3).toFixed(2)}</b> · 입력 평균과 차이 {(submitted.average-r.percentileSum/3).toFixed(2)}</p>
-        <Link href={`/admissions/susi?university=${encodeURIComponent(r.university)}`}>이 대학의 학과·탐구·수시 전형 →</Link>
+        <Link href={`/admissions/susi?university=${encodeURIComponent(r.university)}`}>이 대학의 학과·교육과정·수시 전형 →</Link>
         <details><summary>이 대학의 2028 과목 반영비율 확인</summary><p>아래는 대학별 반영 사례입니다. 위 학과·전형에 적용되는지는 모집단위 범위와 원문을 확인하세요. 이 비율을 백분위 평균에 곱해 실제 환산점수를 만들지는 않습니다.</p>
         {plans.filter(p => p[1] === r.university).map(p => <div className={styles.source} key={`${p[2]}/${p[3]}`}><b>{p[2]} · {p[3]}</b><p>국어 / 수학 / 영어 / 탐구: {[4,5,6,7].map(i => p[i] === null ? '별도 산식' : `${Number(p[i]).toFixed(1).replace(/\.0$/, '')}%`).join(' / ')}</p><p>탐구: {p[8]}<br/>영어: {p[12]}<br/>활용 지표: {p[11]}<br/>수능 {p[9]}% · 기타 {p[10]}</p><p>{p[13]}</p><a href={String(p[15])} target="_blank" rel="noopener noreferrer">2028 시행계획 · {p[14]} ↗</a></div>)}
         {!plans.some(p => p[1] === r.university) && <p>이 대학의 반영방식은 현재 요약에 없어요. 대학 시행계획·모집요강을 확인하세요.</p>}

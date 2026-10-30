@@ -51,7 +51,7 @@ export default function SusiExplorer({ initialUniversity = "", initialProfile = 
         <label>학과·계열 검색<input value={query} placeholder="예: 중국, 경영, 사회, 교육" onChange={e => { setQuery(e.target.value); setLimit(6); }} /></label>
         <label>목록 보기<select value={String(limit)} onChange={e => setLimit(Number(e.target.value))}><option value="6">6개씩</option><option value="12">12개씩</option><option value="60">60개씩</option><option value="600">모두</option></select></label>
       </div>
-      <div className={styles.tools}><Link href={activeUniversity ? `/admissions/seoul?university=${encodeURIComponent(activeUniversity)}` : "/admissions/seoul"}>관심 대학의 정시 입결 보기 →</Link><Link href="/admissions#student-questions">학생부·탐구 준비 점검 →</Link></div>
+      <div className={styles.tools}><Link href={activeUniversity ? `/admissions/seoul?university=${encodeURIComponent(activeUniversity)}` : "/admissions/seoul"}>관심 대학의 정시 입결 보기 →</Link><Link href="/admissions#student-questions">대학 공식 자료 →</Link></div>
       <details><summary>학과 목록의 출처·수록 범위</summary><p className={styles.muted}>{directory.source}. {directory.notice} 전공 선택 범위가 있는 계열·자유전공은 개별 학과와 구분하세요.</p></details>
       <p className={styles.resultCount} role="status">{`학과·모집단위 ${units.length}개 · 학과를 누르면 전형 정보를 볼 수 있어요.`}</p>
       <div className={styles.directory}>{units.slice(0, limit).map(u => {
@@ -63,24 +63,19 @@ export default function SusiExplorer({ initialUniversity = "", initialProfile = 
     </section>
 
     {(selectedUnit || profile) && <section className={styles.section} aria-labelledby="major-heading">
-      <h2 id="major-heading">이 분야의 탐구는 이렇게 해볼 수 있어요</h2>
+      <h2 id="major-heading">대학 교육과정</h2>
       {selectedUnit && <p>선택한 모집단위: <b>{selectedUnit.university} · {selectedUnit.department}</b></p>}
 
       {selectedUnit && selectedUnit.profileIds.length > 1 && <div className={styles.chips}>
-        <p>여러 분야와 연결되는 모집단위입니다. 관심 있는 탐구 분야를 골라보세요.</p>
+        <p>여러 분야와 연결되는 모집단위입니다. 교육과정을 볼 분야를 선택하세요.</p>
         {majors.filter(p => belongsToProfile(selectedUnit, p.id)).map(p => <button key={p.id} type="button" aria-pressed={profileId === p.id} onClick={() => { setProfileId(p.id); setField(p.field); }}>{p.title}</button>)}
       </div>}
       {!profile && <p className={styles.empty}>이 모집단위에 단일 전공 해설을 자동 지정하지 않았습니다. 위에서 인접 분야를 직접 골라 참고하고, 해당 대학의 교육과정을 확인하세요.</p>}
-      {profile && <p>질문이 시작된 수업 → 자료의 출처·비교 기준 → 직접 분석한 과정 → 한계·수정 → 후속 질문을 점검해요. 아래는 탐구 예시이며 대학의 합격 조건은 아닙니다.</p>}
       {profile && <article className={styles.selection}>
         <span className={styles.eyebrow}>{profile.field}</span><h3>{profile.title}</h3>
-        <details><summary>고교 공부·탐구 준비 더 보기</summary><h4>고교 공부에서 연결해 볼 내용</h4><p>{profile.subjects.join(" · ")}</p><p className={styles.muted}>관심 공부를 연결하는 예시입니다. 대학별 필수·권장 이수과목 공지는 따로 확인하세요.</p>
-        <h4>탐구에서 연습할 역량</h4><ul>{profile.skills.map(s => <li key={s}>{s}</li>)}</ul>
-        <h4>탐구 질문 예시</h4><p><b>{profile.question}</b></p><p>{profile.method}</p>
-        <p className={styles.muted}>같은 주제를 따라 하기보다 자신의 수업에서 생긴 질문, 자료와 방법, 수정 과정, 배운 점을 구체화하세요. 전공명만 붙인 활동이나 결과물의 화려함만으로 학종을 판단하지 않습니다.</p>
-        </details><details><summary>대학 교육과정 원문·예시</summary><h4>실제 대학 교육과정 예시</h4><p className={styles.muted}>선택한 대학과 아래 예시 대학이 다를 수 있습니다. 아래 과목을 선택한 대학의 동일한 교육과정이나 2028 수시 모집 여부로 간주하지 마세요.</p>
+        <p className={styles.muted}>아래 과목은 표기된 대학·학과의 교육과정 자료입니다. 선택한 대학·학과의 교육과정 및 2028 모집 여부와는 구분됩니다.</p>
         {profile.examples.map(ex => <div className={styles.source} key={ex.url}><a href={ex.url} target="_blank" rel="noopener noreferrer">{ex.university} · {ex.department} 공식 안내 ↗</a><p>{ex.courses.join(" · ")}</p></div>)}
-      </details></article>}
+      </article>}
     </section>}
 
     {activeUniversity && <section className={styles.section} aria-labelledby="susi-heading">

@@ -27,7 +27,7 @@
 }
 .primary:hover, .routes a:hover, .more:hover { background: var(--primary-dark); border-color: var(--primary-dark); }
 .more { display: block; margin: 18px auto; }
-.panel, .filters, .classGuide {
+.panel, .filters {
   background: var(--surface-muted); border: 1px solid var(--border);
   border-radius: var(--radius-card); padding: 20px; margin: 20px 0;
 }
@@ -147,10 +147,6 @@
 .scoreCard { padding: 18px; margin: 12px 0; overflow-wrap: anywhere; }
 .scoreCard h3 { font-size: 17px; }
 .scoreCard summary { cursor: pointer; min-height: 44px; padding: 8px 0; }
-.classGuide > summary { font-weight: 700; cursor: pointer; min-height: 44px; }
-.classGuide li { margin: 10px 0; }
-.classGuide p, .classGuide li { font-size: 14px; }
-.classGuide h3 { font-size: 17px; }
 @media (max-width: 720px) {
   .routes, .planGrid { grid-template-columns: 1fr; }
   .directory { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -165,7 +161,7 @@
   .startCard br { display: none; }
   .navigation { gap: 6px; }
   .navigation a { padding: 9px 12px; font-size: 13px; }
-  .filters, .panel, .classGuide { padding: 16px; }
+  .filters, .panel { padding: 16px; }
   .unit { min-height: 90px; padding: 12px; }
   .browseTabs button { padding: 14px; }
   .browseTabs b { font-size: 14px; }

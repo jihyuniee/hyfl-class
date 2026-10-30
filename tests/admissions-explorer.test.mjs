@@ -41,10 +41,10 @@ test('학과 목록을 수시 모집 확정 목록으로 표시하지 않고 비
   }
 });
 
-test('전공 공부·탐구 예시와 대학 공식 교육과정의 근거를 함께 보존한다', () => {
+test('전공 설명과 대학 공식 교육과정의 근거를 함께 보존한다', () => {
   assert.equal(majors.length, 10);
   for (const p of majors) {
-    assert.ok(p.learn && p.question && p.method && p.skills.length);
+    assert.ok(p.learn && p.examples.length);
     assert.equal(p.reviewedAt, '2026-10-29');
     for (const example of p.examples) {
       assert.ok(example.courses.length);
@@ -64,13 +64,13 @@ test('학교 추천 인원과 대학 최종 선발을 구분하고 안내 연도
 });
 
 
-test('계열 선택 → 중국학 통합모집 → 전공 탐구 → 외대 전형 후보 연결', () => {
+test('계열 선택 → 중국학 통합모집 → 교육과정 → 외대 전형 후보 연결', () => {
   for (const id of ['chinese-language', 'china-trade']) {
     const units = directory.records.filter(r => belongsToProfile(r, id));
     const china = units.find(r => r.university === '한국외대' && r.department === '중국학대학(통합모집)');
     assert.ok(china);
     const profile = majors.find(p => p.id === chooseUnitProfile(china, id));
-    assert.ok(profile.question && profile.method);
+    assert.ok(profile.examples.length && profile.examples.every(e => e.url && e.courses.length));
     const plans = selectSusiPlans(records, china.university, profile.field, '학생부종합', '');
     assert.ok(plans.length > 0);
     assert.ok(plans.every(p => p.sourceUrl || p.sourceKey));
