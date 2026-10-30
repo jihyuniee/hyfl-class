@@ -170,3 +170,32 @@
   .directory, .filters { grid-template-columns: minmax(0, 1fr); }
   .filters label:nth-child(2) { grid-column: auto; grid-row: auto; }
 }
+
+.scoreInputs { margin: 16px 0; }
+.scoreInputHead, .scoreInputRow { display: grid; grid-template-columns: minmax(72px, .7fr) repeat(2, minmax(0, 1fr)); gap: 10px; align-items: center; }
+.scoreInputHead { color: var(--text-muted); font-size: 12px; padding: 6px 0; }
+.scoreInputRow { margin: 8px 0; font-size: 13px; font-weight: 600; }
+.scoreInputRow input, .scoreTotals input, .englishInput select { width: 100%; min-width: 0; min-height: 44px; border: 1px solid var(--border-strong); border-radius: var(--radius-control); padding: 10px; background: var(--surface); color: var(--text); font: inherit; }
+.scoreTotals { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 16px 0; }
+.scoreTotals label, .englishInput { display: block; font-size: 13px; font-weight: 600; }
+.scoreTotals input, .englishInput select { display: block; margin-top: 6px; }
+.englishInput { max-width: 340px; }
+.scoreMethod { border-top: 1px solid var(--border); padding: 10px 0; font-size: 12px; }
+.scoreMethod summary { cursor: pointer; min-height: 44px; padding: 10px 0; font-size: 13px; }
+.scoreMethod ul { padding-left: 20px; }
+.scoreSummary { margin: 22px 0 16px; padding: 16px; border: 1px solid var(--border); border-radius: var(--radius-control); background: var(--surface); }
+.scoreGroup { margin-top: 24px; border-top: 1px solid var(--border); padding-top: 18px; }
+.scoreBand { display: inline-block; border-radius: var(--radius-control); padding: 4px 10px; font-size: 14px; }
+.scoreBand[data-band="상향"] { background: #fbe8ed; color: #99304c; }
+.scoreBand[data-band="소신"] { background: #fff1d9; color: #87581a; }
+.scoreBand[data-band="가능"] { background: #e9eaf7; color: #4a4a90; }
+.scoreBand[data-band="적정"] { background: #e2f0ed; color: #246559; }
+.scoreBand[data-band="안정"] { background: #e7efe0; color: #46672c; }
+.scoreCard h4 { font-size: 17px; margin: 0 0 4px; line-height: 1.5; }
+.scoreCard > a { display: inline-block; font-size: 13px; color: var(--primary-dark); margin-top: 8px; }
+.scoreComparison { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; padding: 12px 0; margin: 8px 0; border-block: 1px solid var(--border-light); }
+.scoreComparison dt { font-size: 12px; color: var(--text-muted); }
+.scoreComparison dd { margin: 4px 0 0; font-size: 22px; font-weight: 700; }
+.scoreComparison small { display: block; font-size: 12px; font-weight: 400; color: var(--text-muted); }
+.scoreGap { font-size: 13px; color: var(--primary-dark); }
+@media (max-width: 420px) { .scoreTotals { grid-template-columns: 1fr; } .scoreComparison dd { font-size: 19px; } }

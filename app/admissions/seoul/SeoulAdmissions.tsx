@@ -35,7 +35,7 @@ export default function SeoulAdmissions({ initialUniversity = "" }: { initialUni
 
   return <div className={styles.page}>
     <AdmissionsNav current="regular" />
-    <header className={styles.hero}><span>정시 · 인문·사회·어문</span><h1>내 성적과 가까운 입결은?</h1><p>백분위 구간마다 어떤 대학·학과의 입결이 있는지 둘러보세요.</p></header>
+    <header className={styles.hero}><span>정시 · 인문·사회·어문</span><h1>내 성적과 가까운 입결은?</h1><p>모의고사 점수로 지원참고 구간을 살펴보고, 대학·학과별 실제 입결을 확인하세요.</p></header>
     <p className={styles.date}>2024~2026 입결은 참고자료이며, 2028 합격을 보장하지 않아요.</p>
 
     <MockScoreExplorer university={university} />
