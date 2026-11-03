@@ -75,3 +75,26 @@
   .tableWrap table { min-width: 0; font-size: 10px; }
   .glossary { grid-template-columns: repeat(2, 1fr); }
 }
+.resultCards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; align-items: start; }
+.resultCard { min-width: 0; padding: 22px; border: 1px solid var(--border); border-radius: 16px; background: var(--surface); }
+.resultTop { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 12px; color: var(--primary-dark); font-weight: 700; }
+.resultTop > span:last-child { font-weight: 500; font-size: 11px; color: var(--text-muted); }
+.resultCard h3 { font-size: 18px; line-height: 1.45; margin: 12px 0 4px; letter-spacing: -.03em; overflow-wrap: anywhere; }
+.resultCard > p { margin: 0 0 18px; }
+.metrics { margin: 0; }
+.metrics > div { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; padding: 7px 0; border-top: 1px solid var(--border-light); }
+.metrics dt { color: var(--text-muted); font-size: 11px; }
+.metrics dd { margin: 0; color: var(--text); font-size: 19px; font-weight: 750; font-variant-numeric: tabular-nums; text-align: right; }
+.metrics small { display: block; font-size: 10px; font-weight: 400; color: var(--text-muted); }
+.resultSource { border-top: 1px solid var(--border); margin-top: 12px; padding-top: 6px; }
+.resultSource summary { cursor: pointer; min-height: 44px; padding: 8px 0; color: var(--primary-dark); font-size: 12px; font-weight: 600; }
+.resultSource p { font-size: 12px; color: var(--text-muted); overflow-wrap: anywhere; }
+.resultSource a, .planCard a { display: inline-flex; min-height: 44px; align-items: center; font-size: 12px; color: var(--primary-dark); text-decoration: underline; text-underline-offset: 3px; }
+.planCard { padding: 18px 22px; min-width: 0; border: 1px solid var(--border); border-radius: 14px; background: var(--surface); }
+.planCard summary { min-height: 52px; cursor: pointer; font-size: 14px; font-weight: 700; }
+.planCard small { display: block; font-size: 12px; font-weight: 400; color: var(--text-muted); }
+.planCard dl { font-size: 13px; }
+.planCard dt { font-weight: 700; margin-top: 12px; }
+.planCard dd { margin: 4px 0; overflow-wrap: anywhere; }
+@media (max-width: 1000px) { .resultCards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 540px) { .resultCards { grid-template-columns: minmax(0, 1fr); } .resultCard { padding: 20px; } .filters { grid-template-columns: 1fr; } }

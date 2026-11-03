@@ -1,26 +1,73 @@
 "use client";
 
-import { useState } from "react";
-import OfficialResources from "./OfficialResources";
-import directory from "@/public/admissions-explorer/directory.json";
-import FieldBrowse from "./FieldBrowse";
-import PercentileBrowse from "./PercentileBrowse";
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import directory from "@/public/admissions-explorer/directory.json";
+import majors from "@/public/admissions-explorer/majors.json";
+import AdmissionsNav from "./AdmissionsNav";
+import OfficialResources from "./OfficialResources";
+import { admissionsQuestions, findAdmissionsMatches } from "@/components/lib/admissionsSearch";
 import styles from "./explorer.module.css";
 
+const routes = [
+  { title: "지난 합격 성적이 궁금해요", tag: "정시 입결", text: "대학이 공개한 평균·70% 컷을 대학과 학과로 찾기", href: "/admissions/seoul", number: "01" },
+  { title: "어떤 학과에서 무엇을 배울까요?", tag: "학과 탐색", text: "중국어, 경영, 정치외교… 관심 분야부터 둘러보기", href: "/admissions/susi#directory", number: "02" },
+  { title: "수능최저·면접이 있나요?", tag: "2028 수시", text: "대학별 전형방법과 지원 조건의 근거 확인하기", href: "/admissions/susi#plans", number: "03" },
+  { title: "대학마다 어떤 과목을 반영하나요?", tag: "2028 정시", text: "과목별 반영비율과 영어·학생부 반영방법 찾아보기", href: "/admissions/seoul#plans", number: "04" },
+];
+
 export default function AdmissionsHome() {
-  const [view, setView] = useState<"early" | "regular">("early");
+  const router = useRouter();
+  const [query, setQuery] = useState("");
   const [university, setUniversity] = useState("");
-  return <section className={styles.home} aria-label="수시와 정시 탐색 시작">
-    <header className={styles.startHeader}><span>2028 대입 · 서울 대학</span><h1>대학·성적·관심 분야, 어디서 시작할까요?</h1><p>가고 싶은 대학부터 찾아도, 배우고 싶은 분야부터 둘러봐도 좋아요.</p></header>
-    <section className={styles.panel} aria-labelledby="university-start"><h2 id="university-start">가고 싶은 대학이 있어요</h2><label>관심 대학<select className={styles.universitySelect} value={university} onChange={e => setUniversity(e.target.value)}><option value="">대학을 골라보세요</option>{directory.universities.map(u => <option key={u}>{u}</option>)}</select></label>
-    <div className={styles.tools}><Link href={university ? `/admissions/seoul?university=${encodeURIComponent(university)}` : "/admissions/seoul"}>{university || "대학별"} 정시 입결 보기 →</Link><Link href={university ? `/admissions/susi?university=${encodeURIComponent(university)}` : "/admissions/susi"}>학과·교육과정·수시 전형 보기 →</Link></div><p className={styles.muted}>30개 대학의 학과를 탐색할 수 있어요. 과거 정시 입결은 11개 대학 수록이며 자료가 없는 대학은 별도로 안내해요.</p></section>
-    <div className={styles.tools}><Link href="/admissions/seoul#mock-score">모의고사 점수 입력</Link><a href="#student-questions">대학 공식 자료</a><Link href="/admissions/susi">학과·교육과정 찾기</Link></div>
+  const matches = findAdmissionsMatches(query, directory.records);
+
+  useEffect(() => {
+    const followBookmark = () => {
+      const destination: Record<string, string> = {
+        "#score": "/admissions/seoul#results", "#regular": "/admissions/seoul#results",
+        "#plan": "/admissions/susi#plans",
+        "#saved": "/admissions/susi#directory", "#guide": "/admissions#questions",
+        "#holistic": "/admissions/susi#plans", "#resources": "/admissions#student-questions",
+      };
+      if (destination[window.location.hash]) router.replace(destination[window.location.hash]);
+      else {
+        const target = document.getElementById(window.location.hash.slice(1));
+        if (target instanceof HTMLDetailsElement) target.open = true;
+      }
+    };
+    followBookmark();
+    window.addEventListener("hashchange", followBookmark);
+    return () => window.removeEventListener("hashchange", followBookmark);
+  }, [router]);
+
+  return <div className={styles.home}>
+    <AdmissionsNav current="home" />
+    <header className={styles.homeHero}>
+      <span className={styles.eyebrow}>2-2 우리반 · 2028 대입</span>
+      <h1>궁금한 것부터,<br />나의 대입 탐색.</h1>
+      <p>대학 이름 하나, 관심 학과 하나로 시작해 보세요.</p>
+      <label className={styles.searchLabel} htmlFor="admissions-search">대학·학과·궁금한 내용 검색</label>
+      <div className={styles.searchBox}><span aria-hidden="true">⌕</span><input id="admissions-search" type="search" autoComplete="off" value={query} onChange={e => setQuery(e.target.value)} placeholder="예: 한국외대, 경영, 수능최저" />{query && <button type="button" onClick={() => setQuery("")} aria-label="검색어 지우기">지우기</button>}</div>
+      <div className={styles.searchExamples}><span>바로 찾아보기</span>{["한국외대", "중국", "경영", "수능최저"].map(word => <button key={word} type="button" onClick={() => setQuery(word)}>{word}</button>)}</div>
+    </header>
+    {query.trim() && <section className={styles.searchResults} aria-label="통합 검색 결과">
+      <div className={styles.sectionHeading}><h2>‘{query}’ 검색 결과</h2><span role="status">{matches.length}개 표시</span></div>
+      {matches.length ? <div className={styles.searchList}>{matches.map(m => <Link key={m.href} href={m.href}><span><small>{m.kind}</small><strong>{m.title}</strong><span>{m.description}</span></span><span aria-hidden="true">↗</span></Link>)}</div> : <p className={styles.empty}>찾는 항목이 없어요. 대학명이나 학과명의 일부로 검색하거나 아래 질문을 골라보세요.</p>}
+    </section>}
+    <section className={styles.section} aria-labelledby="start-heading">
+      <div className={styles.sectionHeading}><h2 id="start-heading">지금 무엇이 궁금한가요?</h2><span>질문을 고르면 바로 이동해요</span></div>
+      <div className={styles.questionGrid}>{routes.map(r => <Link className={styles.questionCard} href={r.href} key={r.number}><span className={styles.cardTop}><span>{r.tag}</span><span>{r.number}</span></span><h3>{r.title}</h3><p>{r.text}</p><span className={styles.cardArrow} aria-hidden="true">→</span></Link>)}</div>
+    </section>
+    <section className={styles.universityPanel} aria-labelledby="university-start">
+      <div><span className={styles.eyebrow}>UNIVERSITY</span><h2 id="university-start">관심 대학이 있나요?</h2><p>같은 대학의 학과, 수시, 정시 자료를 이어서 살펴보세요.</p></div>
+      <div><label htmlFor="university-start-select">대학 선택</label><select id="university-start-select" className={styles.universitySelect} value={university} onChange={e => setUniversity(e.target.value)}><option value="">전체 대학</option>{directory.universities.map(u => <option key={u}>{u}</option>)}</select><div className={styles.tools}><Link href={`/admissions/susi${university ? `?university=${encodeURIComponent(university)}` : ""}#directory`}>학과·수시 전형 →</Link><Link href={`/admissions/seoul${university ? `?university=${encodeURIComponent(university)}` : ""}#results`}>정시 입결·반영방법 →</Link></div></div>
+    </section>
+    <section className={styles.section} aria-labelledby="fields-heading"><div className={styles.sectionHeading}><h2 id="fields-heading">관심 분야부터 찾아도 좋아요</h2><Link href="/admissions/susi#directory">전체 학과 보기 →</Link></div><div className={styles.topicGrid}>{majors.map(p => <Link key={p.id} href={`/admissions/susi?area=${p.id}#directory`}><small>{p.field}</small><strong>{p.title}</strong><span aria-hidden="true">→</span></Link>)}</div></section>
+    <section className={styles.section} id="questions" aria-labelledby="questions-heading"><div className={styles.sectionHeading}><h2 id="questions-heading">많이 궁금해하는 질문</h2><span>짧게 확인하고, 자료로 이어가기</span></div>{admissionsQuestions.map(q => <details className={styles.faq} id={q.id} key={q.id}><summary>{q.title}</summary><p>{q.answer}</p><Link href={q.href}>{q.action} →</Link></details>)}</section>
     <OfficialResources />
-    <div className={styles.browseTabs} role="group" aria-label="입시 둘러보기"><button type="button" aria-pressed={view === "early"} onClick={() => setView("early")}><b>수시 · 계열 둘러보기</b><span>이런 공부를 하는구나</span></button><button type="button" aria-pressed={view === "regular"} onClick={() => setView("regular")}><b>정시 · 성적대 둘러보기</b><span>이 정도 입결이 있었구나</span></button></div>
-    {view === "early" ? <section><h2>이런 계열에서는 무엇을 배울까?</h2><p className={styles.muted}>학과 예시를 먼저 보고, 끌리는 분야를 눌러보세요. 학과 목록은 2028 수시 모집 확정 목록과는 달라요.</p><FieldBrowse /><Link className={styles.primary} href="/admissions/susi">전체 학과·수시 전형 둘러보기 →</Link></section> : <><PercentileBrowse /><Link className={styles.primary} href="/admissions/seoul">과거 입결·2028 과목 반영비율 더 보기 →</Link></>}
-    <div className={styles.quickResources}><a href="https://script.google.com/macros/s/AKfycbzRCA4FQ_9kT0SvrfA67B8j-4CcKTmVbaXzeDF9d0BKUyqr3_8K6Ne2sRuqvoRD5EOWRg/exec" target="_blank" rel="noopener noreferrer"><span><b>대학 원문을 직접 보고 싶다면</b><small>2028 대학자료 검색기 열기 ↗</small></span><span aria-hidden="true">→</span></a><Link href="/admissions/china"><span><b>중국 대학이 궁금하다면</b><small>지원 방법 · 교내 추천 참고자료</small></span><span aria-hidden="true">→</span></Link></div>
-    <details className={styles.extraTools}><summary>점수 검색·관심 목록 등 추가 도구</summary><div className={styles.tools}><Link href="/admissions#score">점수로 찾기</Link><Link href="/admissions#plan">계열별 전형 검색</Link><Link href="/admissions#minimum">수능최저 조합</Link><Link href="/admissions#saved">관심 목록</Link><Link href="/admissions#guide">입시 용어</Link></div></details>
-    <p className={styles.startFootnote}>과거 입결은 참고자료예요. 실제 지원 조건은 해당 연도 최종 모집요강으로 확인해요.</p>
-  </section>;
+    <div className={styles.quickResources}><Link href="/admissions/china"><span><b>중국 대학 지원도 궁금하다면</b><small>대학별 공식 요건·교내 추천 참고자료</small></span><span aria-hidden="true">→</span></Link></div>
+    <p className={styles.startFootnote}>과거 입결과 2028 시행계획은 별도 자료입니다. 전형 카드에서 출처와 적용 범위를 확인할 수 있어요.</p>
+  </div>;
 }

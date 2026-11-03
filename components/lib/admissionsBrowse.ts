@@ -48,3 +48,20 @@ export function unitAdmissionField(unit: BrowseUnit): string {
   if (/자유전공|기타/.test(unit.classification)) return "";
   return "사회·상경";
 }
+
+
+type Result = {
+  univ: string; dept: string; year: number; mean_pct: number | null;
+  cut_pct70: number | null; cut_conv70: number | null; source: string; metric_note: string;
+};
+type Filters = { university: string; query: string; year: string; metric: string; band: string };
+const normalize = (text: string) => text.toLocaleLowerCase("ko").replace(/\s/g, "");
+export function filterAdmissionResults<T extends Result>(rows: T[], filters: Filters): T[] {
+  const { university, query, year, metric, band } = filters;
+  return rows.filter(r => (!university || r.univ === university || r.univ === `${university} 서울`)
+    && normalize(r.univ + r.dept).includes(normalize(query))
+    && (!year || r.year === Number(year))
+    && (!metric || (metric === "percentile" ? r.cut_pct70 !== null : metric === "mean" ? r.mean_pct !== null : r.cut_conv70 !== null))
+    && (!band || inPercentileBand(r, band)))
+    .sort((a, b) => b.year - a.year || a.univ.localeCompare(b.univ, "ko") || a.dept.localeCompare(b.dept, "ko"));
+}
