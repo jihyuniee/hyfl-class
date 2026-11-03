@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import AdmissionsNav from "@/components/admissions/AdmissionsNav";
 import { belongsToProfile, chooseUnitProfile, unitAdmissionField } from "@/components/lib/admissionsBrowse";
@@ -31,6 +31,10 @@ export default function SusiExplorer({ initialUniversity = "", initialProfile = 
     .filter(r => !interview || r.hasInterview === (interview === "있음"));
   const sourcePage = senIndex.find(r => r.name === activeUniversity)?.page;
 
+  useEffect(() => {
+    if (unitKey) document.getElementById("major-section")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, [unitKey]);
+
   function chooseUnit(unit: typeof directory.records[number]) {
     setUnitKey(`${unit.university}/${unit.department}`);
     setUniversity(unit.university);
@@ -39,7 +43,6 @@ export default function SusiExplorer({ initialUniversity = "", initialProfile = 
     setProfileId(nextProfile);
     setField(matched?.field || unitAdmissionField(unit));
     setPlanLimit(8);
-    document.getElementById("major-heading")?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   return <div className={styles.page}>
@@ -67,7 +70,7 @@ export default function SusiExplorer({ initialUniversity = "", initialProfile = 
       {units.length > limit && <button className={styles.more} onClick={() => setLimit(n => n + 6)}>6개 더 보기</button>}
     </section>
 
-    {(selectedUnit || profile) && <section className={styles.section} aria-labelledby="major-heading">
+    {(selectedUnit || profile) && <section id="major-section" className={styles.section} aria-labelledby="major-heading">
       <h2 id="major-heading">대학 교육과정</h2>
       {selectedUnit && <p>선택한 모집단위: <b>{selectedUnit.university} · {selectedUnit.department}</b></p>}
 
