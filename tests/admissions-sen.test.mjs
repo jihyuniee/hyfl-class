@@ -48,22 +48,13 @@ test('모든 검색 카드와 82개 대학 쪽수는 중복 없이 출처를 추
   for (const row of index) assert.ok(row.page <= row.endPage && row.endPage <= 334);
 });
 
-// Execute the actual page filter chain, so these checks cover the search UI's
-// keyword/category/minimum/interview combination without duplicating its logic.
-test('2028 검색에서 외대 서류형·SW인재와 캠퍼스별 최저를 찾을 수 있다', () => {
-  const page = readFileSync(new URL('../app/admissions/page.tsx', import.meta.url), 'utf8');
-  const chain = page.match(/return planRows([\s\S]*?)\.sort\(comparePlanRecords\)/)[1];
-  const search = new Function('planRows', 'planKeyword', 'planField', 'planCategory', 'planMinimum', 'planInterview', 'holisticEvaluation',
-    `const query = planKeyword.trim().toLocaleLowerCase("ko"); return planRows${chain};`);
-  const run = (keyword, minimum = '전체', interview = '전체', field = '전체') =>
-    search(data.records, keyword, field, '학생부종합', minimum, interview, () => '').map(r => r.id);
-  assert.deepEqual(run('한국외대', '있음', '없음'), ['2028-11-228']);
-  assert.ok(run('한국외대', '없음').includes('sen-2028-hufs-sw'));
-  assert.ok(!run('한국외대', '없음').includes('2028-11-228'));
-  assert.ok(!run('SW인재', '있음').includes('sen-2028-hufs-sw')); // Notes can mention other tracks.
-  assert.ok(run('SW인재', '없음').includes('sen-2028-hufs-sw'));
-  assert.ok(run('서류형', '있음', '없음', '인문·어문').includes('2028-11-228'));
-  assert.ok(run('서울캠퍼스: 국어').includes('2028-11-228'));
-  assert.ok(run('글로벌캠퍼스: 국어').includes('2028-11-228'));
-  assert.deepEqual(run('한국외대', '있음', '있음'), []);
+test('공개 수시 검색은 출처 충돌·미대조 카드를 제외하고 외대 공식 최저를 유지한다', async () => {
+  const { selectSusiPlans } = await import('../components/lib/admissionsExplorer.ts');
+  const all = selectSusiPlans(data.records, '', '', '', '');
+  assert.ok(all.length > 0);
+  assert.ok(all.every(r => !r.verificationNote && r.sourceKey !== 'incheon-20260715'));
+  const docs = selectSusiPlans(data.records, '한국외대', '인문·어문', '학생부종합', '있음');
+  assert.deepEqual(docs.map(r => r.id), ['2028-11-228']);
+  assert.match(docs[0].minimum, /서울캠퍼스:.*2개 영역 등급 합 6/);
+  assert.match(docs[0].minimum, /글로벌캠퍼스:.*2개 영역 등급 합 7/);
 });

@@ -3,6 +3,10 @@ import styles from "./explorer.module.css";
 export default function OfficialResources() {
   return <section id="student-questions" className={styles.section} aria-labelledby="official-resources-heading">
     <h2 id="official-resources-heading">대학 공식 자료</h2>
+    <div className={styles.tools}>
+      <a href="https://www.adiga.kr" target="_blank" rel="noopener noreferrer">어디가 · 대학별 공개 입결 ↗</a>
+      <a href="/admissions-2028/sen-preview-20261014.pdf" target="_blank" rel="noopener noreferrer">서울교육청 2028 대입 자료 ↗</a>
+    </div>
     <details id="snu-interview" className={styles.fold}>
       <summary>서울대 2028학년도 수시모집 일반전형 면접 예시 문항</summary>
       <p>서울대학교 입학본부 공개 자료입니다. 예시 문항 PDF는 아래 게시물에 첨부되어 있습니다.</p>

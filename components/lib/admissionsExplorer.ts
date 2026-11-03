@@ -13,9 +13,11 @@ export function canonicalUniversity(value: string): string {
 }
 
 export function selectSusiPlans(records: SusiPlan[], university: string, field: string, category: string, minimum: string) {
-  const candidates = records.filter(r => canonicalUniversity(r.university) === university
-    && r.fields.includes(field) && (!category || r.category === category)
+  const candidates = records.filter(r => (!university || canonicalUniversity(r.university) === university)
+    && (!field || r.fields.includes(field)) && (!category || r.category === category)
     && (!minimum || (minimum === "있음" ? r.hasMinimum : !r.hasMinimum))
+    && (r.sourceKey === "sen-20261014" || r.sourceKey === "hufs-official-2028-plan")
+    && !r.verificationNote
     && !/SW인재|소프트웨어인재|과학인재|의학부/.test(r.admission));
   const priority = (r: SusiPlan) => r.sourceKey === "hufs-official-2028-plan" ? 3 : r.sourceKey === "sen-20261014" ? 2 : 1;
   const found = new Map<string, SusiPlan>();

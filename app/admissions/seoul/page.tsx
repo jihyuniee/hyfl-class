@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description: "인문·사회·어문계열의 과거 정시 입결과 2028학년도 반영방식을 출처와 함께 확인합니다.",
 };
 
-export default async function SeoulAdmissionsPage({ searchParams }: { searchParams: Promise<{ university?: string }> }) {
-  const { university } = await searchParams;
-  return <SeoulAdmissions initialUniversity={university || ""} />;
+export default async function SeoulAdmissionsPage({ searchParams }: { searchParams: Promise<{ university?: string; q?: string }> }) {
+  const { university, q } = await searchParams;
+  return <SeoulAdmissions key={`${university || ""}/${q || ""}`} initialUniversity={university || ""} initialQuery={q || ""} />;
 }
