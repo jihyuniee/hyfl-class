@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import directory from "@/public/admissions-explorer/directory.json";
 import majors from "@/public/admissions-explorer/majors.json";
 import AdmissionsNav from "./AdmissionsNav";
+import AdmissionsAsk from "./AdmissionsAsk";
 import OfficialResources from "./OfficialResources";
 import { admissionsQuestions, findAdmissionsMatches } from "@/components/lib/admissionsSearch";
 import styles from "./explorer.module.css";
@@ -56,6 +57,7 @@ export default function AdmissionsHome() {
       <div className={styles.sectionHeading}><h2>‘{query}’ 검색 결과</h2><span role="status">{matches.length}개 표시</span></div>
       {matches.length ? <div className={styles.searchList}>{matches.map(m => <Link key={m.href} href={m.href}><span><small>{m.kind}</small><strong>{m.title}</strong><span>{m.description}</span></span><span aria-hidden="true">↗</span></Link>)}</div> : <p className={styles.empty}>찾는 항목이 없어요. 대학명이나 학과명의 일부로 검색하거나 아래 질문을 골라보세요.</p>}
     </section>}
+    <AdmissionsAsk />
     <section className={styles.section} aria-labelledby="start-heading">
       <div className={styles.sectionHeading}><h2 id="start-heading">지금 무엇이 궁금한가요?</h2><span>질문을 고르면 바로 이동해요</span></div>
       <div className={styles.questionGrid}>{routes.map(r => <Link className={styles.questionCard} href={r.href} key={r.number}><span className={styles.cardTop}><span>{r.tag}</span><span>{r.number}</span></span><h3>{r.title}</h3><p>{r.text}</p><span className={styles.cardArrow} aria-hidden="true">→</span></Link>)}</div>
