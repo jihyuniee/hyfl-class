@@ -48,16 +48,13 @@ export default function AdmissionsHome() {
     <header className={styles.homeHero}>
       <span className={styles.eyebrow}>2-2 우리반 · 2028 대입</span>
       <h1>궁금한 것부터,<br />나의 대입 탐색.</h1>
-      <p>대학 이름 하나, 관심 학과 하나로 시작해 보세요.</p>
-      <label className={styles.searchLabel} htmlFor="admissions-search">대학·학과·궁금한 내용 검색</label>
-      <div className={styles.searchBox}><span aria-hidden="true">⌕</span><input id="admissions-search" type="search" autoComplete="off" value={query} onChange={e => setQuery(e.target.value)} placeholder="예: 한국외대, 경영, 수능최저" />{query && <button type="button" onClick={() => setQuery("")} aria-label="검색어 지우기">지우기</button>}</div>
-      <div className={styles.searchExamples}><span>바로 찾아보기</span>{["한국외대", "중국", "경영", "수능최저"].map(word => <button key={word} type="button" onClick={() => setQuery(word)}>{word}</button>)}</div>
+      <p>대학·학과를 찾거나, 궁금한 내용을 문장으로 물어보세요.</p>
+      <AdmissionsAsk question={query} onQuestionChange={setQuery} />
     </header>
     {query.trim() && <section className={styles.searchResults} aria-label="통합 검색 결과">
       <div className={styles.sectionHeading}><h2>‘{query}’ 검색 결과</h2><span role="status">{matches.length}개 표시</span></div>
       {matches.length ? <div className={styles.searchList}>{matches.map(m => <Link key={m.href} href={m.href}><span><small>{m.kind}</small><strong>{m.title}</strong><span>{m.description}</span></span><span aria-hidden="true">↗</span></Link>)}</div> : <p className={styles.empty}>찾는 항목이 없어요. 대학명이나 학과명의 일부로 검색하거나 아래 질문을 골라보세요.</p>}
     </section>}
-    <AdmissionsAsk />
     <section className={styles.section} aria-labelledby="start-heading">
       <div className={styles.sectionHeading}><h2 id="start-heading">지금 무엇이 궁금한가요?</h2><span>질문을 고르면 바로 이동해요</span></div>
       <div className={styles.questionGrid}>{routes.map(r => <Link className={styles.questionCard} href={r.href} key={r.number}><span className={styles.cardTop}><span>{r.tag}</span><span>{r.number}</span></span><h3>{r.title}</h3><p>{r.text}</p><span className={styles.cardArrow} aria-hidden="true">→</span></Link>)}</div>
