@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/components/lib/supabaseClient";
 import SemesterTabs from "@/components/SemesterTabs";
 import { CURRENT_SEMESTER, LEGACY_SEMESTER, type SemesterId } from "@/components/lib/semester";
+import ImageViewer, { type ViewerImage } from "./ImageViewer";
 
 // 1학기 멘토 명단 — 그대로 동결, 수정하지 않는다.
 const MENTORS_1ST = [
@@ -127,6 +128,8 @@ export default function MentorPage() {
 
   // 상세 보기(탭하면 열리는 모달) — 사진 갤러리처럼 그리드에서 눌러야 자세히 보임
   const [detailId, setDetailId] = useState<string | null>(null);
+  const [detailGalleryIds, setDetailGalleryIds] = useState<string[]>([]);
+  const [imageViewerId, setImageViewerId] = useState<string | null>(null);
 
   // 새글 추적 (localStorage 기반)
   const [lastVisit] = useState<Date | null>(() => {
@@ -154,6 +157,8 @@ export default function MentorPage() {
     setSelectedSubject(null);
     setRSubject(MENTORS[0].subject);
     setROpen(false);
+    setDetailId(null);
+    setImageViewerId(null);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [semester]);
 
@@ -332,6 +337,18 @@ export default function MentorPage() {
   const newResCount = scopedResources.filter(r => isNew(r.created_at)).length;
 
   const detailResource = resources.find(r => r.id === detailId) ?? null;
+  // 열었던 목록의 순서·과목·학기를 유지하며 사진만 넘겨 본다.
+  const viewerImages = detailGalleryIds.flatMap(id => {
+    const r = scopedResources.find(resource => resource.id === id);
+    const url = r?.file_url || r?.link;
+    return r && url && isImageFile(r.file_name) ? [{ id: r.id, url, title: r.title } satisfies ViewerImage] : [];
+  });
+
+  function openResource(r: Resource, showAllSubjects = false) {
+    const gallery = showAllSubjects ? filteredRes : scopedResources.filter(resource => resource.subject === r.subject);
+    setDetailGalleryIds(gallery.map(resource => resource.id));
+    setDetailId(r.id);
+  }
 
   // ─── 갤러리 타일(그리드 안의 카드) ───
   const renderResourceTile = (r: Resource, showSubject = false) => {
@@ -344,7 +361,7 @@ export default function MentorPage() {
     return (
       <button
         key={r.id}
-        onClick={() => setDetailId(r.id)}
+        onClick={() => openResource(r, showSubject)}
         style={{
           position:"relative", display:"block", width:"100%", padding:0, cursor:"pointer",
           border: newItem ? "2px solid #6366f1" : "1px solid var(--border)",
@@ -402,7 +419,7 @@ export default function MentorPage() {
           background: newItem ? "var(--primary-light)" : "#fff",
         }}
       >
-        <button onClick={() => setDetailId(r.id)}
+        <button onClick={() => openResource(r, showSubject)}
           style={{ width:44, height:44, borderRadius:6, overflow:"hidden", flexShrink:0, border:"1px solid var(--border)", padding:0, cursor:"pointer", background:ts.bg }}>
           {isImg && openUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
@@ -414,7 +431,7 @@ export default function MentorPage() {
           )}
         </button>
 
-        <button onClick={() => setDetailId(r.id)}
+        <button onClick={() => openResource(r, showSubject)}
           style={{ flex:1, minWidth:0, textAlign:"left", background:"none", border:"none", cursor:"pointer", padding:0, fontFamily:"inherit" }}>
           <div style={{ display:"flex", alignItems:"center", gap:6, flexWrap:"wrap" }}>
             {newItem && (
@@ -486,17 +503,18 @@ export default function MentorPage() {
               <span style={{ fontSize:11, fontWeight:700, padding:"2px 8px", borderRadius:8, background:ts.bg, color:ts.color }}>{r.file_type}</span>
               {m && <span style={{ fontSize:11, fontWeight:700, padding:"2px 8px", borderRadius:8, background:"var(--surface-muted)", color:"var(--text-muted)" }}>{m.emoji} {r.subject}</span>}
             </div>
-            <button onClick={() => setDetailId(null)}
+            <button aria-label="자료 상세 보기 닫기" onClick={() => setDetailId(null)}
               style={{ fontSize:16, background:"none", border:"none", cursor:"pointer", color:"var(--text-muted)", padding:4, lineHeight:1 }}>
               ✕
             </button>
           </div>
 
           {isImg && openUrl && (
-            <a href={openUrl} target="_blank" rel="noopener noreferrer">
+            <button type="button" aria-label={`${r.title} 사진 크게 보기`} onClick={() => setImageViewerId(r.id)}
+              style={{ display:"block", width:"100%", padding:0, border:0, background:"#f8f9fa", cursor:"zoom-in" }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={openUrl} alt={r.title} style={{ width:"100%", maxHeight:420, objectFit:"contain", background:"#f8f9fa", display:"block", cursor:"zoom-in" }}/>
-            </a>
+            </button>
           )}
 
           <div style={{ padding:"16px 18px" }}>
@@ -800,7 +818,7 @@ export default function MentorPage() {
                           const openUrl = r.file_url || r.link || null;
                           const isImg = isImageFile(r.file_name);
                           return (
-                            <button key={r.id} onClick={() => setDetailId(r.id)}
+                            <button key={r.id} onClick={() => openResource(r)}
                               style={{ position:"relative", aspectRatio:"1 / 1", borderRadius:6, overflow:"hidden", border:"1px solid var(--border)", padding:0, cursor:"pointer", background:"var(--surface-muted)" }}>
                               {isImg && openUrl ? (
                                 // eslint-disable-next-line @next/next/no-img-element
@@ -916,6 +934,14 @@ export default function MentorPage() {
       )}
 
       {renderDetailModal()}
+      {imageViewerId && viewerImages.some(image => image.id === imageViewerId) && (
+        <ImageViewer
+          images={viewerImages}
+          imageId={imageViewerId}
+          onNavigate={id => { setImageViewerId(id); setDetailId(id); }}
+          onClose={() => setImageViewerId(null)}
+        />
+      )}
     </div>
   );
 }
