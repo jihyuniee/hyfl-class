@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { retrieveEvidence, parseGroundedAnswer, personalScoreGuidance } from '../components/lib/admissionsAnswer.ts';
+import { retrieveEvidence, parseGroundedAnswer, personalScoreGuidance, cutoffTermGuidance, foreignSchoolGuidance } from '../components/lib/admissionsAnswer.ts';
 const docs = [
  { id: 'hufs', university: '한국외대', title: '2028 한국외대 서류형 수능최저', text: '서울 2합6', href: '/a', source: '2028 시행계획', kind: 'early' },
  { id: 'snu', university: '서울대', title: '2028 서울대 수능최저', text: '일반전형', href: '/b', source: '2028 시행계획', kind: 'early' },
@@ -24,4 +24,16 @@ test('personal grade questions cannot use exam minimums as admission grade cutof
    assert.match(personalScoreGuidance(q), /내신 등급과 수능 등급은 서로 다른/);
  }
  for (const q of ['한국외대 서류형 수능최저는?', '숭실대 경영학과의 공개 정시 입결은?', '70% 컷 뜻 알려줘', '한국외대 내신 반영방법']) assert.equal(personalScoreGuidance(q), null);
+});
+
+test('70% cutoff definitions distinguish rank, average and probability', () => {
+ assert.match(cutoffTermGuidance('70% 컷이면 합격 확률이 70%라는 뜻이야?'), /높은 순서/);
+ assert.match(cutoffTermGuidance('70% 컷의 의미'), /평균 성적과도 다릅니다/);
+ assert.equal(cutoffTermGuidance('숭실대 경영학과 70% 컷은 얼마야?'), null);
+});
+
+test('absence of an exclusion is not evidence of foreign-school eligibility', () => {
+ assert.match(foreignSchoolGuidance('외고 학생도 학교장추천이나 지역균형에 지원할 수 있어?'), /지원 가능하다는 뜻은 아닙니다/);
+ assert.match(foreignSchoolGuidance('한국외대 외고 지원 가능?'), /지원자격/);
+ assert.equal(foreignSchoolGuidance('한국외대 서류형 수능최저는?'), null);
 });

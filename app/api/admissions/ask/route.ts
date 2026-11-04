@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto';
 import { admissionsEvidence } from '@/components/lib/admissionsEvidence';
-import { parseGroundedAnswer, retrieveEvidence, personalScoreGuidance } from '@/components/lib/admissionsAnswer';
+import { parseGroundedAnswer, retrieveEvidence, personalScoreGuidance, cutoffTermGuidance, foreignSchoolGuidance } from '@/components/lib/admissionsAnswer';
 
 export const runtime = 'nodejs';
 export const maxDuration = 60;
@@ -22,6 +22,10 @@ export async function POST(request: Request) {
   let question: unknown;
   try { const raw = await request.text(); if (raw.length > 4096) return reply({ error: '질문이 너무 깁니다.' }, 413); question = JSON.parse(raw).question; } catch { return reply({ error: '질문을 확인해 주세요.' }, 400); }
   if (typeof question !== 'string' || !question.trim() || question.length > 500) return reply({ error: '질문을 1~500자로 입력해 주세요.' }, 400);
+  const eligibility = foreignSchoolGuidance(question);
+  if (eligibility) return reply({ answer: eligibility, sources: [{ id: 'eligibility-guide', title: '대학별 수시 전형과 지원자격 원문 확인', href: '/admissions/susi#plans', source: '대학·전형 선택 후 원문 지원자격 확인' }] });
+  const term = cutoffTermGuidance(question);
+  if (term) return reply({ answer: term, sources: [{ id: 'cutoff-guide', title: '70% 컷의 뜻과 입결 읽는 방법', href: '/admissions#cutoff', source: '사이트의 입결 용어 안내' }] });
   const guidance = personalScoreGuidance(question);
   if (guidance) return reply({ answer: guidance, sources: [{ id: 'guide', title: '성적과 입결을 읽는 방법', href: '/admissions#grades', source: '사이트 이용 안내 · 개인별 합격 판정 자료 아님' }] });
   const evidence = retrieveEvidence(question, admissionsEvidence);
