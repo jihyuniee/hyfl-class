@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { retrieveEvidence, parseGroundedAnswer } from '../components/lib/admissionsAnswer.ts';
+import { retrieveEvidence, parseGroundedAnswer, personalScoreGuidance } from '../components/lib/admissionsAnswer.ts';
 const docs = [
  { id: 'hufs', university: '한국외대', title: '2028 한국외대 서류형 수능최저', text: '서울 2합6', href: '/a', source: '2028 시행계획', kind: 'early' },
  { id: 'snu', university: '서울대', title: '2028 서울대 수능최저', text: '일반전형', href: '/b', source: '2028 시행계획', kind: 'early' },
@@ -17,4 +17,11 @@ test('citations must reference retrieved evidence', () => {
  assert.throws(() => parseGroundedAnswer({ answer: '답변', sourceIds: ['fake'] }, docs));
  assert.throws(() => parseGroundedAnswer({ answer: '답변', sourceIds: [] }, docs));
  assert.deepEqual(parseGroundedAnswer({ answer: '답변 [hufs]', sourceIds: ['hufs'] }, docs).sources.map(s => s.id), ['hufs']);
+});
+
+test('personal grade questions cannot use exam minimums as admission grade cutoffs', () => {
+ for (const q of ['내신 3.8등급이면 서울에 있는 어느 대학에 합격할 수 있어?', '제 성적으로 갈 수 있는 대학 추천해줘', '백분위 85면 어디 갈 수 있어?', '내신 3.8', '한국외대 내신 컷은?']) {
+   assert.match(personalScoreGuidance(q), /내신 등급과 수능 등급은 서로 다른/);
+ }
+ for (const q of ['한국외대 서류형 수능최저는?', '숭실대 경영학과의 공개 정시 입결은?', '70% 컷 뜻 알려줘', '한국외대 내신 반영방법']) assert.equal(personalScoreGuidance(q), null);
 });
