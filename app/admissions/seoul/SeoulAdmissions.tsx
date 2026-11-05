@@ -6,6 +6,7 @@ import results from "@/public/admissions-seoul/results.json";
 import plans from "@/public/admissions-seoul/plans.json";
 import directory from "@/public/admissions-explorer/directory.json";
 import AdmissionsNav from "@/components/admissions/AdmissionsNav";
+import MockScoreExplorer from "@/components/admissions/MockScoreExplorer";
 import styles from "@/components/admissions/explorer.module.css";
 import local from "./seoul.module.css";
 import { filterAdmissionResults } from "@/components/lib/admissionsBrowse";
@@ -28,7 +29,9 @@ export default function SeoulAdmissions({ initialUniversity = "", initialQuery =
   return <div className={styles.page}>
     <AdmissionsNav current="regular" />
     <header className={styles.hero}><span className={styles.eyebrow}>정시 · 인문·사회·어문</span><h1>지난 입결을 찾고, 반영방법을 확인해요.</h1><p>공개된 실제 성적과 2028 전형방법을 구분해 살펴보세요.</p></header>
-    <nav className={styles.pageJump} aria-label="정시 자료 바로가기"><a href="#results">과거 정시 입결</a><a href="#plans">2028 과목 반영방법</a><a href="#score-guide">점수 읽는 법</a></nav>
+    <nav className={styles.pageJump} aria-label="정시 자료 바로가기"><a href="#mock-score">내 점수로 대학 찾기</a><a href="#results">과거 정시 입결</a><a href="#plans">2028 과목 반영방법</a><a href="#score-guide">점수 읽는 법</a></nav>
+
+    <MockScoreExplorer university={university} />
 
     <section id="results" className={styles.section} aria-labelledby="results-title">
       <div className={styles.sectionHeading}><h2 id="results-title">대학·학과로 정시 입결 찾기</h2><span>11개 대학 · 2024~2026학년도</span></div>
