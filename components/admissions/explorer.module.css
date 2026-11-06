@@ -315,3 +315,12 @@
 .gradeInputs select { display:block;width:100%;min-height:44px;margin-top:6px;padding:8px 12px;border:1px solid var(--border-strong);border-radius:8px;background:#fff;color:var(--text);font:inherit; }
 @media(max-width:850px) { .taskGrid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
 @media(max-width:720px) { .focusHero { grid-template-columns:1fr;gap:18px;padding:24px; }.focusHero h1{font-size:32px;}.heroStart{padding:18px;}.factGrid{grid-template-columns:1fr;}.examContext{grid-template-columns:1fr 1fr;}.taskGrid>a{padding:16px 14px 30px;}.taskGrid h2{font-size:16px;} }
+.universityGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.universityCard{padding:20px;border:1px solid var(--line,#dedfd5);border-radius:16px;background:#fff;min-width:0}
+.universityCard h3{font-size:18px;line-height:1.5;margin:10px 0}
+.universityCard small{color:#626759}
+.universityCard p{font-size:14px;line-height:1.7;overflow-wrap:anywhere}
+.universityChoose{border:1px solid #bbc1ac;border-radius:8px;background:#f2f4e9;padding:9px 13px;color:#20251b;cursor:pointer}
+.universityChoose[aria-pressed=true]{background:#20251b;color:#fff}
+@media(max-width:850px){.universityGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.universityGrid{grid-template-columns:minmax(0,1fr)}}

@@ -1,0 +1,1483 @@
+{
+  "reviewedAt": "2026-11-06",
+  "source": "커리어넷 학교정보",
+  "sourceUrl": "https://www.career.go.kr/cloud/w/school/list",
+  "scope": "커리어넷 학교정보에서 지역 서울특별시·학교종류 대학(4년제)로 조회한 61개 캠퍼스 기록을 56개 학교로 묶고, 서울 소재 별도 선발 학교인 육군사관학교를 추가했습니다. 대학·교육대학, 사이버·방송통신, 기타·별도 선발을 구분합니다. 이 목록은 2028 모집 확정·지원 가능·합격 판정 목록이 아닙니다.",
+  "sourceCampusRows": [
+    {
+      "cells": [
+        "61",
+        "가톨릭대학교(제2캠퍼스)",
+        "대학(4년제)",
+        "대학교",
+        "사립",
+        "서울특별시"
+      ],
+      "url": "http://songeui.catholic.ac.kr/"
+    },
+    {
+      "cells": [
+        "60",
+        "가톨릭대학교(제3캠퍼스)",
+        "대학(4년제)",
+        "대학교",
+        "사립",
+        "서울특별시"
+      ],
+      "url": "https://www.catholic.ac.kr/ko/index.do"
+    },
+    {
+      "cells": [
+        "59",
+        "감리교신학대학교(제1캠퍼스)",
+        "대학(4년제)",
+        "대학교",
+        "사립",
+        "서울특별시"
+      ],
+      "url": "http://www.mtu.ac.kr/"
+    },
+    {
+      "cells": [
+        "58",
+        "강서대학교(제1캠퍼스)",
+        "대학(4년제)",
+        "대학교",
+        "사립",
+        "서울특별시"
+      ],
+      "url": "http://gangseo.ac.kr/"
+    },
+    {
+      "cells": [
+        "57",
+        "건국대학교(제1캠퍼스)",
+        "대학(4년제)",
+        "대학교",
+        "사립",
+        "서울특별시"
+      ],
+      "url": "http://www.konkuk.ac.kr/"
+    },
+    {
+      "cells": [
+        "56",
+        "경기대학교(제2캠퍼스)",
+        "대학(4년제)",
+        "대학교",
+        "사립",
+        "서울특별시"
+      ],
+      "url": "http://www.kyonggi.ac.kr/"
+    },
+    {
+      "cells": [
+        "55",
+        "경희대학교(제1캠퍼스)",
+        "대학(4년제)",
+        "대학교",
+        "사립",
+        "서울특별시"
+      ],
+      "url": "http://www.khu.ac.kr/"
+    },
+    {
+      "cells": [
+        "54",
+        "경희사이버대학교(제1캠퍼스)",
+        "대학(4년제)",
+        "사이버대학(대학)",
+        "사립",
+        "서울특별시"
+      ],
+      "url": "http://www.khcu.ac.kr/"
+    },
+    {
+      "cells": [
+        "53",
+        "고려대학교(제1캠퍼스)",
+        "대학(4년제)",
+        "대학교",
+        "사립",
+        "서울특별시"
+      ],
+      "url": "http://www.korea.ac.kr/"
+    },
+    {
+      "cells": [
+        "52",
+        "고려사이버대학교(제1캠퍼스)",
+        "대학(4년제)",
+        "사이버대학(대학)",
+        "사립",
+        "서울특별시"
+      ],
+      "url": "http://www.cuk.edu/"
+    },
+    {
+      "cells": [
+        "51",
+        "광운대학교(제1캠퍼스)",
+        "대학(4년제)",
+        "대학교",
+        "사립",
+        "서울특별시"
+      ],
+      "url": "http://www.kw.ac.kr/"
+    },
+    {
+      "cells": [
+        "50",
+        "국민대학교(제1캠퍼스)",
+        "대학(4년제)",
+        "대학교",
+        "사립",
+        "서울특별시"
+      ],
+      "url": "http://www.kookmin.ac.kr/"
+    },
+    {
+      "cells": [
+        "49",
+        "덕성여자대학교(제1캠퍼스)",
+        "대학(4년제)",
+        "대학교",
+        "사립",
+        "서울특별시"
+      ],
+      "url": "http://www.duksung.ac.kr/"
+    },
+    {
+      "cells": [
+        "48",
+        "동국대학교(제1캠퍼스)",
+        "대학(4년제)",
+        "대학교",
+        "사립",
+        "서울특별시"
+      ],
+      "url": "https://www.dongguk.edu/main"
+    },
+    {
+      "cells": [
+        "47",
+        "동덕여자대학교(제1캠퍼스)",
+        "대학(4년제)",
+        "대학교",
+        "사립",
+        "서울특별시"
+      ],
+      "url": "http://www.dongduk.ac.kr/"
+    },
+    {
+      "cells": [
+        "46",
+        "디지털서울문화예술대학교(제1캠퍼스)",
+        "대학(4년제)",
+        "사이버대학(대학)",
+        "사립",
+        "서울특별시"
+      ],
+      "url": "http://www.scau.ac.kr/"
+    },
+    {
+      "cells": [
+        "45",
+        "명지대학교 인문캠퍼스(제2캠퍼스)",
+        "대학(4년제)",
+        "대학교",
+        "사립",
+        "서울특별시"
+      ],
+      "url": "https://www.mju.ac.kr/"
+    },
+    {
+      "cells": [
+        "44",
+        "사이버한국외국어대학교(제1캠퍼스)",
+        "대학(4년제)",
+        "사이버대학(대학)",
+        "사립",
+        "서울특별시"
+      ],
+      "url": "http://www.cufs.ac.kr/"
+    },
+    {
+      "cells": [
+        "43",
+        "삼육대학교(제1캠퍼스)",
+        "대학(4년제)",
+        "대학교",
+        "사립",
+        "서울특별시"
+      ],
+      "url": "http://www.syu.ac.kr/"
+    },
+    {
+      "cells": [
+        "42",
+        "상명대학교(제1캠퍼스)",
+        "대학(4년제)",
+        "대학교",
+        "사립",
+        "서울특별시"
+      ],
+      "url": "http://www.smu.ac.kr/"
+    },
+    {
+      "cells": [
+        "41",
+        "서강대학교(제1캠퍼스)",
+        "대학(4년제)",
+        "대학교",
+        "사립",
+        "서울특별시"
+      ],
+      "url": "http://www.sogang.ac.kr/"
+    },
+    {
+      "cells": [
+        "40",
+        "서경대학교(제1캠퍼스)",
+        "대학(4년제)",
+        "대학교",
+        "사립",
+        "서울특별시"
+      ],
+      "url": "http://www.skuniv.ac.kr/"
+    },
+    {
+      "cells": [
+        "39",
+        "서울과학기술대학교(제1캠퍼스)",
+        "대학(4년제)",
+        "대학교",
+        "국립",
+        "서울특별시"
+      ],
+      "url": "http://www.seoultech.ac.kr/"
+    },
+    {
+      "cells": [
+        "38",
+        "서울교육대학교(제1캠퍼스)",
+        "대학(4년제)",
+        "교육대학",
+        "국립",
+        "서울특별시"
+      ],
+      "url": "http://www.snue.ac.kr/"
+    },
+    {
+      "cells": [
+        "37",
+        "서울기독대학교(제1캠퍼스)",
+        "대학(4년제)",
+        "대학교",
+        "사립",
+        "서울특별시"
+      ],
+      "url": "https://www.scu.ac.kr/main"
+    },
+    {
+      "cells": [
+        "36",
+        "서울대학교(제1캠퍼스)",
+        "대학(4년제)",
+        "대학교",
+        "국립",
+        "서울특별시"
+      ],
+      "url": "http://www.snu.ac.kr/"
+    },
+    {
+      "cells": [
+        "35",
+        "서울대학교(제2캠퍼스)",
+        "대학(4년제)",
+        "대학교",
+        "국립",
+        "서울특별시"
+      ],
+      "url": "http://www.snu.ac.kr/"
+    },
+    {
+      "cells": [
+        "34",
+        "서울디지털대학교(제1캠퍼스)",
+        "대학(4년제)",
+        "사이버대학(대학)",
+        "사립",
+        "서울특별시"
+      ],
+      "url": "http://www.sdu.ac.kr/"
+    },
+    {
+      "cells": [
+        "33",
+        "서울사이버대학교(제1캠퍼스)",
+        "대학(4년제)",
+        "사이버대학(대학)",
+        "사립",
+        "서울특별시"
+      ],
+      "url": "http://www.iscu.ac.kr/"
+    },
+    {
+      "cells": [
+        "32",
+        "서울시립대학교(제1캠퍼스)",
+        "대학(4년제)",
+        "대학교",
+        "공립",
+        "서울특별시"
+      ],
+      "url": "http://www.uos.ac.kr/"
+    },
+    {
+      "cells": [
+        "31",
+        "서울여자대학교(제1캠퍼스)",
+        "대학(4년제)",
+        "대학교",
+        "사립",
+        "서울특별시"
+      ],
+      "url": "http://www.swu.ac.kr/"
+    },
+    {
+      "cells": [
+        "30",
+        "서울한영대학교(제1캠퍼스)",
+        "대학(4년제)",
+        "대학교",
+        "사립",
+        "서울특별시"
+      ],
+      "url": "http://www.shyu.ac.kr/"
+    },
+    {
+      "cells": [
+        "29",
+        "성공회대학교(제1캠퍼스)",
+        "대학(4년제)",
+        "대학교",
+        "사립",
+        "서울특별시"
+      ],
+      "url": "http://www.skhu.ac.kr/"
+    },
+    {
+      "cells": [
+        "28",
+        "성균관대학교(제1캠퍼스)",
+        "대학(4년제)",
+        "대학교",
+        "사립",
+        "서울특별시"
+      ],
+      "url": "http://www.skku.edu/"
+    },
+    {
+      "cells": [
+        "27",
+        "성신여자대학교(제1캠퍼스)",
+        "대학(4년제)",
+        "대학교",
+        "사립",
+        "서울특별시"
+      ],
+      "url": "http://www.sungshin.ac.kr/"
+    },
+    {
+      "cells": [
+        "26",
+        "성신여자대학교(제2캠퍼스)",
+        "대학(4년제)",
+        "대학교",
+        "사립",
+        "서울특별시"
+      ],
+      "url": "http://www.sungshin.ac.kr/"
+    },
+    {
+      "cells": [
+        "25",
+        "세종대학교(제1캠퍼스)",
+        "대학(4년제)",
+        "대학교",
+        "사립",
+        "서울특별시"
+      ],
+      "url": "http://www.sejong.ac.kr/"
+    },
+    {
+      "cells": [
+        "24",
+        "세종사이버대학교(제1캠퍼스)",
+        "대학(4년제)",
+        "사이버대학(대학)",
+        "사립",
+        "서울특별시"
+      ],
+      "url": "https://home.sjcu.ac.kr/ko/index.do"
+    },
+    {
+      "cells": [
+        "23",
+        "숙명여자대학교(제1캠퍼스)",
+        "대학(4년제)",
+        "대학교",
+        "사립",
+        "서울특별시"
+      ],
+      "url": "http://www.sookmyung.ac.kr/"
+    },
+    {
+      "cells": [
+        "22",
+        "숭실대학교(제1캠퍼스)",
+        "대학(4년제)",
+        "대학교",
+        "사립",
+        "서울특별시"
+      ],
+      "url": "http://ssu.ac.kr/"
+    },
+    {
+      "cells": [
+        "21",
+        "숭실사이버대학교(제1캠퍼스)",
+        "대학(4년제)",
+        "사이버대학(대학)",
+        "사립",
+        "서울특별시"
+      ],
+      "url": "http://www.kcu.ac/"
+    },
+    {
+      "cells": [
+        "20",
+        "연세대학교(제1캠퍼스)",
+        "대학(4년제)",
+        "대학교",
+        "사립",
+        "서울특별시"
+      ],
+      "url": "http://www.yonsei.ac.kr/"
+    },
+    {
+      "cells": [
+        "19",
+        "이화여자대학교(제1캠퍼스)",
+        "대학(4년제)",
+        "대학교",
+        "사립",
+        "서울특별시"
+      ],
+      "url": "http://www.ewha.ac.kr/"
+    },
+    {
+      "cells": [
+        "18",
+        "이화여자대학교(제2캠퍼스)",
+        "대학(4년제)",
+        "대학교",
+        "사립",
+        "서울특별시"
+      ],
+      "url": "https://www.ewhamed.ac.kr/"
+    },
+    {
+      "cells": [
+        "17",
+        "장로회신학대학교(제1캠퍼스)",
+        "대학(4년제)",
+        "대학교",
+        "사립",
+        "서울특별시"
+      ],
+      "url": "http://www.puts.ac.kr/"
+    },
+    {
+      "cells": [
+        "16",
+        "정석대학(제1캠퍼스)",
+        "대학(4년제)",
+        "기술대학",
+        "사립",
+        "서울특별시"
+      ]
+    },
+    {
+      "cells": [
+        "15",
+        "중앙대학교(제1캠퍼스)",
+        "대학(4년제)",
+        "대학교",
+        "사립",
+        "서울특별시"
+      ],
+      "url": "http://www.cau.ac.kr/"
+    },
+    {
+      "cells": [
+        "14",
+        "총신대학교(제1캠퍼스)",
+        "대학(4년제)",
+        "대학교",
+        "사립",
+        "서울특별시"
+      ],
+      "url": "http://www.chongshin.ac.kr/"
+    },
+    {
+      "cells": [
+        "13",
+        "추계예술대학교(제1캠퍼스)",
+        "대학(4년제)",
+        "대학교",
+        "사립",
+        "서울특별시"
+      ],
+      "url": "http://www.chugye.ac.kr/"
+    },
+    {
+      "cells": [
+        "12",
+        "태재대학교(제1캠퍼스)",
+        "대학(4년제)",
+        "사이버대학(대학)",
+        "사립",
+        "서울특별시"
+      ],
+      "url": "http://www.taejae.ac.kr/"
+    },
+    {
+      "cells": [
+        "11",
+        "한국방송통신대학교(제1캠퍼스)",
+        "대학(4년제)",
+        "방송통신대학교",
+        "국립",
+        "서울특별시"
+      ],
+      "url": "http://www.knou.ac.kr/"
+    },
+    {
+      "cells": [
+        "10",
+        "한국성서대학교(제1캠퍼스)",
+        "대학(4년제)",
+        "대학교",
+        "사립",
+        "서울특별시"
+      ],
+      "url": "http://www.bible.ac.kr/"
+    },
+    {
+      "cells": [
+        "9",
+        "한국열린사이버대학교(제1캠퍼스)",
+        "대학(4년제)",
+        "사이버대학(대학)",
+        "사립",
+        "서울특별시"
+      ],
+      "url": "http://www.ocu.ac.kr/"
+    },
+    {
+      "cells": [
+        "8",
+        "한국예술종합학교(제1캠퍼스)",
+        "대학(4년제)",
+        "각종대학(대학)",
+        "국립",
+        "서울특별시"
+      ],
+      "url": "http://www.karts.ac.kr/"
+    },
+    {
+      "cells": [
+        "7",
+        "한국예술종합학교(제2캠퍼스)",
+        "대학(4년제)",
+        "각종대학(대학)",
+        "국립",
+        "서울특별시"
+      ],
+      "url": "http://www.karts.ac.kr/"
+    },
+    {
+      "cells": [
+        "6",
+        "한국외국어대학교(제1캠퍼스)",
+        "대학(4년제)",
+        "대학교",
+        "사립",
+        "서울특별시"
+      ],
+      "url": "http://www.hufs.ac.kr/"
+    },
+    {
+      "cells": [
+        "5",
+        "한국체육대학교(제1캠퍼스)",
+        "대학(4년제)",
+        "대학교",
+        "국립",
+        "서울특별시"
+      ],
+      "url": "http://www.knsu.ac.kr/"
+    },
+    {
+      "cells": [
+        "4",
+        "한성대학교(제1캠퍼스)",
+        "대학(4년제)",
+        "대학교",
+        "사립",
+        "서울특별시"
+      ],
+      "url": "http://www.hansung.ac.kr/"
+    },
+    {
+      "cells": [
+        "3",
+        "한양대학교(제1캠퍼스)",
+        "대학(4년제)",
+        "대학교",
+        "사립",
+        "서울특별시"
+      ],
+      "url": "http://www.hanyang.ac.kr/"
+    },
+    {
+      "cells": [
+        "2",
+        "한양사이버대학교(제1캠퍼스)",
+        "대학(4년제)",
+        "사이버대학(대학)",
+        "사립",
+        "서울특별시"
+      ],
+      "url": "http://www.hycu.ac.kr/"
+    },
+    {
+      "cells": [
+        "1",
+        "홍익대학교(제1캠퍼스)",
+        "대학(4년제)",
+        "대학교",
+        "사립",
+        "서울특별시"
+      ],
+      "url": "http://www.hongik.ac.kr/"
+    }
+  ],
+  "records": [
+    {
+      "id": "가톨릭대(서울)",
+      "name": "가톨릭대학교",
+      "type": "대학교",
+      "group": "general",
+      "region": "서울특별시",
+      "campuses": [
+        "가톨릭대학교(제2캠퍼스)",
+        "가톨릭대학교(제3캠퍼스)"
+      ],
+      "website": "http://songeui.catholic.ac.kr/",
+      "sourceUrl": "https://www.career.go.kr/cloud/w/school/list",
+      "reviewedAt": "2026-11-06",
+      "note": "서울 소재 캠퍼스만 탐색합니다. 다른 지역 캠퍼스의 전형·학과를 포함하지 않습니다."
+    },
+    {
+      "id": "감리교신학대",
+      "name": "감리교신학대학교",
+      "type": "대학교",
+      "group": "general",
+      "region": "서울특별시",
+      "campuses": [
+        "감리교신학대학교(제1캠퍼스)"
+      ],
+      "website": "http://www.mtu.ac.kr/",
+      "sourceUrl": "https://www.career.go.kr/cloud/w/school/list",
+      "reviewedAt": "2026-11-06",
+      "note": ""
+    },
+    {
+      "id": "강서대",
+      "name": "강서대학교",
+      "type": "대학교",
+      "group": "general",
+      "region": "서울특별시",
+      "campuses": [
+        "강서대학교(제1캠퍼스)"
+      ],
+      "website": "http://gangseo.ac.kr/",
+      "sourceUrl": "https://www.career.go.kr/cloud/w/school/list",
+      "reviewedAt": "2026-11-06",
+      "note": ""
+    },
+    {
+      "id": "건국대",
+      "name": "건국대학교",
+      "type": "대학교",
+      "group": "general",
+      "region": "서울특별시",
+      "campuses": [
+        "건국대학교(제1캠퍼스)"
+      ],
+      "website": "http://www.konkuk.ac.kr/",
+      "sourceUrl": "https://www.career.go.kr/cloud/w/school/list",
+      "reviewedAt": "2026-11-06",
+      "note": ""
+    },
+    {
+      "id": "경기대(서울)",
+      "name": "경기대학교",
+      "type": "대학교",
+      "group": "general",
+      "region": "서울특별시",
+      "campuses": [
+        "경기대학교(제2캠퍼스)"
+      ],
+      "website": "http://www.kyonggi.ac.kr/",
+      "sourceUrl": "https://www.career.go.kr/cloud/w/school/list",
+      "reviewedAt": "2026-11-06",
+      "note": "서울 소재 캠퍼스만 탐색합니다. 다른 지역 캠퍼스의 전형·학과를 포함하지 않습니다."
+    },
+    {
+      "id": "경희대",
+      "name": "경희대학교",
+      "type": "대학교",
+      "group": "general",
+      "region": "서울특별시",
+      "campuses": [
+        "경희대학교(제1캠퍼스)"
+      ],
+      "website": "http://www.khu.ac.kr/",
+      "sourceUrl": "https://www.career.go.kr/cloud/w/school/list",
+      "reviewedAt": "2026-11-06",
+      "note": ""
+    },
+    {
+      "id": "경희사이버대학교",
+      "name": "경희사이버대학교",
+      "type": "사이버대학(대학)",
+      "group": "remote",
+      "region": "서울특별시",
+      "campuses": [
+        "경희사이버대학교(제1캠퍼스)"
+      ],
+      "website": "http://www.khcu.ac.kr/",
+      "sourceUrl": "https://www.career.go.kr/cloud/w/school/list",
+      "reviewedAt": "2026-11-06",
+      "note": "학교 유형과 모집방법·지원자격을 해당 학교 원문에서 확인하세요."
+    },
+    {
+      "id": "고려대",
+      "name": "고려대학교",
+      "type": "대학교",
+      "group": "general",
+      "region": "서울특별시",
+      "campuses": [
+        "고려대학교(제1캠퍼스)"
+      ],
+      "website": "http://www.korea.ac.kr/",
+      "sourceUrl": "https://www.career.go.kr/cloud/w/school/list",
+      "reviewedAt": "2026-11-06",
+      "note": ""
+    },
+    {
+      "id": "고려사이버대학교",
+      "name": "고려사이버대학교",
+      "type": "사이버대학(대학)",
+      "group": "remote",
+      "region": "서울특별시",
+      "campuses": [
+        "고려사이버대학교(제1캠퍼스)"
+      ],
+      "website": "http://www.cuk.edu/",
+      "sourceUrl": "https://www.career.go.kr/cloud/w/school/list",
+      "reviewedAt": "2026-11-06",
+      "note": "학교 유형과 모집방법·지원자격을 해당 학교 원문에서 확인하세요."
+    },
+    {
+      "id": "광운대",
+      "name": "광운대학교",
+      "type": "대학교",
+      "group": "general",
+      "region": "서울특별시",
+      "campuses": [
+        "광운대학교(제1캠퍼스)"
+      ],
+      "website": "http://www.kw.ac.kr/",
+      "sourceUrl": "https://www.career.go.kr/cloud/w/school/list",
+      "reviewedAt": "2026-11-06",
+      "note": ""
+    },
+    {
+      "id": "국민대",
+      "name": "국민대학교",
+      "type": "대학교",
+      "group": "general",
+      "region": "서울특별시",
+      "campuses": [
+        "국민대학교(제1캠퍼스)"
+      ],
+      "website": "http://www.kookmin.ac.kr/",
+      "sourceUrl": "https://www.career.go.kr/cloud/w/school/list",
+      "reviewedAt": "2026-11-06",
+      "note": ""
+    },
+    {
+      "id": "덕성여대",
+      "name": "덕성여자대학교",
+      "type": "대학교",
+      "group": "general",
+      "region": "서울특별시",
+      "campuses": [
+        "덕성여자대학교(제1캠퍼스)"
+      ],
+      "website": "http://www.duksung.ac.kr/",
+      "sourceUrl": "https://www.career.go.kr/cloud/w/school/list",
+      "reviewedAt": "2026-11-06",
+      "note": ""
+    },
+    {
+      "id": "동국대",
+      "name": "동국대학교",
+      "type": "대학교",
+      "group": "general",
+      "region": "서울특별시",
+      "campuses": [
+        "동국대학교(제1캠퍼스)"
+      ],
+      "website": "https://www.dongguk.edu/main",
+      "sourceUrl": "https://www.career.go.kr/cloud/w/school/list",
+      "reviewedAt": "2026-11-06",
+      "note": ""
+    },
+    {
+      "id": "동덕여대",
+      "name": "동덕여자대학교",
+      "type": "대학교",
+      "group": "general",
+      "region": "서울특별시",
+      "campuses": [
+        "동덕여자대학교(제1캠퍼스)"
+      ],
+      "website": "http://www.dongduk.ac.kr/",
+      "sourceUrl": "https://www.career.go.kr/cloud/w/school/list",
+      "reviewedAt": "2026-11-06",
+      "note": ""
+    },
+    {
+      "id": "디지털서울문화예술대학교",
+      "name": "디지털서울문화예술대학교",
+      "type": "사이버대학(대학)",
+      "group": "remote",
+      "region": "서울특별시",
+      "campuses": [
+        "디지털서울문화예술대학교(제1캠퍼스)"
+      ],
+      "website": "http://www.scau.ac.kr/",
+      "sourceUrl": "https://www.career.go.kr/cloud/w/school/list",
+      "reviewedAt": "2026-11-06",
+      "note": "학교 유형과 모집방법·지원자격을 해당 학교 원문에서 확인하세요."
+    },
+    {
+      "id": "명지대",
+      "name": "명지대학교 인문캠퍼스",
+      "type": "대학교",
+      "group": "general",
+      "region": "서울특별시",
+      "campuses": [
+        "명지대학교 인문캠퍼스(제2캠퍼스)"
+      ],
+      "website": "https://www.mju.ac.kr/",
+      "sourceUrl": "https://www.career.go.kr/cloud/w/school/list",
+      "reviewedAt": "2026-11-06",
+      "note": "서울 소재 인문캠퍼스 기준입니다."
+    },
+    {
+      "id": "사이버한국외국어대학교",
+      "name": "사이버한국외국어대학교",
+      "type": "사이버대학(대학)",
+      "group": "remote",
+      "region": "서울특별시",
+      "campuses": [
+        "사이버한국외국어대학교(제1캠퍼스)"
+      ],
+      "website": "http://www.cufs.ac.kr/",
+      "sourceUrl": "https://www.career.go.kr/cloud/w/school/list",
+      "reviewedAt": "2026-11-06",
+      "note": "학교 유형과 모집방법·지원자격을 해당 학교 원문에서 확인하세요."
+    },
+    {
+      "id": "삼육대",
+      "name": "삼육대학교",
+      "type": "대학교",
+      "group": "general",
+      "region": "서울특별시",
+      "campuses": [
+        "삼육대학교(제1캠퍼스)"
+      ],
+      "website": "http://www.syu.ac.kr/",
+      "sourceUrl": "https://www.career.go.kr/cloud/w/school/list",
+      "reviewedAt": "2026-11-06",
+      "note": ""
+    },
+    {
+      "id": "상명대",
+      "name": "상명대학교",
+      "type": "대학교",
+      "group": "general",
+      "region": "서울특별시",
+      "campuses": [
+        "상명대학교(제1캠퍼스)"
+      ],
+      "website": "http://www.smu.ac.kr/",
+      "sourceUrl": "https://www.career.go.kr/cloud/w/school/list",
+      "reviewedAt": "2026-11-06",
+      "note": ""
+    },
+    {
+      "id": "서강대",
+      "name": "서강대학교",
+      "type": "대학교",
+      "group": "general",
+      "region": "서울특별시",
+      "campuses": [
+        "서강대학교(제1캠퍼스)"
+      ],
+      "website": "http://www.sogang.ac.kr/",
+      "sourceUrl": "https://www.career.go.kr/cloud/w/school/list",
+      "reviewedAt": "2026-11-06",
+      "note": ""
+    },
+    {
+      "id": "서경대",
+      "name": "서경대학교",
+      "type": "대학교",
+      "group": "general",
+      "region": "서울특별시",
+      "campuses": [
+        "서경대학교(제1캠퍼스)"
+      ],
+      "website": "http://www.skuniv.ac.kr/",
+      "sourceUrl": "https://www.career.go.kr/cloud/w/school/list",
+      "reviewedAt": "2026-11-06",
+      "note": ""
+    },
+    {
+      "id": "서울과학기술대",
+      "name": "서울과학기술대학교",
+      "type": "대학교",
+      "group": "general",
+      "region": "서울특별시",
+      "campuses": [
+        "서울과학기술대학교(제1캠퍼스)"
+      ],
+      "website": "http://www.seoultech.ac.kr/",
+      "sourceUrl": "https://www.career.go.kr/cloud/w/school/list",
+      "reviewedAt": "2026-11-06",
+      "note": ""
+    },
+    {
+      "id": "서울교대",
+      "name": "서울교육대학교",
+      "type": "교육대학",
+      "group": "general",
+      "region": "서울특별시",
+      "campuses": [
+        "서울교육대학교(제1캠퍼스)"
+      ],
+      "website": "http://www.snue.ac.kr/",
+      "sourceUrl": "https://www.career.go.kr/cloud/w/school/list",
+      "reviewedAt": "2026-11-06",
+      "note": ""
+    },
+    {
+      "id": "서울기독대",
+      "name": "서울기독대학교",
+      "type": "대학교",
+      "group": "general",
+      "region": "서울특별시",
+      "campuses": [
+        "서울기독대학교(제1캠퍼스)"
+      ],
+      "website": "https://www.scu.ac.kr/main",
+      "sourceUrl": "https://www.career.go.kr/cloud/w/school/list",
+      "reviewedAt": "2026-11-06",
+      "note": ""
+    },
+    {
+      "id": "서울대",
+      "name": "서울대학교",
+      "type": "대학교",
+      "group": "general",
+      "region": "서울특별시",
+      "campuses": [
+        "서울대학교(제1캠퍼스)",
+        "서울대학교(제2캠퍼스)"
+      ],
+      "website": "http://www.snu.ac.kr/",
+      "sourceUrl": "https://www.career.go.kr/cloud/w/school/list",
+      "reviewedAt": "2026-11-06",
+      "note": ""
+    },
+    {
+      "id": "서울디지털대학교",
+      "name": "서울디지털대학교",
+      "type": "사이버대학(대학)",
+      "group": "remote",
+      "region": "서울특별시",
+      "campuses": [
+        "서울디지털대학교(제1캠퍼스)"
+      ],
+      "website": "http://www.sdu.ac.kr/",
+      "sourceUrl": "https://www.career.go.kr/cloud/w/school/list",
+      "reviewedAt": "2026-11-06",
+      "note": "학교 유형과 모집방법·지원자격을 해당 학교 원문에서 확인하세요."
+    },
+    {
+      "id": "서울사이버대학교",
+      "name": "서울사이버대학교",
+      "type": "사이버대학(대학)",
+      "group": "remote",
+      "region": "서울특별시",
+      "campuses": [
+        "서울사이버대학교(제1캠퍼스)"
+      ],
+      "website": "http://www.iscu.ac.kr/",
+      "sourceUrl": "https://www.career.go.kr/cloud/w/school/list",
+      "reviewedAt": "2026-11-06",
+      "note": "학교 유형과 모집방법·지원자격을 해당 학교 원문에서 확인하세요."
+    },
+    {
+      "id": "서울시립대",
+      "name": "서울시립대학교",
+      "type": "대학교",
+      "group": "general",
+      "region": "서울특별시",
+      "campuses": [
+        "서울시립대학교(제1캠퍼스)"
+      ],
+      "website": "http://www.uos.ac.kr/",
+      "sourceUrl": "https://www.career.go.kr/cloud/w/school/list",
+      "reviewedAt": "2026-11-06",
+      "note": ""
+    },
+    {
+      "id": "서울여대",
+      "name": "서울여자대학교",
+      "type": "대학교",
+      "group": "general",
+      "region": "서울특별시",
+      "campuses": [
+        "서울여자대학교(제1캠퍼스)"
+      ],
+      "website": "http://www.swu.ac.kr/",
+      "sourceUrl": "https://www.career.go.kr/cloud/w/school/list",
+      "reviewedAt": "2026-11-06",
+      "note": ""
+    },
+    {
+      "id": "서울한영대",
+      "name": "서울한영대학교",
+      "type": "대학교",
+      "group": "general",
+      "region": "서울특별시",
+      "campuses": [
+        "서울한영대학교(제1캠퍼스)"
+      ],
+      "website": "http://www.shyu.ac.kr/",
+      "sourceUrl": "https://www.career.go.kr/cloud/w/school/list",
+      "reviewedAt": "2026-11-06",
+      "note": ""
+    },
+    {
+      "id": "성공회대",
+      "name": "성공회대학교",
+      "type": "대학교",
+      "group": "general",
+      "region": "서울특별시",
+      "campuses": [
+        "성공회대학교(제1캠퍼스)"
+      ],
+      "website": "http://www.skhu.ac.kr/",
+      "sourceUrl": "https://www.career.go.kr/cloud/w/school/list",
+      "reviewedAt": "2026-11-06",
+      "note": ""
+    },
+    {
+      "id": "성균관대",
+      "name": "성균관대학교",
+      "type": "대학교",
+      "group": "general",
+      "region": "서울특별시",
+      "campuses": [
+        "성균관대학교(제1캠퍼스)"
+      ],
+      "website": "http://www.skku.edu/",
+      "sourceUrl": "https://www.career.go.kr/cloud/w/school/list",
+      "reviewedAt": "2026-11-06",
+      "note": ""
+    },
+    {
+      "id": "성신여대",
+      "name": "성신여자대학교",
+      "type": "대학교",
+      "group": "general",
+      "region": "서울특별시",
+      "campuses": [
+        "성신여자대학교(제1캠퍼스)",
+        "성신여자대학교(제2캠퍼스)"
+      ],
+      "website": "http://www.sungshin.ac.kr/",
+      "sourceUrl": "https://www.career.go.kr/cloud/w/school/list",
+      "reviewedAt": "2026-11-06",
+      "note": ""
+    },
+    {
+      "id": "세종대",
+      "name": "세종대학교",
+      "type": "대학교",
+      "group": "general",
+      "region": "서울특별시",
+      "campuses": [
+        "세종대학교(제1캠퍼스)"
+      ],
+      "website": "http://www.sejong.ac.kr/",
+      "sourceUrl": "https://www.career.go.kr/cloud/w/school/list",
+      "reviewedAt": "2026-11-06",
+      "note": ""
+    },
+    {
+      "id": "세종사이버대학교",
+      "name": "세종사이버대학교",
+      "type": "사이버대학(대학)",
+      "group": "remote",
+      "region": "서울특별시",
+      "campuses": [
+        "세종사이버대학교(제1캠퍼스)"
+      ],
+      "website": "https://home.sjcu.ac.kr/ko/index.do",
+      "sourceUrl": "https://www.career.go.kr/cloud/w/school/list",
+      "reviewedAt": "2026-11-06",
+      "note": "학교 유형과 모집방법·지원자격을 해당 학교 원문에서 확인하세요."
+    },
+    {
+      "id": "숙명여대",
+      "name": "숙명여자대학교",
+      "type": "대학교",
+      "group": "general",
+      "region": "서울특별시",
+      "campuses": [
+        "숙명여자대학교(제1캠퍼스)"
+      ],
+      "website": "http://www.sookmyung.ac.kr/",
+      "sourceUrl": "https://www.career.go.kr/cloud/w/school/list",
+      "reviewedAt": "2026-11-06",
+      "note": ""
+    },
+    {
+      "id": "숭실대",
+      "name": "숭실대학교",
+      "type": "대학교",
+      "group": "general",
+      "region": "서울특별시",
+      "campuses": [
+        "숭실대학교(제1캠퍼스)"
+      ],
+      "website": "http://ssu.ac.kr/",
+      "sourceUrl": "https://www.career.go.kr/cloud/w/school/list",
+      "reviewedAt": "2026-11-06",
+      "note": ""
+    },
+    {
+      "id": "숭실사이버대학교",
+      "name": "숭실사이버대학교",
+      "type": "사이버대학(대학)",
+      "group": "remote",
+      "region": "서울특별시",
+      "campuses": [
+        "숭실사이버대학교(제1캠퍼스)"
+      ],
+      "website": "http://www.kcu.ac/",
+      "sourceUrl": "https://www.career.go.kr/cloud/w/school/list",
+      "reviewedAt": "2026-11-06",
+      "note": "학교 유형과 모집방법·지원자격을 해당 학교 원문에서 확인하세요."
+    },
+    {
+      "id": "연세대",
+      "name": "연세대학교",
+      "type": "대학교",
+      "group": "general",
+      "region": "서울특별시",
+      "campuses": [
+        "연세대학교(제1캠퍼스)"
+      ],
+      "website": "http://www.yonsei.ac.kr/",
+      "sourceUrl": "https://www.career.go.kr/cloud/w/school/list",
+      "reviewedAt": "2026-11-06",
+      "note": ""
+    },
+    {
+      "id": "육군사관학교",
+      "name": "육군사관학교",
+      "type": "사관학교",
+      "group": "special",
+      "region": "서울특별시",
+      "campuses": [
+        "서울 노원구 공릉동"
+      ],
+      "website": "http://www.kma.ac.kr/",
+      "sourceUrl": "https://www.kci.go.kr/kciportal/po/search/poInsiSearReinViewPopup.kci?insiGeneInfoBean.insiId=INS000005755&isPop=Y",
+      "reviewedAt": "2026-11-06",
+      "note": "서울 소재 별도 선발 학교입니다. 일반 정시와 구분해 지원자격·선발방법을 확인하세요."
+    },
+    {
+      "id": "이화여대",
+      "name": "이화여자대학교",
+      "type": "대학교",
+      "group": "general",
+      "region": "서울특별시",
+      "campuses": [
+        "이화여자대학교(제1캠퍼스)",
+        "이화여자대학교(제2캠퍼스)"
+      ],
+      "website": "http://www.ewha.ac.kr/",
+      "sourceUrl": "https://www.career.go.kr/cloud/w/school/list",
+      "reviewedAt": "2026-11-06",
+      "note": ""
+    },
+    {
+      "id": "장로회신학대",
+      "name": "장로회신학대학교",
+      "type": "대학교",
+      "group": "general",
+      "region": "서울특별시",
+      "campuses": [
+        "장로회신학대학교(제1캠퍼스)"
+      ],
+      "website": "http://www.puts.ac.kr/",
+      "sourceUrl": "https://www.career.go.kr/cloud/w/school/list",
+      "reviewedAt": "2026-11-06",
+      "note": ""
+    },
+    {
+      "id": "정석대학",
+      "name": "정석대학",
+      "type": "기술대학",
+      "group": "special",
+      "region": "서울특별시",
+      "campuses": [
+        "정석대학(제1캠퍼스)"
+      ],
+      "website": null,
+      "sourceUrl": "https://www.career.go.kr/cloud/w/school/list",
+      "reviewedAt": "2026-11-06",
+      "note": "커리어넷에 기술대학으로 등재되어 있습니다. 현재 모집 여부·지원자격은 이 목록에서 확인되지 않았습니다."
+    },
+    {
+      "id": "중앙대",
+      "name": "중앙대학교",
+      "type": "대학교",
+      "group": "general",
+      "region": "서울특별시",
+      "campuses": [
+        "중앙대학교(제1캠퍼스)"
+      ],
+      "website": "http://www.cau.ac.kr/",
+      "sourceUrl": "https://www.career.go.kr/cloud/w/school/list",
+      "reviewedAt": "2026-11-06",
+      "note": ""
+    },
+    {
+      "id": "총신대",
+      "name": "총신대학교",
+      "type": "대학교",
+      "group": "general",
+      "region": "서울특별시",
+      "campuses": [
+        "총신대학교(제1캠퍼스)"
+      ],
+      "website": "http://www.chongshin.ac.kr/",
+      "sourceUrl": "https://www.career.go.kr/cloud/w/school/list",
+      "reviewedAt": "2026-11-06",
+      "note": ""
+    },
+    {
+      "id": "추계예술대",
+      "name": "추계예술대학교",
+      "type": "대학교",
+      "group": "general",
+      "region": "서울특별시",
+      "campuses": [
+        "추계예술대학교(제1캠퍼스)"
+      ],
+      "website": "http://www.chugye.ac.kr/",
+      "sourceUrl": "https://www.career.go.kr/cloud/w/school/list",
+      "reviewedAt": "2026-11-06",
+      "note": ""
+    },
+    {
+      "id": "태재대학교",
+      "name": "태재대학교",
+      "type": "사이버대학(대학)",
+      "group": "remote",
+      "region": "서울특별시",
+      "campuses": [
+        "태재대학교(제1캠퍼스)"
+      ],
+      "website": "http://www.taejae.ac.kr/",
+      "sourceUrl": "https://www.career.go.kr/cloud/w/school/list",
+      "reviewedAt": "2026-11-06",
+      "note": "학교 유형과 모집방법·지원자격을 해당 학교 원문에서 확인하세요."
+    },
+    {
+      "id": "한국방송통신대학교",
+      "name": "한국방송통신대학교",
+      "type": "방송통신대학교",
+      "group": "remote",
+      "region": "서울특별시",
+      "campuses": [
+        "한국방송통신대학교(제1캠퍼스)"
+      ],
+      "website": "http://www.knou.ac.kr/",
+      "sourceUrl": "https://www.career.go.kr/cloud/w/school/list",
+      "reviewedAt": "2026-11-06",
+      "note": "학교 유형과 모집방법·지원자격을 해당 학교 원문에서 확인하세요."
+    },
+    {
+      "id": "한국성서대",
+      "name": "한국성서대학교",
+      "type": "대학교",
+      "group": "general",
+      "region": "서울특별시",
+      "campuses": [
+        "한국성서대학교(제1캠퍼스)"
+      ],
+      "website": "http://www.bible.ac.kr/",
+      "sourceUrl": "https://www.career.go.kr/cloud/w/school/list",
+      "reviewedAt": "2026-11-06",
+      "note": ""
+    },
+    {
+      "id": "한국열린사이버대학교",
+      "name": "한국열린사이버대학교",
+      "type": "사이버대학(대학)",
+      "group": "remote",
+      "region": "서울특별시",
+      "campuses": [
+        "한국열린사이버대학교(제1캠퍼스)"
+      ],
+      "website": "http://www.ocu.ac.kr/",
+      "sourceUrl": "https://www.career.go.kr/cloud/w/school/list",
+      "reviewedAt": "2026-11-06",
+      "note": "학교 유형과 모집방법·지원자격을 해당 학교 원문에서 확인하세요."
+    },
+    {
+      "id": "한국예술종합학교",
+      "name": "한국예술종합학교",
+      "type": "각종대학(대학)",
+      "group": "special",
+      "region": "서울특별시",
+      "campuses": [
+        "한국예술종합학교(제1캠퍼스)",
+        "한국예술종합학교(제2캠퍼스)"
+      ],
+      "website": "http://www.karts.ac.kr/",
+      "sourceUrl": "https://www.career.go.kr/cloud/w/school/list",
+      "reviewedAt": "2026-11-06",
+      "note": "학교 유형과 모집방법·지원자격을 해당 학교 원문에서 확인하세요."
+    },
+    {
+      "id": "한국외대",
+      "name": "한국외국어대학교",
+      "type": "대학교",
+      "group": "general",
+      "region": "서울특별시",
+      "campuses": [
+        "한국외국어대학교(제1캠퍼스)"
+      ],
+      "website": "http://www.hufs.ac.kr/",
+      "sourceUrl": "https://www.career.go.kr/cloud/w/school/list",
+      "reviewedAt": "2026-11-06",
+      "note": ""
+    },
+    {
+      "id": "한국체육대",
+      "name": "한국체육대학교",
+      "type": "대학교",
+      "group": "general",
+      "region": "서울특별시",
+      "campuses": [
+        "한국체육대학교(제1캠퍼스)"
+      ],
+      "website": "http://www.knsu.ac.kr/",
+      "sourceUrl": "https://www.career.go.kr/cloud/w/school/list",
+      "reviewedAt": "2026-11-06",
+      "note": ""
+    },
+    {
+      "id": "한성대",
+      "name": "한성대학교",
+      "type": "대학교",
+      "group": "general",
+      "region": "서울특별시",
+      "campuses": [
+        "한성대학교(제1캠퍼스)"
+      ],
+      "website": "http://www.hansung.ac.kr/",
+      "sourceUrl": "https://www.career.go.kr/cloud/w/school/list",
+      "reviewedAt": "2026-11-06",
+      "note": ""
+    },
+    {
+      "id": "한양대",
+      "name": "한양대학교",
+      "type": "대학교",
+      "group": "general",
+      "region": "서울특별시",
+      "campuses": [
+        "한양대학교(제1캠퍼스)"
+      ],
+      "website": "http://www.hanyang.ac.kr/",
+      "sourceUrl": "https://www.career.go.kr/cloud/w/school/list",
+      "reviewedAt": "2026-11-06",
+      "note": ""
+    },
+    {
+      "id": "한양사이버대학교",
+      "name": "한양사이버대학교",
+      "type": "사이버대학(대학)",
+      "group": "remote",
+      "region": "서울특별시",
+      "campuses": [
+        "한양사이버대학교(제1캠퍼스)"
+      ],
+      "website": "http://www.hycu.ac.kr/",
+      "sourceUrl": "https://www.career.go.kr/cloud/w/school/list",
+      "reviewedAt": "2026-11-06",
+      "note": "학교 유형과 모집방법·지원자격을 해당 학교 원문에서 확인하세요."
+    },
+    {
+      "id": "홍익대",
+      "name": "홍익대학교",
+      "type": "대학교",
+      "group": "general",
+      "region": "서울특별시",
+      "campuses": [
+        "홍익대학교(제1캠퍼스)"
+      ],
+      "website": "http://www.hongik.ac.kr/",
+      "sourceUrl": "https://www.career.go.kr/cloud/w/school/list",
+      "reviewedAt": "2026-11-06",
+      "note": ""
+    }
+  ]
+}

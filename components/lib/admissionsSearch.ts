@@ -8,15 +8,15 @@ export const admissionsQuestions = [
   { id: "foreign-school", title: "외고도 학교장추천·지역균형에 지원할 수 있나요?", answer: "전형 이름이 같아도 대학마다 고교유형·졸업연도·추천 조건이 달라요. ‘추천’이라는 이름만으로 지원 가능 여부를 판단하지 말고, 해당 대학의 지원자격을 확인하세요.", href: "/admissions/susi#plans", action: "전형별 지원자격 원문 확인" },
 ];
 
-type Unit = { university: string; department: string };
+type Unit = { university: string; department: string; aliases?: readonly string[] };
 type SearchMatch = { title: string; description: string; kind: string; href: string };
 const normalize = (text: string) => text.toLocaleLowerCase("ko").replace(/\s/g, "");
 export function findAdmissionsMatches(query: string, units: readonly Unit[]): SearchMatch[] {
   const key = normalize(query);
   if (!key) return [];
-  const universities = [...new Set(units.map(u => u.university))].filter(u => normalize(u).includes(key));
+  const universities = [...new Set(units.map(u => u.university))].filter(u => units.some(row => row.university === u && normalize([u, ...(row.aliases || [])].join(" ")).includes(key)));
   const matches: SearchMatch[] = universities.flatMap(u => [
-    { title: `${u} · 정시`, description: "과거 입결·2028 반영방법", kind: "대학", href: `/admissions/seoul?university=${encodeURIComponent(u)}#results` },
+    { title: `${u} · 정시`, description: "수록 자료와 대학 원문 확인", kind: "대학", href: `/admissions/seoul?university=${encodeURIComponent(u)}#results` },
     { title: `${u} · 학과와 수시`, description: "학과·교육과정·수능최저·면접", kind: "대학", href: `/admissions/susi?university=${encodeURIComponent(u)}#directory` },
   ]);
   for (const q of admissionsQuestions) if (normalize(q.title + q.answer).includes(key)) matches.push({ title: q.title, description: q.action, kind: "궁금한 질문", href: `/admissions#${q.id}` });
