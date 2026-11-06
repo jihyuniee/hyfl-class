@@ -22,7 +22,7 @@ export function selectSusiPlans(records: SusiPlan[], university: string, field: 
   const priority = (r: SusiPlan) => r.sourceKey === "hufs-official-2028-plan" ? 3 : r.sourceKey === "sen-20261014" ? 2 : 1;
   const found = new Map<string, SusiPlan>();
   for (const row of candidates) {
-    const key = `${row.category}/${row.admission.replace(/\s/g, "")}`;
+    const key = `${canonicalUniversity(row.university)}/${row.category}/${row.admission.replace(/\s/g, "")}`;
     const previous = found.get(key);
     if (!previous || priority(row) > priority(previous)) found.set(key, row);
   }
