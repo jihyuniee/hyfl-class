@@ -1,12 +1,14 @@
 "use client";
 import { useState } from "react";
 import { mockPercentile, mockStandard, readScore } from "@/components/lib/mockScores";
+import registry from '@/public/admissions-explorer/seoul-universities.json';
+import SeoulUniversityOptions from './SeoulUniversityOptions';
 import styles from "./explorer.module.css";
 
 const subjects = ['국어', '수학', '통합사회', '통합과학'];
 const points = (value: number) => Number(value.toFixed(2)).toLocaleString('ko-KR');
 
-export default function MockScoreExplorer({ university }: { university: string }) {
+export default function MockScoreExplorer({ university, onUniversityChange }: { university: string; onUniversityChange: (value: string) => void }) {
   const [examYear, setExamYear] = useState('2026');
   const [examMonth, setExamMonth] = useState('');
   const [examGrade, setExamGrade] = useState('고2');
@@ -56,6 +58,7 @@ export default function MockScoreExplorer({ university }: { university: string }
         <label>국수탐 평균 백분위<input aria-label="국수탐 평균 백분위" type="number" inputMode="decimal" min="0" max="100" step="any" required value={totalAverage} onChange={e => { setTotalAverage(e.target.value); clearResult(); }} /></label>
       </div>}
       <div className={styles.gradeInputs}><label>영어 등급 · 선택<select aria-label="영어 등급" value={english} onChange={e => { setEnglish(e.target.value); clearResult(); }}><option value="">선택 안 함</option>{Array.from({length:9},(_,i)=><option key={i} value={i+1}>{i+1}등급</option>)}</select></label><label>한국사 등급 · 선택<select aria-label="한국사 등급" value={history} onChange={e => { setHistory(e.target.value); clearResult(); }}><option value="">선택 안 함</option>{Array.from({length:9},(_,i)=><option key={i} value={i+1}>{i+1}등급</option>)}</select></label></div>
+      <label className={styles.searchLabel}>확인할 서울 대학<select className={styles.universitySelect} value={university} onChange={e => onUniversityChange(e.target.value)}><option value="">서울 소재 전체 {registry.records.length}곳</option><SeoulUniversityOptions /></select></label>
       <p className={styles.muted}>{standard !== null && average !== null ? `입력 점수: 표준점수 합 ${points(standard)} · 평균 백분위 ${points(average)}` : '표준점수는 네 과목의 합, 백분위는 (국어 + 수학 + 두 탐구 평균) ÷ 3입니다.'}</p>
       <button className={styles.primary} type="submit">입력 점수 확인</button>
       {error && <p role="alert">{error}</p>}
@@ -66,6 +69,8 @@ export default function MockScoreExplorer({ university }: { university: string }
       <p><b>{submitted.exam}</b></p><h3>표준점수 단순합 {points(submitted.standard)} · 국수탐 평균 백분위 {points(submitted.average)}</h3>
       <p>입력한 점수의 계산 결과입니다. 대학별 환산점수나 합격선이 아닙니다.{(submitted.english || submitted.history) && ` 영어·한국사 등급은 이 계산에 반영하지 않았습니다.`}</p>
       <p>다른 시험·학년의 성적이나 과거 입결과 같은 기준으로 바로 비교할 수 없습니다. 아래 공개 입결에서 결과 학년도·지표·출처를 확인하세요.</p>
+      <p className={styles.scopeNote}><b>상향·소신·적정 판정: 자료 미확보</b><br />입력한 시험과 2028 대입에 적용되는 대학·학과별 판정 자료가 아직 연결되어 있지 않습니다. 기존 앱의 점수 차이 구간을 합격 가능성으로 표시하지 않습니다.</p>
+      <a href="#universities">서울 소재 전체 {registry.records.length}개 학교와 수록 자료 확인 ↓</a>
     </div>}
     <div className={styles.tools}><a href="#results">{university || '대학별'} 실제 공개 입결 찾기 →</a><a href="#plans">2028 정시 반영방법 확인 →</a></div>
     <details className={styles.scoreMethod}><summary>상담 자료의 기준 확인</summary>

@@ -4,19 +4,21 @@ import Link from "next/link";
 import { useState } from "react";
 import results from "@/public/admissions-seoul/results.json";
 import plans from "@/public/admissions-seoul/plans.json";
-import directory from "@/public/admissions-explorer/directory.json";
+import registry from "@/public/admissions-explorer/seoul-universities.json";
+import SeoulUniversityOptions from "@/components/admissions/SeoulUniversityOptions";
+import SeoulUniversityDirectory from "@/components/admissions/SeoulUniversityDirectory";
+import { resolveSeoulUniversity } from "@/components/lib/seoulUniversities";
 import AdmissionsNav from "@/components/admissions/AdmissionsNav";
 import MockScoreExplorer from "@/components/admissions/MockScoreExplorer";
 import styles from "@/components/admissions/explorer.module.css";
 import local from "./seoul.module.css";
 import { filterAdmissionResults } from "@/components/lib/admissionsBrowse";
 
-const universities = [...directory.universities].sort((a, b) => a.localeCompare(b, "ko"));
 const display = (n: number | null) => n === null ? "—" : n.toLocaleString("ko-KR", { maximumFractionDigits: 4 });
 const matchUniversity = (actual: string, selected: string) => !selected || actual === selected || actual === `${selected} 서울`;
 
 export default function SeoulAdmissions({ initialUniversity = "", initialQuery = "" }: { initialUniversity?: string; initialQuery?: string }) {
-  const [university, setUniversity] = useState(universities.includes(initialUniversity) ? initialUniversity : "");
+  const [university, setUniversity] = useState(resolveSeoulUniversity(registry.records, initialUniversity)?.id || "");
   const [query, setQuery] = useState(initialQuery);
   const [year, setYear] = useState("");
   const [metric, setMetric] = useState("");
@@ -25,18 +27,23 @@ export default function SeoulAdmissions({ initialUniversity = "", initialQuery =
   const filtered = filterAdmissionResults(results, { university, query, year, metric, band });
   const selectedPlans = plans.filter(p => matchUniversity(String(p[1]), university));
   const counterpart = `/admissions/susi${university ? `?university=${encodeURIComponent(university)}` : ""}`;
+  const selectedUniversity = resolveSeoulUniversity(registry.records, university);
 
   return <div className={styles.page}>
     <AdmissionsNav current="regular" />
     <header className={styles.hero}><span className={styles.yearPill}>2028학년도 · 정시</span><h1>2028 반영방법부터 확인해요.</h1><p>대학별 시행계획을 먼저 보고, 과거 입결은 해당 연도의 참고 자료로 살펴보세요.</p></header>
-    <nav className={styles.pageJump} aria-label="정시 자료 바로가기"><a href="#mock-score">내 성적 확인</a><a href="#plans">2028 정시 시행계획</a><a href="#results">과거 정시 입결 · 참고</a><a href="#score-guide">점수 읽는 법</a></nav>
+    <nav className={styles.pageJump} aria-label="정시 자료 바로가기"><a href="#mock-score">내 성적 확인</a><a href="#universities">서울 대학 전체</a><a href="#plans">2028 정시 시행계획</a><a href="#results">과거 정시 입결 · 참고</a><a href="#score-guide">점수 읽는 법</a></nav>
 
-    <MockScoreExplorer university={university} />
+    <MockScoreExplorer university={university} onUniversityChange={value => { setUniversity(value); setLimit(9); }} />
+
+    <SeoulUniversityDirectory university={university} onUniversityChange={value => { setUniversity(value); setLimit(9); }} />
 
     <section id="plans" className={styles.section} aria-labelledby="plans-title">
       <div className={styles.sectionHeading}><h2 id="plans-title">2028 정시 시행계획 · 과목별 반영방법</h2><span>시행계획 · 최종 모집요강 확인 필요</span></div>
       <p>2028학년도 시행계획에서 확인한 반영 사례입니다. 전형·모집단위의 적용 범위와 원문 쪽수를 함께 확인하세요. 최종 모집요강은 추후 재확인해야 합니다.</p>
-      <label className={styles.searchLabel}>반영방법 대학<select className={styles.universitySelect} value={university} onChange={e => { setUniversity(e.target.value); setLimit(9); }}><option value="">전체 대학</option>{universities.map(u => <option key={u}>{u}</option>)}</select></label>
+      <label className={styles.searchLabel}>반영방법 대학<select className={styles.universitySelect} value={university} onChange={e => { setUniversity(e.target.value); setLimit(9); }}><option value="">전체 대학</option><SeoulUniversityOptions /></select></label>
+      {selectedUniversity?.note && <p className={styles.muted}>{selectedUniversity.note}</p>}
+      {selectedUniversity?.website && <p><a href={selectedUniversity.website} target="_blank" rel="noopener noreferrer">{selectedUniversity.name} 홈페이지에서 전형 원문 확인 ↗</a></p>}
       {selectedPlans.length === 0 && <p className={styles.empty}>이 대학의 반영방법 요약은 수록하지 않았어요. 대학의 2028 시행계획 원문을 확인하세요.</p>}
       <div className={styles.planGrid}>{selectedPlans.map(p => <details key={`${p[1]}-${p[2]}-${p[3]}`} className={local.planCard}>
         <summary><span>{p[1]} · {p[2]}</span><small>{p[3]}</small></summary>
@@ -48,7 +55,7 @@ export default function SeoulAdmissions({ initialUniversity = "", initialQuery =
       <div className={styles.sectionHeading}><h2 id="results-title">과거 정시 입결 · 2028 합격선 아님</h2><span>11개 대학 · 2024~2026학년도</span></div>
       <p className={styles.scopeNote}>아래는 2024~2026학년도 결과입니다. 2028학년도는 수능 체제와 대학별 반영방법이 달라 과거 점수를 2028 합격선으로 그대로 사용할 수 없습니다.</p><p>평균과 70% 컷은 서로 다른 지표예요. ‘—’는 원문에 수록하지 않은 값입니다. 과거 점수로 2028 지원 가능성을 판정하지 않아요.</p>
       <div className={local.filters}>
-        <label>대학<select value={university} onChange={e => { setUniversity(e.target.value); setLimit(9); }}><option value="">전체 대학</option>{universities.map(u => <option key={u}>{u}</option>)}</select></label>
+        <label>대학<select value={university} onChange={e => { setUniversity(e.target.value); setLimit(9); }}><option value="">전체 대학</option><SeoulUniversityOptions /></select></label>
         <label>학과·대학 검색<input type="search" value={query} placeholder="예: 중국, 경영, 정치" onChange={e => { setQuery(e.target.value); setLimit(9); }} /></label>
         <label>결과 학년도<select value={year} onChange={e => { setYear(e.target.value); setLimit(9); }}><option value="">전체 연도</option>{[2026, 2025, 2024].map(y => <option key={y}>{y}</option>)}</select></label>
         <label>공개 지표<select value={metric} onChange={e => { setMetric(e.target.value); setLimit(9); }}><option value="">전체 지표</option><option value="percentile">백분위 70% 컷 있음</option><option value="converted">환산점수 70% 컷 있음</option><option value="mean">평균 백분위 있음</option></select></label>

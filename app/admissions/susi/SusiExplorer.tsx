@@ -3,15 +3,17 @@
 import { useState } from "react";
 import Link from "next/link";
 import AdmissionsNav from "@/components/admissions/AdmissionsNav";
-import { selectSusiPlans } from "@/components/lib/admissionsExplorer";
-import directory from "@/public/admissions-explorer/directory.json";
+import { canonicalUniversity, selectSusiPlans } from "@/components/lib/admissionsExplorer";
+import registry from "@/public/admissions-explorer/seoul-universities.json";
+import SeoulUniversityOptions from "@/components/admissions/SeoulUniversityOptions";
+import { resolveSeoulUniversity } from "@/components/lib/seoulUniversities";
 import majors from "@/public/admissions-explorer/majors.json";
 import planData from "@/public/admissions-2028/records.json";
 import senIndex from "@/public/admissions-2028/sen-universities.json";
 import styles from "@/components/admissions/explorer.module.css";
 
 export default function SusiExplorer({ initialUniversity = "", initialProfile = "", initialQuery = "" }: { initialUniversity?: string; initialProfile?: string; initialQuery?: string }) {
-  const [university, setUniversity] = useState(directory.universities.includes(initialUniversity) ? initialUniversity : "");
+  const [university, setUniversity] = useState(resolveSeoulUniversity(registry.records, initialUniversity)?.id || "");
   const [query, setQuery] = useState(initialQuery);
   const [profileId, setProfileId] = useState(majors.some(p => p.id === initialProfile) ? initialProfile : "");
   const [field, setField] = useState(majors.find(p => p.id === initialProfile)?.field || "");
@@ -20,7 +22,8 @@ export default function SusiExplorer({ initialUniversity = "", initialProfile = 
   const [interview, setInterview] = useState("");
   const [planLimit, setPlanLimit] = useState(8);
   const activeUniversity = university;
-  const records = selectSusiPlans(planData.records, activeUniversity, field, category, minimum)
+  const selectedUniversity = resolveSeoulUniversity(registry.records, activeUniversity);
+  const records = selectSusiPlans(planData.records.filter(row => registry.records.some(school => school.id === canonicalUniversity(row.university))), activeUniversity, field, category, minimum)
     .filter(r => !interview || r.hasInterview === (interview === "있음"));
   const sourcePage = senIndex.find(r => r.name === activeUniversity)?.page;
   const guideProfiles = majors.filter(p => (!profileId || p.id === profileId) && (!query.trim() || `${p.title} ${p.field}`.includes(query.trim())));
@@ -32,8 +35,10 @@ export default function SusiExplorer({ initialUniversity = "", initialProfile = 
     <section id="plans" className={styles.section} aria-labelledby="susi-heading">
       <h2 id="susi-heading">2028 수시 시행계획 · 수능최저·면접</h2>
       <p>교육청 자료·입학처 시행계획에서 확인한 <b>대학 공통 전형 요약</b>입니다. 해당 학과 모집 여부와 외고·추천 조건은 전형별 지원자격 원문을 확인하세요.</p>
+      {selectedUniversity?.note && <p className={styles.muted}>{selectedUniversity.note}</p>}
+      {selectedUniversity?.website && <p><a href={selectedUniversity.website} target="_blank" rel="noopener noreferrer">{selectedUniversity.name} 홈페이지에서 전형 원문 확인 ↗</a></p>}
       <div className={`${styles.filters} ${styles.planFilters}`}>
-        <label>전형 대학<select value={university} onChange={e => { setUniversity(e.target.value); setPlanLimit(8); }}><option value="">전체 대학</option>{directory.universities.map(u => <option key={u}>{u}</option>)}</select></label>
+        <label>전형 대학<select value={university} onChange={e => { setUniversity(e.target.value); setPlanLimit(8); }}><option value="">전체 대학</option><SeoulUniversityOptions /></select></label>
         <label>전형 유형<select value={category} onChange={e => { setCategory(e.target.value); setPlanLimit(8); }}><option value="">학종·교과·논술 전체</option><option>학생부종합</option><option>학생부교과</option><option>논술</option></select></label>
         <label>수능최저<select value={minimum} onChange={e => { setMinimum(e.target.value); setPlanLimit(8); }}><option value="">전체</option><option>있음</option><option>없음</option></select></label>
         <label>면접<select value={interview} onChange={e => { setInterview(e.target.value); setPlanLimit(8); }}><option value="">전체</option><option>있음</option><option>없음</option></select></label>
