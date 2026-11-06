@@ -2,8 +2,10 @@ import styles from "./explorer.module.css";
 
 export default function OfficialResources() {
   return <section id="student-questions" className={styles.section} aria-labelledby="official-resources-heading">
-    <h2 id="official-resources-heading">대학 공식 자료</h2>
+    <h2 id="official-resources-heading">2028 공식 발표·교육청 자료</h2>
     <div className={styles.tools}>
+      <a href="https://www.kcue.or.kr/news/sub02/sub01.php?at=view&amp;idx=2765091" target="_blank" rel="noopener noreferrer">대교협 · 2028 시행계획 발표 ↗</a>
+      <a href="https://www.moe.go.kr/boardCnts/viewRenew.do?boardID=294&amp;boardSeq=103512&amp;lev=0&amp;m=020402&amp;opType=N&amp;s=moe&amp;statusYN=W" target="_blank" rel="noopener noreferrer">교육부 · 2028 수능 시행일·체제 ↗</a>
       <a href="https://www.adiga.kr" target="_blank" rel="noopener noreferrer">어디가 · 대학별 공개 입결 ↗</a>
       <a href="/admissions-2028/sen-preview-20261014.pdf" target="_blank" rel="noopener noreferrer">서울교육청 2028 대입 자료 ↗</a>
     </div>
