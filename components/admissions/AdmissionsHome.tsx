@@ -12,7 +12,7 @@ import { admissionsQuestions, findAdmissionsMatches } from "@/components/lib/adm
 import styles from "./explorer.module.css";
 
 const routes = [
-  { title: "내 점수로 어느 대학을 살펴볼까요?", tag: "상향·소신·적정", text: "표준점수·백분위를 입력하고 지원참고표와 비교하기", href: "/admissions/seoul#mock-score", number: "01" },
+  { title: "내 성적과 정시 자료를 확인할까요?", tag: "성적·공식 자료", text: "표준점수·백분위 계산과 실제 공개 입결·반영방법 확인", href: "/admissions/seoul#mock-score", number: "01" },
   { title: "지난 합격 성적이 궁금해요", tag: "정시 입결", text: "대학이 공개한 평균·70% 컷을 대학과 학과로 찾기", href: "/admissions/seoul", number: "02" },
   { title: "어떤 학과에서 무엇을 배울까요?", tag: "학과 탐색", text: "중국어, 경영, 정치외교… 관심 분야부터 둘러보기", href: "/admissions/susi#directory", number: "03" },
   { title: "수능최저·면접이 있나요?", tag: "2028 수시", text: "대학별 전형방법과 지원 조건의 근거 확인하기", href: "/admissions/susi#plans", number: "04" },

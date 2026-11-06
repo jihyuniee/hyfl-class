@@ -29,7 +29,7 @@ export default function SeoulAdmissions({ initialUniversity = "", initialQuery =
   return <div className={styles.page}>
     <AdmissionsNav current="regular" />
     <header className={styles.hero}><span className={styles.eyebrow}>정시 · 인문·사회·어문</span><h1>지난 입결을 찾고, 반영방법을 확인해요.</h1><p>공개된 실제 성적과 2028 전형방법을 구분해 살펴보세요.</p></header>
-    <nav className={styles.pageJump} aria-label="정시 자료 바로가기"><a href="#mock-score">내 점수로 대학 찾기</a><a href="#results">과거 정시 입결</a><a href="#plans">2028 과목 반영방법</a><a href="#score-guide">점수 읽는 법</a></nav>
+    <nav className={styles.pageJump} aria-label="정시 자료 바로가기"><a href="#mock-score">내 성적 확인</a><a href="#results">과거 정시 입결</a><a href="#plans">2028 과목 반영방법</a><a href="#score-guide">점수 읽는 법</a></nav>
 
     <MockScoreExplorer university={university} />
 
