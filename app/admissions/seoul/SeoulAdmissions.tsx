@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import results from "@/public/admissions-seoul/results.json";
 import plans from "@/public/admissions-seoul/plans.json";
 import registry from "@/public/admissions-explorer/seoul-universities.json";
@@ -17,7 +17,7 @@ import { filterAdmissionResults } from "@/components/lib/admissionsBrowse";
 const display = (n: number | null) => n === null ? "—" : n.toLocaleString("ko-KR", { maximumFractionDigits: 4 });
 const matchUniversity = (actual: string, selected: string) => !selected || actual === selected || actual === `${selected} 서울`;
 
-export default function SeoulAdmissions({ initialUniversity = "", initialQuery = "" }: { initialUniversity?: string; initialQuery?: string }) {
+export default function SeoulAdmissions({ initialUniversity = "", initialQuery = "", initialSection = "" }: { initialUniversity?: string; initialQuery?: string; initialSection?: string }) {
   const [university, setUniversity] = useState(resolveSeoulUniversity(registry.records, initialUniversity)?.id || "");
   const [query, setQuery] = useState(initialQuery);
   const [year, setYear] = useState("");
@@ -29,10 +29,14 @@ export default function SeoulAdmissions({ initialUniversity = "", initialQuery =
   const counterpart = `/admissions/susi${university ? `?university=${encodeURIComponent(university)}` : ""}`;
   const selectedUniversity = resolveSeoulUniversity(registry.records, university);
 
+  useEffect(() => {
+    if (initialSection) document.getElementById(initialSection)?.scrollIntoView();
+  }, [initialSection]);
+
   return <div className={styles.page}>
     <AdmissionsNav current="regular" />
-    <header className={styles.hero}><span className={styles.yearPill}>2028학년도 · 정시</span><h1>2028 반영방법부터 확인해요.</h1><p>대학별 시행계획을 먼저 보고, 과거 입결은 해당 연도의 참고 자료로 살펴보세요.</p></header>
-    <nav className={styles.pageJump} aria-label="정시 자료 바로가기"><a href="#mock-score">내 성적 확인</a><a href="#universities">서울 대학 전체</a><a href="#plans">2028 정시 시행계획</a><a href="#results">과거 정시 입결 · 참고</a><a href="#score-guide">점수 읽는 법</a></nav>
+    <header className={styles.hero}><span className={styles.yearPill}>2028학년도 · 정시</span><h1>내 점수로 대학·학과 찾기</h1><p>표점합·평균 백분위 입력 · 상향·소신·가능·적정·안정 참고표 · 대학별 반영방법</p></header>
+    <nav className={styles.pageJump} aria-label="정시 자료 바로가기"><a href="#mock-score">내 점수로 찾기</a><a href="#universities">서울 대학 전체</a><a href="#plans">2028 정시 시행계획</a><a href="#results">과거 정시 입결 · 참고</a><a href="#score-guide">점수 읽는 법</a></nav>
 
     <MockScoreExplorer university={university} onUniversityChange={value => { setUniversity(value); setLimit(9); }} />
 

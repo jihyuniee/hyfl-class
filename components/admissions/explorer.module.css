@@ -198,6 +198,16 @@
 .scoreComparison dd { margin: 4px 0 0; font-size: 22px; font-weight: 700; }
 .scoreComparison small { display: block; font-size: 12px; font-weight: 400; color: var(--text-muted); }
 .scoreGap { font-size: 13px; color: var(--primary-dark); }
+.scoreTableWrap { max-width: 100%; overflow-x: auto; border: 1px solid var(--border); border-radius: var(--radius-control); background: var(--surface); }
+.scoreTable { width: 100%; min-width: 800px; border-collapse: collapse; font-size: 13px; }
+.scoreTable caption { padding: 10px 12px; text-align: left; font-size: 12px; color: var(--text-muted); caption-side: bottom; }
+.scoreTable th, .scoreTable td { padding: 11px 12px; border-bottom: 1px solid var(--border-light); text-align: left; vertical-align: top; }
+.scoreTable thead { background: var(--surface-muted); }
+.scoreTable thead th { white-space: nowrap; }
+.scoreTable :is(th, td):nth-child(n+4) { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.scoreTable tbody tr:hover { background: var(--surface-muted); }
+.scoreTable a { color: var(--primary-dark); text-decoration: underline; text-underline-offset: 3px; }
+.scoreTableWrap:focus-visible { outline: 3px solid var(--primary); outline-offset: 3px; }
 @media (max-width: 420px) { .scoreTotals { grid-template-columns: 1fr; } .scoreComparison dd { font-size: 19px; } }
 
 /* Shared admissions workspace */

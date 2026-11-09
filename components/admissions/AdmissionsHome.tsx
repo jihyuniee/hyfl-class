@@ -14,9 +14,9 @@ import { admissions2028Facts } from "@/components/lib/admissions2028";
 import styles from "./explorer.module.css";
 
 const routes = [
-  { title: "2028 수시 전형", tag: "전형 계획", text: "수능최저·면접·지원자격 원문 확인", href: "/admissions/susi#plans", number: "01" },
-  { title: "2028 정시 반영방법", tag: "전형 계획", text: "국어·수학·영어·탐구·학생부 반영 확인", href: "/admissions/seoul#plans", number: "02" },
-  { title: "내 모의고사 성적", tag: "성적 확인", text: "시험 정보를 남기고 점수의 합·평균 확인", href: "/admissions/seoul?section=mock-score", number: "03" },
+  { title: "내 점수로 대학 찾기", tag: "모의고사 참고표", text: "표점합·평균 백분위 입력 → 상향·소신·가능·적정·안정 표", href: "/admissions/seoul?section=mock-score", number: "01" },
+  { title: "2028 수시 전형", tag: "전형 계획", text: "수능최저·면접·지원자격 원문 확인", href: "/admissions/susi#plans", number: "02" },
+  { title: "2028 정시 반영방법", tag: "전형 계획", text: "국어·수학·영어·탐구·학생부 반영 확인", href: "/admissions/seoul#plans", number: "03" },
   { title: "과거 정시 입결", tag: "2024~2026 결과", text: "대학 발표 평균·70% 컷을 참고 자료로 보기", href: "/admissions/seoul#results", number: "04" },
 ];
 
