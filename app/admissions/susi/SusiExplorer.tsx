@@ -16,6 +16,7 @@ export default function SusiExplorer({ initialUniversity = "", initialProfile = 
   const [university, setUniversity] = useState(resolveSeoulUniversity(registry.records, initialUniversity)?.id || "");
   const [query, setQuery] = useState(initialQuery);
   const [profileId, setProfileId] = useState(majors.some(p => p.id === initialProfile) ? initialProfile : "");
+  const [guideField, setGuideField] = useState(majors.find(p => p.id === initialProfile)?.field || "");
   const [field, setField] = useState(majors.find(p => p.id === initialProfile)?.field || "");
   const [category, setCategory] = useState("");
   const [minimum, setMinimum] = useState("");
@@ -26,11 +27,12 @@ export default function SusiExplorer({ initialUniversity = "", initialProfile = 
   const records = selectSusiPlans(planData.records.filter(row => registry.records.some(school => school.id === canonicalUniversity(row.university))), activeUniversity, field, category, minimum)
     .filter(r => !interview || r.hasInterview === (interview === "있음"));
   const sourcePage = senIndex.find(r => r.name === activeUniversity)?.page;
-  const guideProfiles = majors.filter(p => (!profileId || p.id === profileId) && (!query.trim() || `${p.title} ${p.field}`.includes(query.trim())));
+  const guideProfiles = majors.filter(p => (!guideField || p.field === guideField) && (!profileId || p.id === profileId)
+    && (!query.trim() || `${p.title} ${p.field} ${p.examples.map(ex => `${ex.university} ${ex.department}`).join(" ")}`.replace(/\s/g, "").includes(query.replace(/\s/g, ""))));
 
   return <div className={styles.page}>
     <AdmissionsNav current="early" />
-    <header className={styles.hero}><span className={styles.yearPill}>2028학년도 · 수시</span><h1>우리에게 적용되는 전형부터.</h1><p>2028 시행계획의 전형방법·수능최저·면접과 원문 지원자격을 확인하세요.</p></header>
+    <header className={styles.hero}><span className={styles.yearPill}>2028학년도 · 수시</span><h1>전형별 수능최저·면접과 계열별 학과</h1><p>2028 시행계획의 전형방법·수능최저·면접과 원문 지원자격을 확인하세요.</p></header>
     <nav className={styles.pageJump} aria-label="학과·수시 바로가기"><a href="#plans">2028 수시 전형</a><a href="#directory">전공 공부 내용</a><Link href="/admissions#questions">궁금한 질문</Link></nav>
     <section id="plans" className={styles.section} aria-labelledby="susi-heading">
       <h2 id="susi-heading">2028 수시 시행계획 · 수능최저·면접</h2>
@@ -62,10 +64,11 @@ export default function SusiExplorer({ initialUniversity = "", initialProfile = 
     </section>
 
     <section id="directory" className={styles.section} aria-labelledby="directory-heading">
-      <div className={styles.sectionHeading}><h2 id="directory-heading">관심 분야에서 무엇을 배울까?</h2></div>
-      <p className={styles.scopeNote}>아래는 대학 공식 교육과정을 살펴보는 전공 탐색 자료입니다. 적용 여부가 확인되지 않은 지원참고표의 학과 목록은 표시하지 않습니다. 2028 모집 학과·인원은 대학 시행계획과 최종 모집요강에서 확인하세요.</p>
-      <div className={styles.compactFields} role="group" aria-label="관심 분야"><button type="button" aria-pressed={!profileId} onClick={() => { setProfileId(""); setQuery(""); }}>전체 분야</button>{majors.map(p => <button key={p.id} type="button" aria-pressed={profileId === p.id} onClick={() => { setProfileId(p.id); setQuery(""); }}>{p.title}</button>)}</div>
-      <label className={styles.searchLabel}>분야 이름 검색<input className={styles.universitySelect} type="search" value={query} placeholder="예: 중국, 경영, 정치" onChange={e => { setQuery(e.target.value); setProfileId(""); }} /></label>
+      <div className={styles.sectionHeading}><h2 id="directory-heading">계열별 학과 · 대학 공식 안내</h2></div>
+      <p className={styles.scopeNote}>대학 공식 학과 안내를 연결한 전공 탐색 예시입니다. 2028 모집 학과·인원은 대학 시행계획과 최종 모집요강에서 확인하세요.</p>
+      <div className={styles.compactFields} role="group" aria-label="학과 탐색 계열"><button type="button" aria-pressed={!guideField} onClick={() => { setGuideField(""); setProfileId(""); setQuery(""); }}>전체 계열</button>{[...new Set(majors.map(p => p.field))].map(item => <button type="button" key={item} aria-pressed={guideField === item} onClick={() => { setGuideField(item); setProfileId(""); setQuery(""); }}>{item}</button>)}</div>
+      <div className={styles.compactFields} role="group" aria-label="관심 분야"><button type="button" aria-pressed={!profileId} onClick={() => { setProfileId(""); setQuery(""); }}>전체 분야</button>{majors.filter(p => !guideField || p.field === guideField).map(p => <button key={p.id} type="button" aria-pressed={profileId === p.id} onClick={() => { setProfileId(p.id); setQuery(""); }}>{p.title}</button>)}</div>
+      <label className={styles.searchLabel}>학과·분야 이름 검색<input className={styles.universitySelect} type="search" value={query} placeholder="예: 중어중문, 경영, 정치" onChange={e => { setQuery(e.target.value); setProfileId(""); setGuideField(""); }} /></label>
       <div className={styles.planGrid}>{guideProfiles.map(p => <article className={styles.selection} key={p.id}><span className={styles.eyebrow}>{p.field}</span><h3>{p.title}</h3><p className={styles.muted}>표기된 대학·학과의 교육과정 예시입니다. 다른 대학의 같은 이름 학과나 2028 모집 여부를 의미하지 않습니다.</p>{p.examples.map(ex => <div className={styles.source} key={ex.url}><a href={ex.url} target="_blank" rel="noopener noreferrer">{ex.university} · {ex.department} 공식 안내 ↗</a><p className={styles.muted}>교과목과 교육과정은 연결된 대학 공식 안내에서 확인하세요.</p></div>)}</article>)}</div>
       {guideProfiles.length === 0 && <p className={styles.empty}>해당 이름의 교육과정 예시는 수록하지 않았어요. 대학의 학과 안내와 2028 모집단위 원문을 확인하세요.</p>}
     </section>

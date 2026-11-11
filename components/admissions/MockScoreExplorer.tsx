@@ -106,7 +106,7 @@ export default function MockScoreExplorer({ university, onUniversityChange }: { 
         {g.rows.length > limits[g.band] && <button type="button" className={styles.more} onClick={() => setLimits(current => ({...current, [g.band]: current[g.band] + 30}))}>{g.band} 30개 더 보기 ({Math.min(limits[g.band], g.rows.length)}/{g.rows.length})</button>}
       </section>)}
     </div>}
-    <div className={styles.tools}><a href="#plans">{university || '대학별'} 2028 정시 반영방법 →</a><a href="#results">과거 공개 입결 →</a></div>
+    <div className={styles.tools}><Link href={`/admissions/seoul${university ? `?university=${encodeURIComponent(university)}` : ''}#plans`}>{university || '대학별'} 2028 정시 반영방법 →</Link><Link href={`/admissions/seoul${university ? `?university=${encodeURIComponent(university)}` : ''}#results`}>정시 입시 결과 →</Link></div>
   </section>;
 }
 

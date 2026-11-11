@@ -16,11 +16,12 @@ import { filterAdmissionResults } from "@/components/lib/admissionsBrowse";
 
 const display = (n: number | null) => n === null ? "—" : n.toLocaleString("ko-KR", { maximumFractionDigits: 4 });
 const matchUniversity = (actual: string, selected: string) => !selected || actual === selected || actual === `${selected} 서울`;
+const resultYears = [...new Set(results.map(row => row.year))].sort((a, b) => b - a);
 
-export default function SeoulAdmissions({ initialUniversity = "", initialQuery = "", initialSection = "" }: { initialUniversity?: string; initialQuery?: string; initialSection?: string }) {
+export default function SeoulAdmissions({ initialUniversity = "", initialQuery = "", initialSection = "", initialYear = "" }: { initialUniversity?: string; initialQuery?: string; initialSection?: string; initialYear?: string }) {
   const [university, setUniversity] = useState(resolveSeoulUniversity(registry.records, initialUniversity)?.id || "");
   const [query, setQuery] = useState(initialQuery);
-  const [year, setYear] = useState("");
+  const [year, setYear] = useState(resultYears.some(value => String(value) === initialYear) ? initialYear : "");
   const [metric, setMetric] = useState("");
   const [band, setBand] = useState("");
   const [limit, setLimit] = useState(9);
@@ -28,6 +29,7 @@ export default function SeoulAdmissions({ initialUniversity = "", initialQuery =
   const selectedPlans = plans.filter(p => matchUniversity(String(p[1]), university));
   const counterpart = `/admissions/susi${university ? `?university=${encodeURIComponent(university)}` : ""}`;
   const selectedUniversity = resolveSeoulUniversity(registry.records, university);
+  const availableResults = results.filter(row => matchUniversity(row.univ, university));
 
   useEffect(() => {
     if (initialSection) document.getElementById(initialSection)?.scrollIntoView();
@@ -56,12 +58,16 @@ export default function SeoulAdmissions({ initialUniversity = "", initialQuery =
       </details>)}</div>
     </section>
     <section id="results" className={styles.section} aria-labelledby="results-title">
-      <div className={styles.sectionHeading}><h2 id="results-title">과거 정시 입결 · 2028 합격선 아님</h2><span>11개 대학 · 2024~2026학년도</span></div>
+      <div className={styles.sectionHeading}><h2 id="results-title">정시 입시 결과 · 학년도별 공개 입결</h2><span>{new Set(results.map(row => row.univ)).size}개 대학 · {results.length}개 기록 · 2024~2026학년도</span></div>
       <p className={styles.scopeNote}>아래는 2024~2026학년도 결과입니다. 2028학년도는 수능 체제와 대학별 반영방법이 달라 과거 점수를 2028 합격선으로 그대로 사용할 수 없습니다.</p><p>평균과 70% 컷은 서로 다른 지표예요. ‘—’는 원문에 수록하지 않은 값입니다. 과거 점수로 2028 지원 가능성을 판정하지 않아요.</p>
+      <p className={styles.muted}>{university || "전체 대학"}의 수록 범위: {resultYears.map(value => {
+        const rows = availableResults.filter(row => row.year === value);
+        return `${value}학년도 ${rows.length}개 기록(${new Set(rows.map(row => row.univ)).size}개 대학)`;
+      }).join(" · ")}. 수록 연도는 대학마다 다릅니다.</p>
       <div className={local.filters}>
         <label>대학<select value={university} onChange={e => { setUniversity(e.target.value); setLimit(9); }}><option value="">전체 대학</option><SeoulUniversityOptions /></select></label>
         <label>학과·대학 검색<input type="search" value={query} placeholder="예: 중국, 경영, 정치" onChange={e => { setQuery(e.target.value); setLimit(9); }} /></label>
-        <label>결과 학년도<select value={year} onChange={e => { setYear(e.target.value); setLimit(9); }}><option value="">전체 연도</option>{[2026, 2025, 2024].map(y => <option key={y}>{y}</option>)}</select></label>
+        <label>결과 학년도<select value={year} onChange={e => { setYear(e.target.value); setLimit(9); }}><option value="">전체 연도</option>{resultYears.map(y => <option value={y} key={y}>{y}학년도</option>)}</select></label>
         <label>공개 지표<select value={metric} onChange={e => { setMetric(e.target.value); setLimit(9); }}><option value="">전체 지표</option><option value="percentile">백분위 70% 컷 있음</option><option value="converted">환산점수 70% 컷 있음</option><option value="mean">평균 백분위 있음</option></select></label>
       </div>
       <div className={styles.compactFields} role="group" aria-label="공개 백분위 70% 컷 구간"><button type="button" aria-pressed={!band} onClick={() => { setBand(""); setLimit(9); }}>전체 점수 구간</button>{[["95", "95 이상"], ["90", "90~95 미만"], ["85", "85~90 미만"], ["80", "80~85 미만"], ["under80", "80 미만"]].map(([id, label]) => <button key={id} type="button" aria-pressed={band === id} onClick={() => { setBand(id); setLimit(9); }}>{label}</button>)}</div>

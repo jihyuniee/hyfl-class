@@ -48,7 +48,11 @@ const NAV_GROUPS = [
   {
     label: "대학입시", emoji: "🎓",
     items: [
-      { href: "/admissions", label: "대학별 시행계획 검색" },
+      { href: "/admissions", label: "대입 탐색기" },
+      { href: "/admissions/seoul?section=mock-score", label: "모의고사 점수 참고표" },
+      { href: "/admissions/susi#directory", label: "계열별 학과" },
+      { href: "/admissions/seoul#results", label: "정시 입시 결과" },
+      { href: "/admissions/susi#plans", label: "전형별 수능최저·면접" },
     ],
   },
   {
