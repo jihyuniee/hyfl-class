@@ -7,8 +7,8 @@ export const metadata: Metadata = {
 };
 
 export default async function SeoulAdmissionsPage({ searchParams }: {
-  searchParams: Promise<{ university?: string; section?: string; q?: string }>;
+  searchParams: Promise<{ university?: string; section?: string; q?: string; year?: string }>;
 }) {
-  const { university, section, q } = await searchParams;
-  return <SeoulAdmissions initialUniversity={university} initialQuery={q} initialSection={section} />;
+  const { university, section, q, year } = await searchParams;
+  return <SeoulAdmissions key={`${university || ""}/${q || ""}/${section || ""}/${year || ""}`} initialUniversity={university} initialQuery={q} initialSection={section} initialYear={year} />;
 }

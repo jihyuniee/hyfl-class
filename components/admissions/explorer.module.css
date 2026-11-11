@@ -31,6 +31,7 @@
   background: var(--surface-muted); border: 1px solid var(--border);
   border-radius: var(--radius-card); padding: 20px; margin: 20px 0;
 }
+.panel[id] { scroll-margin-top: 130px; }
 .panel h3 { margin: 0 0 8px; font-size: 18px; }
 .panel p { margin: 8px 0; }
 .panel form > button { margin-top: 12px; }
