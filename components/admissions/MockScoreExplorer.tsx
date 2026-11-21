@@ -6,18 +6,16 @@ import directory from "@/public/admissions-explorer/directory.json";
 import manifest from "@/public/admissions-data/manifest.json";
 import registry from "@/public/admissions-explorer/seoul-universities.json";
 import SeoulUniversityOptions from "./SeoulUniversityOptions";
-import { mockPercentile, mockStandard, readScore, referenceBand, scoreReferences, SCORE_BANDS, type ScoreBand } from "@/components/lib/mockScores";
+import { groupDisplayScoreReferences, mockPercentile, mockStandard, readScore, type DisplayScoreBand } from "@/components/lib/mockScores";
 import styles from "./explorer.module.css";
 
 const subjects = ['국어', '수학', '통합사회', '통합과학'];
-const descriptions: Record<ScoreBand, string> = {
+const descriptions: Record<DisplayScoreBand, string> = {
   상향: '참고점수까지 상승이 필요한 구간',
   소신: '참고점수에 조금 못 미치는 구간',
-  가능: '두 참고점수를 충족하고 차이가 작은 구간',
-  적정: '두 참고점수보다 여유가 있는 구간',
-  안정: '두 참고점수보다 여유가 큰 구간',
+  적정: '두 참고점수를 모두 충족한 범위(기존 가능·적정·안정 통합)',
 };
-const freshLimits = () => Object.fromEntries(SCORE_BANDS.map(band => [band, 10])) as Record<ScoreBand, number>;
+const freshLimits = (): Record<DisplayScoreBand, number> => ({ 상향: 10, 소신: 10, 적정: 10 });
 const points = (value: number) => Number(value.toFixed(2)).toLocaleString('ko-KR');
 const difference = (value: number) => `${value > 0 ? '+' : ''}${points(value)}`;
 
@@ -30,22 +28,21 @@ export default function MockScoreExplorer({ university, onUniversityChange }: { 
   const [english, setEnglish] = useState('');
   const [submitted, setSubmitted] = useState<{ standard: number; average: number; english: string } | null>(null);
   const [error, setError] = useState('');
-  const [bandFilter, setBandFilter] = useState<ScoreBand | ''>('');
   const [limits, setLimits] = useState(freshLimits);
   const standard = mode === 'subjects' ? mockStandard(standards) : readScore(totalStandard, 600);
   const average = mode === 'subjects' ? mockPercentile(percentiles) : readScore(totalAverage, 100);
-  const rows = submitted ? scoreReferences(reference, submitted.standard, submitted.average, university, directory.universities) : [];
-  const groups = SCORE_BANDS.map(band => ({band, rows: rows.filter(r => submitted && referenceBand(r, submitted.standard, submitted.average) === band)}));
+  const groups = submitted ? groupDisplayScoreReferences(reference, submitted.standard, submitted.average, university, directory.universities) : [];
+  const displayedCount = groups.reduce((count, group) => count + group.rows.length, 0);
   const clearResult = () => { setSubmitted(null); setError(''); };
 
   return <section className={styles.panel} id="mock-score" aria-labelledby="mock-heading">
-    <h2 id="mock-heading">내 점수로 상향·소신·적정 대학 찾기</h2>
-    <p><b>표점합과 평균 백분위</b>를 입력하면 기존 지원참고표의 대학·학과를 구간별 표로 보여줍니다.</p>
-    <p className={styles.scopeNote}>기존 참고점수와의 차이에 따른 구간입니다. 원자료의 적용 시험·대상 학년은 확인 중이며, 2028 합격 가능성은 검증되지 않았습니다.</p>
+    <h2 id="mock-heading">상향·소신·적정 참고표</h2>
+    <p><b>표점합과 평균 백분위</b>를 입력하면 수록된 참고점수와 비교해 상향·소신·적정 세 구간으로 표시합니다. 두 참고점수를 모두 충족하면 적정에 표시합니다.</p>
+    <p className={styles.scopeNote}>원자료 표기에는 ‘고1 가채점’이 있으나 정확한 적용 시험·대상 및 2028학년도 적용성은 검증되지 않았습니다. 수록 자료와의 점수 차이만 나타내며, 합격 가능성이나 확률을 뜻하지 않습니다.</p>
     <form onSubmit={e => {
       e.preventDefault();
       if (standard === null || average === null) { setError(mode === 'subjects' ? '네 과목의 표준점수와 백분위를 모두 입력해 주세요.' : '표준점수 합(0~600)과 평균 백분위(0~100)를 입력해 주세요.'); return; }
-      setSubmitted({standard, average, english}); setError(''); setBandFilter(''); setLimits(freshLimits());
+      setSubmitted({standard, average, english}); setError(''); setLimits(freshLimits());
     }}>
       <div className={styles.chips} role="group" aria-label="점수 입력 방식">
         <button type="button" aria-pressed={mode === 'totals'} onClick={() => { setMode('totals'); clearResult(); }}>표점합·평균 입력</button>
@@ -76,23 +73,17 @@ export default function MockScoreExplorer({ university, onUniversityChange }: { 
       <p><a href="/admissions-explorer/reference.json" target="_blank" rel="noopener noreferrer">수록 참고점수 원자료 보기 ↗</a></p>
       <p>아래는 이 화면의 점수 차이 분류 규칙이며 대학·이투스가 정한 지원 판정 기준이 아닙니다. 표준점수 합과 백분위 합(평균 × 3)을 각각 비교합니다.</p>
       <ul>
-        <li>안정: 두 점수 모두 참고점수보다 15점 이상 높음.</li>
-        <li>적정: 두 점수 모두 5점 이상 높음(안정 제외).</li>
-        <li>가능: 두 참고점수를 모두 충족(적정·안정 제외).</li>
-        <li>소신: 부족분이 표준점수 합 4점·평균 백분위 1 이내.</li>
-        <li>상향: 소신 범위를 넘어 표준점수 합 12점·평균 백분위 3 이내.</li>
+        <li>상향: 소신 범위를 넘지만 부족분이 표준점수 합 12점·평균 백분위 3 이내.</li>
+        <li>소신: 두 참고점수 중 하나 이상에 못 미치며 부족분이 표준점수 합 4점·평균 백분위 1 이내.</li>
+        <li>적정: 두 참고점수를 모두 충족한 범위(기존 가능·적정·안정 통합).</li>
       </ul>
       <p>영어·한국사·학생부·영역별 반영비율·탐구 변환표는 구간에 반영하지 않습니다. 실제 등록자 입결과 2028 시행계획은 아래에서 따로 확인하세요.</p>
     </details>
 
     {submitted && <div aria-live="polite">
-      <div className={styles.scoreSummary}><h3>표준점수 합 {points(submitted.standard)} · 평균 백분위 {points(submitted.average)}</h3><p>{university || '전체 대학'} · 비교 대상 {rows.length}개{selectedEnglish(submitted.english)}</p></div>
-      <div className={styles.chips} role="group" aria-label="결과 구간 선택">
-        <button type="button" aria-pressed={!bandFilter} onClick={() => setBandFilter('')}>전체 {rows.length}</button>
-        {groups.map(g => <button type="button" key={g.band} aria-pressed={bandFilter === g.band} onClick={() => setBandFilter(g.band)}>{g.band} {g.rows.length}</button>)}
-      </div>
-      {rows.length === 0 && <p className={styles.empty}>{university && !reference.some(r => r.university === university) ? `${university}의 지원참고 점수는 현재 수록되어 있지 않습니다. 아래 대학별 반영방법과 과거 입결의 자료 유무를 확인해 주세요.` : '현재 점수와 비교할 참고점수가 수록되어 있지 않습니다. 대학 선택과 자료 범위를 확인해 주세요.'}</p>}
-      {groups.filter(g => !bandFilter || bandFilter === g.band).map(g => <section className={styles.scoreGroup} key={g.band} aria-label={`${g.band} 구간`}>
+      <div className={styles.scoreSummary}><h3>표준점수 합 {points(submitted.standard)} · 평균 백분위 {points(submitted.average)}</h3><p>{university || '수록 대학 전체'} · 세 구간 표시 결과 {displayedCount}건{selectedEnglish(submitted.english)}</p></div>
+      {displayedCount === 0 && <p className={styles.empty}>{university && !reference.some(r => r.university === university) ? `${university}의 지원참고 점수는 현재 수록되어 있지 않습니다.` : '수록된 참고점수 중 세 구간에 해당하는 결과가 없습니다.'}</p>}
+      {groups.map(g => <section className={styles.scoreGroup} key={g.band} aria-label={`${g.band} 구간`}>
         <h3><span className={styles.scoreBand} data-band={g.band}>{g.band}</span> {g.rows.length}개</h3><p className={styles.muted}>{descriptions[g.band]}</p>
         {g.rows.length === 0 && <p className={styles.muted}>이 구간에 해당하는 수록값이 없습니다.</p>}
         {g.rows.length > 0 && <div className={styles.scoreTableWrap} role="region" aria-label={`${g.band} 대학·학과 참고표`} tabIndex={0}><table className={styles.scoreTable}>

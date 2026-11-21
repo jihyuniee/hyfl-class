@@ -65,3 +65,13 @@ export function filterAdmissionResults<T extends Result>(rows: T[], filters: Fil
     && (!band || inPercentileBand(r, band)))
     .sort((a, b) => b.year - a.year || a.univ.localeCompare(b.univ, "ko") || a.dept.localeCompare(b.dept, "ko"));
 }
+
+// A fragment isn't sent to the server. Translate only the legacy score fragment
+// to the explicit tool route; ordinary materials bookmarks stay unchanged.
+export function legacyRegularScoreDestination(search: string, hash: string) {
+  if (hash !== "#mock-score") return null;
+  const params = new URLSearchParams(search);
+  if (params.get("section") === "mock-score") return null;
+  params.set("section", "mock-score");
+  return `/admissions/seoul?${params}`;
+}

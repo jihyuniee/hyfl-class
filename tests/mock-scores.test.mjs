@@ -69,3 +69,26 @@ test('411·98.39 입력에서 서울대·연고대를 포함하고 원자료의 
  assert.equal(rows.length,502);
  for(const row of result) assert.ok(rows.includes(row));
 });
+
+test('화면은 기존 두 부족 구간을 유지하고 두 참고점수를 충족한 구간만 적정으로 묶는다', async () => {
+ const {groupDisplayScoreReferences} = await import('../components/lib/mockScores.ts');
+ const base={university:'A', admission:'일반', group:'가'};
+ const make=(department,standardSum,percentileSum)=>({...base,department,standardSum,percentileSum});
+ const rows=[
+  make('상향 끝',412,279), make('상향 초과(표점)',413,279), make('상향 초과(백분위)',412,280),
+  make('소신 끝',404,273), make('소신 혼합',404,250), make('적정 시작',395,265), make('적정 끝',386,255),
+  make('정확히 충족',400,270), make('과거 가능',396,265), make('과거 안정',385,255),
+  make('누락',null,265), make('백분위 누락',395,undefined), make('무한',395,Infinity),
+  {...make('다른 대학',395,265),university:'B'},
+ ];
+ const expected=[
+  {band:'상향',rows:['상향 끝']},
+  {band:'소신',rows:['소신 끝','소신 혼합']},
+  {band:'적정',rows:['정확히 충족','과거 가능','적정 시작','적정 끝','과거 안정']},
+ ];
+ assert.deepEqual(groupDisplayScoreReferences(rows,400,90,'A').map(g=>({band:g.band,rows:g.rows.map(r=>r.department)})),expected);
+ assert.deepEqual(groupDisplayScoreReferences(rows,400,90,'미수록').map(g=>g.rows.length),[0,0,0]);
+ for(const [standard,average] of [[NaN,90],[400,NaN],[601,90],[400,100.01],[400,-1],[null,90]]) {
+  assert.deepEqual(groupDisplayScoreReferences(rows,standard,average).map(g=>g.rows.length),[0,0,0]);
+ }
+});
