@@ -4,7 +4,6 @@ import styles from "./explorer.module.css";
 export default function AdmissionsNav({ current }: { current: "home" | "regular" | "early" | "china" }) {
   return <nav className={styles.navigation} aria-label="수시·정시 자료 선택">
     <Link href="/admissions" aria-current={current === "home" ? "page" : undefined}>대입 탐색기</Link>
-    <Link href="/admissions/seoul?section=mock-score">모의고사 점수 참고표</Link>
     <Link href="/admissions/susi#directory">계열별 학과</Link>
     <Link href="/admissions/seoul#results">정시 입시 결과</Link>
     <Link href="/admissions/susi#plans" aria-current={current === "early" ? "page" : undefined}>전형별 수능최저·면접</Link>

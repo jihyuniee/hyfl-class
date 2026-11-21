@@ -17,6 +17,8 @@ export function mockStandard(values: string[]): number | null {
 
 export const SCORE_BANDS = ['상향', '소신', '가능', '적정', '안정'] as const;
 export type ScoreBand = typeof SCORE_BANDS[number];
+export const DISPLAY_SCORE_BANDS = ['상향', '소신', '적정'] as const satisfies readonly ScoreBand[];
+export type DisplayScoreBand = typeof DISPLAY_SCORE_BANDS[number];
 export type ScoreReference = {
   university: string; department: string; admission: string; group: string;
   standardSum: number; percentileSum: number;
@@ -51,6 +53,23 @@ export function scoreReferences<T extends ScoreReference>(
       || b.standardSum - a.standardSum || b.percentileSum - a.percentileSum
       || a.department.localeCompare(b.department, 'ko')
       || a.admission.localeCompare(b.admission, 'ko'));
+}
+
+export function groupDisplayScoreReferences<T extends ScoreReference>(
+  rows: T[], standard: number, average: number, university = '', universityOrder: readonly string[] = []
+): { band: DisplayScoreBand; rows: T[] }[] {
+  const groups = DISPLAY_SCORE_BANDS.map(band => ({ band, rows: [] as T[] }));
+  if (!Number.isFinite(standard) || standard < 0 || standard > 600
+    || !Number.isFinite(average) || average < 0 || average > 100) return groups;
+  const valid = rows.filter(row => Number.isFinite(row.standardSum) && row.standardSum >= 0 && row.standardSum <= 600
+    && Number.isFinite(row.percentileSum) && row.percentileSum >= 0 && row.percentileSum <= 300);
+  for (const row of scoreReferences(valid, standard, average, university, universityOrder)) {
+    const originalBand = referenceBand(row, standard, average);
+    // All comparisons meeting both references share one presentation group.
+    const band: DisplayScoreBand = originalBand === '가능' || originalBand === '안정' ? '적정' : originalBand;
+    groups.find(group => group.band === band)?.rows.push(row);
+  }
+  return groups;
 }
 
 export function nearbyReferences<T extends { university: string; percentileSum: number }>(rows: T[], average: number, range: number, university = ''): T[] {

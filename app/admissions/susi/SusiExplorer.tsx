@@ -33,7 +33,7 @@ export default function SusiExplorer({ initialUniversity = "", initialProfile = 
   return <div className={styles.page}>
     <AdmissionsNav current="early" />
     <header className={styles.hero}><span className={styles.yearPill}>2028학년도 · 수시</span><h1>전형별 수능최저·면접과 계열별 학과</h1><p>2028 시행계획의 전형방법·수능최저·면접과 원문 지원자격을 확인하세요.</p></header>
-    <nav className={styles.pageJump} aria-label="학과·수시 바로가기"><a href="#plans">2028 수시 전형</a><a href="#directory">전공 공부 내용</a><Link href="/admissions#questions">궁금한 질문</Link></nav>
+    <nav className={styles.pageJump} aria-label="학과·수시 바로가기"><a href="#plans">2028 수시 전형</a><a href="#directory">전공 공부 내용</a><Link href="/admissions#search">대학·학과 검색</Link></nav>
     <section id="plans" className={styles.section} aria-labelledby="susi-heading">
       <h2 id="susi-heading">2028 수시 시행계획 · 수능최저·면접</h2>
       <p>교육청 자료·입학처 시행계획에서 확인한 <b>대학 공통 전형 요약</b>입니다. 해당 학과 모집 여부와 외고·추천 조건은 전형별 지원자격 원문을 확인하세요.</p>

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import results from "@/public/admissions-seoul/results.json";
 import plans from "@/public/admissions-seoul/plans.json";
@@ -12,13 +13,15 @@ import AdmissionsNav from "@/components/admissions/AdmissionsNav";
 import MockScoreExplorer from "@/components/admissions/MockScoreExplorer";
 import styles from "@/components/admissions/explorer.module.css";
 import local from "./seoul.module.css";
-import { filterAdmissionResults } from "@/components/lib/admissionsBrowse";
+import { filterAdmissionResults, legacyRegularScoreDestination } from "@/components/lib/admissionsBrowse";
 
 const display = (n: number | null) => n === null ? "—" : n.toLocaleString("ko-KR", { maximumFractionDigits: 4 });
 const matchUniversity = (actual: string, selected: string) => !selected || actual === selected || actual === `${selected} 서울`;
 const resultYears = [...new Set(results.map(row => row.year))].sort((a, b) => b - a);
 
 export default function SeoulAdmissions({ initialUniversity = "", initialQuery = "", initialSection = "", initialYear = "" }: { initialUniversity?: string; initialQuery?: string; initialSection?: string; initialYear?: string }) {
+  const router = useRouter();
+  const scoreMode = initialSection === "mock-score";
   const [university, setUniversity] = useState(resolveSeoulUniversity(registry.records, initialUniversity)?.id || "");
   const [query, setQuery] = useState(initialQuery);
   const [year, setYear] = useState(resultYears.some(value => String(value) === initialYear) ? initialYear : "");
@@ -32,15 +35,25 @@ export default function SeoulAdmissions({ initialUniversity = "", initialQuery =
   const availableResults = results.filter(row => matchUniversity(row.univ, university));
 
   useEffect(() => {
+    const followLegacyScoreBookmark = () => {
+      const destination = legacyRegularScoreDestination(window.location.search, window.location.hash);
+      if (destination) router.replace(destination);
+    };
+    followLegacyScoreBookmark();
+    window.addEventListener("hashchange", followLegacyScoreBookmark);
+    return () => window.removeEventListener("hashchange", followLegacyScoreBookmark);
+  }, [router]);
+
+  useEffect(() => {
     if (initialSection) document.getElementById(initialSection)?.scrollIntoView();
   }, [initialSection]);
 
   return <div className={styles.page}>
     <AdmissionsNav current="regular" />
-    <header className={styles.hero}><span className={styles.yearPill}>2028학년도 · 정시</span><h1>내 점수로 대학·학과 찾기</h1><p>표점합·평균 백분위 입력 · 상향·소신·가능·적정·안정 참고표 · 대학별 반영방법</p></header>
-    <nav className={styles.pageJump} aria-label="정시 자료 바로가기"><a href="#mock-score">내 점수로 찾기</a><a href="#universities">서울 대학 전체</a><a href="#plans">2028 정시 시행계획</a><a href="#results">과거 정시 입결 · 참고</a><a href="#score-guide">점수 읽는 법</a></nav>
+    <header className={styles.hero}><h1>{scoreMode ? "모의고사 점수 참고표" : "정시 자료"}</h1><p>{scoreMode ? "기존 지원참고표의 점수 구간을 확인합니다." : "2028학년도 과목별 반영방법과 학년도별 과거 정시 입결을 확인합니다."}</p></header>
+    <nav className={styles.pageJump} aria-label="정시 자료 바로가기"><a href="#universities">서울 소재 대학</a><a href="#plans">2028 정시 시행계획</a><a href="#results">과거 정시 입결</a><a href="#score-guide">입결 지표 설명</a></nav>
 
-    <MockScoreExplorer university={university} onUniversityChange={value => { setUniversity(value); setLimit(9); }} />
+    {scoreMode && <MockScoreExplorer university={university} onUniversityChange={value => { setUniversity(value); setLimit(9); }} />}
 
     <SeoulUniversityDirectory university={university} onUniversityChange={value => { setUniversity(value); setLimit(9); }} />
 
@@ -82,12 +95,12 @@ export default function SeoulAdmissions({ initialUniversity = "", initialQuery =
       <div className={styles.tools}><Link href={counterpart + "#directory"}>{university || "관심 대학"}의 학과·수시 전형 →</Link><a href="/admissions-seoul/results.csv" download>공개 입결 CSV ↓</a></div>
     </section>
 
-    <section id="score-guide" className={styles.section} aria-labelledby="guide-title"><h2 id="guide-title">성적표와 입결, 이렇게 읽어요</h2>
+    <section id="score-guide" className={styles.section} aria-labelledby="guide-title"><h2 id="guide-title">입결 지표 설명</h2>
       {[
-        ["백분위와 원점수는 어떻게 다른가요?", "원점수는 문제를 맞혀 얻은 점수예요. 백분위는 나보다 낮은 점수를 받은 수험생의 비율을 나타내요. 백분위 90을 원점수 90점으로 바꿀 수는 없어요."],
-        ["70% 컷과 평균은 어떻게 다른가요?", "70% 컷은 최종등록자를 해당 지표 순으로 놓았을 때 70% 지점의 성적이에요. 평균이나 마지막 합격자의 점수가 아니며, 합격 확률 70%라는 뜻도 아니에요."],
-        ["대학 환산점수를 백분위로 바꿀 수 있나요?", "대학 환산점수는 대학별 반영비율·환산표·가산점 등을 적용한 값이에요. 만점으로 나눠 백분위로 바꿀 수 없고, 서로 다른 대학의 같은 환산점수를 그대로 비교할 수도 없어요."],
-        ["표준점수만 넣으면 지원 대학을 알 수 있나요?", "표준점수 합만으로는 대학별 반영방법·탐구 변환점수·영어·학생부 반영을 적용할 수 없어요. 이 화면에서는 대학의 공개 입결과 시행계획을 별도로 확인할 수 있어요."],
+        ["백분위와 원점수", "원점수는 문제를 맞혀 얻은 점수예요. 백분위는 나보다 낮은 점수를 받은 수험생의 비율을 나타내요. 백분위 90을 원점수 90점으로 바꿀 수는 없어요."],
+        ["70% 컷과 평균", "70% 컷은 최종등록자를 해당 지표 순으로 놓았을 때 70% 지점의 성적이에요. 평균이나 마지막 합격자의 점수가 아니며, 합격 확률 70%라는 뜻도 아니에요."],
+        ["대학 환산점수", "대학 환산점수는 대학별 반영비율·환산표·가산점 등을 적용한 값이에요. 만점으로 나눠 백분위로 바꿀 수 없고, 서로 다른 대학의 같은 환산점수를 그대로 비교할 수도 없어요."],
+        ["표준점수 합", "표준점수 합만으로는 대학별 반영방법·탐구 변환점수·영어·학생부 반영을 적용할 수 없어요. 이 화면에서는 대학의 공개 입결과 시행계획을 별도로 확인할 수 있어요."],
       ].map(([title, text]) => <details className={styles.faq} key={title}><summary>{title}</summary><p>{text}</p></details>)}
     </section>
   </div>;

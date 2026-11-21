@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
 import AdmissionsHome from "@/components/admissions/AdmissionsHome";
+import results from "@/public/admissions-seoul/results.json";
 
 export const metadata: Metadata = {
   title: "대입 탐색기 | 2-2 우리반",
-  description: "모의고사 점수 참고표, 계열별 학과, 학년도별 정시 입결, 2028 전형별 수능최저와 면접을 확인합니다.",
+  description: "대학·학과와 2028 수시·정시 시행계획, 학년도별 과거 정시 입결을 찾아봅니다.",
 };
 
+const uniqueUnits = new Map(results.map(({ univ, dept }) => [JSON.stringify([univ, dept]), { univ, dept }]));
+
 export default function AdmissionsPage() {
-  return <AdmissionsHome />;
+  return <AdmissionsHome historicalUnits={[...uniqueUnits.values()]} />;
 }
